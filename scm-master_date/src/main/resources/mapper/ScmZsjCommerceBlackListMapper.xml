@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceBlackListDao">
+	<resultMap id="ScmZsjCommerceBlackList" type="com.winway.scm.model.ScmZsjCommerceBlackList">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="classify" column="classify" jdbcType="VARCHAR"/>
+		<result property="penaltyReason" column="penaltyReason" jdbcType="VARCHAR"/>
+		<result property="bannedBreed" column="bannedBreed" jdbcType="VARCHAR"/>
+		<result property="approvalMemo" column="approvalMemo" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalDate" column="approvalDate" jdbcType="TIMESTAMP"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceBlackList">
+		INSERT INTO Scm_Zsj_CommerceBlackList
+		(id,approvalCode,businessDivisionId,businessDivision,provinceId,province,commerceCode,commerceName,classify,penaltyReason,bannedBreed,approvalMemo,approvalId,approvalState,ownerId,approvalDate,operatorName)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{approvalCode,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{classify,jdbcType=VARCHAR}, #{penaltyReason,jdbcType=VARCHAR}, #{bannedBreed,jdbcType=VARCHAR}, #{approvalMemo,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalDate,jdbcType=TIMESTAMP}, #{operatorName,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerceBlackList">
+		SELECT * FROM Scm_Zsj_CommerceBlackList 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByApplId"   parameterType="java.lang.String" resultMap="ScmZsjCommerceBlackList">
+		SELECT * FROM Scm_Zsj_CommerceBlackList 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="getCommerceIsBlack"   parameterType="java.lang.String" resultMap="ScmZsjCommerceBlackList">
+		SELECT * FROM Scm_Zsj_CommerceBlackList 
+		WHERE 
+		id=#{id} and ownerId = {ownerId} and approvalState = 2
+	</select>
+
+	<select id="getScmZsjCommerceBlackListByApprovalId">
+		SELECT * FROM Scm_Zsj_CommerceBlackList
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceBlackList">
+		SELECT * FROM Scm_Zsj_CommerceBlackList
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceBlackList">
+		UPDATE Scm_Zsj_CommerceBlackList SET
+		approvalCode=#{approvalCode,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		classify=#{classify,jdbcType=VARCHAR},
+		penaltyReason=#{penaltyReason,jdbcType=VARCHAR},
+		bannedBreed=#{bannedBreed,jdbcType=VARCHAR},
+		approvalMemo=#{approvalMemo,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalDate=#{approvalDate,jdbcType=TIMESTAMP},
+		operatorName=#{operatorName,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Zsj_CommerceBlackList 
+		WHERE
+		id=#{id}
+	</delete>
+	
+</mapper>

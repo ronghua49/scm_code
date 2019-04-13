@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCgContractProductDao">
+	<resultMap id="ScmCgContractProduct" type="com.winway.scm.model.ScmCgContractProduct">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
+		<result property="contractId" column="contractId" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="ProductName" column="ProductName" jdbcType="VARCHAR"/>
+		<result property="ProductCode" column="ProductCode" jdbcType="VARCHAR"/>
+		<result property="productCname" column="productCname" jdbcType="VARCHAR"/>
+		<result property="productGauge" column="productGauge" jdbcType="VARCHAR"/>
+		<result property="medicineTypeId" column="medicineTypeId" jdbcType="VARCHAR"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
+		<result property="achange" column="achange" jdbcType="NUMERIC"/>
+		<result property="surplusAmount" column="surplusAmount" jdbcType="NUMERIC"/>
+		<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		<result property="approvalNumber" column="approvalNumber" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCgContractProduct">
+		INSERT INTO SCM_CG_ContractProduct
+		(id,contractCode,contractId,productId,ProductName,ProductCode,productCname,productGauge,medicineTypeId,medicineType,unit,unitPrice,productSum,sumPrice,currency,approvalNumber,achange,surplusAmount)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, 
+		#{contractId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
+		#{ProductName,jdbcType=VARCHAR}, #{ProductCode,jdbcType=VARCHAR}, 
+		#{productCname,jdbcType=VARCHAR}, #{productGauge,jdbcType=VARCHAR}, 
+		#{medicineTypeId,jdbcType=VARCHAR}, #{medicineType,jdbcType=VARCHAR}, 
+		#{unit,jdbcType=VARCHAR}, #{unitPrice,jdbcType=NUMERIC}, 
+		#{productSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, 
+		#{currency,jdbcType=VARCHAR}, #{approvalNumber,jdbcType=VARCHAR}, 
+		#{achange,jdbcType=NUMERIC},#{surplusAmount,jdbcType=NUMERIC})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgContractProduct">
+		SELECT * FROM SCM_CG_ContractProduct 
+		WHERE 
+		id=#{id}
+	</select>
+ 	<resultMap type="map" id="sumProduct">
+		<result property="speciesSum" column="speciesSum"/>
+		<result property="productSum" column="productSum"/>
+		<result property="sumPrice" column="sumPrice"/>
+	</resultMap>
+ 	<select id="listProductByContractId"   parameterType="java.lang.String" resultMap="sumProduct">
+		SELECT count(*) as speciesSum,IFNULL(sum(productSum),0) as productSum,IFNULL(sum(sumPrice),0) as sumPrice FROM SCM_CG_ContractProduct 
+		WHERE 
+		contractId=#{contractId}
+	</select> 
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmCgContractProduct">
+		SELECT * FROM SCM_CG_ContractProduct 
+		WHERE 
+		contractId=#{contractId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCgContractProduct">
+		SELECT * FROM SCM_CG_ContractProduct
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCgContractProduct">
+		UPDATE SCM_CG_ContractProduct SET
+		contractCode=#{contractCode,jdbcType=VARCHAR},
+		contractId=#{contractId,jdbcType=VARCHAR},
+		productId=#{productId,jdbcType=VARCHAR},
+		ProductName=#{ProductName,jdbcType=VARCHAR},
+		ProductCode=#{ProductCode,jdbcType=VARCHAR},
+		productCname=#{productCname,jdbcType=VARCHAR},
+		productGauge=#{productGauge,jdbcType=VARCHAR},
+		medicineTypeId=#{medicineTypeId,jdbcType=VARCHAR},
+		medicineType=#{medicineType,jdbcType=VARCHAR},
+		unit=#{unit,jdbcType=VARCHAR},
+		unitPrice=#{unitPrice,jdbcType=NUMERIC},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		sumPrice=#{sumPrice,jdbcType=NUMERIC},
+		currency=#{currency,jdbcType=VARCHAR},
+		achange=#{achange,jdbcType=NUMERIC},
+		surplusAmount=#{surplusAmount,jdbcType=NUMERIC},
+		approvalNumber=#{approvalNumber,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CG_ContractProduct 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM SCM_CG_ContractProduct
+	    WHERE
+	    contractId=#{contractId}
+	</delete>    
+	
+	<select id="getScmCgContractProductList" resultMap="ScmCgContractProduct">
+	    SELECT *
+	    FROM SCM_CG_ContractProduct 
+	    WHERE contractId=#{contractId}
+	</select>
+	
+	<select id="getByProductId" resultMap="ScmCgContractProduct">
+	    SELECT *
+	    FROM SCM_CG_ContractProduct 
+	    WHERE productId=#{arg0} and contractId=#{arg1}
+	</select>
+	
+</mapper>

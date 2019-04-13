@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmXsDistributorClauseDao">
+    <resultMap id="ScmXsDistributorClause" type="com.winway.scm.model.ScmXsDistributorClause">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+        <result property="clauseCode" column="clauseCode" jdbcType="VARCHAR"/>
+        <result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+        <result property="commerceLevel" column="commerceLevel" jdbcType="VARCHAR"/>
+        <result property="functionType" column="functionType" jdbcType="VARCHAR"/>
+        <result property="isSubsidiary" column="isSubsidiary" jdbcType="VARCHAR"/>
+        <result property="starLevel" column="starLevel" jdbcType="VARCHAR"/>
+        <result property="messageCost" column="messageCost" jdbcType="NUMERIC"/>
+        <result property="isPromotional" column="isPromotional" jdbcType="VARCHAR"/>
+        <result property="startDate" column="startDate" jdbcType="TIMESTAMP"/>
+        <result property="endDate" column="endDate" jdbcType="TIMESTAMP"/>
+        <result property="provincePlatformId" column="provincePlatformId" jdbcType="VARCHAR"/>
+        <result property="upCommerceId" column="upCommerceId" jdbcType="VARCHAR"/>
+        <result property="memo" column="memo" jdbcType="VARCHAR"/>
+        <result property="distributorAgreementId" column="distributorAgreementId" jdbcType="VARCHAR"/>
+        <result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+        <result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+        <result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="agreementSummaryCode" column="agreementSummaryCode" jdbcType="VARCHAR"/>
+        <result property="approvalStateStr" column="approvalStateStr" jdbcType="VARCHAR"/>
+        <result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+        <result property="scm_zsj_commerceState" column="scm_zsj_commerceState" jdbcType="VARCHAR"/>
+        <result property="integral" column="integral" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="VARCHAR"/>
+        <!--<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>-->
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmXsDistributorClause">
+		INSERT INTO SCM_XS_DistributorClause
+		(id,commerceId,
+		clauseCode,commerceName,
+		commerceLevel,functionType,
+		isSubsidiary,starLevel,
+		messageCost,isPromotional,
+		startDate,endDate,
+		provincePlatformId,upCommerceId,
+		memo,distributorAgreementId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR},
+		 #{clauseCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, 
+		 #{commerceLevel,jdbcType=VARCHAR}, #{functionType,jdbcType=VARCHAR}, 
+		 #{isSubsidiary,jdbcType=VARCHAR}, #{starLevel,jdbcType=VARCHAR}, 
+		 #{messageCost,jdbcType=NUMERIC}, #{isPromotional,jdbcType=VARCHAR}, 
+		 #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
+		 #{provincePlatformId,jdbcType=VARCHAR}, #{upCommerceId,jdbcType=VARCHAR}, 
+		 #{memo,jdbcType=VARCHAR}, #{distributorAgreementId,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmXsDistributorClause">
+		SELECT * FROM SCM_XS_DistributorClause 
+		WHERE 
+		id=#{id}
+	</select>
+
+    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmXsDistributorClause">
+		SELECT * FROM SCM_XS_DistributorClause 
+		WHERE 
+		DistributorAgreementId=#{arg0}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmXsDistributorClause">
+        SELECT * FROM SCM_XS_DistributorClause
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="firstList" parameterType="java.util.Map" resultMap="ScmXsDistributorClause">
+        SELECT * FROM v_distributorFirstList
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmXsDistributorClause">
+		UPDATE SCM_XS_DistributorClause SET
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		clauseCode=#{clauseCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceLevel=#{commerceLevel,jdbcType=VARCHAR},
+		functionType=#{functionType,jdbcType=VARCHAR},
+		isSubsidiary=#{isSubsidiary,jdbcType=VARCHAR},
+		starLevel=#{starLevel,jdbcType=VARCHAR},
+		messageCost=#{messageCost,jdbcType=NUMERIC},
+		isPromotional=#{isPromotional,jdbcType=VARCHAR},
+		startDate=#{startDate,jdbcType=TIMESTAMP},
+		endDate=#{endDate,jdbcType=TIMESTAMP},
+		provincePlatformId=#{provincePlatformId,jdbcType=VARCHAR},
+		upCommerceId=#{upCommerceId,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		distributorAgreementId=#{distributorAgreementId,jdbcType=VARCHAR}
+
+		WHERE
+		id=#{id}
+	</update>
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_XS_DistributorClause 
+		WHERE
+		id=#{id}
+	</delete>
+
+    <select id="getYears" parameterType="java.lang.String" resultMap="ScmXsDistributorClause">
+		SELECT c.YEAR 
+		FROM 
+			(SELECT DATE_FORMAT(startDate, '%Y') AS YEAR,b.ownerid FROM scm_xs_distributorclause a
+				LEFT JOIN scm_xs_distributoragreementsummary b
+				ON a.DistributorAgreementId = b.id) c
+		WHERE c.ownerid = #{arg0} GROUP BY c.year
+	</select>
+    <delete id="delByMainId">
+	    DELETE FROM SCM_XS_DistributorClause
+	    WHERE
+	    DistributorAgreementId=#{DistributorAgreementId}
+	</delete>
+
+    <select id="getScmXsDistributorClauseList" resultMap="ScmXsDistributorClause">
+	    SELECT *
+	    FROM SCM_XS_DistributorClause 
+	    WHERE DistributorAgreementId=#{DistributorAgreementId}
+	</select>
+    <select id="commerceAndAcceptState" parameterType="java.util.Map" resultMap="ScmXsDistributorClause">
+        SELECT * FROM v_distributorAcceptstate
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+</mapper>

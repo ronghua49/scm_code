@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCgProReplacementOrderDao">
+	<resultMap id="ScmCgProReplacementOrder" type="com.winway.scm.model.ScmCgProReplacementOrder">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="contractId" column="contractId" jdbcType="VARCHAR"/>
+		<result property="orderId" column="orderId" jdbcType="VARCHAR"/>
+		<result property="ReplacementOrderCode" column="ReplacementOrderCode" jdbcType="VARCHAR"/>
+		<result property="speciesSum" column="speciesSum" jdbcType="NUMERIC"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
+		<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		<result property="orderDate" column="orderDate" jdbcType="TIMESTAMP"/>
+		<result property="isToWMS" column="isToWMS" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="operatorId" column="operatorId" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+		<result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCgProReplacementOrder">
+		INSERT INTO SCM_CG_ProReplacementOrder
+		(id,contractId,orderId,ReplacementOrderCode,speciesSum,productSum,sumPrice,currency,orderDate,isToWMS,approvalId,approvalState,ownerId,operatorId,operatorName,contractCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{contractId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{ReplacementOrderCode,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, #{productSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{currency,jdbcType=VARCHAR}, #{orderDate,jdbcType=TIMESTAMP}, #{isToWMS,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgProReplacementOrder">
+		SELECT * FROM SCM_CG_ProReplacementOrder 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getProReplacementOrderByOrderId"   parameterType="java.lang.String" resultMap="ScmCgProReplacementOrder">
+		SELECT * FROM SCM_CG_ProReplacementOrder 
+		WHERE 
+		orderId=#{orderId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCgProReplacementOrder">
+		SELECT * FROM SCM_CG_ProReplacementOrder
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCgProReplacementOrder">
+		UPDATE SCM_CG_ProReplacementOrder SET
+		contractId=#{contractId,jdbcType=VARCHAR},
+		orderId=#{orderId,jdbcType=VARCHAR},
+		ReplacementOrderCode=#{ReplacementOrderCode,jdbcType=VARCHAR},
+		speciesSum=#{speciesSum,jdbcType=NUMERIC},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		sumPrice=#{sumPrice,jdbcType=NUMERIC},
+		currency=#{currency,jdbcType=VARCHAR},
+		orderDate=#{orderDate,jdbcType=TIMESTAMP},
+		isToWMS=#{isToWMS,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		operatorId=#{operatorId,jdbcType=VARCHAR},
+		operatorName=#{operatorName,jdbcType=VARCHAR},
+		contractCode=#{contractCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CG_ProReplacementOrder 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="getProOrderFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmCgProReplacementOrder">
+		SELECT * FROM SCM_CG_ProReplacementOrder 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+</mapper>

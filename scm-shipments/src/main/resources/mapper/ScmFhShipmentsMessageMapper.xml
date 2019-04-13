@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhShipmentsMessageDao">
+	<resultMap id="ScmFhShipmentsMessage" type="com.winway.scm.model.ScmFhShipmentsMessage">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="shipmentsDatailId" column="shipmentsDatailId" jdbcType="VARCHAR"/>
+		<result property="logisticsName" column="logisticsName" jdbcType="VARCHAR"/>
+		<result property="logisticsCode" column="logisticsCode" jdbcType="VARCHAR"/>
+		<result property="actualDeliveryDate" column="actualDeliveryDate" jdbcType="TIMESTAMP"/>
+		<result property="expectedArrivalDate" column="expectedArrivalDate" jdbcType="TIMESTAMP"/>
+		<result property="actualDateOfArrival" column="actualDateOfArrival" jdbcType="TIMESTAMP"/>
+		<result property="confirmArrivalDate" column="confirmArrivalDate" jdbcType="TIMESTAMP"/>
+		<result property="confirmMemo" column="confirmMemo" jdbcType="VARCHAR"/>
+		<result property="officialReceiptsSum" column="officialReceiptsSum" jdbcType="NUMERIC"/>
+		<result property="exceptionCase" column="exceptionCase" jdbcType="VARCHAR"/>
+		<result property="explain" column="explain" jdbcType="VARCHAR"/>
+		<result property="agreementDays" column="agreementDays" jdbcType="NUMERIC"/>
+		<result property="dalayDays" column="dalayDays" jdbcType="NUMERIC"/>
+		<result property="transportationMethod" column="transportationMethod" jdbcType="VARCHAR"/>
+		<result property="entrustPersion" column="entrustPersion" jdbcType="VARCHAR"/>
+		<result property="driver" column="driver" jdbcType="VARCHAR"/>
+		<result property="licencePlate" column="licencePlate" jdbcType="VARCHAR"/>
+		<result property="isToWms" column="isToWms" jdbcType="VARCHAR"/>
+		<result property="toWmsDate" column="toWmsDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsMessage">
+		INSERT INTO SCM_FH_ShipmentsMessage
+		(id,shipmentsDatailId,logisticsName,logisticsCode,actualDeliveryDate,expectedArrivalDate,actualDateOfArrival,confirmArrivalDate,confirmMemo,officialReceiptsSum,exceptionCase,`explain`,agreementDays,dalayDays,transportationMethod,entrustPersion,driver,licencePlate,isToWms,toWmsDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{shipmentsDatailId,jdbcType=VARCHAR}, #{logisticsName,jdbcType=VARCHAR}, #{logisticsCode,jdbcType=VARCHAR}, #{actualDeliveryDate,jdbcType=TIMESTAMP}, #{expectedArrivalDate,jdbcType=TIMESTAMP}, #{actualDateOfArrival,jdbcType=TIMESTAMP}, #{confirmArrivalDate,jdbcType=TIMESTAMP}, #{confirmMemo,jdbcType=VARCHAR}, #{officialReceiptsSum,jdbcType=NUMERIC}, #{exceptionCase,jdbcType=VARCHAR}, #{explain,jdbcType=VARCHAR}, #{agreementDays,jdbcType=NUMERIC}, #{dalayDays,jdbcType=NUMERIC}, #{transportationMethod,jdbcType=VARCHAR}, #{entrustPersion,jdbcType=VARCHAR}, #{driver,jdbcType=VARCHAR}, #{licencePlate,jdbcType=VARCHAR}, #{isToWms,jdbcType=VARCHAR}, #{toWmsDate,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhShipmentsMessage">
+		SELECT * FROM SCM_FH_ShipmentsMessage 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmFhShipmentsMessage">
+		SELECT * FROM SCM_FH_ShipmentsMessage 
+		WHERE 
+		shipmentsDatailId=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsMessage">
+		SELECT * FROM SCM_FH_ShipmentsMessage
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmFhShipmentsMessage">
+		UPDATE SCM_FH_ShipmentsMessage SET
+		shipmentsDatailId=#{shipmentsDatailId,jdbcType=VARCHAR},
+		logisticsName=#{logisticsName,jdbcType=VARCHAR},
+		logisticsCode=#{logisticsCode,jdbcType=VARCHAR},
+		actualDeliveryDate=#{actualDeliveryDate,jdbcType=TIMESTAMP},
+		expectedArrivalDate=#{expectedArrivalDate,jdbcType=TIMESTAMP},
+		actualDateOfArrival=#{actualDateOfArrival,jdbcType=TIMESTAMP},
+		confirmArrivalDate=#{confirmArrivalDate,jdbcType=TIMESTAMP},
+		confirmMemo=#{confirmMemo,jdbcType=VARCHAR},
+		officialReceiptsSum=#{officialReceiptsSum,jdbcType=NUMERIC},
+		exceptionCase=#{exceptionCase,jdbcType=VARCHAR},
+		`explain`=#{explain,jdbcType=VARCHAR},
+		agreementDays=#{agreementDays,jdbcType=NUMERIC},
+		dalayDays=#{dalayDays,jdbcType=NUMERIC},
+		transportationMethod=#{transportationMethod,jdbcType=VARCHAR},
+		entrustPersion=#{entrustPersion,jdbcType=VARCHAR},
+		driver=#{driver,jdbcType=VARCHAR},
+		licencePlate=#{licencePlate,jdbcType=VARCHAR},
+		isToWms=#{isToWms,jdbcType=VARCHAR},
+		toWmsDate=#{toWmsDate,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_FH_ShipmentsMessage 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

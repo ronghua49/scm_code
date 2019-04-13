@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhShipmentsDatailDao">
+	<resultMap id="ScmFhShipmentsDatail" type="com.winway.scm.model.ScmFhShipmentsDatail">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="shipmentsTaskId" column="shipmentsTaskId" jdbcType="VARCHAR"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+		<result property="taskType" column="taskType" jdbcType="VARCHAR"/>
+		<result property="dateCode" column="dateCode" jdbcType="VARCHAR"/>
+		<result property="shipmentsAffirmDate" column="shipmentsAffirmDate" jdbcType="TIMESTAMP"/>
+		<result property="paymentType" column="paymentType" jdbcType="VARCHAR"/>
+		<result property="focusShipmentsMonth" column="focusShipmentsMonth" jdbcType="VARCHAR"/>
+		<result property="isSms" column="isSms" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productNum" column="productNum" jdbcType="VARCHAR"/>
+		<result property="medicineType" column="MedicineType" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="aChange" column="aChange" jdbcType="VARCHAR"/>
+		<result property="commercetype" column="commercetype" jdbcType="VARCHAR"/>
+		<result property="marketType" column="marketType" jdbcType="VARCHAR"/>
+		<result property="batchNumber" column="batchNumber" jdbcType="VARCHAR"/>
+		<result property="price" column="price" jdbcType="NUMERIC"/>
+		<result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="planShipmentsSum" column="planShipmentsSum" jdbcType="NUMERIC"/>
+		<result property="deliveringAmount" column="deliveringAmount" jdbcType="NUMERIC"/>
+		<result property="warehouse" column="warehouse" jdbcType="VARCHAR"/>
+		<result property="stock" column="stock" jdbcType="NUMERIC"/>
+		<result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
+		<result property="phone" column="phone" jdbcType="VARCHAR"/>
+		<result property="shippingAddress" column="shippingAddress" jdbcType="VARCHAR"/>
+		<result property="dateOfManufacture" column="dateOfManufacture" jdbcType="TIMESTAMP"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="directiveCode" column="directiveCode" jdbcType="VARCHAR"/>
+		<result property="packageSum" column="packageSum" jdbcType="INTEGER"/>
+		<result property="returnSum" column="returnSum" jdbcType="INTEGER"/>
+
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="shipmentsCode" column="shipmentsCode" jdbcType="VARCHAR"/>
+		<result property="allocationCode" column="allocationCode" jdbcType="VARCHAR"/>
+		<result property="inventoryCode" column="InventoryCode" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="sendProductDate" column="sendProductDate" jdbcType="TIMESTAMP"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="productLineName" column="ProductLineName" jdbcType="VARCHAR"/>
+		<result property="approvalValidity" column="approvalValidity" jdbcType="TIMESTAMP"/>
+		
+		<result property="years" column="years" jdbcType="VARCHAR"/>
+		<result property="months" column="months" jdbcType="VARCHAR"/>
+		<result property="agreementDays" column="agreementDays" jdbcType="NUMERIC"/>
+		<result property="expectedArrivalDate" column="expectedArrivalDate" jdbcType="TIMESTAMP"/>
+		<result property="actualDateOfArrival" column="actualDateOfArrival" jdbcType="TIMESTAMP"/>
+		<result property="dalayDays" column="dalayDays" jdbcType="NUMERIC"/>
+		<result property="officialReceiptsSum" column="officialReceiptsSum" jdbcType="NUMERIC"/>
+		<result property="actualDeliveryDate" column="actualDeliveryDate" jdbcType="TIMESTAMP"/>		
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+
+	</resultMap>
+	
+	<resultMap id="ScmFhShipmentsDataiAndMessageVo" type="com.winway.scm.vo.ScmFhShipmentsDataiAndMessageVo"></resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsDatail">
+		INSERT INTO SCM_FH_ShipmentsDatail
+		(id,shipmentsTaskId,type,taskType,dateCode,shipmentsAffirmDate,paymentType,focusShipmentsMonth,isSms,commerceName,commerceId,productName,productNum,MedicineType,productState,aChange,commercetype,marketType,batchNumber,price,priceSum,memo,planShipmentsSum,deliveringAmount,warehouse,stock,contactPersion,phone,shippingAddress,dateOfManufacture,masterId,directiveCode,packageSum,returnSum,expiryDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{shipmentsTaskId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, #{dateCode,jdbcType=VARCHAR}, #{shipmentsAffirmDate,jdbcType=TIMESTAMP}, #{paymentType,jdbcType=VARCHAR}, #{focusShipmentsMonth,jdbcType=VARCHAR}, #{isSms,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productNum,jdbcType=VARCHAR}, #{medicineType,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{aChange,jdbcType=VARCHAR}, #{commercetype,jdbcType=VARCHAR}, #{marketType,jdbcType=VARCHAR}, #{batchNumber,jdbcType=VARCHAR}, #{price,jdbcType=NUMERIC}, #{priceSum,jdbcType=NUMERIC},#{memo,jdbcType=VARCHAR}, #{planShipmentsSum,jdbcType=NUMERIC}, #{deliveringAmount,jdbcType=NUMERIC}, #{warehouse,jdbcType=VARCHAR}, #{stock,jdbcType=NUMERIC}, #{contactPersion,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{shippingAddress,jdbcType=VARCHAR}, #{dateOfManufacture,jdbcType=TIMESTAMP}, #{masterId,jdbcType=VARCHAR}, #{directiveCode,jdbcType=VARCHAR},#{packageSum,jdbcType=INTEGER},#{returnSum,jdbcType=INTEGER},#{expiryDate,jdbcType=VARCHAR} )
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhShipmentsDatail">
+		SELECT * FROM SCM_FH_ShipmentsDatail 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByApprovalState"   parameterType="java.lang.String" resultMap="ScmFhShipmentsDatail">
+		SELECT * FROM SCM_FH_ShipmentsDatail 
+		WHERE 
+		shipmentsTaskId = #{arg0} and masterId = #{arg1}
+	</select>
+	
+	<select id="getYear"   parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT DATE_FORMAT(createDate, '%Y') AS YEAR 
+		FROM scm_fh_shipmentsdatail a 
+		LEFT  JOIN scm_fh_shipmentsdatailmaster b 
+		ON a.masterId = b.id 
+		WHERE ownerId=#{org0} 
+		GROUP BY year 		
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsDatail">
+		SELECT * FROM v_shipmentsdataiandmessage
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="firstList" parameterType="java.util.Map" resultMap="ScmFhShipmentsDataiAndMessageVo">
+		SELECT * FROM v_shipmentsdataiAndMessage
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmFhShipmentsDatail">
+		UPDATE SCM_FH_ShipmentsDatail SET
+		shipmentsTaskId=#{shipmentsTaskId,jdbcType=VARCHAR},
+		`type`=#{type,jdbcType=VARCHAR},
+		taskType=#{taskType,jdbcType=VARCHAR},
+		dateCode=#{dateCode,jdbcType=VARCHAR},
+		shipmentsAffirmDate=#{shipmentsAffirmDate,jdbcType=TIMESTAMP},
+		paymentType=#{paymentType,jdbcType=VARCHAR},
+		focusShipmentsMonth=#{focusShipmentsMonth,jdbcType=VARCHAR},
+		isSms=#{isSms,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productNum=#{productNum,jdbcType=VARCHAR},
+		MedicineType=#{medicineType,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		aChange=#{aChange,jdbcType=VARCHAR},
+		commercetype=#{commercetype,jdbcType=VARCHAR},
+		marketType=#{marketType,jdbcType=VARCHAR},
+		batchNumber=#{batchNumber,jdbcType=VARCHAR},
+		price=#{price,jdbcType=NUMERIC},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		memo=#{memo,jdbcType=VARCHAR},
+		planShipmentsSum=#{planShipmentsSum,jdbcType=NUMERIC},
+		deliveringAmount=#{deliveringAmount,jdbcType=NUMERIC},
+		warehouse=#{warehouse,jdbcType=VARCHAR},
+		stock=#{stock,jdbcType=NUMERIC},
+		contactPersion=#{contactPersion,jdbcType=VARCHAR},
+		phone=#{phone,jdbcType=VARCHAR},
+		shippingAddress=#{shippingAddress,jdbcType=VARCHAR},
+		dateOfManufacture=#{dateOfManufacture,jdbcType=TIMESTAMP},
+		masterId=#{masterId,jdbcType=VARCHAR},
+		directiveCode=#{directiveCode,jdbcType=VARCHAR},
+		packageSum = #{packageSum,jdbcType=INTEGER},
+		returnSum = #{returnSum,jdbcType=INTEGER},
+		expiryDate = #{expiryDate,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_FH_ShipmentsDatail 
+		WHERE
+		id=#{id}
+	</delete>
+
+	<delete id="delByMainId">
+	    DELETE FROM SCM_FH_ShipmentsDatail
+	    WHERE
+	    masterId=#{masterId}
+	</delete>    
+
+	<select id="getByMainId"   resultMap="ScmFhShipmentsDatail">
+		select * FROM SCM_FH_ShipmentsDatail
+	    WHERE
+	    masterId=#{masterId}
+	</select>
+
+	
+	<select id="messageList" parameterType="java.util.Map" resultMap="ScmFhShipmentsDatail">
+		SELECT * FROM v_shipmentsMsg
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+</mapper>

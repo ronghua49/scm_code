@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwDynamicDiscountDao">
+	<resultMap id="ScmCwDynamicDiscount" type="com.winway.scm.model.ScmCwDynamicDiscount">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="mayDeductionPercent" column="mayDeductionPercent" jdbcType="NUMERIC"/>
+		<result property="deductionDateStart" column="deductionDateStart" jdbcType="TIMESTAMP"/>
+		<result property="deductionDateStop" column="deductionDateStop" jdbcType="TIMESTAMP"/>
+		<result property="isLoseEfficacy" column="isLoseEfficacy" jdbcType="VARCHAR"/>
+		<result property="setPersion" column="setPersion" jdbcType="VARCHAR"/>
+		<result property="setTime" column="setTime" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="isDelete" column="isDelete" jdbcType="VARCHAR"/>
+		<result property="state" column="state" jdbcType="VARCHAR"/>
+ 	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwDynamicDiscount">
+		INSERT INTO SCM_CW_DynamicDiscount
+		(id,productId,productCode,productName,productSum,mayDeductionPercent,deductionDateStart,deductionDateStop,isLoseEfficacy,setPersion,setTime,ownerId,isDelete,state}
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productSum,jdbcType=NUMERIC}, #{mayDeductionPercent,jdbcType=NUMERIC}, #{deductionDateStart,jdbcType=TIMESTAMP}, #{deductionDateStop,jdbcType=TIMESTAMP}, #{isLoseEfficacy,jdbcType=VARCHAR}, #{setPersion,jdbcType=VARCHAR}, #{setTime,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR},#{isDelete,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDynamicDiscount">
+		SELECT * FROM SCM_CW_DynamicDiscount 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDynamicDiscount">
+		SELECT * FROM SCM_CW_DynamicDiscount
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwDynamicDiscount">
+		UPDATE SCM_CW_DynamicDiscount SET
+		productId=#{productId,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		mayDeductionPercent=#{mayDeductionPercent,jdbcType=NUMERIC},
+		deductionDateStart=#{deductionDateStart,jdbcType=TIMESTAMP},
+		deductionDateStop=#{deductionDateStop,jdbcType=TIMESTAMP},
+		isLoseEfficacy=#{isLoseEfficacy,jdbcType=VARCHAR},
+		setPersion=#{setPersion,jdbcType=VARCHAR},
+		setTime=#{setTime,jdbcType=TIMESTAMP},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		isDelete=#{isDelete,jdbcType=VARCHAR},
+		state=#{state,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		UPDATE SCM_CW_DynamicDiscount SET
+		isDelete= '1'
+		WHERE
+		id=#{id}
+	</delete>
+
+
+	<select id="getByProductIdAndOwnerId"   parameterType="java.lang.String" resultMap="ScmCwDynamicDiscount">
+		SELECT * FROM SCM_CW_DynamicDiscount
+		WHERE
+		productId =#{productId} and ownerId = #{ownerId} and isLoseEfficacy = '0'
+	</select>
+	
+</mapper>

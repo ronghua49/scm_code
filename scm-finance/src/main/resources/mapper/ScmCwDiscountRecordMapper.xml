@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwDiscountRecordDao">
+	<resultMap id="ScmCwDiscountRecord" type="com.winway.scm.model.ScmCwDiscountRecord">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="discountId" column="discountId" jdbcType="VARCHAR"/>
+		<result property="discountCode" column="discountCode" jdbcType="VARCHAR"/>
+		<result property="invoiceCode" column="invoiceCode" jdbcType="VARCHAR"/>
+		<result property="invoiceId" column="invoiceId" jdbcType="VARCHAR"/>
+		<result property="discountPrice" column="discountPrice" jdbcType="NUMERIC"/>
+		<result property="discountDate" column="discountDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwDiscountRecord">
+		INSERT INTO SCM_CW_DiscountRecord
+		(id,discountId,discountCode,invoiceCode,invoiceId,discountPrice,discountDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{discountId,jdbcType=VARCHAR}, #{discountCode,jdbcType=VARCHAR}, #{invoiceCode,jdbcType=VARCHAR}, #{invoiceId,jdbcType=VARCHAR}, #{discountPrice,jdbcType=NUMERIC}, #{discountDate,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDiscountRecord">
+		SELECT * FROM SCM_CW_DiscountRecord 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDiscountRecord">
+		SELECT * FROM SCM_CW_DiscountRecord
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwDiscountRecord">
+		UPDATE SCM_CW_DiscountRecord SET
+		discountId=#{discountId,jdbcType=VARCHAR},
+		discountCode=#{discountCode,jdbcType=VARCHAR},
+		invoiceCode=#{invoiceCode,jdbcType=VARCHAR},
+		invoiceId=#{invoiceId,jdbcType=VARCHAR},
+		discountPrice=#{discountPrice,jdbcType=NUMERIC},
+		discountDate=#{discountDate,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CW_DiscountRecord 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

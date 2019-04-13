@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjGSPDao">
+	<resultMap id="ScmZsjGSP" type="com.winway.scm.model.ScmZsjGSP">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+		<result property="GSP" column="GSP" jdbcType="VARCHAR"/>
+		<result property="validity" column="validity" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjGSP">
+		INSERT INTO SCM_ZSJ_GSP
+		(id,commerceFirstId,GSP,validity)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceFirstId,jdbcType=VARCHAR}, #{GSP,jdbcType=VARCHAR}, #{validity,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjGSP">
+		SELECT * FROM SCM_ZSJ_GSP 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjGSP">
+		SELECT * FROM SCM_ZSJ_GSP
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjGSP">
+		UPDATE SCM_ZSJ_GSP SET
+		commerceFirstId=#{commerceFirstId,jdbcType=VARCHAR},
+		GSP=#{GSP,jdbcType=VARCHAR},
+		validity=#{validity,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_ZSJ_GSP 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM SCM_ZSJ_GSP
+	    WHERE
+	    commerceFirstId=#{commerceFirstId}
+	</delete>  
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmZsjGSP">
+		SELECT * FROM SCM_ZSJ_GSP 
+		WHERE 
+		commerceFirstId=#{commerceFirstId}
+	</select>  
+	
+	<select id="getScmZsjGSPList" resultMap="ScmZsjGSP">
+	    SELECT *
+	    FROM SCM_ZSJ_GSP 
+	    WHERE commerceFirstId=#{commerceFirstId}
+	</select>
+	
+</mapper>

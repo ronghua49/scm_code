@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZdProvinceDao">
+	<resultMap id="ScmZdProvince" type="com.winway.scm.model.ScmZdProvince">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZdProvince">
+		INSERT INTO scm_zd_province
+		(id,businessDivisionId,province,code,memo,createPersion,createDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR}, now())
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZdProvince">
+		SELECT * FROM scm_zd_province 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZdProvince">
+		SELECT * FROM scm_zd_province
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZdProvince">
+		UPDATE scm_zd_province SET
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		code=#{code,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=now()
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_zd_province 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM scm_zd_province
+	    WHERE
+	    businessDivisionId=#{businessDivisionId}
+	</delete>    
+	
+	<select id="getScmZdProvinceList" resultMap="ScmZdProvince">
+	    SELECT *
+	    FROM scm_zd_province 
+	    WHERE businessDivisionId=#{businessDivisionId}
+	</select>
+	
+</mapper>

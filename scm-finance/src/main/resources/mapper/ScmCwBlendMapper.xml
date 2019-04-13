@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwBlendDao">
+	<resultMap id="ScmCwBlend" type="com.winway.scm.model.ScmCwBlend">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="returnMoneyId" column="returnMoneyId" jdbcType="VARCHAR"/>
+		<result property="invoiceId" column="invoiceId" jdbcType="VARCHAR"/>
+		<result property="blendprice" column="blendprice" jdbcType="NUMERIC"/>
+		<result property="blendPersion" column="blendPersion" jdbcType="VARCHAR"/>
+		<result property="blendDate" column="blendDate" jdbcType="TIMESTAMP"/>
+		<result property="affirmPersion" column="affirmPersion" jdbcType="VARCHAR"/>
+		<result property="affirmDate" column="affirmDate" jdbcType="TIMESTAMP"/>
+		<result property="blendType" column="blendType" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwBlend">
+		INSERT INTO SCM_CW_Blend
+		(id,returnMoneyId,invoiceId,blendprice,blendPersion,blendDate,affirmPersion,affirmDate,blendType,memo)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{returnMoneyId,jdbcType=VARCHAR}, #{invoiceId,jdbcType=VARCHAR}, #{blendprice,jdbcType=NUMERIC}, #{blendPersion,jdbcType=VARCHAR}, #{blendDate,jdbcType=TIMESTAMP}, #{affirmPersion,jdbcType=VARCHAR}, #{affirmDate,jdbcType=TIMESTAMP}, #{blendType,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwBlend">
+		SELECT * FROM SCM_CW_Blend 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwBlend">
+		SELECT * FROM SCM_CW_Blend
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwBlend">
+		UPDATE SCM_CW_Blend SET
+		returnMoneyId=#{returnMoneyId,jdbcType=VARCHAR},
+		invoiceId=#{invoiceId,jdbcType=VARCHAR},
+		blendprice=#{blendprice,jdbcType=NUMERIC},
+		blendPersion=#{blendPersion,jdbcType=VARCHAR},
+		blendDate=#{blendDate,jdbcType=TIMESTAMP},
+		affirmPersion=#{affirmPersion,jdbcType=VARCHAR},
+		affirmDate=#{affirmDate,jdbcType=TIMESTAMP},
+		blendType=#{blendType,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CW_Blend 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

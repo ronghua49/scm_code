@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCgReturnProductDao">
+	<resultMap id="ScmCgReturnProduct" type="com.winway.scm.model.ScmCgReturnProduct">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="batchNum" column="batchNum" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="medicineTypeId" column="medicineTypeId" jdbcType="VARCHAR"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="achange" column="achange" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="producedDate" column="producedDate" jdbcType="TIMESTAMP"/>
+		<result property="validity" column="validity" jdbcType="TIMESTAMP"/>
+		<result property="getMoneyWarehouseId" column="getMoneyWarehouseId" jdbcType="VARCHAR"/>
+		<result property="getMoneyWarehouse" column="getMoneyWarehouse" jdbcType="VARCHAR"/>
+		<result property="inboundDate" column="inboundDate" jdbcType="TIMESTAMP"/>
+		<result property="returnNumber" column="returnNumber" jdbcType="NUMERIC"/>
+		<result property="returnDate" column="returnDate" jdbcType="TIMESTAMP"/>
+		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
+		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
+		<result property="returnRequestCauseId" column="returnRequestCauseId" jdbcType="VARCHAR"/>
+		<result property="returnRequestCause" column="returnRequestCause" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="proReturnId" column="proReturnId" jdbcType="VARCHAR"/>
+		<result property="returnId" column="returnId" jdbcType="VARCHAR"/>
+		<result property="returnCode" column="returnCode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCgReturnProduct">
+		INSERT INTO SCM_CG_ReturnProduct
+		(id,batchNum,productId,productName,medicineTypeId,medicineType,achange,unit,manufacturer,producedDate,validity,getMoneyWarehouseId,getMoneyWarehouse,inboundDate,returnNumber,returnDate,unitPrice,sumPrice,returnRequestCauseId,returnRequestCause,memo,proReturnId,returnId,returnCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{batchNum,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{medicineTypeId,jdbcType=VARCHAR}, #{medicineType,jdbcType=VARCHAR}, #{achange,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{producedDate,jdbcType=TIMESTAMP}, #{validity,jdbcType=TIMESTAMP}, #{getMoneyWarehouseId,jdbcType=VARCHAR}, #{getMoneyWarehouse,jdbcType=VARCHAR}, #{inboundDate,jdbcType=TIMESTAMP},#{returnNumber,jdbcType=NUMERIC}, #{returnDate,jdbcType=TIMESTAMP}, #{unitPrice,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{returnRequestCauseId,jdbcType=VARCHAR}, #{returnRequestCause,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{proReturnId,jdbcType=VARCHAR}, #{returnId,jdbcType=VARCHAR}, #{returnCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgReturnProduct">
+		SELECT * FROM SCM_CG_ReturnProduct 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmCgReturnProduct">
+		SELECT * FROM SCM_CG_ReturnProduct 
+		WHERE 
+		productId=#{productId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCgReturnProduct">
+		SELECT * FROM SCM_CG_ReturnProduct
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCgReturnProduct">
+		UPDATE SCM_CG_ReturnProduct SET
+		batchNum=#{batchNum,jdbcType=VARCHAR},
+		productId=#{productId,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		medicineTypeId=#{medicineTypeId,jdbcType=VARCHAR},
+		medicineType=#{medicineType,jdbcType=VARCHAR},
+		achange=#{achange,jdbcType=VARCHAR},
+		unit=#{unit,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR},
+		producedDate=#{producedDate,jdbcType=TIMESTAMP},
+		validity=#{validity,jdbcType=TIMESTAMP},
+		getMoneyWarehouseId=#{getMoneyWarehouseId,jdbcType=VARCHAR},
+		getMoneyWarehouse=#{getMoneyWarehouse,jdbcType=VARCHAR},
+		inboundDate=#{inboundDate,jdbcType=TIMESTAMP},
+		returnNumber=#{returnNumber,jdbcType=NUMERIC},
+		returnDate=#{returnDate,jdbcType=TIMESTAMP},
+		unitPrice=#{unitPrice,jdbcType=NUMERIC},
+		sumPrice=#{sumPrice,jdbcType=NUMERIC},
+		returnRequestCauseId=#{returnRequestCauseId,jdbcType=VARCHAR},
+		returnRequestCause=#{returnRequestCause,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		proReturnId=#{proReturnId,jdbcType=VARCHAR},
+		returnId=#{returnId,jdbcType=VARCHAR},
+		returnCode=#{returnCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CG_ReturnProduct 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM SCM_CG_ReturnProduct
+	    WHERE
+	    proReturnId=#{proReturnId}
+	</delete>    
+	
+	<select id="getScmCgReturnProductList" resultMap="ScmCgReturnProduct">
+	    SELECT *
+	    FROM SCM_CG_ReturnProduct 
+	    WHERE proReturnId=#{proReturnId}
+	</select>
+	
+</mapper>

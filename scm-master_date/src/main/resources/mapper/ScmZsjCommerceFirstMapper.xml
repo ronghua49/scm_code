@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceFirstDao">
+	<resultMap id="ScmZsjCommerceFirst" type="com.winway.scm.model.ScmZsjCommerceFirst">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+		<result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceFirst">
+		INSERT INTO SCM_ZSJ_CommerceFirst
+		(id,commerceId,ownerId,approvalId,approvalState,operatorName,operatorDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR},
+		 #{commerceId,jdbcType=VARCHAR},
+		 #{ownerId,jdbcType=VARCHAR}, 
+		 #{approvalId,jdbcType=VARCHAR}, 
+		 #{approvalState,jdbcType=VARCHAR},
+		 #{operatorName,jdbcType=VARCHAR},
+		 now())
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
+		SELECT * FROM SCM_ZSJ_CommerceFirst 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getCommerceFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
+		SELECT * FROM SCM_ZSJ_CommerceFirst 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+	<select id="isSave"   parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
+		SELECT * FROM SCM_ZSJ_CommerceFirst 
+		WHERE 
+		<if test="commerceId!=null">
+			commerceId=#{commerceId} and 
+		</if>
+		ownerId=#{ownerId}
+	</select>
+	
+	<select id="getCommerceFirstByOwnerIdAndCommerceId"   parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
+		SELECT * FROM SCM_ZSJ_CommerceFirst 
+		WHERE 
+		ownerId=#{ownerId} and commerceId=#{commerceId} 
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceFirst">
+		SELECT * FROM SCM_ZSJ_CommerceFirst
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceFirst">
+		UPDATE SCM_ZSJ_CommerceFirst SET
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		operatorName=#{operatorName,jdbcType=VARCHAR},
+		operatorDate=now(),
+		approvalState=#{approvalState,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_ZSJ_CommerceFirst 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

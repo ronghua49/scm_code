@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceDutyOfficerDao">
+	<resultMap id="ScmZsjCommerceDutyOfficer" type="com.winway.scm.model.ScmZsjCommerceDutyOfficer">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="dutyOfficerId" column="dutyOfficerId" jdbcType="VARCHAR"/>
+		<result property="dutyOfficer" column="dutyOfficer" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+		<result property="operatorId" column="operatorId" jdbcType="VARCHAR"/>
+	</resultMap>
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceDutyOfficer">
+		INSERT INTO Scm_Zsj_CommerceDutyOfficer
+		(id,commerceId,commerceCode,dutyOfficerId,dutyOfficer,approvalId,approvalState,ownerId,operatorName,operatorId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{dutyOfficerId,jdbcType=VARCHAR}, #{dutyOfficer,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR})
+	</insert>
+	<select id="getByApprovalId" resultMap="ScmZsjCommerceDutyOfficer" parameterType="java.lang.String">
+		SELECT * FROM Scm_Zsj_CommerceDutyOfficer 
+		WHERE 
+		approvalId=#{approvalId}
+	
+	</select>
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerceDutyOfficer">
+		SELECT * FROM Scm_Zsj_CommerceDutyOfficer 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceDutyOfficer">
+		SELECT * FROM Scm_Zsj_CommerceDutyOfficer
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceDutyOfficer">
+		UPDATE Scm_Zsj_CommerceDutyOfficer SET
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		dutyOfficerId=#{dutyOfficerId,jdbcType=VARCHAR},
+		dutyOfficer=#{dutyOfficer,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		operatorName=#{operatorName,jdbcType=VARCHAR},
+		operatorId=#{operatorId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Zsj_CommerceDutyOfficer 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

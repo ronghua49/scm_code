@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZdCommerceLevelDao">
+	<resultMap id="ScmZdCommerceLevel" type="com.winway.scm.model.ScmZdCommerceLevel">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceLevel" column="commerceLevel" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZdCommerceLevel">
+		INSERT INTO scm_zd_commercelevel
+		(id,commerceLevel,memo,createPersion,createDate,code)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceLevel,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR}, now(), #{code,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZdCommerceLevel">
+		SELECT * FROM scm_zd_commercelevel 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByNameAndCodeOrId"   parameterType="java.lang.String" resultMap="ScmZdCommerceLevel">
+		SELECT * FROM scm_zd_commercelevel
+		WHERE 
+		<if test="id!=null">
+			id!=#{id} and
+		</if>
+		(commerceLevel=#{commerceLevel} or code=#{code})
+	</select>	
+	
+	<select id="listScmZdCommerceLevel"   parameterType="java.lang.String" resultMap="ScmZdCommerceLevel">
+		SELECT * FROM scm_zd_commercelevel 
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZdCommerceLevel">
+		SELECT * FROM scm_zd_commercelevel
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZdCommerceLevel">
+		UPDATE scm_zd_commercelevel SET
+		commerceLevel=#{commerceLevel,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=now(),
+		code=#{code,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_zd_commercelevel 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

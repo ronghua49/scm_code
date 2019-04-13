@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhShipmentsTaskDao">
+    <resultMap id="ScmFhShipmentsTask" type="com.winway.scm.model.ScmFhShipmentsTask">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="taskType" column="taskType" jdbcType="VARCHAR"/>
+        <result property="dateCode" column="dateCode" jdbcType="VARCHAR"/>
+        <result property="taskCreateDate" column="taskCreateDate" jdbcType="TIMESTAMP"/>
+        <result property="paymentType" column="paymentType" jdbcType="VARCHAR"/>
+        <result property="focusShipmentsMonth" column="focusShipmentsMonth" jdbcType="VARCHAR"/>
+        <result property="isSms" column="isSms" jdbcType="VARCHAR"/>
+        <result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+        <result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+        <result property="productName" column="productName" jdbcType="VARCHAR"/>
+        <result property="productNum" column="productNum" jdbcType="VARCHAR"/>
+        <result property="MedicineType" column="MedicineType" jdbcType="VARCHAR"/>
+        <result property="productState" column="productState" jdbcType="VARCHAR"/>
+        <result property="aChange" column="aChange" jdbcType="VARCHAR"/>
+        <result property="commercetype" column="commercetype" jdbcType="VARCHAR"/>
+        <result property="marketType" column="marketType" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="memo" column="memo" jdbcType="VARCHAR"/>
+        <result property="planShipmentsSum" column="planShipmentsSum" jdbcType="NUMERIC"/>
+        <result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
+        <result property="allocationCode" column="allocationCode" jdbcType="VARCHAR"/>
+        <result property="sendProductDate" column="sendProductDate" jdbcType="TIMESTAMP"/>
+        <result property="packageNum" column="packageNum" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsTask">
+		INSERT INTO SCM_FH_ShipmentsTask
+		(id,`type`,taskType,dateCode,taskCreateDate,paymentType,
+		focusShipmentsMonth,isSms,commerceName,commerceId,productName,
+		productNum,MedicineType,productState,aChange,commercetype,
+		marketType,price,memo,planShipmentsSum,contactPersion,
+		phone,ownerId,sumPrice,allocationCode,sendProductDate,packageNum)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, #{dateCode,jdbcType=VARCHAR}, 
+		#{taskCreateDate,jdbcType=TIMESTAMP}, #{paymentType,jdbcType=VARCHAR}, #{focusShipmentsMonth,jdbcType=VARCHAR},
+		 #{isSms,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+		 #{productNum,jdbcType=VARCHAR}, #{MedicineType,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, 
+		 #{aChange,jdbcType=VARCHAR}, #{commercetype,jdbcType=VARCHAR}, #{marketType,jdbcType=VARCHAR}, 
+		 #{price,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{planShipmentsSum,jdbcType=NUMERIC}, 
+		 #{contactPersion,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},#{ownerId,jdbcType=VARCHAR},
+		 #{sumPrice,jdbcType=NUMERIC},#{allocationCode,jdbcType=VARCHAR},#{sendProductDate,jdbcType=TIMESTAMP},#{packageNum,jdbcType=INTEGER})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmFhShipmentsTask">
+		SELECT * FROM SCM_FH_ShipmentsTask 
+		WHERE 
+		id=#{id}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsTask">
+        SELECT * FROM scm_fh_shipmentstask a
+        LEFT JOIN (
+        SELECT b.commerceFirstId,CONCAT(b.province,b.city,b.district,b.street,b.address) AS
+        address,c.businessDivisionId,c.provinceId
+        FROM scm_zsj_commercefirst a
+        LEFT JOIN scm_zsj_commerceshipaddress b
+        ON a.id =b.commerceFirstId
+        LEFT JOIN scm_zsj_commerce c
+        ON a.commerceId = c.id
+        WHERE b.isDufault = 1) b
+        ON a.commerceId =b.commerceFirstId
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="commerceList" resultType="java.util.Map">
+        SELECT DISTINCT a.commerceId, a.commerceName FROM SCM_FH_ShipmentsTask a,v_CommerceFirstList b
+        <where>
+            a.`commerceId` = b.commerceFirstId
+            <if test="whereSql!=null">
+                and ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+
+    </select>
+
+    <select id="proList" resultType="java.lang.String">
+		SELECT DISTINCT  productName FROM SCM_FH_ShipmentsTask
+		WHERE
+		ownerId=#{ownerId}
+	</select>
+
+    <select id="codeList" resultType="java.lang.String">
+		SELECT   dateCode FROM SCM_FH_ShipmentsTask
+		WHERE
+		ownerId=#{ownerId}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmFhShipmentsTask">
+		UPDATE SCM_FH_ShipmentsTask SET
+		type=#{type,jdbcType=VARCHAR},
+		taskType=#{taskType,jdbcType=VARCHAR},
+		dateCode=#{dateCode,jdbcType=VARCHAR},
+		taskCreateDate=#{taskCreateDate,jdbcType=TIMESTAMP},
+		paymentType=#{paymentType,jdbcType=VARCHAR},
+		focusShipmentsMonth=#{focusShipmentsMonth,jdbcType=VARCHAR},
+		isSms=#{isSms,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productNum=#{productNum,jdbcType=VARCHAR},
+		MedicineType=#{MedicineType,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		aChange=#{aChange,jdbcType=VARCHAR},
+		commercetype=#{commercetype,jdbcType=VARCHAR},
+		marketType=#{marketType,jdbcType=VARCHAR},
+		price=#{price,jdbcType=NUMERIC},
+		memo=#{memo,jdbcType=VARCHAR},
+		planShipmentsSum=#{planShipmentsSum,jdbcType=NUMERIC},
+		contactPersion=#{contactPersion,jdbcType=VARCHAR},
+		phone=#{phone,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		sumPrice=#{sumPrice,jdbcType=NUMERIC},
+		allocationCode=#{allocationCode,jdbcType=VARCHAR},
+		sendProductDate=#{sendProductDate,jdbcType=VARCHAR},
+		packageNum=#{packageNum,jdbcType=INTEGER}
+		WHERE
+		id=#{id}
+	</update>
+
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_FH_ShipmentsTask 
+		WHERE
+		id=#{id}
+	</delete>
+
+
+</mapper>

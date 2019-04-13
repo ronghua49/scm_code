@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhShipmentsDatailMasterDao">
+	<resultMap id="ScmFhShipmentsDatailMaster" type="com.winway.scm.model.ScmFhShipmentsDatailMaster">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="shipmentsCode" column="shipmentsCode" jdbcType="VARCHAR"/>
+		<result property="successDate" column="successDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="ScmFhShipmentsDataiAndMessageVo" type="com.winway.scm.vo.ScmFhShipmentsDataiAndMessageVo"></resultMap>
+
+
+	<insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsDatailMaster">
+		INSERT INTO SCM_FH_ShipmentsDatailMaster
+		(id,approvalId,approvalState,ownerId,businessDivision,businessDivisionId,province,provinceId,commerceName,commerceId,shipmentsCode,successDate,createPersion,createDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{shipmentsCode,jdbcType=VARCHAR}, #{successDate,jdbcType=TIMESTAMP}, #{createPersion,jdbcType=VARCHAR}, now())
+	</insert>
+	
+	<select id="getByApprovalState"   parameterType="java.lang.String" resultMap="ScmFhShipmentsDatailMaster">
+		SELECT * FROM SCM_FH_ShipmentsDatailMaster 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhShipmentsDatailMaster">
+		SELECT * FROM SCM_FH_ShipmentsDatailMaster 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="allShipmentMessage"   parameterType="java.lang.String" resultMap="ScmFhShipmentsDataiAndMessageVo">
+		SELECT * FROM (
+		SELECT a.id,a.shipmentsTaskId,a.type,taskType,a.dateCode,a.shipmentsAffirmDate,a.paymentType,a.focusShipmentsMonth,a.isSms,a.commerceName,
+		a.commerceId,a.productName,a.productNum,a.MedicineType,a.productState,a.aChange,a.commercetype,a.marketType,a.batchNumber,a.price,a.memo,a.planShipmentsSum,
+		a.deliveringAmount,a.warehouse,a.stock,a.contactPersion,a.phone,a.shippingAddress,a.dateOfManufacture,a.masterId,a.directiveCode,a.houstWareCode,
+		b.shipmentsDatailId,b.logisticsName,b.logisticsCode,b.actualDeliveryDate,b.expectedArrivalDate,b.actualDateOfArrival,b.confirmArrivalDate,
+		b.confirmMemo,b.officialReceiptsSum,b.exceptionCase,b.explain,b.agreementDays,b.dalayDays,b.transportationMethod,b.entrustPersion,b.driver,b.licencePlate,b.toWmsDate,
+		DATE_FORMAT(a.shipmentsAffirmDate, '%Y') AS YEAR,a.packageSum,DATE_FORMAT(a.shipmentsAffirmDate, '%Y-%m') AS MONTH,d.approvalCode,c.InventoryCode,e.ownerId,
+		c.id AS productId,c.ProductLineId,c.ProductLineName,b.id AS shipmentsmessageId,e.businessDivisionId,e.provinceId,e.businessDivision,e.province
+		FROM SCM_FH_ShipmentsDatail a
+		LEFT JOIN scm_fh_shipmentsdatailmaster e ON a.masterId = e.id
+		LEFT JOIN scm_fh_shipmentsmessage b ON a.id = b.shipmentsDatailId
+		LEFT JOIN scm_zsj_product c ON a.productNum = c.productCode
+		LEFT JOIN scm_zsj_productfirst d ON c.id = d.productId AND e.ownerId = d.ownerId
+		)a
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsDatailMaster">
+		SELECT * FROM SCM_FH_ShipmentsDatailMaster
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmFhShipmentsDatailMaster">
+		UPDATE SCM_FH_ShipmentsDatailMaster SET
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		shipmentsCode=#{shipmentsCode,jdbcType=VARCHAR},
+		successDate=#{successDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_FH_ShipmentsDatailMaster 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+	
+	
+</mapper>

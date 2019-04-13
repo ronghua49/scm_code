@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommercePromiseBookDao">
+	<resultMap id="ScmZsjCommercePromiseBook" type="com.winway.scm.model.ScmZsjCommercePromiseBook">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+		<result property="PromiseBookId" column="PromiseBookId" jdbcType="VARCHAR"/>
+		<result property="isExist" column="isExist" jdbcType="VARCHAR"/>
+		<result property="validity" column="validity" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommercePromiseBook">
+		INSERT INTO SCM_ZSJ_CommercePromiseBook
+		(id,commerceFirstId,PromiseBookId,isExist,validity)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceFirstId,jdbcType=VARCHAR}, #{PromiseBookId,jdbcType=VARCHAR}, #{isExist,jdbcType=VARCHAR}, #{validity,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommercePromiseBook">
+		SELECT * FROM SCM_ZSJ_CommercePromiseBook 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommercePromiseBook">
+		SELECT * FROM SCM_ZSJ_CommercePromiseBook
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommercePromiseBook">
+		UPDATE SCM_ZSJ_CommercePromiseBook SET
+		commerceFirstId=#{commerceFirstId,jdbcType=VARCHAR},
+		PromiseBookId=#{PromiseBookId,jdbcType=VARCHAR},
+		isExist=#{isExist,jdbcType=VARCHAR},
+		validity=#{validity,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_ZSJ_CommercePromiseBook 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM SCM_ZSJ_CommercePromiseBook
+	    WHERE
+	    commerceFirstId=#{commerceFirstId}
+	</delete>    
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmZsjCommercePromiseBook">
+		SELECT * FROM SCM_ZSJ_CommercePromiseBook 
+		WHERE 
+		commerceFirstId=#{commerceFirstId}
+	</select>
+	
+	<select id="getScmZsjCommercePromiseBookList" resultMap="ScmZsjCommercePromiseBook">
+	    SELECT *
+	    FROM SCM_ZSJ_CommercePromiseBook 
+	    WHERE commerceFirstId=#{commerceFirstId}
+	</select>
+	
+</mapper>

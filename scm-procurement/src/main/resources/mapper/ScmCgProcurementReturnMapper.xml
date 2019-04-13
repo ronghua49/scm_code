@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCgProcurementReturnDao">
+	<resultMap id="ScmCgProcurementReturn" type="com.winway.scm.model.ScmCgProcurementReturn">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="returnCode" column="returnCode" jdbcType="VARCHAR"/>
+		<result property="supplierId" column="supplierId" jdbcType="VARCHAR"/>
+		<result property="supplier" column="supplier" jdbcType="VARCHAR"/>
+		<result property="getMoneyWarehouseId" column="getMoneyWarehouseId" jdbcType="VARCHAR"/>
+		<result property="getMoneyWarehouse" column="getMoneyWarehouse" jdbcType="VARCHAR"/>
+		<result property="speciesSum" column="speciesSum" jdbcType="NUMERIC"/>
+		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
+		<result property="returnDate" column="returnDate" jdbcType="TIMESTAMP"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="operatorId" column="operatorId" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+		<result property="procurementId" column="procurementId" jdbcType="VARCHAR"/>
+		<result property="procurementCode" column="procurementCode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCgProcurementReturn">
+		INSERT INTO SCM_CG_ProcurementReturn
+		(id,returnCode,supplierId,supplier,getMoneyWarehouseId,getMoneyWarehouse,speciesSum,sumPrice,returnDate,approvalId,approvalState,ownerId,operatorId,operatorName,procurementId,procurementCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{returnCode,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{getMoneyWarehouseId,jdbcType=VARCHAR}, #{getMoneyWarehouse,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{returnDate,jdbcType=TIMESTAMP}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{procurementId,jdbcType=VARCHAR}, #{procurementCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgProcurementReturn">
+		SELECT * FROM SCM_CG_ProcurementReturn 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCgProcurementReturn">
+		SELECT * FROM SCM_CG_ProcurementReturn
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCgProcurementReturn">
+		UPDATE SCM_CG_ProcurementReturn SET
+		returnCode=#{returnCode,jdbcType=VARCHAR},
+		supplierId=#{supplierId,jdbcType=VARCHAR},
+		supplier=#{supplier,jdbcType=VARCHAR},
+		getMoneyWarehouseId=#{getMoneyWarehouseId,jdbcType=VARCHAR},
+		getMoneyWarehouse=#{getMoneyWarehouse,jdbcType=VARCHAR},
+		speciesSum=#{speciesSum,jdbcType=NUMERIC},
+		sumPrice=#{sumPrice,jdbcType=NUMERIC},
+		returnDate=#{returnDate,jdbcType=TIMESTAMP},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		operatorId=#{operatorId,jdbcType=VARCHAR},
+		operatorName=#{operatorName,jdbcType=VARCHAR},
+		procurementId=#{procurementId,jdbcType=VARCHAR},
+		procurementCode=#{procurementCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CG_ProcurementReturn 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

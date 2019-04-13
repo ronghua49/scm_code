@@ -1,0 +1,31 @@
+.el-scrollbar .el-scrollbar__wrap{
+    overflow-x: hidden;
+}
+/* 滚动条隐藏问题 */
+.el-scrollbar .el-scrollbar__view{
+    overflow-x: hidden;
+}
+/* 顶部tab切换宽度问题 */
+.el-tabs__nav-wrap{
+    width: calc(100% - 250px)
+}
+/* 侧边栏收缩之后问题 */
+.el-menu--collapse  span,
+  .el-menu--collapse  i.el-submenu__icon-arrow
+  {
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    visibility: hidden;
+    display: inline-block;
+  }
+  /* 下拉框底部问题 */
+  .el-select-dropdown__wrap, .el-select-dropdown__wrap, .el-autocomplete-suggestion__wrap{
+    margin-bottom: 0px !important;
+  }
+  /* 菜单栏打开显示绿色 */
+  .is-opened{
+    border-left:4px solid #19aa8d;
+    transition: .3s all linear;
+    background: #676a6c;
+  }

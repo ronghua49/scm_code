@@ -1,0 +1,264 @@
+<template>
+  <div>
+    <!--表格栏-->
+    <el-table 
+        :data="data.rows"
+        :highlight-current-row="highlightCurrentRow"
+        :border="border"
+        :stripe="stripe"
+        show-overflow-tooltip=true
+        :align="align"
+        :max-height="maxHeight"
+        :size="size"
+        :row-class-name="rowClassName"
+        :cell-class-name="cellClassName"
+        :header-row-class-name="headerRowClassName"
+        :header-cell-class-name="headerCellClassName"
+        :empty-text="emptyText"
+        :show-summary="showSummary"
+        :summary-method="summaryMethod"
+        v-loading="loading"
+        @row-click="clickRow"
+        element-loading-text="加载中"  
+        style="width:100%;" 
+    >
+      <!-- <el-table-column type="selection" width="40"></el-table-column> -->
+      <!-- <el-table-column type="index" width="50" label="序号" align="center"></el-table-column> -->
+      <el-table-column v-for="column in columns" header-align="center" align="center"
+        :prop="column.prop" :label="column.label" :width="column.width" :min-width="column.minWidth" 
+        :fixed="column.fixed" :key="column.prop" :type="column.type" :formatter="column.formatter"
+        :sortable="column.sortable==null?false:column.sortable" :inline-template="column.inlineTemplate?true:false">
+      </el-table-column>
+      <!-- <el-table-column label="操作" width="150" fixed="right" header-align="center" align="center">
+        <template slot-scope="scope">
+          <el-button icon="el-icon-edit" label="编辑"  :size="size" type="primary"  @click="handleEdit(scope.$index, scope.row)" />
+          <el-button icon="el-icon-delete" label="删除"  :size="size" type="danger"  @click="handleDelete(scope.$index, scope.row)" />
+        </template>
+      </el-table-column> -->
+    </el-table>
+    <!--分页栏-->
+    <div v-if="isPagination" class="toolbar" style="padding:10px;">
+      <!-- <el-button label="批量删除"  :size="size" type="danger" @click="handleBatchDelete()" 
+        :disabled="this.selections.length===0" style="float:left;"/> -->
+      <el-pagination  @current-change="refreshPageRequest" @size-change="refreshPageSizeRequest" background
+        :current-page="pageRequest.page" :page-sizes="[10, 20, 30, 40, 50]" :page-size="pageRequest.pageSize" layout="sizes, total, prev, pager, next" :total="data.total" style="float:right;">
+      </el-pagination>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "ScmTable",
+  props: {
+    columns: Array, // 表格列配置
+    data: Object, // 表格分页数据
+    size: {
+      // 尺寸样式
+      type: String,
+      default: "mini"
+    },
+    align: {
+      // 文本对齐方式
+      type: String,
+      default: "center"
+    },
+    maxHeight: {
+      // 表格最大高度
+      type: Number,
+      default: 500
+    },
+    border: {
+      // 是否显示边框
+      type: Boolean,
+      default: true
+    },
+    stripe: {
+      // 是否显示斑马线
+      type: Boolean,
+      default: true
+    },
+    highlightCurrentRow: {
+      // // 是否高亮当前行
+      type: Boolean,
+      default: true
+    },
+    showOverflowTooltip: {
+      // 是否单行显示
+      type: Boolean,
+      default: true
+    },
+    rowClassName: {
+        //行 className 的回调方法 返回值  String
+        type: Function,
+        default: ({row, rowIndex}) => { return ''}
+    },
+    cellClassName: {
+        //单元格 className 的回调方法 返回值  String
+        type: Function,
+        default: ({row, column, rowIndex}) => { return ''}
+    },
+    headerRowClassName: {
+        //表头 className 的回调方法 返回值  String
+        type: Function,
+        default: ({row, column, rowIndex}) => { return ''}
+    },
+    headerCellClassName: {
+        //表头单元格 className 的回调方法 返回值 String
+        type: Function,
+        default: ({row, column, rowIndex, columnIndex}) => { return '' }
+    },
+    showSummary: {
+        //是否在列表底部显示统计 合计数据
+        type: Boolean,
+        default: false
+    },
+    summaryMethod: {
+        //自定义  列表底部合计方法
+        type: Function, 
+        default: ({columns, data}) => { return null }
+    },
+    emptyText: {
+        //表格数据是空数据的时候显示的文本内容
+        type: String,
+        default: '' 
+    },
+    isPagination: {
+        //是否分页
+        type: Boolean,
+        default: true
+    },
+    pageRequest: {
+        //分页信息：默认第一页 每页10条数据
+        type: Object,
+        default: () => {
+          return {
+              page: 1,
+              pageSize: 10,
+          }
+        }
+    },
+    total:{
+      //分页数据总数
+      type: Number,
+      default: 0
+    },
+    useClickRow: {
+      //点击行是否响应
+        type: Boolean,
+        default: false
+    },
+    useLoading: {
+        //表格加载的loading标识
+        type: Boolean,
+        default: true
+    }
+
+  },
+  data() {
+    return {
+      loading: false, // 加载标识
+      selections: [] // 列表选中列
+    };
+  },
+  methods: {
+    // 分页查询
+    findPage: function() {
+      this.loading = true;
+      let callback = res => {
+        this.loading = false;
+      };
+      this.$emit("findPage", {
+        pageRequest: this.pageRequest,
+        callback: callback
+      });
+    },
+    // 选择切换
+    selectionChange: function(selections) {
+      this.selections = selections;
+      this.$emit("selectionChange", { selections: selections });
+    },
+    //点击行
+    clickRow: function(row, event, column) {
+        this.$emit("handleClickRow", { row, event, column });
+    },
+    // 选择切换
+    handleCurrentChange: function(val) {
+      this.$emit("handleCurrentChange", { val: val });
+    },
+    // 换页刷新
+    refreshPageRequest: function(page = 1) {
+      this.pageRequest.page = page;
+      // this.pageRequest.pageSize = pageSize
+      this.findPage();
+    },
+    // size刷新
+    refreshPageSizeRequest: function(pageSize) {
+      this.pageRequest.pageSize = pageSize;
+      // this.pageRequest.pageSize = pageSize
+      this.findPage();
+    },
+    // 编辑
+    handleEdit: function(index, row) {
+      this.$emit("handleEdit", { index: index, row: row });
+    },
+    // 删除
+    handleDelete: function(index, row) {
+      this.delete(row.id);
+    },
+    // 批量删除
+    handleBatchDelete: function() {
+      let ids = this.selections.map(item => item.id).toString();
+      if (ids.length <= 0) {
+        this.$message({
+          message: "请选择数据",
+          type: "info",
+          duration: 800
+        });
+        return;
+      }
+      this.delete(ids);
+    },
+    // 删除操作
+    delete: function(ids) {
+      console.log(ids);
+      this.$confirm("确认删除选中记录吗？", "提示", {
+        type: "warning"
+      })
+        .then(() => {
+          let params = [];
+          let idArray = (ids + "").split(",");
+          for (var i = 0; i < idArray.length; i++) {
+            params.push(idArray[i]);
+          }
+          this.loading = true;
+          let callback = res => {
+            if (res.state) {
+              this.$message({
+                message: "删除成功",
+                type: "success",
+                duration: 800
+              });
+              this.findPage();
+            } else {
+              this.$message({
+                message: "操作失败, " + res.shortMessage,
+                type: "error",
+                duration: 800
+              });
+            }
+            this.loading = false;
+          };
+          this.$emit("handleDelete", { params: params, callback: callback });
+        })
+        .catch(() => {});
+    }
+  },
+  mounted() {
+    this.refreshPageRequest();
+  }
+};
+</script>
+
+<style scoped>
+</style>

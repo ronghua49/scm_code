@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCgProcurementPlanDao">
+	<resultMap id="ScmCgProcurementPlan" type="com.winway.scm.model.ScmCgProcurementPlan">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="supplier" column="supplier" jdbcType="VARCHAR"/>
+		<result property="productCname" column="productCname" jdbcType="VARCHAR"/>
+		<result property="inventoryCode" column="inventoryCode" jdbcType="VARCHAR"/>
+		<result property="month" column="month" jdbcType="VARCHAR"/>
+		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="isAffirm" column="isAffirm" jdbcType="VARCHAR"/>
+		<result property="isSupplierMate" column="isSupplierMate" jdbcType="VARCHAR"/>
+		<result property="supplierId" column="supplierId" jdbcType="VARCHAR"/>
+		<result property="isProductMate" column="isProductMate" jdbcType="VARCHAR"/>
+		<result property="ProcurementContractId" column="ProcurementContractId" jdbcType="VARCHAR"/>
+		<result property="approvalNumber" column="approvalNumber" jdbcType="VARCHAR"/>
+		<result property="operatorId" column="operatorId" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCgProcurementPlan">
+		INSERT INTO SCM_CG_ProcurementPlan
+		(id,productCode,supplier,productCname,inventoryCode,month,unitPrice,createDate,createPersion,memo,isAffirm,isSupplierMate,supplierId,isProductMate,ProcurementContractId,approvalNumber,operatorId,operatorName)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{productCname,jdbcType=VARCHAR}, #{inventoryCode,jdbcType=VARCHAR}, #{month,jdbcType=VARCHAR}, #{unitPrice,jdbcType=NUMERIC}, #{createDate,jdbcType=TIMESTAMP}, #{createPersion,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{isAffirm,jdbcType=VARCHAR}, #{isSupplierMate,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{isProductMate,jdbcType=VARCHAR}, #{ProcurementContractId,jdbcType=VARCHAR}, #{approvalNumber,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgProcurementPlan">
+		SELECT * FROM SCM_CG_ProcurementPlan 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCgProcurementPlan">
+		SELECT * FROM SCM_CG_ProcurementPlan
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCgProcurementPlan">
+		UPDATE SCM_CG_ProcurementPlan SET
+		productCode=#{productCode,jdbcType=VARCHAR},
+		supplier=#{supplier,jdbcType=VARCHAR},
+		productCname=#{productCname,jdbcType=VARCHAR},
+		inventoryCode=#{inventoryCode,jdbcType=VARCHAR},
+		month=#{month,jdbcType=VARCHAR},
+		unitPrice=#{unitPrice,jdbcType=NUMERIC},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		isAffirm=#{isAffirm,jdbcType=VARCHAR},
+		isSupplierMate=#{isSupplierMate,jdbcType=VARCHAR},
+		supplierId=#{supplierId,jdbcType=VARCHAR},
+		isProductMate=#{isProductMate,jdbcType=VARCHAR},
+		ProcurementContractId=#{ProcurementContractId,jdbcType=VARCHAR},
+		approvalNumber=#{approvalNumber,jdbcType=VARCHAR},
+		operatorId=#{operatorId,jdbcType=VARCHAR},
+		operatorName=#{operatorName,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CG_ProcurementPlan 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

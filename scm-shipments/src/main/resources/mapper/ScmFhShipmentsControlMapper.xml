@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhShipmentsControlDao">
+	<resultMap id="ScmFhShipmentsControl" type="com.winway.scm.model.ScmFhShipmentsControl">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="commerce" column="commerce" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="ProductLineId" column="ProductLineId" jdbcType="VARCHAR"/>
+		<result property="ProductLineName" column="ProductLineName" jdbcType="VARCHAR"/>
+		<result property="productNum" column="productNum" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsControl">
+		INSERT INTO SCM_FH_ShipmentsControl
+		(id,province,provinceId,
+		businessDivision,businessDivisionId,
+		commerce,commerceId,ProductLineId,
+		ProductLineName,productNum,
+		productState,productName,
+		createDate,createPersion,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR},
+		 #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR},
+		 #{commerce,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{ProductLineId,jdbcType=VARCHAR},
+		 #{ProductLineName,jdbcType=VARCHAR}, #{productNum,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR},
+		 #{productName,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+		 #{createPersion,jdbcType=VARCHAR},#{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhShipmentsControl">
+		SELECT * FROM SCM_FH_ShipmentsControl 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsControl">
+		SELECT * FROM SCM_FH_ShipmentsControl
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmFhShipmentsControl">
+		UPDATE SCM_FH_ShipmentsControl SET
+		province=#{province,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		commerce=#{commerce,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		ProductLineId=#{ProductLineId,jdbcType=VARCHAR},
+		ProductLineName=#{ProductLineName,jdbcType=VARCHAR},
+		productNum=#{productNum,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_FH_ShipmentsControl 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="ListShipmentsByAll"   parameterType="java.lang.String" resultMap="ScmFhShipmentsControl">
+		SELECT * FROM SCM_FH_ShipmentsControl 
+		WHERE 
+		provinceId = '' and businessDivisionId = '' and commerceId = ''
+	</select>
+	<select id="ListShipmentsByBusinessDivisionId"   parameterType="java.lang.String" resultMap="ScmFhShipmentsControl">
+		SELECT * FROM SCM_FH_ShipmentsControl 
+		WHERE 
+		businessDivisionId=#{id} and provinceId = '' and commerceId = ''
+	</select>
+	<select id="ListShipmentsByProvinceId"   parameterType="java.lang.String" resultMap="ScmFhShipmentsControl">
+		SELECT * FROM SCM_FH_ShipmentsControl 
+		WHERE 
+		businessDivisionId=#{arg0} and provinceId=#{arg1} and commerceId = ''
+	</select>
+	<select id="ListShipmentsByCommerceId"   parameterType="java.lang.String" resultMap="ScmFhShipmentsControl">
+		SELECT * FROM SCM_FH_ShipmentsControl a
+		INNER JOIN scm_zsj_commerce b ON a.commerceId = b.id
+		INNER JOIN scm_zsj_commercefirst c ON c.commerceId = b.id
+		WHERE 
+		b.businessDivisionId=#{arg0} AND b.provinceId=#{arg1} AND c.id =#{arg2}
+	</select>
+
+	<select id="getCurrentArea" resultType="java.util.Map">
+		select businessDivisionId,provinceId from
+		v_commercefirstlist where commerceFirstId = #{commerceId}
+	</select>
+
+</mapper>

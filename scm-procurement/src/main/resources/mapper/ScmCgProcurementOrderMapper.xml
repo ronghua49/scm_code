@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCgProcurementOrderDao">
+	<resultMap id="ScmCgProcurementOrder" type="com.winway.scm.model.ScmCgProcurementOrder">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="procurementCode" column="procurementCode" jdbcType="VARCHAR"/>
+		<result property="supplierId" column="supplierId" jdbcType="VARCHAR"/>
+		<result property="supplier" column="supplier" jdbcType="VARCHAR"/>
+		<result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
+		<result property="speciesSum" column="speciesSum" jdbcType="NUMERIC"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
+		<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		<result property="orderDate" column="orderDate" jdbcType="TIMESTAMP"/>
+		<result property="isToWMS" column="isToWMS" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="getTicket" column="getTicket" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="operatorId" column="operatorId" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+		<result property="contractId" column="contractId" jdbcType="VARCHAR"/>
+		<result property="deliveryDate" column="deliveryDate" jdbcType="TIMESTAMP"/>
+        <result property="getMoneyWarehouse" column="getMoneyWarehouse" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCgProcurementOrder">
+		INSERT INTO SCM_CG_ProcurementOrder
+		(id,procurementCode,supplierId,supplier,contractCode,speciesSum,productSum,sumPrice,currency,orderDate,isToWMS,approvalId,approvalState,getTicket,ownerId,operatorId,operatorName,contractId,deliveryDate,getMoneyWarehouse)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{procurementCode,jdbcType=VARCHAR},
+        #{supplierId,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
+        #{contractCode,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, 
+        #{productSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, 
+        #{currency,jdbcType=VARCHAR}, #{orderDate,jdbcType=TIMESTAMP}, 
+        #{isToWMS,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, 
+        #{approvalState,jdbcType=VARCHAR}, #{getTicket,jdbcType=VARCHAR}, 
+        #{ownerId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, 
+        #{operatorName,jdbcType=VARCHAR}, #{contractId,jdbcType=VARCHAR}, 
+        #{deliveryDate,jdbcType=TIMESTAMP},#{getMoneyWarehouse,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgProcurementOrder">
+		SELECT * FROM SCM_CG_ProcurementOrder 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCgProcurementOrder">
+		SELECT * FROM SCM_CG_ProcurementOrder
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCgProcurementOrder">
+		UPDATE SCM_CG_ProcurementOrder SET
+		procurementCode=#{procurementCode,jdbcType=VARCHAR},
+		supplierId=#{supplierId,jdbcType=VARCHAR},
+		supplier=#{supplier,jdbcType=VARCHAR},
+		contractCode=#{contractCode,jdbcType=VARCHAR},
+		speciesSum=#{speciesSum,jdbcType=NUMERIC},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		sumPrice=#{sumPrice,jdbcType=NUMERIC},
+		currency=#{currency,jdbcType=VARCHAR},
+		orderDate=#{orderDate,jdbcType=TIMESTAMP},
+		isToWMS=#{isToWMS,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		getTicket=#{getTicket,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		operatorId=#{operatorId,jdbcType=VARCHAR},
+		operatorName=#{operatorName,jdbcType=VARCHAR},
+		contractId=#{contractId,jdbcType=VARCHAR},
+		deliveryDate=#{deliveryDate,jdbcType=TIMESTAMP},
+        getMoneyWarehouse=#{getMoneyWarehouse,jdbcType=VARCHAR} 
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CG_ProcurementOrder 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="getOrderFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmCgProcurementOrder">
+		SELECT * FROM SCM_CG_ProcurementOrder 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+</mapper>

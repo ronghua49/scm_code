@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjSupplierPromiseBookDao">
+	<resultMap id="ScmZsjSupplierPromiseBook" type="com.winway.scm.model.ScmZsjSupplierPromiseBook">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="supplierFirstId" column="supplierFirstId" jdbcType="VARCHAR"/>
+		<result property="PromiseBookId" column="PromiseBookId" jdbcType="VARCHAR"/>
+		<result property="isExist" column="isExist" jdbcType="VARCHAR"/>
+		<result property="validity" column="validity" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjSupplierPromiseBook">
+		INSERT INTO SCM_ZSJ_SupplierPromiseBook
+		(id,supplierFirstId,PromiseBookId,isExist,validity)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{supplierFirstId,jdbcType=VARCHAR}, #{PromiseBookId,jdbcType=VARCHAR}, #{isExist,jdbcType=VARCHAR}, #{validity,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjSupplierPromiseBook">
+		SELECT * FROM SCM_ZSJ_SupplierPromiseBook 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjSupplierPromiseBook">
+		SELECT * FROM SCM_ZSJ_SupplierPromiseBook
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjSupplierPromiseBook">
+		UPDATE SCM_ZSJ_SupplierPromiseBook SET
+		supplierFirstId=#{supplierFirstId,jdbcType=VARCHAR},
+		PromiseBookId=#{PromiseBookId,jdbcType=VARCHAR},
+		isExist=#{isExist,jdbcType=VARCHAR},
+		validity=#{validity,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_ZSJ_SupplierPromiseBook 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

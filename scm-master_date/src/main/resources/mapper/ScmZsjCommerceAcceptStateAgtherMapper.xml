@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceAcceptStateAgtherDao">
+	<resultMap id="ScmZsjCommerceAcceptStateAgther" type="com.winway.scm.model.ScmZsjCommerceAcceptStateAgther">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceAcceptStateAgther">
+		INSERT INTO Scm_Zsj_CommerceAcceptStateAgther
+		(id,approvalCode,approvalId,approvalState,ownerId,operatorName)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{approvalCode,jdbcType=VARCHAR}, 
+		#{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, 
+		#{ownerId,jdbcType=VARCHAR},#{operatorName,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerceAcceptStateAgther">
+		SELECT * FROM Scm_Zsj_CommerceAcceptStateAgther 
+		WHERE 
+		id=#{id}
+	</select>
+	<select id="getByApprovalId"   parameterType="java.lang.String" resultMap="ScmZsjCommerceAcceptStateAgther">
+		SELECT * FROM Scm_Zsj_CommerceAcceptStateAgther 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceAcceptStateAgther">
+		SELECT * FROM Scm_Zsj_CommerceAcceptStateAgther
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceAcceptStateAgther">
+		UPDATE Scm_Zsj_CommerceAcceptStateAgther SET
+		approvalCode=#{approvalCode,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		operatorName=#{operatorName,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Zsj_CommerceAcceptStateAgther 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

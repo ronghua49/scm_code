@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZdPromiseBookDao">
+	<resultMap id="ScmZdPromiseBook" type="com.winway.scm.model.ScmZdPromiseBook">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="promiseBook" column="promiseBook" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZdPromiseBook">
+		INSERT INTO scm_zd_promisebook
+		(id,promiseBook,code,memo,createPersion,createDate,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{promiseBook,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR}, now(), #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZdPromiseBook">
+		SELECT * FROM scm_zd_promisebook 
+		WHERE 
+		id=#{id}
+	</select>
+	<select id="getByNameAndCodeOrId"   parameterType="java.lang.String" resultMap="ScmZdPromiseBook">
+		SELECT * FROM scm_zd_promisebook 
+		WHERE 
+		<if test="id!=null">
+			id!=#{id} and
+		</if>
+		  ownerId=#{ownerId} and 
+		(promiseBook=#{promiseBook} or code=#{code})
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZdPromiseBook">
+		SELECT * FROM scm_zd_promisebook
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZdPromiseBook">
+		UPDATE scm_zd_promisebook SET
+		promiseBook=#{promiseBook,jdbcType=VARCHAR},
+		code=#{code,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=now(),
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_zd_promisebook 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwReturnMoneyDao">
+	<resultMap id="ScmCwReturnMoney" type="com.winway.scm.model.ScmCwReturnMoney">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="verifyType" column="verifyType" jdbcType="VARCHAR"/>
+		<result property="remittanceDate" column="remittanceDate" jdbcType="TIMESTAMP"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="remittanceType" column="remittanceType" jdbcType="VARCHAR"/>
+		<result property="acceptIsTrue" column="acceptIsTrue" jdbcType="VARCHAR"/>
+		<result property="acceptExpire" column="acceptExpire" jdbcType="TIMESTAMP"/>
+		<result property="paymentType" column="paymentType" jdbcType="VARCHAR"/>
+		<result property="price" column="price" jdbcType="NUMERIC"/>
+		<result property="updatePrice" column="updatePrice" jdbcType="NUMERIC"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="toLeadPersion" column="toLeadPersion" jdbcType="VARCHAR"/>
+		<result property="toLeadDate" column="toLeadDate" jdbcType="TIMESTAMP"/>
+		<result property="affirmPersion" column="affirmPersion" jdbcType="VARCHAR"/>
+		<result property="affirmDate" column="affirmDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="matchCommerceName" column="matchCommerceName" jdbcType="VARCHAR"/>
+		<result property="matchResult" column="matchResult" jdbcType="VARCHAR"/>
+		<result property="isAffirm" column="isAffirm" jdbcType="VARCHAR"/>
+		<result property="balancePrice" column="balancePrice" jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwReturnMoney">
+		INSERT INTO SCM_CW_ReturnMoney
+		(id,verifyType,remittanceDate,commerceId,commerceCode,commerceName,businessDivision,province,businessDivisionId,provinceId,remittanceType,acceptIsTrue,acceptExpire,paymentType,price,updatePrice,memo,toLeadPersion,toLeadDate,affirmPersion,affirmDate,ownerId,matchCommerceName,matchResult,isAffirm,balancePrice)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{verifyType,jdbcType=VARCHAR}, #{remittanceDate,jdbcType=TIMESTAMP}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{remittanceType,jdbcType=VARCHAR}, #{acceptIsTrue,jdbcType=VARCHAR}, #{acceptExpire,jdbcType=TIMESTAMP}, #{paymentType,jdbcType=VARCHAR}, #{price,jdbcType=NUMERIC}, #{updatePrice,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{toLeadPersion,jdbcType=VARCHAR}, #{toLeadDate,jdbcType=TIMESTAMP}, #{affirmPersion,jdbcType=VARCHAR}, #{affirmDate,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR}, #{matchCommerceName,jdbcType=VARCHAR}, #{matchResult,jdbcType=VARCHAR}, #{isAffirm,jdbcType=VARCHAR}, #{balancePrice,jdbcType=NUMERIC})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwReturnMoney">
+		SELECT * FROM SCM_CW_ReturnMoney 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwReturnMoney">
+		SELECT * FROM SCM_CW_ReturnMoney
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwReturnMoney">
+		UPDATE SCM_CW_ReturnMoney SET
+		verifyType=#{verifyType,jdbcType=VARCHAR},
+		remittanceDate=#{remittanceDate,jdbcType=TIMESTAMP},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		remittanceType=#{remittanceType,jdbcType=VARCHAR},
+		acceptIsTrue=#{acceptIsTrue,jdbcType=VARCHAR},
+		acceptExpire=#{acceptExpire,jdbcType=TIMESTAMP},
+		paymentType=#{paymentType,jdbcType=VARCHAR},
+		price=#{price,jdbcType=NUMERIC},
+		updatePrice=#{updatePrice,jdbcType=NUMERIC},
+		memo=#{memo,jdbcType=VARCHAR},
+		toLeadPersion=#{toLeadPersion,jdbcType=VARCHAR},
+		toLeadDate=#{toLeadDate,jdbcType=TIMESTAMP},
+		affirmPersion=#{affirmPersion,jdbcType=VARCHAR},
+		affirmDate=#{affirmDate,jdbcType=TIMESTAMP},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		matchCommerceName=#{matchCommerceName,jdbcType=VARCHAR},
+		matchResult=#{matchResult,jdbcType=VARCHAR},
+		isAffirm=#{isAffirm,jdbcType=VARCHAR},
+		balancePrice=#{balancePrice,jdbcType=NUMERIC}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CW_ReturnMoney 
+		WHERE
+		id=#{id}
+	</delete>
+	<select id="findByName"   parameterType="java.lang.String" >
+		SELECT
+			a.commerceName 
+		FROM
+			scm_zsj_commerce a
+		WHERE
+			a.id IN ( SELECT b.commerceId FROM scm_zsj_commercefirst b WHERE b.ownerId=#{ownerId})
+	</select>
+	
+</mapper>

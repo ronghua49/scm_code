@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjAccessoryDao">
+	<resultMap id="ScmZsjAccessory" type="com.winway.scm.model.ScmZsjAccessory">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+		<result property="fileUrl" column="fileUrl" jdbcType="VARCHAR"/>
+		<result property="updateDate" column="updateDate" jdbcType="TIMESTAMP"/>
+		<result property="dateId" column="dateId" jdbcType="VARCHAR"/>
+		<result property="fileName" column="fileName" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjAccessory">
+		INSERT INTO SCM_ZSJ_Accessory
+		(id,type,fileUrl,updateDate,dateId,fileName)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{dateId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjAccessory">
+		SELECT * FROM SCM_ZSJ_Accessory 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjAccessory">
+		SELECT * FROM SCM_ZSJ_Accessory
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjAccessory">
+		UPDATE SCM_ZSJ_Accessory SET
+		type=#{type,jdbcType=VARCHAR},
+		fileUrl=#{fileUrl,jdbcType=VARCHAR},
+		updateDate=#{updateDate,jdbcType=TIMESTAMP},
+		dateId=#{dateId,jdbcType=VARCHAR},
+		fileName=#{fileName,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_ZSJ_Accessory 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

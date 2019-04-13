@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjAchageDao">
+	<resultMap id="ScmZsjAchage" type="com.winway.scm.model.ScmZsjAchage">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="achage" column="achage" jdbcType="VARCHAR"/>
+	</resultMap>
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjAchage">
+		INSERT INTO Scm_Zsj_Achange
+		(id,productId,achage)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{achage,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjAchage">
+		SELECT * FROM Scm_Zsj_Achange
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmZsjAchage">
+		SELECT * FROM Scm_Zsj_Achange
+		WHERE 
+		productId=#{arg0}
+	</select>
+	
+	<select id="getByachage"   parameterType="java.lang.String" resultMap="ScmZsjAchage">
+		SELECT * FROM Scm_Zsj_Achange
+		WHERE 
+		productId=#{arg1} AND achage=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjAchage">
+		     SELECT a.* FROM (
+    			 SELECT a.id,a.productid,a.achage,b.productCode FROM scm_zsj_achange a
+     		 LEFT JOIN scm_zsj_product b ON a.productId = b.id) a
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjAchage">
+		UPDATE Scm_Zsj_Achange SET
+		productId=#{productId,jdbcType=VARCHAR},
+		achage=#{achage,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Zsj_Achange 
+		WHERE
+		id=#{id}
+	</delete>
+</mapper>	
+	

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwDiscountPondDao">
+	<resultMap id="ScmCwDiscountPond" type="com.winway.scm.model.ScmCwDiscountPond">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="discountCode" column="discountCode" jdbcType="VARCHAR"/>
+		<result property="discountDate" column="discountDate" jdbcType="TIMESTAMP"/>
+		<result property="discountSource" column="discountSource" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceLevel" column="commerceLevel" jdbcType="VARCHAR"/>
+		<result property="treminal" column="treminal" jdbcType="VARCHAR"/>
+		<result property="mayDeduction" column="mayDeduction" jdbcType="NUMERIC"/>
+		<result property="isFreeze" column="isFreeze" jdbcType="VARCHAR"/>
+		<result property="isDeduction" column="isDeduction" jdbcType="VARCHAR"/>
+		<result property="deductionPrice" column="deductionPrice" jdbcType="NUMERIC"/>
+		<result property="yetDeduction" column="yetDeduction" jdbcType="NUMERIC"/>
+		<result property="balance" column="balance" jdbcType="NUMERIC"/>
+		<result property="discountCommerce" column="discountCommerce" jdbcType="VARCHAR"/>
+		<result property="discountType" column="discountType" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwDiscountPond">
+		INSERT INTO SCM_CW_DiscountPond
+		(id,discountCode,discountDate,discountSource,businessDivision,province,businessDivisionId,provinceId,commerceId,commerceCode,commerceName,commerceLevel,treminal,mayDeduction,isFreeze,isDeduction,deductionPrice,yetDeduction,balance,discountCommerce,discountType,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{discountCode,jdbcType=VARCHAR}, #{discountDate,jdbcType=TIMESTAMP}, #{discountSource,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceLevel,jdbcType=VARCHAR}, #{treminal,jdbcType=VARCHAR}, #{mayDeduction,jdbcType=NUMERIC}, #{isFreeze,jdbcType=VARCHAR}, #{isDeduction,jdbcType=VARCHAR}, #{deductionPrice,jdbcType=NUMERIC}, #{yetDeduction,jdbcType=NUMERIC}, #{balance,jdbcType=NUMERIC}, #{discountCommerce,jdbcType=VARCHAR}, #{discountType,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDiscountPond">
+		SELECT * FROM SCM_CW_DiscountPond 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDiscountPond">
+		SELECT * FROM SCM_CW_DiscountPond
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwDiscountPond">
+		UPDATE SCM_CW_DiscountPond SET
+		discountCode=#{discountCode,jdbcType=VARCHAR},
+		discountDate=#{discountDate,jdbcType=TIMESTAMP},
+		discountSource=#{discountSource,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceLevel=#{commerceLevel,jdbcType=VARCHAR},
+		treminal=#{treminal,jdbcType=VARCHAR},
+		mayDeduction=#{mayDeduction,jdbcType=NUMERIC},
+		isFreeze=#{isFreeze,jdbcType=VARCHAR},
+		isDeduction=#{isDeduction,jdbcType=VARCHAR},
+		deductionPrice=#{deductionPrice,jdbcType=NUMERIC},
+		yetDeduction=#{yetDeduction,jdbcType=NUMERIC},
+		balance=#{balance,jdbcType=NUMERIC},
+		discountCommerce=#{discountCommerce,jdbcType=VARCHAR},
+		discountType=#{discountType,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CW_DiscountPond 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

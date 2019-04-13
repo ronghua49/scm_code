@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceMergeDao">
+	<resultMap id="ScmZsjCommerceMerge" type="com.winway.scm.model.ScmZsjCommerceMerge">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="hostCommerceId" column="hostCommerceId" jdbcType="VARCHAR"/>
+		<result property="hostCommerceCode" column="hostCommerceCode" jdbcType="VARCHAR"/>
+		<result property="hostCommerceName" column="hostCommerceName" jdbcType="VARCHAR"/>
+		<result property="viceCommerceId" column="viceCommerceId" jdbcType="VARCHAR"/>
+		<result property="viceCommerceCode" column="viceCommerceCode" jdbcType="VARCHAR"/>
+		<result property="viceCommerceName" column="viceCommerceName" jdbcType="VARCHAR"/>
+		<result property="approvalMemo" column="approvalMemo" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+		<result property="operatorId" column="operatorId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceMerge">
+		INSERT INTO Scm_Zsj_CommerceMerge
+		(id,hostCommerceId,hostCommerceCode,hostCommerceName,viceCommerceId,viceCommerceCode,viceCommerceName,approvalMemo,approvalId,approvalState,ownerId,operatorName,operatorId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{hostCommerceId,jdbcType=VARCHAR}, #{hostCommerceCode,jdbcType=VARCHAR}, #{hostCommerceName,jdbcType=VARCHAR}, #{viceCommerceId,jdbcType=VARCHAR}, #{viceCommerceCode,jdbcType=VARCHAR}, #{viceCommerceName,jdbcType=VARCHAR}, #{approvalMemo,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerceMerge">
+		SELECT * FROM Scm_Zsj_CommerceMerge 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceMerge">
+		SELECT * FROM Scm_Zsj_CommerceMerge
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceMerge">
+		UPDATE Scm_Zsj_CommerceMerge SET
+		hostCommerceId=#{hostCommerceId,jdbcType=VARCHAR},
+		hostCommerceCode=#{hostCommerceCode,jdbcType=VARCHAR},
+		hostCommerceName=#{hostCommerceName,jdbcType=VARCHAR},
+		viceCommerceId=#{viceCommerceId,jdbcType=VARCHAR},
+		viceCommerceCode=#{viceCommerceCode,jdbcType=VARCHAR},
+		viceCommerceName=#{viceCommerceName,jdbcType=VARCHAR},
+		approvalMemo=#{approvalMemo,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		operatorName=#{operatorName,jdbcType=VARCHAR},
+		operatorId=#{operatorId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Zsj_CommerceMerge 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="getCommerceFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmZsjCommerceMerge">
+		SELECT * FROM Scm_Zsj_CommerceMerge 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+</mapper>

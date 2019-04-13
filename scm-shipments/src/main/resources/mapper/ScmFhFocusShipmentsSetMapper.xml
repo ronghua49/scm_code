@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhFocusShipmentsSetDao">
+	<resultMap id="ScmFhFocusShipmentsSet" type="com.winway.scm.model.ScmFhFocusShipmentsSet">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="setCode" column="setCode" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="ProductLineId" column="ProductLineId" jdbcType="VARCHAR"/>
+		<result property="ProductLineName" column="ProductLineName" jdbcType="VARCHAR"/>
+		<result property="isStartUsing" column="isStartUsing" jdbcType="VARCHAR"/>
+		<result property="startUsingDate" column="startUsingDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmFhFocusShipmentsSet">
+		INSERT INTO SCM_FH_FocusShipmentsSet
+		(id,setCode,businessDivision,businessDivisionId,province,provinceId,commerceName,
+		commerceId,ProductLineId,ProductLineName,isStartUsing,startUsingDate,createPersion,
+		createDate,ownerId,productName,productId,productCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{setCode,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, 
+		#{businessDivisionId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, 
+		#{commerceName,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{ProductLineId,jdbcType=VARCHAR}, 
+		#{ProductLineName,jdbcType=VARCHAR}, #{isStartUsing,jdbcType=VARCHAR}, #{startUsingDate,jdbcType=TIMESTAMP}, 
+		#{createPersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},#{ownerId,jdbcType=VARCHAR},
+		#{productName,jdbcType=VARCHAR},#{productId,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhFocusShipmentsSet">
+		SELECT * FROM SCM_FH_FocusShipmentsSet 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmFhFocusShipmentsSet">
+		SELECT * FROM SCM_FH_FocusShipmentsSet
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmFhFocusShipmentsSet">
+		UPDATE SCM_FH_FocusShipmentsSet SET
+		setCode=#{setCode,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		ProductLineId=#{ProductLineId,jdbcType=VARCHAR},
+		ProductLineName=#{ProductLineName,jdbcType=VARCHAR},
+		isStartUsing=#{isStartUsing,jdbcType=VARCHAR},
+		startUsingDate=#{startUsingDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productId=#{productId,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_FH_FocusShipmentsSet 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="listFocusShipmentsSetByComm"   parameterType="java.lang.String" resultMap="ScmFhFocusShipmentsSet">
+		SELECT productCode FROM SCM_FH_FocusShipmentsSet 
+		WHERE 
+		commerceId=#{arg0} and ownerId = #{arg1} and isStartUsing = 1
+	</select>
+    <select id="getByProIdAndComId" resultType="com.winway.scm.model.ScmFhFocusShipmentsSet">
+		SELECT * FROM SCM_FH_FocusShipmentsSet
+		WHERE
+		commerceId=#{commerceId} and productId = #{productId}
+	</select>
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZdReturnRequestCauseDao">
+	<resultMap id="ScmZdReturnRequestCause" type="com.winway.scm.model.ScmZdReturnRequestCause">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="returnRequestCause" column="returnRequestCause" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="returnType" column="returnType" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZdReturnRequestCause">
+		INSERT INTO scm_zd_returnrequestcause
+		(id,returnRequestCause,code,memo,createPersion,createDate,ownerId,returnType)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{returnRequestCause,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR}, now(), #{ownerId,jdbcType=VARCHAR},#{returnType,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZdReturnRequestCause">
+		SELECT * FROM scm_zd_returnrequestcause 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByNameAndCodeOrId"   parameterType="java.lang.String" resultMap="ScmZdReturnRequestCause">
+		SELECT * FROM scm_zd_returnrequestcause 
+		WHERE 
+		<if test="id!=null">
+			id!=#{id} and
+		</if>
+		  ownerId=#{ownerId} and 
+		(returnRequestCause=#{returnRequestCause} or code=#{code})
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZdReturnRequestCause">
+		SELECT * FROM scm_zd_returnrequestcause
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZdReturnRequestCause">
+		UPDATE scm_zd_returnrequestcause SET
+		returnRequestCause=#{returnRequestCause,jdbcType=VARCHAR},
+		code=#{code,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=now(),
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		returnType=#{returnType,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_zd_returnrequestcause 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

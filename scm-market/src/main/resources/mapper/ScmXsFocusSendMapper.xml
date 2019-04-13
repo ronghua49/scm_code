@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmXsFocusSendDao">
+	<resultMap id="ScmXsFocusSend" type="com.winway.scm.model.ScmXsFocusSend">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="focusSendCode" column="focusSendCode" jdbcType="VARCHAR"/>
+		<result property="specialOpinion" column="specialOpinion" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="dealerClauseId" column="dealerClauseId" jdbcType="VARCHAR"/>
+		<result property="reduceContractTime" column="reduceContractTime" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerName" column="ownerName" jdbcType="VARCHAR"/>
+		<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="marketingWay" column="marketingWay" jdbcType="VARCHAR"/>
+		<result property="dateOfSigning" column="dateOfSigning" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmXsFocusSend">
+		INSERT INTO SCM_XS_FocusSend
+		(id,FocusSendCode,specialOpinion,ownerId,dealerClauseId,reduceContractTime,approvalId,approvalState,
+		ownerName,commerceFirstId,commerceName,commerceCode,marketingWay,dateOfSigning)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{focusSendCode,jdbcType=VARCHAR}, #{specialOpinion,jdbcType=VARCHAR},
+		 #{ownerId,jdbcType=VARCHAR}, #{dealerClauseId,jdbcType=VARCHAR}, #{reduceContractTime,jdbcType=VARCHAR},
+		 #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR},
+		 #{ownerName,jdbcType=VARCHAR}, #{commerceFirstId,jdbcType=VARCHAR},
+		 #{commerceName,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR},
+		 #{marketingWay,jdbcType=VARCHAR}, #{dateOfSigning,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsFocusSend">
+		SELECT * FROM SCM_XS_FocusSend 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmXsFocusSend">
+		SELECT * FROM SCM_XS_FocusSend
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmXsFocusSend">
+		UPDATE SCM_XS_FocusSend SET
+		FocusSendCode=#{focusSendCode,jdbcType=VARCHAR},
+		specialOpinion=#{specialOpinion,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		dealerClauseId=#{dealerClauseId,jdbcType=VARCHAR},
+		reduceContractTime=#{reduceContractTime,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerName=#{ownerName,jdbcType=VARCHAR},
+		commerceFirstId=#{commerceFirstId,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		marketingWay=#{marketingWay,jdbcType=VARCHAR},
+		dateOfSigning=#{dateOfSigning,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_XS_FocusSend 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="getByApprovalId"   parameterType="java.lang.String" resultMap="ScmXsFocusSend">
+		SELECT * FROM SCM_XS_FocusSend 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+	<select id="getCommerceMessageByCodeAndOwnerId"  resultType="java.util.HashMap">
+		SELECT a.id AS commerceId,b.id AS commerceFirstId FROM scm_zsj_commerce a
+		INNER JOIN scm_zsj_commercefirst b ON a.id = b.commerceId
+		WHERE a.commerceCode = #{arg0} AND b.ownerId = #{arg1}
+	</select>
+	
+</mapper>

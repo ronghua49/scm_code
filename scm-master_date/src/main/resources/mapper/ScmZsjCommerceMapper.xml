@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceDao">
+	<resultMap id="ScmZsjCommerce" type="com.winway.scm.model.ScmZsjCommerce">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="fileCode" column="fileCode" jdbcType="VARCHAR"/>
+		<result property="commerceState" column="commerceState" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="conpanyPersion" column="conpanyPersion" jdbcType="VARCHAR"/>
+		<result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
+		<result property="phone" column="phone" jdbcType="VARCHAR"/>
+		<result property="openBank" column="openBank" jdbcType="VARCHAR"/>
+		<result property="bankCode" column="bankCode" jdbcType="VARCHAR"/>
+		<result property="dutyParagraph" column="dutyParagraph" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="qualityValidity" column="qualityValidity" jdbcType="TIMESTAMP"/>
+		<result property="registerAddress" column="registerAddress" jdbcType="VARCHAR"/>
+		<result property="sealStyle" column="sealStyle" jdbcType="VARCHAR"/>
+		<result property="billsStyle" column="billsStyle" jdbcType="VARCHAR"/>
+		<result property="enterPersion" column="enterPersion" jdbcType="VARCHAR"/>
+		<result property="enterDate" column="enterDate" jdbcType="TIMESTAMP"/>
+		<result property="commerceLevel" column="commerceLevel" jdbcType="VARCHAR"/>
+		<result property="functionType" column="functionType" jdbcType="VARCHAR"/>	
+		<result property="acceptStateStr" column="acceptStateStr" jdbcType="VARCHAR"/>
+		<result property="acceptState" column="acceptState" jdbcType="VARCHAR"/>
+		<result property="commerceStateStr" column="commerceStateStr" jdbcType="VARCHAR"/>
+		<result property="legalPersion" column="legalPersion" jdbcType="VARCHAR"/>
+		<result property="licenseKey" column="licenseKey" jdbcType="VARCHAR"/>
+		<result property="validity" column="validity" jdbcType="TIMESTAMP"/>
+		<result property="register" column="register" jdbcType="VARCHAR"/>
+		<result property="licenseValidity" column="licenseValidity" jdbcType="TIMESTAMP"/>
+		<result property="registerPrice" column="registerPrice" jdbcType="VARCHAR"/>
+		<result property="managementScope" column="managementScope" jdbcType="VARCHAR"/>
+		<result property="commerceNameStr" column="commerceNameStr" jdbcType="VARCHAR"/>
+		<result property="dutyOfficer" column="dutyOfficer" jdbcType="VARCHAR"/>
+		<result property="commerceNameStr" column="commerceNameStr" jdbcType="VARCHAR"/>
+		<result property="acceptStateId" column="acceptStateId" jdbcType="VARCHAR"/>
+		<result property="effectiveDate" column="effectiveDate" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="acceptId" column="acceptId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="approvalStateStr" column="approvalStateStr" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+		<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+		<result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>	
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="actualLevel" column="actualLevel" jdbcType="VARCHAR"/>		
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerce">
+		INSERT INTO SCM_ZSJ_Commerce
+		(id,commerceName,fileCode,commerceState,commerceCode,conpanyPersion,contactPersion,phone,openBank,bankCode,dutyParagraph,businessDivisionId,businessDivision,provinceId,province,qualityValidity,registerAddress,sealStyle,billsStyle,enterPersion,enterDate,commerceLevel,functionType)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{fileCode,jdbcType=VARCHAR}, #{commerceState,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{conpanyPersion,jdbcType=VARCHAR}, #{contactPersion,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, #{dutyParagraph,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{qualityValidity,jdbcType=TIMESTAMP}, #{registerAddress,jdbcType=VARCHAR}, #{sealStyle,jdbcType=VARCHAR}, #{billsStyle,jdbcType=VARCHAR}, #{enterPersion,jdbcType=VARCHAR}, now(),#{commerceLevel,jdbcType=VARCHAR},#{functionType,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT * FROM SCM_ZSJ_Commerce 
+		WHERE 
+		id=#{id}
+	</select>
+
+	<select id="getCommerceName">
+		SELECT commerceName FROM SCM_ZSJ_Commerce
+	</select>
+
+	<select id="getByName"   parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT * FROM SCM_ZSJ_Commerce 
+		WHERE 
+		commerceName=#{commerceName}
+	</select>
+	
+	<select id="getByNameOrId"   parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT * FROM SCM_ZSJ_Commerce 
+		WHERE 
+		<if test="id!=null">
+			id!=#{id} and
+		</if>
+		commerceName=#{commerceName}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
+		SELECT * FROM SCM_ZSJ_Commerce
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="firstList" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
+		SELECT * FROM v_CommerceFirstList
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="agreementSendApplySuccessList" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
+		SELECT * FROM v_agreementSendApplySuccess
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommerce">
+		UPDATE SCM_ZSJ_Commerce SET
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		fileCode=#{fileCode,jdbcType=VARCHAR},
+		commerceState=#{commerceState,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		conpanyPersion=#{conpanyPersion,jdbcType=VARCHAR},
+		contactPersion=#{contactPersion,jdbcType=VARCHAR},
+		phone=#{phone,jdbcType=VARCHAR},
+		openBank=#{openBank,jdbcType=VARCHAR},
+		bankCode=#{bankCode,jdbcType=VARCHAR},
+		dutyParagraph=#{dutyParagraph,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		qualityValidity=#{qualityValidity,jdbcType=TIMESTAMP},
+		registerAddress=#{registerAddress,jdbcType=VARCHAR},
+		sealStyle=#{sealStyle,jdbcType=VARCHAR},
+		billsStyle=#{billsStyle,jdbcType=VARCHAR},
+		enterPersion=#{enterPersion,jdbcType=VARCHAR},
+		enterDate=#{enterDate,jdbcType=TIMESTAMP},
+		commerceLevel=#{commerceLevel,jdbcType=VARCHAR},
+		functionType=#{functionType,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_ZSJ_Commerce 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="downBox" parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT a.*,
+		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.commerceName) 
+		AS commerceNameStr 
+		FROM scm_zsj_commerce a
+		LEFT JOIN (SELECT * FROM scm_zsj_commercefirst WHERE ownerId = #{ownerId}) b ON a.id = b.commerceId
+	</select>
+
+	<select id="downBoxApplySuccess" parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT a.*,
+		b.approvalId as approvalId,b.approvalState as approvalState,
+		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.commerceName) 
+		AS commerceNameStr 
+		FROM scm_zsj_commerce a
+		LEFT JOIN (SELECT * FROM scm_zsj_commercefirst WHERE ownerId = #{ownerId}) b ON a.id = b.commerceId
+		where approvalState = 2
+	</select>
+
+
+	<select id="" parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+
+	</select>
+
+	<select id="listCommerceAcceptState" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
+		SELECT * FROM V_CommerceAcceptState
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="listCommerceAcceptApprova" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
+		SELECT * FROM V_CommerceAcceptState
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="listCommerceAcceptTS" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
+		SELECT * FROM V_CommerceAcceptState
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	<select id="findByOwnerId" parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT
+			a.* 
+		FROM
+			scm_zsj_commerce a 
+		WHERE
+		 a.id IN ( SELECT b.commerceId FROM scm_zsj_commercefirst b WHERE b.ownerId = #{arg0} )
+	</select>
+</mapper>

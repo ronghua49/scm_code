@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceAcceptStateDao">
+    <resultMap id="ScmZsjCommerceAcceptState" type="com.winway.scm.model.ScmZsjCommerceAcceptState">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="agtherId" column="agtherId" jdbcType="VARCHAR"/>
+        <result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+        <result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+        <result property="acceptState" column="acceptState" jdbcType="VARCHAR"/>
+        <result property="startDate" column="startDate" jdbcType="TIMESTAMP"/>
+        <result property="endDate" column="endDate" jdbcType="TIMESTAMP"/>
+        <result property="memo" column="memo" jdbcType="VARCHAR"/>
+        <result property="isEffect" column="isEffect" jdbcType="VARCHAR"/>
+
+        <result property="acceptStateStr" column="acceptStateStr" jdbcType="VARCHAR"/>
+        <result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="approvalStateStr" column="approvalStateStr" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+        <result property="operatorId" column="operatorId" jdbcType="VARCHAR"/>
+
+        <result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+        <result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+        <result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+        <result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+        <result property="dutyOfficer" column="dutyOfficer" jdbcType="VARCHAR"/>
+        <result property="enterDate" column="enterDate" jdbcType="VARCHAR"/>
+        <result property="acceptStateStr" column="acceptStateStr" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceAcceptState">
+		INSERT INTO Scm_Zsj_CommerceAcceptState
+		(id,agtherId,commerceId,commerceCode,acceptState,startDate,endDate,memo,isEffect)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{agtherId,jdbcType=VARCHAR}, 
+		#{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, 
+		#{acceptState,jdbcType=VARCHAR}, #{startDate,jdbcType=TIMESTAMP}, 
+		#{endDate,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR},
+		#{isEffect,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmZsjCommerceAcceptState">
+		SELECT * FROM Scm_Zsj_CommerceAcceptState 
+		WHERE 
+		id=#{id}
+	</select>
+
+    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmZsjCommerceAcceptState">
+		SELECT * FROM Scm_Zsj_CommerceAcceptState 
+		WHERE 
+		agtherId=#{arg0}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceAcceptState">
+        SELECT * FROM Scm_Zsj_CommerceAcceptState
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="firstList" parameterType="java.util.Map" resultMap="ScmZsjCommerceAcceptState">
+        SELECT * FROM v_commerceacceptstateFirstList
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceAcceptState">
+		UPDATE Scm_Zsj_CommerceAcceptState SET
+		agtherId=#{agtherId,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		acceptState=#{acceptState,jdbcType=VARCHAR},
+		startDate=#{startDate,jdbcType=TIMESTAMP},
+		endDate=#{endDate,jdbcType=TIMESTAMP},
+		memo=#{memo,jdbcType=VARCHAR},
+		isEffect=#{isEffect,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+    <update id="updateIsEffectTo0" parameterType="com.winway.scm.model.ScmZsjCommerceAcceptState">
+		UPDATE Scm_Zsj_CommerceAcceptState SET
+		isEffect = 0
+		WHERE
+		commerceId=#{arg0}
+	</update>
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Zsj_CommerceAcceptState 
+		WHERE
+		id=#{id}
+	</delete>
+
+    <delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE FROM Scm_Zsj_CommerceAcceptState 
+		WHERE
+		agtherId=#{arg0}
+	</delete>
+
+    <select id="getLastByCommerceId" resultMap="ScmZsjCommerceAcceptState">
+        SELECT
+            *
+        FROM
+            Scm_Zsj_CommerceAcceptState
+        WHERE
+            commerceId = #{commerceId} order by startDate ORDER BY
+            startDate DESC
+            LIMIT 0,1
+    </select>
+
+</mapper>

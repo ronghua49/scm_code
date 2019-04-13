@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmXsCreditCollectDao">
+	<resultMap id="ScmXsCreditCollect" type="com.winway.scm.model.ScmXsCreditCollect">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="requestCode" column="requestCode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmXsCreditCollect">
+		INSERT INTO SCM_XS_CreditCollect
+		(id,ownerId,approvalId,approvalState,requestCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{requestCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsCreditCollect">
+		SELECT * FROM SCM_XS_CreditCollect 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByApprovalId"   parameterType="java.lang.String" resultMap="ScmXsCreditCollect">
+		SELECT * FROM SCM_XS_CreditCollect 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmXsCreditCollect">
+		SELECT * FROM SCM_XS_CreditCollect
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmXsCreditCollect">
+		UPDATE SCM_XS_CreditCollect SET
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		requestCode=#{requestCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_XS_CreditCollect 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

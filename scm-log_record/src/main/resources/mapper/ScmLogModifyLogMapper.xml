@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmLogModifyLogDao">
+    <resultMap id="ScmLogModifyLog" type="com.winway.scm.model.ScmLogModifyLog">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="category" column="category" jdbcType="VARCHAR"/>
+        <result property="modifier" column="modifier" jdbcType="VARCHAR"/>
+        <result property="categoryId" column="categoryId" jdbcType="VARCHAR"/>
+        <result property="filedName" column="filedName" jdbcType="VARCHAR"/>
+        <result property="modifiedTime" column="modifiedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmLogModifyLog">
+		INSERT INTO scm_log_modifylog
+		(id,category,modifier,categoryId,filedName,modifiedTime)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{filedName,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP})
+	</insert>
+
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmLogModifyLog">
+		SELECT * FROM scm_log_modifylog 
+		WHERE 
+		id=#{id}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmLogModifyLog">
+        SELECT * FROM scm_log_modifylog
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY modifiedTime DESC
+        </if>
+    </select>
+
+
+    <update id="update" parameterType="com.winway.scm.model.ScmLogModifyLog">
+		UPDATE scm_log_modifylog SET
+		category=#{category,jdbcType=VARCHAR},
+		modifier=#{modifier,jdbcType=VARCHAR},
+		categoryId=#{categoryId,jdbcType=VARCHAR},
+		filedName=#{filedName,jdbcType=VARCHAR},
+		modifiedTime=#{modifiedTime,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_log_modifylog 
+		WHERE
+		id=#{id}
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmXsEveryDayContractDao">
+    <resultMap id="ScmXsEveryDayContract" type="com.winway.scm.model.ScmXsEveryDayContract">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="ownerName" column="ownerName" jdbcType="VARCHAR"/>
+        <result property="dealer" column="dealer" jdbcType="VARCHAR"/>
+        <result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+        <result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
+        <result property="consignee" column="consignee" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="marketingWay" column="marketingWay" jdbcType="VARCHAR"/>
+        <result property="shipAddress" column="shipAddress" jdbcType="VARCHAR"/>
+        <result property="payType" column="payType" jdbcType="VARCHAR"/>
+        <result property="signTheAddress" column="signTheAddress" jdbcType="VARCHAR"/>
+        <result property="specialOpinion" column="specialOpinion" jdbcType="VARCHAR"/>
+        <result property="YUnit" column="YUnit" jdbcType="VARCHAR"/>
+        <result property="YAddress" column="YAddress" jdbcType="VARCHAR"/>
+        <result property="YOpenBank" column="YOpenBank" jdbcType="VARCHAR"/>
+        <result property="YDutyCode" column="YDutyCode" jdbcType="VARCHAR"/>
+        <result property="YBankCode" column="YBankCode" jdbcType="VARCHAR"/>
+        <result property="YPhone" column="YPhone" jdbcType="VARCHAR"/>
+        <result property="YPostcode" column="YPostcode" jdbcType="VARCHAR"/>
+        <result property="JUnit" column="JUnit" jdbcType="VARCHAR"/>
+        <result property="JAddress" column="JAddress" jdbcType="VARCHAR"/>
+        <result property="JOpenBank" column="JOpenBank" jdbcType="VARCHAR"/>
+        <result property="JBankCode" column="JBankCode" jdbcType="VARCHAR"/>
+        <result property="JDutyCode" column="JDutyCode" jdbcType="VARCHAR"/>
+        <result property="JPhone" column="JPhone" jdbcType="VARCHAR"/>
+        <result property="JPostcode" column="JPostcode" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="DealerClauseId" column="DealerClauseId" jdbcType="VARCHAR"/>
+        <result property="reduceContractTime" column="reduceContractTime" jdbcType="NUMERIC"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="isDelete" column="isDelete" jdbcType="VARCHAR"/>
+        <result property="agreementSummaryId" column="agreementSummaryId" jdbcType="VARCHAR"/>
+		<result property="sendProductDate" column="sendProductDate" jdbcType="DATE"/>
+		<result property="entryPeople" column="entryPeople" jdbcType="VARCHAR"/>
+		<result property="entryDate" column="entryDate" jdbcType="DATE"/>
+     </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmXsEveryDayContract">
+		INSERT INTO SCM_XS_EveryDayContract
+		(id,ownerName,dealer,commerceFirstId,contractCode,consignee,phone,marketingWay,shipAddress,payType,signTheAddress,specialOpinion,YUnit,YAddress,YOpenBank,YDutyCode,YBankCode,YPhone,YPostcode,JUnit,JAddress,JOpenBank,JBankCode,JDutyCode,JPhone,JPostcode,ownerId,DealerClauseId,reduceContractTime,approvalId,approvalState,dateOfSigning,isDelete,agreementSummaryId,sendProductDate,entryPeople,entryDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR}, #{dealer,jdbcType=VARCHAR}, #{commerceFirstId,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, #{consignee,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{marketingWay,jdbcType=VARCHAR}, #{shipAddress,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, #{signTheAddress,jdbcType=VARCHAR}, #{specialOpinion,jdbcType=VARCHAR}, #{YUnit,jdbcType=VARCHAR}, #{YAddress,jdbcType=VARCHAR}, #{YOpenBank,jdbcType=VARCHAR}, #{YDutyCode,jdbcType=VARCHAR}, #{YBankCode,jdbcType=VARCHAR}, #{YPhone,jdbcType=VARCHAR}, #{YPostcode,jdbcType=VARCHAR}, #{JUnit,jdbcType=VARCHAR}, #{JAddress,jdbcType=VARCHAR}, #{JOpenBank,jdbcType=VARCHAR}, #{JBankCode,jdbcType=VARCHAR}, #{JDutyCode,jdbcType=VARCHAR}, #{JPhone,jdbcType=VARCHAR}, #{JPostcode,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{DealerClauseId,jdbcType=VARCHAR}, #{reduceContractTime,jdbcType=NUMERIC}, #{approvalId,jdbcType=VARCHAR}, #{approvalState ,jdbcType=VARCHAR},#{dateOfSigning,jdbcType=TIMESTAMP},#{isDelete,jdbcType=VARCHAR},#{agreementSummaryId,jdbcType=VARCHAR},#{sendProductDate,jdbcType=DATE},#{entryPeople,jdbcType=VARCHAR},#{entryDate,jdbcType=DATE} )
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmXsEveryDayContract">
+		SELECT * FROM SCM_XS_EveryDayContract 
+		WHERE 
+		id=#{id}
+	</select>
+    <select id="getByApplyId" parameterType="java.lang.String" resultMap="ScmXsEveryDayContract">
+		SELECT * FROM SCM_XS_EveryDayContract 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmXsEveryDayContract">
+        SELECT * FROM SCM_XS_EveryDayContract
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmXsEveryDayContract">
+		UPDATE SCM_XS_EveryDayContract SET
+		ownerName=#{ownerName,jdbcType=VARCHAR},
+		dealer=#{dealer,jdbcType=VARCHAR},
+		commerceFirstId=#{commerceFirstId,jdbcType=VARCHAR},
+		contractCode=#{contractCode,jdbcType=VARCHAR},
+		consignee=#{consignee,jdbcType=VARCHAR},
+		phone=#{phone,jdbcType=VARCHAR},
+		marketingWay=#{marketingWay,jdbcType=VARCHAR},
+		shipAddress=#{shipAddress,jdbcType=VARCHAR},
+		payType=#{payType,jdbcType=VARCHAR},
+		signTheAddress=#{signTheAddress,jdbcType=VARCHAR},
+		specialOpinion=#{specialOpinion,jdbcType=VARCHAR},
+		YUnit=#{YUnit,jdbcType=VARCHAR},
+		YAddress=#{YAddress,jdbcType=VARCHAR},
+		YOpenBank=#{YOpenBank,jdbcType=VARCHAR},
+		YDutyCode=#{YDutyCode,jdbcType=VARCHAR},
+		YBankCode=#{YBankCode,jdbcType=VARCHAR},
+		YPhone=#{YPhone,jdbcType=VARCHAR},
+		YPostcode=#{YPostcode,jdbcType=VARCHAR},
+		JUnit=#{JUnit,jdbcType=VARCHAR},
+		JAddress=#{JAddress,jdbcType=VARCHAR},
+		JOpenBank=#{JOpenBank,jdbcType=VARCHAR},
+		JBankCode=#{JBankCode,jdbcType=VARCHAR},
+		JDutyCode=#{JDutyCode,jdbcType=VARCHAR},
+		JPhone=#{JPhone,jdbcType=VARCHAR},
+		JPostcode=#{JPostcode,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		DealerClauseId=#{DealerClauseId,jdbcType=VARCHAR},
+		reduceContractTime=#{reduceContractTime,jdbcType=NUMERIC},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		dateOfSigning=#{dateOfSigning,jdbcType=TIMESTAMP},
+		isDelete=#{isDelete,jdbcType=VARCHAR},
+		agreementSummaryId=#{agreementSummaryId,jdbcType=VARCHAR},
+		sendProductDate=#{sendProductDate,jdbcType=DATE},
+		entryPeople=#{entryPeople,jdbcType=DATE},
+		entryDate=#{entryDate,jdbcType=DATE}
+		WHERE
+		id=#{id}
+	</update>
+
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_XS_EveryDayContract 
+		WHERE
+		id=#{id}
+	</delete>
+
+    <select id="getContractByApprovalId" parameterType="java.lang.String" resultMap="ScmXsEveryDayContract">
+		SELECT
+			*
+		FROM
+			scm_xs_everydaycontract
+		WHERE
+			approvalId = #{approvalId}
+	</select>
+
+
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjProductFirstDao">
+	<resultMap id="ScmZsjProductFirst" type="com.winway.scm.model.ScmZsjProductFirst">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="supplierId" column="supplierId" jdbcType="VARCHAR"/>
+		<result property="supplier" column="supplier" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="approvalValidity" column="approvalValidity" jdbcType="TIMESTAMP"/>
+		<result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+		<result property="gmp" column="gmp" jdbcType="VARCHAR"/>
+		<result property="gmpValidity" column="gmpValidity" jdbcType="TIMESTAMP"/>
+		<result property="startBatch" column="startBatch" jdbcType="VARCHAR"/>
+		<result property="qualityStandard" column="qualityStandard" jdbcType="VARCHAR"/>
+		<result property="length" column="length" jdbcType="NUMERIC"/>
+		<result property="wide" column="wide" jdbcType="NUMERIC"/>
+		<result property="high" column="high" jdbcType="NUMERIC"/>
+		<result property="volume" column="volume" jdbcType="NUMERIC"/>
+		<result property="roughWeight" column="roughWeight" jdbcType="NUMERIC"/>
+		<result property="cartonBarcode" column="cartonBarcode" jdbcType="VARCHAR"/>
+		<result property="smallBarcode" column="smallBarcode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjProductFirst">
+		INSERT INTO SCM_ZSJ_ProductFirst
+		(id,productId,ownerId,approvalId,approvalState,supplierId,supplier,approvalCode,approvalValidity,businessScope,gmp,gmpValidity,startBatch,qualityStandard,length,wide,high,volume,roughWeight,cartonBarcode,smallBarcode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{approvalCode,jdbcType=VARCHAR}, #{approvalValidity,jdbcType=TIMESTAMP}, #{businessScope,jdbcType=VARCHAR}, #{gmp,jdbcType=VARCHAR}, #{gmpValidity,jdbcType=TIMESTAMP}, #{startBatch,jdbcType=VARCHAR}, #{qualityStandard,jdbcType=VARCHAR}, #{length,jdbcType=NUMERIC}, #{wide,jdbcType=NUMERIC}, #{high,jdbcType=NUMERIC}, #{volume,jdbcType=NUMERIC}, #{roughWeight,jdbcType=NUMERIC}, #{cartonBarcode,jdbcType=VARCHAR}, #{smallBarcode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="isSave"   parameterType="java.lang.String" resultMap="ScmZsjProductFirst">
+		SELECT * FROM SCM_ZSJ_ProductFirst 
+		WHERE 
+		<if test="productId!=null">
+			productId=#{productId} and 
+		</if>
+		ownerId=#{ownerId} and supplierId=#{supplierId} 
+	</select>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjProductFirst">
+		SELECT * FROM SCM_ZSJ_ProductFirst 
+		WHERE 
+		id=#{id}
+	</select>
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmZsjProductFirst">
+		SELECT * FROM SCM_ZSJ_ProductFirst 
+		WHERE 
+		id=#{id}
+	</select>
+	<select id="getProductFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmZsjProductFirst">
+		SELECT * FROM SCM_ZSJ_ProductFirst 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+	<select id="getProductFirstByOwnerIdAndProductIdAndSupplerId"   parameterType="java.lang.String" resultMap="ScmZsjProductFirst">
+		SELECT * FROM SCM_ZSJ_ProductFirst 
+		WHERE 
+		ownerId=#{ownerId} and supplierId=#{supplierId} and productId=#{productId}
+	</select>
+	
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjProductFirst">
+		 SELECT * FROM (  SELECT a.id,a.productId,a.ownerId,a.approvalId,a.approvalState,a.supplierId,a.supplier,a.approvalCode,a.approvalValidity,
+		 a.businessScope,a.gmp,a.gmpValidity,a.startBatch,a.qualityStandard,a.length,a.wide,a.high,a.volume,a.roughWeight,a.cartonBarcode,
+		 a.smallBarcode,b.productName,b.ProductLineId,b.ProductLineName,b.productCode,b.commonName,b.productState,b.AgentTypeId,b.AgentType,
+		 b.unit,b.OTC,b.traceCode,b.MedicineTypeId,b.MedicineType,b.medicineClassifyId,b.medicineClassify,b.KeepingCondition,b.suggestWarehouse,
+		 b.supplierName,b.manufacturer,b.InventoryCode,b.operatorName, b.operatorDate FROM SCM_ZSJ_ProductFirst a LEFT JOIN scm_zsj_product b ON b.id=a.productId ) c 		
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+    </select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjProductFirst">
+		UPDATE SCM_ZSJ_ProductFirst SET
+		productId=#{productId,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		supplierId=#{supplierId,jdbcType=VARCHAR},
+		supplier=#{supplier,jdbcType=VARCHAR},
+		approvalCode=#{approvalCode,jdbcType=VARCHAR},
+		approvalValidity=#{approvalValidity,jdbcType=TIMESTAMP},
+		businessScope=#{businessScope,jdbcType=VARCHAR},
+		gmp=#{gmp,jdbcType=VARCHAR},
+		gmpValidity=#{gmpValidity,jdbcType=TIMESTAMP},
+		startBatch=#{startBatch,jdbcType=VARCHAR},
+		qualityStandard=#{qualityStandard,jdbcType=VARCHAR},
+		length=#{length,jdbcType=NUMERIC},
+		wide=#{wide,jdbcType=NUMERIC},
+		high=#{high,jdbcType=NUMERIC},
+		volume=#{volume,jdbcType=NUMERIC},
+		roughWeight=#{roughWeight,jdbcType=NUMERIC},
+		cartonBarcode=#{cartonBarcode,jdbcType=VARCHAR},
+		smallBarcode=#{smallBarcode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_ZSJ_ProductFirst 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

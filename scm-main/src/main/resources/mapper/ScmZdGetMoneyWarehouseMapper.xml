@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZdGetMoneyWarehouseDao">
+	<resultMap id="ScmZdGetMoneyWarehouse" type="com.winway.scm.model.ScmZdGetMoneyWarehouse">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="getMoneyWarehouse" column="getMoneyWarehouse" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZdGetMoneyWarehouse">
+		INSERT INTO scm_zd_getmoneywarehouse
+		(id,getMoneyWarehouse,code,memo,createPersion,createDate,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{getMoneyWarehouse,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR},now(), #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZdGetMoneyWarehouse">
+		SELECT * FROM scm_zd_getmoneywarehouse 
+		WHERE 
+		id=#{id}
+	</select>
+	<select id="getByNameAndCodeOrId"   parameterType="java.lang.String" resultMap="ScmZdGetMoneyWarehouse">
+		SELECT * FROM scm_zd_getmoneywarehouse 
+		WHERE 
+		<if test="id!=null">
+			id!=#{id} and
+		</if>
+		  ownerId=#{ownerId} and 
+		(getMoneyWarehouse=#{getMoneyWarehouse} or code=#{code})
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZdGetMoneyWarehouse">
+		SELECT * FROM scm_zd_getmoneywarehouse
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZdGetMoneyWarehouse">
+		UPDATE scm_zd_getmoneywarehouse SET
+		getMoneyWarehouse=#{getMoneyWarehouse,jdbcType=VARCHAR},
+		code=#{code,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=now(),
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_zd_getmoneywarehouse 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

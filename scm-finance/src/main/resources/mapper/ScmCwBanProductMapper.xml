@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwBanProductDao">
+	<resultMap id="ScmCwBanProduct" type="com.winway.scm.model.ScmCwBanProduct">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="setPersion" column="setPersion" jdbcType="VARCHAR"/>
+		<result property="setTime" column="setTime" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwBanProduct">
+		INSERT INTO SCM_CW_BanProduct
+		(id,productId,productCode,productName,productState,setPersion,setTime,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{setPersion,jdbcType=VARCHAR}, #{setTime,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwBanProduct">
+		SELECT * FROM SCM_CW_BanProduct 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwBanProduct">
+		SELECT * FROM SCM_CW_BanProduct
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwBanProduct">
+		UPDATE SCM_CW_BanProduct SET
+		productId=#{productId,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		setPersion=#{setPersion,jdbcType=VARCHAR},
+		setTime=#{setTime,jdbcType=TIMESTAMP},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CW_BanProduct 
+		WHERE
+		id=#{id}
+	</delete>
+
+	<select id="getByProductId"   parameterType="java.lang.String" resultMap="ScmCwBanProduct">
+		SELECT * FROM SCM_CW_BanProduct
+		WHERE
+		productId=#{productId}
+	</select>
+	
+	
+</mapper>

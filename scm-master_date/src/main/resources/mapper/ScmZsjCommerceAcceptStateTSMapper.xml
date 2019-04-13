@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceAcceptStateTSDao">
+	<resultMap id="ScmZsjCommerceAcceptStateTS" type="com.winway.scm.model.ScmZsjCommerceAcceptStateTS">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="acceptState" column="acceptState" jdbcType="VARCHAR"/>
+		<result property="effectiveDate" column="effectiveDate" jdbcType="TIMESTAMP"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceAcceptStateTS">
+		INSERT INTO Scm_Zsj_CommerceAcceptStateTS
+		(id,commerceId,commerceCode,acceptState,effectiveDate,memo,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{acceptState,jdbcType=VARCHAR}, #{effectiveDate,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerceAcceptStateTS">
+		SELECT * FROM Scm_Zsj_CommerceAcceptStateTS 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceAcceptStateTS">
+		SELECT * FROM Scm_Zsj_CommerceAcceptStateTS
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceAcceptStateTS">
+		UPDATE Scm_Zsj_CommerceAcceptStateTS SET
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		acceptState=#{acceptState,jdbcType=VARCHAR},
+		effectiveDate=#{effectiveDate,jdbcType=TIMESTAMP},
+		memo=#{memo,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Zsj_CommerceAcceptStateTS 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.hotent</groupId>
+		<artifactId>x7</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>scm</artifactId>
+	<name>scm</name>
+	<description>scm</description>
+	<packaging>pom</packaging>
+	<modules>
+		<module>scm-main</module>
+		<module>scm-finance</module>
+		<module>scm-purchase</module>
+		<module>scm-procurement</module>
+    	<module>scm-master_date</module>
+    	<module>scm-market</module>
+    	<module>scm-start</module>
+    	<module>scm-shipments</module>
+        <module>erueka</module>
+    </modules>
+</project>

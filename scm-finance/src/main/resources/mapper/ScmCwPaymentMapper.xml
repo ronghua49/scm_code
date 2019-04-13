@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwPaymentDao">
+	<resultMap id="ScmCwPayment" type="com.winway.scm.model.ScmCwPayment">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="openBank" column="openBank" jdbcType="VARCHAR"/>
+		<result property="bankCode" column="bankCode" jdbcType="VARCHAR"/>
+		<result property="dutyParagraph" column="dutyParagraph" jdbcType="VARCHAR"/>
+		<result property="paymentType" column="paymentType" jdbcType="VARCHAR"/>
+		<result property="deductMoney" column="deductMoney" jdbcType="NUMERIC"/>
+		<result property="payment" column="payment" jdbcType="NUMERIC"/>
+		<result property="due" column="due" jdbcType="NUMERIC"/>
+		<result property="applyPaymentDate" column="applyPaymentDate" jdbcType="TIMESTAMP"/>
+		<result property="foreignCurrency" column="foreignCurrency" jdbcType="NUMERIC"/>
+		<result property="dueForeignCurrency" column="dueForeignCurrency" jdbcType="NUMERIC"/>
+		<result property="purchasingAgent" column="purchasingAgent" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwPayment">
+		INSERT INTO SCM_CW_Payment
+		(id,commerceId,commerceCode,commerceName,openBank,bankCode,dutyParagraph,paymentType,deductMoney,payment,due,applyPaymentDate,foreignCurrency,dueForeignCurrency,purchasingAgent,memo,ownerId,approvalId,approvalState)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, #{dutyParagraph,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, #{deductMoney,jdbcType=NUMERIC}, #{payment,jdbcType=NUMERIC}, #{due,jdbcType=NUMERIC}, #{applyPaymentDate,jdbcType=TIMESTAMP}, #{foreignCurrency,jdbcType=NUMERIC}, #{dueForeignCurrency,jdbcType=NUMERIC}, #{purchasingAgent,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwPayment">
+		SELECT * FROM SCM_CW_Payment 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwPayment">
+		SELECT * FROM SCM_CW_Payment
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwPayment">
+		UPDATE SCM_CW_Payment SET
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		openBank=#{openBank,jdbcType=VARCHAR},
+		bankCode=#{bankCode,jdbcType=VARCHAR},
+		dutyParagraph=#{dutyParagraph,jdbcType=VARCHAR},
+		paymentType=#{paymentType,jdbcType=VARCHAR},
+		deductMoney=#{deductMoney,jdbcType=NUMERIC},
+		payment=#{payment,jdbcType=NUMERIC},
+		due=#{due,jdbcType=NUMERIC},
+		applyPaymentDate=#{applyPaymentDate,jdbcType=TIMESTAMP},
+		foreignCurrency=#{foreignCurrency,jdbcType=NUMERIC},
+		dueForeignCurrency=#{dueForeignCurrency,jdbcType=NUMERIC},
+		purchasingAgent=#{purchasingAgent,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CW_Payment 
+		WHERE
+		id=#{id}
+	</delete>
+	<select id="findByApprovalId"   parameterType="java.lang.String" resultMap="ScmCwPayment">
+		SELECT * FROM SCM_CW_Payment 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+</mapper>

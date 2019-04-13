@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmXsAgreementListMasterDao">
+	<resultMap id="ScmXsAgreementListMaster" type="com.winway.scm.model.ScmXsAgreementListMaster">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="MasterCode" column="MasterCode" jdbcType="VARCHAR"/>
+		<result property="isEffect" column="isEffect" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmXsAgreementListMaster">
+		INSERT INTO SCM_XS_AgreementListMaster
+		(id,businessDivision,businessDivisionId,ownerId,approvalId,approvalState,MasterCode,isEffect)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{MasterCode,jdbcType=VARCHAR},#{isEffect,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsAgreementListMaster">
+		SELECT * FROM SCM_XS_AgreementListMaster 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getSupplierFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmXsAgreementListMaster">
+		SELECT * FROM SCM_XS_AgreementListMaster 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmXsAgreementListMaster">
+		SELECT * FROM SCM_XS_AgreementListMaster
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmXsAgreementListMaster">
+		UPDATE SCM_XS_AgreementListMaster SET
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		MasterCode=#{MasterCode,jdbcType=VARCHAR},
+		isEffect=#{isEffect,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<update id="updateIsEffect" parameterType="com.winway.scm.model.ScmXsAgreementListMaster">
+		UPDATE SCM_XS_AgreementListMaster SET
+		isEffect=0
+		WHERE
+		businessDivisionId=#{arg0}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_XS_AgreementListMaster 
+		WHERE
+		id=#{id}
+	</delete>
+	
+</mapper>

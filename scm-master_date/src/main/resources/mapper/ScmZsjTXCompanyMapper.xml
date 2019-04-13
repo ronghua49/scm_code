@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjTXCompanyDao">
+	<resultMap id="ScmZsjTXCompany" type="com.winway.scm.model.ScmZsjTXCompany">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="address" column="address" jdbcType="VARCHAR"/>
+		<result property="openBank" column="openBank" jdbcType="VARCHAR"/>
+		<result property="bankCode" column="bankCode" jdbcType="VARCHAR"/>
+		<result property="dutyParagraph" column="dutyParagraph" jdbcType="VARCHAR"/>
+		<result property="phone" column="phone" jdbcType="VARCHAR"/>
+		<result property="postcode" column="postcode" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjTXCompany">
+		INSERT INTO SCM_ZSJ_TXCompany
+		(name,address,openBank,bankCode,dutyParagraph,phone,postcode,id,ownerId)
+		VALUES 
+		(#{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, #{dutyParagraph,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjTXCompany">
+		SELECT * FROM SCM_ZSJ_TXCompany 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByOwnerId"   parameterType="java.lang.String" resultMap="ScmZsjTXCompany">
+		SELECT * FROM SCM_ZSJ_TXCompany 
+		WHERE 
+		ownerId=#{ownerId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjTXCompany">
+		SELECT * FROM SCM_ZSJ_TXCompany
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjTXCompany">
+		UPDATE SCM_ZSJ_TXCompany SET
+		name=#{name,jdbcType=VARCHAR},
+		address=#{address,jdbcType=VARCHAR},
+		openBank=#{openBank,jdbcType=VARCHAR},
+		bankCode=#{bankCode,jdbcType=VARCHAR},
+		dutyParagraph=#{dutyParagraph,jdbcType=VARCHAR},
+		phone=#{phone,jdbcType=VARCHAR},
+		postcode=#{postcode,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_ZSJ_TXCompany 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

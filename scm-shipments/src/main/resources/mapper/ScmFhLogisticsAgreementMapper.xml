@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhLogisticsAgreementDao">
+	<resultMap id="ScmFhLogisticsAgreement" type="com.winway.scm.model.ScmFhLogisticsAgreement">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="shippedTo" column="shippedTo" jdbcType="VARCHAR"/>
+		<result property="destination" column="destination" jdbcType="VARCHAR"/>
+		<result property="maxArrivalTime" column="maxArrivalTime" jdbcType="NUMERIC"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmFhLogisticsAgreement">
+		INSERT INTO SCM_FH_LogisticsAgreement
+		(id,shippedTo,destination,maxArrivalTime,memo,createPersion,createDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{shippedTo,jdbcType=VARCHAR}, #{destination,jdbcType=VARCHAR}, #{maxArrivalTime,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR}, now())
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhLogisticsAgreement">
+		SELECT * FROM SCM_FH_LogisticsAgreement 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmFhLogisticsAgreement">
+		SELECT * FROM SCM_FH_LogisticsAgreement
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmFhLogisticsAgreement">
+		UPDATE SCM_FH_LogisticsAgreement SET
+		shippedTo=#{shippedTo,jdbcType=VARCHAR},
+		destination=#{destination,jdbcType=VARCHAR},
+		maxArrivalTime=#{maxArrivalTime,jdbcType=NUMERIC},
+		memo=#{memo,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=now()
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_FH_LogisticsAgreement 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

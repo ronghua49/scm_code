@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhShipmentsControlLogDao">
+	<resultMap id="ScmFhShipmentsControlLog" type="com.winway.scm.model.ScmFhShipmentsControlLog">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+		<result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
+		<result property="operatormemo" column="operatormemo" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsControlLog">
+		INSERT INTO SCM_FH_ShipmentsControlLog
+		(id,operatorName,operatorDate,operatormemo,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{operatorDate,jdbcType=TIMESTAMP}, #{operatormemo,jdbcType=VARCHAR},#{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhShipmentsControlLog">
+		SELECT * FROM SCM_FH_ShipmentsControlLog 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsControlLog">
+		SELECT * FROM SCM_FH_ShipmentsControlLog
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmFhShipmentsControlLog">
+		UPDATE SCM_FH_ShipmentsControlLog SET
+		operatorName=#{operatorName,jdbcType=VARCHAR},
+		operatorDate=#{operatorDate,jdbcType=TIMESTAMP},
+		operatormemo=#{operatormemo,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_FH_ShipmentsControlLog 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

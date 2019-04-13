@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwPaymentOrderDao">
+	<resultMap id="ScmCwPaymentOrder" type="com.winway.scm.model.ScmCwPaymentOrder">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="paymentId" column="paymentId" jdbcType="VARCHAR"/>
+		<result property="proOrderId" column="proOrderId" jdbcType="VARCHAR"/>
+		<result property="proOrderCode" column="proOrderCode" jdbcType="VARCHAR"/>
+		<result property="speciesSum" column="speciesSum" jdbcType="NUMERIC"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="price" column="price" jdbcType="NUMERIC"/>
+		<result property="orderDate" column="orderDate" jdbcType="TIMESTAMP"/>
+		<result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
+		<result property="getMoneyWarehous" column="getMoneyWarehous" jdbcType="VARCHAR"/>
+		
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwPaymentOrder">
+		INSERT INTO SCM_CW_PaymentOrder
+		(id,paymentId,proOrderId,proOrderCode,speciesSum,productSum,price,orderDate,contractCode,getMoneyWarehous)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{paymentId,jdbcType=VARCHAR}, #{proOrderId,jdbcType=VARCHAR}, #{proOrderCode,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, #{productSum,jdbcType=NUMERIC}, #{price,jdbcType=NUMERIC}, #{orderDate,jdbcType=TIMESTAMP}, #{contractCode,jdbcType=VARCHAR}, #{getMoneyWarehous,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwPaymentOrder">
+		SELECT * FROM SCM_CW_PaymentOrder 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwPaymentOrder">
+		SELECT * FROM SCM_CW_PaymentOrder
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwPaymentOrder">
+		UPDATE SCM_CW_PaymentOrder SET
+		paymentId=#{paymentId,jdbcType=VARCHAR},
+		proOrderId=#{proOrderId,jdbcType=VARCHAR},
+		proOrderCode=#{proOrderCode,jdbcType=VARCHAR},
+		speciesSum=#{speciesSum,jdbcType=NUMERIC},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		price=#{price,jdbcType=NUMERIC},
+		orderDate=#{orderDate,jdbcType=TIMESTAMP},
+		contractCode=#{contractCode,jdbcType=VARCHAR},
+		getMoneyWarehous=#{getMoneyWarehous,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CW_PaymentOrder 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM SCM_CW_PaymentOrder
+	    WHERE
+	    paymentId=#{paymentId}
+	</delete>    
+	
+	<select id="getScmCwPaymentOrderList" resultMap="ScmCwPaymentOrder">
+	    SELECT *
+	    FROM SCM_CW_PaymentOrder 
+	    WHERE paymentId=#{paymentId}
+	</select>
+	
+</mapper>

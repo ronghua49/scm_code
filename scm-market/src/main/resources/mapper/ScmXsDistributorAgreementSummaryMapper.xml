@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmXsDistributorAgreementSummaryDao">
+	<resultMap id="ScmXsDistributorAgreementSummary" type="com.winway.scm.model.ScmXsDistributorAgreementSummary">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="Province" column="Province" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="agreementSummaryCode" column="agreementSummaryCode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmXsDistributorAgreementSummary">
+		INSERT INTO SCM_XS_DistributorAgreementSummary
+		(id,businessDivision,Province,businessDivisionId,provinceId,approvalId,approvalState,ownerId,agreementSummaryCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{Province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{agreementSummaryCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsDistributorAgreementSummary">
+		SELECT * FROM SCM_XS_DistributorAgreementSummary 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getSupplierFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmXsDistributorAgreementSummary">
+		SELECT * FROM SCM_XS_DistributorAgreementSummary 
+		WHERE 
+		approvalId=#{approvalId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmXsDistributorAgreementSummary">
+		SELECT * FROM SCM_XS_DistributorAgreementSummary
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmXsDistributorAgreementSummary">
+		UPDATE SCM_XS_DistributorAgreementSummary SET
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		Province=#{Province,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		agreementSummaryCode=#{agreementSummaryCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_XS_DistributorAgreementSummary 
+		WHERE
+		id=#{id}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmXsBigContractAllotDao">
+	<resultMap id="ScmXsBigContractAllot" type="com.winway.scm.model.ScmXsBigContractAllot">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="specialOpinion" column="specialOpinion" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="bigContractId" column="BigContractId" jdbcType="VARCHAR"/>
+		<result property="reduceContractTime" column="reduceContractTime" jdbcType="VARCHAR"/>
+		<result property="allocationCode" column="allocationCode" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="sendProductDate" column="sendProductDate" jdbcType="TIMESTAMP"/>
+		<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="marketingWay" column="marketingWay" jdbcType="VARCHAR"/>
+		<result property="ownerName" column="ownerName" jdbcType="VARCHAR"/>
+		<result property="dateOfSigning" column="dateOfSigning" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmXsBigContractAllot">
+		INSERT INTO SCM_XS_BigContractAllot
+		(id,specialOpinion,
+		ownerId,BigContractId,
+		reduceContractTime,allocationCode,		
+		approvalId,approvalState,
+		sendProductDate,commerceFirstId,
+		commerceCode,commerceName,
+		marketingWay,ownerName,dateOfSigning,
+		createPersion,createDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{specialOpinion,jdbcType=VARCHAR}, 
+		#{ownerId,jdbcType=VARCHAR}, #{bigContractId,jdbcType=VARCHAR}, 
+		#{reduceContractTime,jdbcType=VARCHAR}, #{allocationCode,jdbcType=VARCHAR}, 
+		#{approvalId,jdbcType=VARCHAR},#{approvalState,jdbcType=VARCHAR}, 
+		#{sendProductDate,jdbcType=TIMESTAMP}, #{commerceFirstId,jdbcType=VARCHAR},
+		#{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=TIMESTAMP}, 
+		#{marketingWay,jdbcType=VARCHAR},#{ownerName,jdbcType=VARCHAR},#{dateOfSigning,jdbcType=TIMESTAMP},
+		#{createPersion,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="getByApplyId"   parameterType="java.lang.String" resultMap="ScmXsBigContractAllot">
+		SELECT * FROM SCM_XS_BigContractAllot 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsBigContractAllot">
+		SELECT * FROM SCM_XS_BigContractAllot 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmXsBigContractAllot">
+		SELECT * FROM SCM_XS_BigContractAllot
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	<select id="getAllotByApprovalId" resultType="com.winway.scm.model.ScmXsBigContractAllot">
+		SELECT * FROM SCM_XS_BigContractAllot
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+	<update id="update" parameterType="com.winway.scm.model.ScmXsBigContractAllot">
+		UPDATE SCM_XS_BigContractAllot SET
+		specialOpinion=#{specialOpinion,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		BigContractId=#{bigContractId,jdbcType=VARCHAR},
+		reduceContractTime=#{reduceContractTime,jdbcType=VARCHAR},
+		allocationCode=#{allocationCode,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		sendProductDate=#{sendProductDate,jdbcType=TIMESTAMP},
+		commerceFirstId=#{commerceFirstId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		marketingWay=#{marketingWay,jdbcType=VARCHAR},
+		ownerName=#{ownerName,jdbcType=VARCHAR},
+		dateOfSigning=#{dateOfSigning,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_XS_BigContractAllot 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

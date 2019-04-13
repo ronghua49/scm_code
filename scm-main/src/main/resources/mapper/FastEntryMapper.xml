@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.FastEntryDao">
+	<resultMap id="FastEntry" type="com.winway.scm.model.FastEntryData">
+		<id property="id" column="ID" jdbcType="VARCHAR"/>
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR"/>
+		<result property="menuId" column="MENU_ID" jdbcType="VARCHAR"/>
+		<result property="menuName" column="MENU_NAME" jdbcType="VARCHAR"/>
+		<result property="url" column="URL" jdbcType="VARCHAR"/>
+		<result property="alias" column="ALIAS" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.FastEntryData">
+		INSERT INTO fms_fastentry
+		(ID,ACCOUNT,MENU_ID,MENU_NAME,URL,ALIAS,CREATE_TIME)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{menuId,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},#{alias,jdbcType=VARCHAR},now())
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="FastEntry">
+		SELECT * FROM fms_fastentry 
+		WHERE 
+		ID=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="FastEntry">
+		SELECT * FROM fms_fastentry
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY ID DESC
+		</if>
+	</select>
+	
+	<select id="queryFastEntryByAccount" parameterType="java.lang.String" resultMap="FastEntry">
+		SELECT id,account,menu_id,menu_name,url,alias FROM fms_fastentry 
+		WHERE 
+		account=#{account,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM fms_fastentry 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<delete id="deleteByAccount" parameterType="java.lang.String">
+		DELETE FROM fms_fastentry 
+		WHERE
+		account=#{account}
+	</delete>
+	
+	<insert id="saveAll">
+    	INSERT INTO fms_fastentry
+            (id, account, menu_id, menu_name,url,alias,create_time)
+    	VALUES
+    	<foreach collection ="list" item="data" separator =",">
+         	(#{data.id}, #{data.account}, #{data.menuId}, #{data.menuName},#{data.url},#{data.alias},now())
+    	</foreach>
+	</insert>
+
+	
+</mapper>
