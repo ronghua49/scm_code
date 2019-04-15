@@ -9,9 +9,9 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import com.google.gson.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
@@ -100,7 +100,7 @@ public class ScmFhShipmentsTaskManagerImpl extends AbstractManagerImpl<String, S
             scmFhShipmentsTask.setSumPrice(subObject.get("sumPrice").getAsDouble());
             scmFhShipmentsTask.setFocusShipmentsMonth(subObject.get("focusShipmentsMonth").getAsString());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            if(!JsonNull.INSTANCE.equals(subObject.get("sendProductDate"))){
+            if(!StringUtils.isEmpty(subObject.get("sendProductDate").getAsString())){
             	scmFhShipmentsTask.setSendProductDate(sdf.parse(subObject.get("sendProductDate").getAsString()));
             }else{
             	scmFhShipmentsTask.setSendProductDate(null);
