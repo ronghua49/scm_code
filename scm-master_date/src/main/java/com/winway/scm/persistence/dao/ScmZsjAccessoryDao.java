@@ -1,4 +1,6 @@
 package com.winway.scm.persistence.dao;
+import java.util.List;
+
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmZsjAccessory;
 
@@ -14,4 +16,8 @@ import com.winway.scm.model.ScmZsjAccessory;
  * </pre>
  */
 public interface ScmZsjAccessoryDao extends MyBatisDao<String, ScmZsjAccessory> {
+
+	void delByMainId(String id);
+	
+	List<ScmZsjAccessory> getByTypeAndDataId(String type,String dataId);
 }

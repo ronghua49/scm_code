@@ -35,7 +35,7 @@ public class ScmXsBigContractProductByUpdateVo implements Serializable{
 	protected String productGauge;
 
 	@ApiModelProperty(value = "件装量")
-	protected int Achange;
+	protected int achage;
 
 	@ApiModelProperty(value = "药品编码")
 	protected String productCode;
@@ -60,6 +60,69 @@ public class ScmXsBigContractProductByUpdateVo implements Serializable{
 
 	@ApiModelProperty(value = "上次发货时间")
 	protected Date lastShipmentDate;
+
+
+	@ApiModelProperty(value = "剂型")
+	protected String AgentType;
+	@ApiModelProperty(value = "厂商")
+	protected String manufacturer;
+	@ApiModelProperty(value = "药品类型")
+	protected String medicineClassify;
+	@ApiModelProperty(value = "营业范围")
+	protected String businessScope;
+	@ApiModelProperty(value = "批准文号")
+	protected String approvalCode;
+
+	@ApiModelProperty(value = "字码")
+	protected String code;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getApprovalCode() {
+		return approvalCode;
+	}
+
+	public void setApprovalCode(String approvalCode) {
+		this.approvalCode = approvalCode;
+	}
+
+	public String getAgentType() {
+		return AgentType;
+	}
+
+	public void setAgentType(String agentType) {
+		AgentType = agentType;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getMedicineClassify() {
+		return medicineClassify;
+	}
+
+	public void setMedicineClassify(String medicineClassify) {
+		this.medicineClassify = medicineClassify;
+	}
+
+	public String getBusinessScope() {
+		return businessScope;
+	}
+
+	public void setBusinessScope(String businessScope) {
+		this.businessScope = businessScope;
+	}
 
 	public Date getLastShipmentDate() {
 		return lastShipmentDate;
@@ -149,12 +212,12 @@ public class ScmXsBigContractProductByUpdateVo implements Serializable{
 		this.productGauge = productGauge;
 	}
 
-	public int getAchange() {
-		return Achange;
+	public int getAchage() {
+		return achage;
 	}
 
-	public void setAchange(int achange) {
-		this.Achange = achange;
+	public void setAchage(int achage) {
+		this.achage = achage;
 	}
 
 	public String getProductCode() {

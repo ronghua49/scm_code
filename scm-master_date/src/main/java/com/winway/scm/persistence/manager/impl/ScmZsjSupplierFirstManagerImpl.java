@@ -1,51 +1,33 @@
 package com.winway.scm.persistence.manager.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.alibaba.druid.util.StringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.pagehelper.PageHelper;
 import com.hotent.base.dao.MyBatisDao;
+import com.hotent.base.feign.BpmRuntimeFeignService;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
+import com.hotent.base.modelvo.CustomStartResult;
+import com.hotent.base.modelvo.StartFlowParam;
+import com.hotent.base.query.*;
+import com.hotent.base.util.BeanUtils;
+import com.hotent.base.util.UniqueIdUtil;
+import com.mysql.fabric.xmlrpc.base.Data;
 import com.winway.purchase.feign.ScmMasterDateFeignService;
 import com.winway.purchase.util.ContrasUtil;
-import com.winway.scm.model.ScmZsjGMP;
-import com.winway.scm.model.ScmZsjSupplier;
-import com.winway.scm.model.ScmZsjSupplierAccredit;
-import com.winway.scm.model.ScmZsjSupplierBusiness;
-import com.winway.scm.model.ScmZsjSupplierEntruseBook;
-import com.winway.scm.model.ScmZsjSupplierFirst;
-import com.winway.scm.model.ScmZsjSupplierLicence;
-import com.winway.scm.model.ScmZsjSupplierShipAddress;
-import com.winway.scm.model.ScmZsjSupplierWarehouse;
-import com.winway.scm.persistence.dao.ScmZdPromiseBookDao;
-import com.winway.scm.persistence.dao.ScmZsjGMPDao;
-import com.winway.scm.persistence.dao.ScmZsjSupplierAccreditDao;
-import com.winway.scm.persistence.dao.ScmZsjSupplierBusinessDao;
-import com.winway.scm.persistence.dao.ScmZsjSupplierEntruseBookDao;
-import com.winway.scm.persistence.dao.ScmZsjSupplierFirstDao;
-import com.winway.scm.persistence.dao.ScmZsjSupplierLicenceDao;
-import com.winway.scm.persistence.dao.ScmZsjSupplierPromiseBookDao;
-import com.winway.scm.persistence.dao.ScmZsjSupplierShipAddressDao;
-import com.winway.scm.persistence.dao.ScmZsjSupplierWarehouseDao;
-import com.winway.scm.persistence.manager.ScmZsjGMPManager;
-import com.winway.scm.persistence.manager.ScmZsjSupplierAccreditManager;
-import com.winway.scm.persistence.manager.ScmZsjSupplierBusinessManager;
-import com.winway.scm.persistence.manager.ScmZsjSupplierEntruseBookManager;
-import com.winway.scm.persistence.manager.ScmZsjSupplierFirstManager;
-import com.winway.scm.persistence.manager.ScmZsjSupplierLicenceManager;
-import com.winway.scm.persistence.manager.ScmZsjSupplierManager;
-import com.winway.scm.persistence.manager.ScmZsjSupplierShipAddressManager;
-import com.winway.scm.persistence.manager.ScmZsjSupplierWarehouseManager;
+import com.winway.scm.model.*;
+import com.winway.scm.persistence.dao.*;
+import com.winway.scm.persistence.manager.*;
+
+import org.springframework.aop.ThrowsAdvice;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
- * 
  * <pre>
- *  
+ *
  * 描述：供应商首营记录表 处理实现类
  * 构建组：x7
  * 作者:原浩
@@ -60,6 +42,8 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 	@Resource
 	ScmZsjSupplierFirstDao scmZsjSupplierFirstDao;
 	@Resource
+	ScmZsjSupplierDao scmZsjSupplierDao;
+	@Resource
 	ScmZsjSupplierWarehouseDao scmZsjSupplierWarehouseDao;
 	@Resource
 	ScmZsjSupplierLicenceDao scmZsjSupplierLicenceDao;
@@ -67,8 +51,12 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 	ScmZsjSupplierBusinessDao scmZsjSupplierBusinessDao;
 	@Resource
 	ScmZsjGMPDao scmZsjGMPDao;
+    @Resource
+    ScmZsjAccessoryDao scmZsjAccessoryDao;
 	@Resource
 	ScmZsjSupplierEntruseBookDao scmZsjSupplierEntruseBookDao;
+	@Resource
+	ScmZsjSupplierEntruseBookManager scmZsjSupplierEntruseBookManager;
 	@Resource
 	ScmZsjSupplierShipAddressDao scmZsjSupplierShipAddressDao;
 	@Resource
@@ -88,13 +76,15 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 	@Resource
 	ScmZsjGMPManager scmZsjGMPManager;
 	@Resource
-	ScmZsjSupplierEntruseBookManager scmZsjSupplierEntruseBookManager;
+	ScmZsjAccessoryManagerImpl scmZsjAccessoryManagerImpl;
 	@Resource
 	ScmZsjSupplierAccreditManager scmZsjSupplierAccreditManager;
 	@Resource
 	ScmZsjSupplierShipAddressManager scmZsjSupplierShipAddressManager;
 	@Resource
 	ScmMasterDateFeignService scmMasterDateFeignService;
+	@Resource
+	BpmRuntimeFeignService bpmRuntimeFeignService;
 
 	@Override
 	protected MyBatisDao<String, ScmZsjSupplierFirst> getDao() {
@@ -108,6 +98,9 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 		scmZsjSupplierManager.isExist(scmZsjSupplierFirst.getScmZsjSupplier());
 		super.create(scmZsjSupplierFirst);
 		String pk = scmZsjSupplierFirst.getId();
+		if(scmZsjSupplierFirst.getQualityValidity()!=null && scmZsjSupplierFirst.getQualityValidity().getTime()<=new Date().getTime()) {
+			throw new RuntimeException("药品质量保证协议有效期不可小于今天日期");
+		}
 		// 供应商生产/仓库地址
 		List<ScmZsjSupplierWarehouse> scmZsjSupplierWarehouseList = scmZsjSupplierFirst
 				.getScmZsjSupplierWarehouseList();
@@ -120,6 +113,9 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 		List<ScmZsjSupplierLicence> scmZsjSupplierLicenceList = scmZsjSupplierFirst.getScmZsjSupplierLicenceList();
 
 		for (ScmZsjSupplierLicence scmZsjSupplierLicence : scmZsjSupplierLicenceList) {
+			if (scmZsjSupplierLicence.getValidity()!=null && scmZsjSupplierLicence.getValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("许可证有效期不可小于今天日期");
+			}
 			scmZsjSupplierLicence.setSupplierFirstId(pk);
 			scmZsjSupplierLicenceManager.create(scmZsjSupplierLicence);
 		}
@@ -127,13 +123,23 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 		List<ScmZsjSupplierBusiness> scmZsjSupplierBusinessList = scmZsjSupplierFirst.getScmZsjSupplierBusinessList();
 
 		for (ScmZsjSupplierBusiness scmZsjSupplierBusiness : scmZsjSupplierBusinessList) {
+			if (scmZsjSupplierBusiness.getLicenseValidity()!=null && scmZsjSupplierBusiness.getLicenseValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("营业执照有效期不可小于今天日期");
+			}
+			if (scmZsjSupplierBusiness.getYearReportValidity()!=null && scmZsjSupplierBusiness.getYearReportValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("营业执照年度有效期不可小于今天日期");
+			}
 			scmZsjSupplierBusiness.setSupplierFirstId(pk);
+
 			scmZsjSupplierBusinessManager.create(scmZsjSupplierBusiness);
 		}
 		// 供应商GMP证书信息
 		List<ScmZsjGMP> scmZsjGMPList = scmZsjSupplierFirst.getScmZsjGMPList();
 
 		for (ScmZsjGMP scmZsjGMP : scmZsjGMPList) {
+			if (scmZsjGMP.getValidity()!=null && scmZsjGMP.getValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("GMP证书有效期不可小于今天日期");
+			}
 			scmZsjGMP.setSupplierFirstId(pk);
 			scmZsjGMPManager.create(scmZsjGMP);
 		}
@@ -142,6 +148,12 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 				.getScmZsjSupplierEntruseBookList();
 
 		for (ScmZsjSupplierEntruseBook scmZsjSupplierEntruseBook : scmZsjSupplierEntruseBookList) {
+			if (scmZsjSupplierEntruseBook.getEntrustValidity()!=null && scmZsjSupplierEntruseBook.getEntrustValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("委托书有效期不可小于今天日期");
+			}
+			if (scmZsjSupplierEntruseBook.getIdValidity()!=null && scmZsjSupplierEntruseBook.getIdValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("委托书身份证有效期不可小于今天日期");
+			}
 			scmZsjSupplierEntruseBook.setSupplierFirstId(pk);
 			scmZsjSupplierEntruseBookManager.create(scmZsjSupplierEntruseBook);
 			String entruseId = scmZsjSupplierEntruseBook.getId();
@@ -160,6 +172,15 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 		for (ScmZsjSupplierShipAddress scmZsjSupplierShipAddress : scmZsjSupplierShipAddressList) {
 			scmZsjSupplierShipAddress.setSupplierFirstId(pk);
 			scmZsjSupplierShipAddressManager.create(scmZsjSupplierShipAddress);
+		}
+		
+        //附件
+        List<ScmZsjAccessory> scmZsjAccessoryList = scmZsjSupplierFirst.getScmZsjAccessoryList();
+        for (ScmZsjAccessory scmZsjAccessory : scmZsjAccessoryList) {
+        	scmZsjAccessory.setType("0");
+        	scmZsjAccessory.setUpdateDate(new Date());
+        	scmZsjAccessory.setDateId(pk);
+        	scmZsjAccessoryManagerImpl.create(scmZsjAccessory);
 		}
 	}
 
@@ -216,14 +237,15 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 			List<ScmZsjSupplierAccredit> scmZsjSupplierAccreditList = scmZsjSupplierAccreditDao
 					.getByMainId(scmZsjSupplierEntruseBook.getId());
 			scmZsjSupplierEntruseBook.setScmZsjSupplierAccreditList(scmZsjSupplierAccreditList);
-			;
-			entruseList.add(scmZsjSupplierEntruseBook);
+            entruseList.add(scmZsjSupplierEntruseBook);
 		}
 		scmZsjSupplierFirst.setScmZsjSupplierEntruseBookList(entruseList);
 		// 收货地址
 		List<ScmZsjSupplierShipAddress> scmZsjSupplierShipAddressList = scmZsjSupplierShipAddressDao
 				.getByMainId(entityId);
 		scmZsjSupplierFirst.setScmZsjSupplierShipAddressList(scmZsjSupplierShipAddressList);
+        List<ScmZsjAccessory> byTypeAndDataId = scmZsjAccessoryDao.getByTypeAndDataId("0", entityId);
+        scmZsjSupplierFirst.setScmZsjAccessoryList(byTypeAndDataId);
 		return scmZsjSupplierFirst;
 	}
 
@@ -233,6 +255,9 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 	public void update(ScmZsjSupplierFirst scmZsjSupplierFirst) {
 		super.update(scmZsjSupplierFirst);
 		String id = scmZsjSupplierFirst.getId();
+		if(scmZsjSupplierFirst.getQualityValidity()!=null && scmZsjSupplierFirst.getQualityValidity().getTime()<=new Date().getTime()) {
+			throw new RuntimeException("药品质量保证协议有效期不可小于今天日期");
+		}
 		// 供应商生产/仓库地址
 		List<ScmZsjSupplierWarehouse> list = scmZsjSupplierWarehouseDao.getByMainId(id);
 		scmZsjSupplierWarehouseDao.delByMainId(id);
@@ -274,23 +299,39 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 		}
 		for (ScmZsjSupplierWarehouse scmZsjSupplierWarehouse : scmZsjSupplierWarehouseList) {
 			scmZsjSupplierWarehouse.setSupplierFirstId(id);
+			scmZsjSupplierWarehouse.setId(UniqueIdUtil.getSuid());
 			scmZsjSupplierWarehouseManager.create(scmZsjSupplierWarehouse);
 		}
 		// 供应商许可证信息
 		for (ScmZsjSupplierLicence scmZsjSupplierLicence : scmZsjSupplierLicenceList) {
+			if (scmZsjSupplierLicence.getValidity()!=null && scmZsjSupplierLicence.getValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("许可证有效期不可小于今天日期");
+			}
 			scmZsjSupplierLicence.setSupplierFirstId(id);
+			scmZsjSupplierLicence.setId(UniqueIdUtil.getSuid());
 			scmZsjSupplierLicenceManager.create(scmZsjSupplierLicence);
 		}
 		// 供应商营业执照信息
 		for (ScmZsjSupplierBusiness scmZsjSupplierBusiness : scmZsjSupplierBusinessList) {
+			if (scmZsjSupplierBusiness.getLicenseValidity()!=null && scmZsjSupplierBusiness.getLicenseValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("营业执照有效期不可小于今天日期");
+			}
+			if (scmZsjSupplierBusiness.getYearReportValidity()!=null && scmZsjSupplierBusiness.getYearReportValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("营业执照年度有效期不可小于今天日期");
+			}
 			scmZsjSupplierBusiness.setSupplierFirstId(id);
+			scmZsjSupplierBusiness.setId(UniqueIdUtil.getSuid());
 			scmZsjSupplierBusinessManager.create(scmZsjSupplierBusiness);
 		}
 		// 供应商GMP证书信息
 		scmZsjGMPDao.delByMainId(id);
 		List<ScmZsjGMP> scmZsjGMPList = scmZsjSupplierFirst.getScmZsjGMPList();
 		for (ScmZsjGMP scmZsjGMP : scmZsjGMPList) {
+			if (scmZsjGMP.getValidity()!=null && scmZsjGMP.getValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("GMP证书有效期不可小于今天日期");
+			}
 			scmZsjGMP.setSupplierFirstId(id);
+			scmZsjGMP.setId(UniqueIdUtil.getSuid());
 			scmZsjGMPManager.create(scmZsjGMP);
 		}
 		// 供应商委托书,先删除商业授权销售品种再删
@@ -302,28 +343,37 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 		scmZsjSupplierEntruseBookDao.delByMainId(id);
 		List<ScmZsjSupplierEntruseBook> entruseList = scmZsjSupplierFirst.getScmZsjSupplierEntruseBookList();
 		for (ScmZsjSupplierEntruseBook scmZsjSupplierEntruseBook : entruseList) {
-			String entruseId = scmZsjSupplierEntruseBook.getId();
-
-			List<ScmZsjSupplierAccredit> scmZsjSupplierAccreditList = scmZsjSupplierEntruseBook
-					.getScmZsjSupplierAccreditList();
-
-			for (ScmZsjSupplierAccredit scmZsjSupplierAccredit : scmZsjSupplierAccreditList) {
-				scmZsjSupplierAccredit.setEntrustId(entruseId);
-				scmZsjSupplierAccreditManager.create(scmZsjSupplierAccredit);
+			if (scmZsjSupplierEntruseBook.getEntrustValidity()!=null && scmZsjSupplierEntruseBook.getEntrustValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("委托书有效期不可小于今天日期");
+			}
+			if (scmZsjSupplierEntruseBook.getIdValidity()!=null && scmZsjSupplierEntruseBook.getIdValidity().getTime() <= new Date().getTime()) {
+				throw new RuntimeException("委托书身份证有效期不可小于今天日期");
 			}
 			scmZsjSupplierEntruseBook.setSupplierFirstId(id);
+			scmZsjSupplierEntruseBook.setId(UniqueIdUtil.getSuid());
 			scmZsjSupplierEntruseBookManager.create(scmZsjSupplierEntruseBook);
 		}
 		// 收货地址
 		scmZsjSupplierShipAddressDao.delByMainId(id);
-		List<ScmZsjSupplierShipAddress> scmZsjSupplierShipAddressList = scmZsjSupplierFirst
-				.getScmZsjSupplierShipAddressList();
+		List<ScmZsjSupplierShipAddress> scmZsjSupplierShipAddressList = scmZsjSupplierFirst.getScmZsjSupplierShipAddressList();
 		for (ScmZsjSupplierShipAddress scmZsjSupplierShipAddress : scmZsjSupplierShipAddressList) {
 			scmZsjSupplierShipAddress.setSupplierFirstId(id);
+			scmZsjSupplierShipAddress.setId(UniqueIdUtil.getSuid());
 			scmZsjSupplierShipAddressManager.create(scmZsjSupplierShipAddress);
+		}
+        //附件
+        List<ScmZsjAccessory> scmZsjAccessoryList = scmZsjSupplierFirst.getScmZsjAccessoryList();
+        scmZsjAccessoryDao.delByMainId(id);
+        for (ScmZsjAccessory scmZsjAccessory : scmZsjAccessoryList) {
+        	scmZsjAccessory.setType("0");
+        	scmZsjAccessory.setUpdateDate(new Date());
+        	scmZsjAccessory.setDateId(id);
+        	scmZsjAccessory.setId(UniqueIdUtil.getSuid());
+        	scmZsjAccessoryManagerImpl.create(scmZsjAccessory);
 		}
 	}
 
+	@Transactional
 	@Override
 	public void sendApply(ScmZsjSupplierFirst scmZsjSupplierFirst) {
 		// 验证供应商是否存在
@@ -336,8 +386,21 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 			throw new RuntimeException("当前供应商已经发起审批或审批已经通过,请勿重复提交");
 		}
 		// 调整审批状态,保存审批申请
-		scmZsjSupplierFirst.setApprovalState("1");
+		StartFlowParam startFlowParam = new StartFlowParam("gyssy", "SCM", "approvalId");
+		startFlowParam.setFormType("frame");
+		CustomStartResult customStartResult = null;
 		create(scmZsjSupplierFirst);
+		try {
+			System.out.println("供应商首营申请");
+			customStartResult = bpmRuntimeFeignService.customStart(startFlowParam);
+			String approvalId = customStartResult.getInstId();
+			scmZsjSupplierFirst.setApprovalId(approvalId);
+			scmZsjSupplierFirst.setApprovalState("1");
+			super.update(scmZsjSupplierFirst);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("启动流程失败");
+		}
 
 	}
 
@@ -352,13 +415,25 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 	@Override
 	public void endApply(JsonNode jsonNode) {
 		String approvalId = jsonNode.get("instId").asText();
+		String actionName = jsonNode.get("actionName").asText();
 		ScmZsjSupplierFirst supplierFirstByApprovalId = scmZsjSupplierFirstDao.getSupplierFirstByApprovalId(approvalId);
 		if (supplierFirstByApprovalId == null) {
 			throw new RuntimeException("未查询到业务数据,处理异常");
 		}
-		// 审批状态调整为通过
-		supplierFirstByApprovalId.setApprovalState("2");
-		scmZsjSupplierFirstDao.update(supplierFirstByApprovalId);
+		String endEvent = jsonNode.get("eventType").asText();
+		if ("agree".equals(actionName) && "endEvent".equals(endEvent)) {
+			// 审批状态调整为通过
+			supplierFirstByApprovalId.setApprovalState("2");
+			supplierFirstByApprovalId.setIsPassed("1");
+			scmZsjSupplierFirstDao.update(supplierFirstByApprovalId);
+		} else if ("agree".equals(actionName)) {
+		} else if ("reject".equals(actionName)) {
+		} else if ("backToStart".equals(actionName)) {
+		} else if ("opposeTrans".equals(actionName)) {
+		} else if ("endProcess".equals(actionName)) {
+			supplierFirstByApprovalId.setApprovalState("3");
+			scmZsjSupplierFirstDao.update(supplierFirstByApprovalId);
+		}
 	}
 
 	@Override
@@ -371,6 +446,7 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 		return scmZsjSupplierFirst2;
 	}
 
+	@Transactional
 	@Override
 	public void updateSendApply(ScmZsjSupplierFirst scmZsjSupplierFirst) {
 		ScmZsjSupplierFirst scmZsjSupplierFirst2 = scmZsjSupplierFirstDao.get(scmZsjSupplierFirst.getId());
@@ -379,10 +455,146 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 			throw new RuntimeException("当前数据已经在审批中,不可重复提交");
 		} else {
 			// 修改其他关联性数据
+			StartFlowParam startFlowParam = new StartFlowParam("gyssy", "SCM", "approvalId");
+			startFlowParam.setFormType("frame");
+			CustomStartResult customStartResult = null;
 			update(scmZsjSupplierFirst);
-			scmZsjSupplierFirst.setApprovalState("1");
-			scmZsjSupplierFirstDao.update(scmZsjSupplierFirst);
+			try {
+				System.out.println("供应商首营申请");
+				customStartResult = bpmRuntimeFeignService.customStart(startFlowParam);
+				String approvalId = customStartResult.getInstId();
+				scmZsjSupplierFirst.setApprovalId(approvalId);
+				scmZsjSupplierFirst.setApprovalState("1");
+				super.update(scmZsjSupplierFirst);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("启动流程失败");
+			}
 		}
+	}
+
+	@Override
+	public PageList<ScmZsjCommerce> licenseWaring(QueryFilter queryFilter) {
+		PageBean pageBean = queryFilter.getPageBean();
+		if (BeanUtils.isEmpty(pageBean)) {
+			PageHelper.startPage(1, 2147483647, false);
+		} else {
+			PageHelper.startPage(pageBean.getPage(), pageBean.getPageSize(), pageBean.showTotal());
+		}
+		queryFilter.addFilter("type", "2", QueryOP.EQUAL, FieldRelation.AND);
+		List<ScmZsjCommerce> query = scmZsjSupplierFirstDao.licenseWaring(queryFilter.getParams());
+		return new PageList(query);
+	}
+
+	@Override
+	public PageList<ScmZsjSupplier> gmplist(QueryFilter queryFilter) {
+		PageBean pageBean = queryFilter.getPageBean();
+		if (BeanUtils.isEmpty(pageBean)) {
+			PageHelper.startPage(1, 2147483647, false);
+		} else {
+			PageHelper.startPage(pageBean.getPage(), pageBean.getPageSize(), pageBean.showTotal());
+		}
+		List<ScmZsjSupplier> query = scmZsjSupplierFirstDao.gmplist(queryFilter.getParams());
+		return new PageList(query);
+	}
+
+	@Override
+	public PageList<ScmZsjSupplier> creditlist(QueryFilter queryFilter) {
+		PageBean pageBean = queryFilter.getPageBean();
+		if (BeanUtils.isEmpty(pageBean)) {
+			PageHelper.startPage(1, 2147483647, false);
+		} else {
+			PageHelper.startPage(pageBean.getPage(), pageBean.getPageSize(), pageBean.showTotal());
+		}
+		List<ScmZsjSupplier> query = scmZsjSupplierFirstDao.creditlist(queryFilter.getParams());
+		return new PageList(query);
+	}
+
+	@Override
+	public PageList<ScmZsjSupplier> qlist(QueryFilter queryFilter) {
+		PageBean pageBean = queryFilter.getPageBean();
+		if (BeanUtils.isEmpty(pageBean)) {
+			PageHelper.startPage(1, 2147483647, false);
+		} else {
+			PageHelper.startPage(pageBean.getPage(), pageBean.getPageSize(), pageBean.showTotal());
+		}
+		List<ScmZsjSupplier> query = scmZsjSupplierFirstDao.qlist(queryFilter.getParams());
+		return new PageList(query);
+	}
+
+	@Override
+	public String startOrStop(String id) {
+		ScmZsjSupplierFirst scmZsjSupplierFirst = scmZsjSupplierFirstDao.get(id);
+		if (scmZsjSupplierFirst == null) {
+			throw new RuntimeException("首营数据获取异常");
+		}
+		scmZsjSupplierFirst.setApprovalState("0");
+		scmZsjSupplierFirst.setIsPassed("0");
+		scmZsjSupplierFirstDao.update(scmZsjSupplierFirst);
+		return "0";
+	}
+
+	@Override
+	public boolean isInForce(String supplierId) {
+		ScmZsjSupplier scmZsjSupplier = scmZsjSupplierDao.get(supplierId);
+		ScmZsjSupplierFirst bySupplierId = scmZsjSupplierFirstDao.getBySupplierId(supplierId);
+		if (scmZsjSupplier == null || bySupplierId == null) {
+			throw new RuntimeException("数据错误，没有查询到供应商信息");
+		}
+		Date now = new Date();
+		Date qualityValidity = bySupplierId.getQualityValidity();
+		if (qualityValidity.before(now)) {
+			return false;
+		}
+		List<ScmZsjSupplierLicence> byMainId = scmZsjSupplierLicenceDao.getByMainId(bySupplierId.getId());
+		if (byMainId == null || byMainId.isEmpty()) {
+			throw new RuntimeException("没有查询到许可证信息");
+		}
+		if (byMainId.get(0).getValidity().before(now)) {
+			return false;
+		}
+		List<ScmZsjSupplierBusiness> byMainId1 = scmZsjSupplierBusinessDao.getByMainId(bySupplierId.getId());
+		if (byMainId1 == null || byMainId1.isEmpty()) {
+			throw new RuntimeException("没有查询到营业执照信息");
+		}
+		if (byMainId1.get(0).getLicenseValidity().before(now) || byMainId1.get(0).getYearReportValidity().before(now)) {
+			return false;
+		}
+		List<ScmZsjGMP> byMainId2 = scmZsjGMPDao.getByMainId(bySupplierId.getId());
+		if (byMainId2 == null || byMainId2.isEmpty()) {
+			throw new RuntimeException("没有查询到GMP证书信息");
+		}
+		if (byMainId2.get(0).getValidity().before(now)) {
+			return false;
+		}
+		List<ScmZsjSupplierEntruseBook> byMainId3 = scmZsjSupplierEntruseBookDao.getByMainId(bySupplierId.getId());
+		if (byMainId3 == null || byMainId3.isEmpty()) {
+			throw new RuntimeException("没有查询到委托书信息");
+		}
+		for (ScmZsjSupplierEntruseBook book : byMainId3) {
+			if (book.getEntrustValidity().before(now) || book.getIdValidity().before(now)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public Set<String> getAccreditProCodes(String supplierId) {
+		ScmZsjSupplierFirst bySupplierId = scmZsjSupplierFirstDao.getBySupplierId(supplierId);
+		if (bySupplierId == null) {
+			throw new RuntimeException("数据错误，暂无该供应商的首营数据");
+		}
+		List<ScmZsjSupplierEntruseBook> byMainId = scmZsjSupplierEntruseBookManager
+				.getBySupplierId(bySupplierId.getId());
+		Set<String> codes = new HashSet<>();
+		for (ScmZsjSupplierEntruseBook book : byMainId) {
+			List<ScmZsjSupplierAccredit> scmZsjSupplierAccreditList = book.getScmZsjSupplierAccreditList();
+			for (ScmZsjSupplierAccredit accredit : scmZsjSupplierAccreditList) {
+				codes.add(accredit.getProductCode());
+			}
+		}
+		return codes;
 	}
 
 }

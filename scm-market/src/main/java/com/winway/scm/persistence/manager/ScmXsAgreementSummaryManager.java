@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
 import com.winway.scm.model.ScmXsAgreementSummary;
 
+import java.util.List;
+import java.util.Map;
+
 /**
- * 
- * <pre> 
+ * <pre>
  * 描述：省区协议汇总表 处理接口
  * 构建组：x7
  * 作者:原浩
@@ -15,17 +17,18 @@ import com.winway.scm.model.ScmXsAgreementSummary;
  * 版权：美达开发小组
  * </pre>
  */
-public interface ScmXsAgreementSummaryManager extends Manager<String, ScmXsAgreementSummary>{
+public interface ScmXsAgreementSummaryManager extends Manager<String, ScmXsAgreementSummary> {
 
-	void sendApply(ScmXsAgreementSummary scmXsAgreementSummary);
+    void sendApply(ScmXsAgreementSummary scmXsAgreementSummary);
 
-	void endApply(JsonNode jsonNode);
+    void endApply(JsonNode jsonNode);
 
-	void saveByDealerClause(ScmXsAgreementSummary scmXsAgreementSummary);
+    void saveByDealerClause(ScmXsAgreementSummary scmXsAgreementSummary);
 
-	void saveByAgreement(ScmXsAgreementSummary scmXsAgreementSummary);
+    void saveByAgreement(ScmXsAgreementSummary scmXsAgreementSummary);
 
-	ScmXsAgreementSummary getDealerClauseAndProductDetail(String id);
+    ScmXsAgreementSummary getDealerClauseAndProductDetail(String id);
 
-	
+    // 获取经销商年费
+    List<Map<String, Object>> aunualFee(String businessDivisionId, String provinceId, String year);
 }

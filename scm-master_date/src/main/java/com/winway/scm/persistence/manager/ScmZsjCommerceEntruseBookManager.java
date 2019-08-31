@@ -1,5 +1,7 @@
 package com.winway.scm.persistence.manager;
 
+import java.util.List;
+
 import com.hotent.base.manager.Manager;
 import com.winway.scm.model.ScmZsjCommerceEntruseBook;
 
@@ -15,5 +17,7 @@ import com.winway.scm.model.ScmZsjCommerceEntruseBook;
  * </pre>
  */
 public interface ScmZsjCommerceEntruseBookManager extends Manager<String, ScmZsjCommerceEntruseBook>{
+
+	List<ScmZsjCommerceEntruseBook> getByCommerceFirstId(String id);
 	
 }

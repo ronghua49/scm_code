@@ -1,21 +1,17 @@
 package com.winway.scm.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import javax.annotation.Resource;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.MediaType;
-import com.winway.scm.persistence.manager.ScmFhCommonCarrierManager;
-import com.winway.scm.model.ScmFhCommonCarrier;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.controller.BaseController;
 import com.hotent.base.feign.UCFeignService;
@@ -23,6 +19,14 @@ import com.hotent.base.model.CommonResult;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.StringUtil;
+import com.winway.scm.model.ScmFhCommonCarrier;
+import com.winway.scm.persistence.manager.ScmFhCommonCarrierManager;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+import java.util.Date;
 
 /**
  * 
@@ -86,6 +90,7 @@ public class ScmFhCommonCarrierController extends BaseController{
 		JsonNode user = ucFeignService.getUser(current(), "");
 		String fullname = user.get("fullname").asText();
 		scmFhCommonCarrier.setCreatePersion(fullname);
+		scmFhCommonCarrier.setCreateDate(new Date());
 		if(StringUtil.isEmpty(scmFhCommonCarrier.getId())){
 			scmFhCommonCarrierManager.create(scmFhCommonCarrier);
 		}else{

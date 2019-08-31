@@ -22,6 +22,8 @@ import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.StringUtil;
 
+import java.util.Map;
+
 /**
  * 
  * <pre> 
@@ -129,4 +131,19 @@ public class ScmZsjCommerceAcceptStateController extends BaseController{
 		scmZsjCommerceAcceptStateManager.removeByIds(ids);
 		return new CommonResult<String>(true, "批量删除成功");
 	}
+
+	/**
+	 * 获取商业认可状态申请的年度、季度、下季度的三个月
+	 * @param
+	 * @throws Exception
+	 * @return
+	 * @exception
+	 */
+	@GetMapping(value="getQuater")
+	@ApiOperation(value = "获取商业认可状态申请的年度、季度、下季度的三个月", httpMethod = "GET", notes = "获取商业认可状态申请的年度、季度、下季度的三个月")
+	public CommonResult<Map<String,Object>> getQuater() throws Exception{
+		Map<String,Object> map = scmZsjCommerceAcceptStateManager.getQuater();
+		return new CommonResult<Map<String,Object>>(true,"获取成功",map);
+	}
+
 }

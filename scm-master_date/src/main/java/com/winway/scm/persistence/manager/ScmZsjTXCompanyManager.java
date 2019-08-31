@@ -17,5 +17,10 @@ import com.winway.scm.model.ScmZsjTXCompany;
 public interface ScmZsjTXCompanyManager extends Manager<String, ScmZsjTXCompany>{
 
 	ScmZsjTXCompany getByOwnerId(String ownerId);
-	
+
+    ScmZsjTXCompany getRB(String ownerId);
+
+    void updateRB(ScmZsjTXCompany scmZsjTXCompany);
+
+	String getFignRB(String ownerId);
 }

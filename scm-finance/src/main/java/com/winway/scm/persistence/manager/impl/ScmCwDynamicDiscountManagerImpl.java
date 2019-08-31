@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import com.winway.scm.model.ScmCwBanCommerce;
 import com.winway.scm.model.ScmCwBanProduct;
 import com.winway.scm.model.ScmCwDiscountRuleRecord;
-import com.winway.scm.model.vo.DiscountVo;
 import com.winway.scm.persistence.dao.ScmCwBanCommerceDao;
 import com.winway.scm.persistence.dao.ScmCwBanProductDao;
 import com.winway.scm.persistence.dao.ScmCwDiscountRuleRecordDao;
@@ -14,8 +13,12 @@ import org.springframework.stereotype.Service;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
 import com.winway.scm.persistence.dao.ScmCwDynamicDiscountDao;
+import com.winway.scm.persistence.dao.ScmCwDynamicDiscountTypeDao;
 import com.winway.scm.model.ScmCwDynamicDiscount;
+import com.winway.scm.model.ScmCwDynamicDiscountType;
 import com.winway.scm.persistence.manager.ScmCwDynamicDiscountManager;
+import com.winway.scm.persistence.manager.ScmCwDynamicDiscountTypeManager;
+import com.winway.scm.vo.DiscountVo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,12 @@ public class ScmCwDynamicDiscountManagerImpl extends AbstractManagerImpl<String,
 
     @Resource
     ScmCwBanProductDao scmCwBanProductDao;
+    
+    @Resource
+    ScmCwDynamicDiscountTypeManager scmCwDynamicDiscountTypeManager;
+    
+    @Resource
+    ScmCwDynamicDiscountTypeDao scmCwDynamicDiscountTypeDao;
 
     @Resource
     ScmCwDiscountRuleRecordDao scmCwDiscountRuleRecordDao;
@@ -49,7 +58,40 @@ public class ScmCwDynamicDiscountManagerImpl extends AbstractManagerImpl<String,
     protected MyBatisDao<String, ScmCwDynamicDiscount> getDao() {
         return scmCwDynamicDiscountDao;
     }
-
+    @Override
+    public void create(ScmCwDynamicDiscount arg0) {
+    	super.create(arg0);
+    	String id = arg0.getId();
+    	List<ScmCwDynamicDiscountType> scmCwDynamicDiscountTypeList = arg0.getScmCwDynamicDiscountTypeList();
+    	for (ScmCwDynamicDiscountType scmCwDynamicDiscountType : scmCwDynamicDiscountTypeList) {
+    		scmCwDynamicDiscountType.setDynamicDiscountId(id);
+    		scmCwDynamicDiscountTypeManager.create(scmCwDynamicDiscountType);
+		}
+    }
+    @Override
+    public void update(ScmCwDynamicDiscount arg0) {
+    	ScmCwDynamicDiscount scmCwDynamicDiscount = scmCwDynamicDiscountDao.get(arg0.getId());
+    	if(scmCwDynamicDiscount == null) {
+    		throw new RuntimeException("未查询到修改数据");
+    	}
+    	arg0.setSetPersion(arg0.getSetPersion());
+    	arg0.setSetTime(arg0.getSetTime());
+    	super.update(arg0);
+    	scmCwDynamicDiscountTypeDao.delByMainId(arg0.getId());
+    	List<ScmCwDynamicDiscountType> scmCwDynamicDiscountTypeList = arg0.getScmCwDynamicDiscountTypeList();
+    	for (ScmCwDynamicDiscountType scmCwDynamicDiscountType : scmCwDynamicDiscountTypeList) {
+    		scmCwDynamicDiscountType.setDynamicDiscountId(arg0.getId());
+    		scmCwDynamicDiscountTypeManager.create(scmCwDynamicDiscountType);
+		}
+    }
+    @Override
+    public ScmCwDynamicDiscount get(String entityId) {
+    	ScmCwDynamicDiscount scmCwDynamicDiscount = scmCwDynamicDiscountDao.get(entityId);
+    	List<ScmCwDynamicDiscountType> scmCwDynamicDiscountTypes = scmCwDynamicDiscountTypeDao.getByMainId(scmCwDynamicDiscount.getId());
+    	scmCwDynamicDiscount.setScmCwDynamicDiscountTypeList(scmCwDynamicDiscountTypes);
+    	return scmCwDynamicDiscount;
+    }
+    
     @Override
     public Map<String, Object> getDiscountDetail(Map<String, Object> purchaseDetails) {
         String ownerId = (String) purchaseDetails.get("ownerId");
@@ -72,7 +114,7 @@ public class ScmCwDynamicDiscountManagerImpl extends AbstractManagerImpl<String,
         //判断该商业可票折的商品
         List<DiscountVo> discountVoList = new ArrayList<>();
         for (String productId : ids) {
-            ScmCwBanProduct banProduct = scmCwBanProductDao.getByProductId(productId);
+            ScmCwBanProduct banProduct = null;
             ScmCwDynamicDiscount dynamicDiscount = scmCwDynamicDiscountDao.getByProductIdAndOwnerId(productId, ownerId);
             DiscountVo discountVo = new DiscountVo();
             //禁止票折商品不为空 该商品禁止票折
@@ -105,4 +147,28 @@ public class ScmCwDynamicDiscountManagerImpl extends AbstractManagerImpl<String,
         map.put("discountList", discountVoList);
         return map;
     }
+    @Override
+    public void remove(String entityId) {
+    	super.remove(entityId);
+    }
+	@Override
+	public ScmCwDynamicDiscount getByProductCode(String productCode, String ownerId) {
+		ScmCwDynamicDiscount scmCwDynamicDiscount = scmCwDynamicDiscountDao.getByProductCode(productCode,ownerId);
+		if(scmCwDynamicDiscount == null) {
+			return scmCwDynamicDiscount;
+		}
+		List<ScmCwDynamicDiscountType> byMainId = scmCwDynamicDiscountTypeDao.getByMainId(scmCwDynamicDiscount.getId());
+		scmCwDynamicDiscount.setScmCwDynamicDiscountTypeList(byMainId);
+		return scmCwDynamicDiscount;
+	}
+	@Override
+	public ScmCwDynamicDiscount getByProductCodeAndCommerceId(String productCode, String commerceId, String ownerId) {
+		ScmCwDynamicDiscount scmCwDynamicDiscount = scmCwDynamicDiscountDao.getByProductCodeAndCommerceId(productCode,commerceId,ownerId);
+		if(scmCwDynamicDiscount == null) {
+			return scmCwDynamicDiscount;
+		}
+		List<ScmCwDynamicDiscountType> byMainId = scmCwDynamicDiscountTypeDao.getByMainId(scmCwDynamicDiscount.getId());
+		scmCwDynamicDiscount.setScmCwDynamicDiscountTypeList(byMainId);
+		return scmCwDynamicDiscount;
+	}
 }

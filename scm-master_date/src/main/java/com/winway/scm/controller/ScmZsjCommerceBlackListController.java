@@ -1,14 +1,19 @@
 package com.winway.scm.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.hotent.base.feign.BpmRuntimeFeignService;
 import com.hotent.base.feign.UCFeignService;
+import com.hotent.base.modelvo.CustomStartResult;
+import com.hotent.base.modelvo.StartFlowParam;
 import com.hotent.base.util.JsonUtil;
 import com.winway.purchase.util.QuarterUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,6 +56,9 @@ public class ScmZsjCommerceBlackListController extends BaseController {
     @Resource
     UCFeignService ucFeignService;
 
+    @Resource
+    BpmRuntimeFeignService bpmRuntimeFeignService;
+
     /**
      * 商业黑名单表列表(分页条件查询)数据
      *
@@ -77,23 +85,24 @@ public class ScmZsjCommerceBlackListController extends BaseController {
     public ScmZsjCommerceBlackList get(@ApiParam(name = "id", value = "业务对象主键", required = true) @PathVariable String id) throws Exception {
         return scmZsjCommerceBlackListManager.get(id);
     }
-    
+
     /**
      * 商业黑名单表明细页面
      *
-     * @param id
+     * @param
      * @return
      * @throws Exception ModelAndView
      */
     @GetMapping(value = "/getByApplyId/{applyId}")
     @ApiOperation(value = "根据审批ID获取数据详情", httpMethod = "GET", notes = "根据审批ID获取数据详情")
     public CommonResult<ScmZsjCommerceBlackList> getByApplyId(@ApiParam(name = "applyId", value = "审批ID", required = true) @PathVariable String applyId) throws Exception {
-    	ScmZsjCommerceBlackList scmZsjCommerceBlackList = scmZsjCommerceBlackListManager.getByApplId(applyId);
-    	return new CommonResult<>(true,"获取成功",scmZsjCommerceBlackList);
+        ScmZsjCommerceBlackList scmZsjCommerceBlackList = scmZsjCommerceBlackListManager.getByApplId(applyId);
+        return new CommonResult<>(true, "获取成功", scmZsjCommerceBlackList);
     }
 
     /**
      * 新增商业黑名单表
+     *
      * @param scmZsjCommerceBlackList
      * @return
      * @throws Exception
@@ -104,19 +113,19 @@ public class ScmZsjCommerceBlackListController extends BaseController {
     @ApiOperation(value = "新增,更新商业黑名单表数据", httpMethod = "POST", notes = "新增,更新商业黑名单表数据")
     public CommonResult<String> save(@ApiParam(name = "scmZsjCommerceBlackList", value = "商业黑名单表业务对象", required = true) @RequestBody ScmZsjCommerceBlackList scmZsjCommerceBlackList) throws Exception {
         String msg = "添加商业黑名单表成功";
+        scmZsjCommerceBlackList.setApprovalState("0");
+        scmZsjCommerceBlackList.setApprovalDate(new Date());
         if (StringUtil.isEmpty(scmZsjCommerceBlackList.getId())) {
-            scmZsjCommerceBlackList.setApprovalState("0");
             JsonNode user = ucFeignService.getUser(current(), "");
             String userName = user.get("fullname").asText();
             scmZsjCommerceBlackList.setOperatorName(userName);
             scmZsjCommerceBlackList.setApprovalCode(QuarterUtil.getCode("HMD"));
-            scmZsjCommerceBlackList.setApprovalDate(new Date());
             scmZsjCommerceBlackListManager.create(scmZsjCommerceBlackList);
         } else {
             scmZsjCommerceBlackListManager.update(scmZsjCommerceBlackList);
             msg = "更新商业黑名单表成功";
         }
-        return new CommonResult<String>(msg);
+        return new CommonResult<String>(true, msg, scmZsjCommerceBlackList.getId());
     }
 
     /**
@@ -148,6 +157,7 @@ public class ScmZsjCommerceBlackListController extends BaseController {
         scmZsjCommerceBlackListManager.removeByIds(ids);
         return new CommonResult<String>(true, "批量删除成功");
     }
+
     /**
      * @param request
      * @return
@@ -160,7 +170,7 @@ public class ScmZsjCommerceBlackListController extends BaseController {
 
     @PostMapping(value = "sendApply")
     @ApiOperation(value = "商业黑名单申请", httpMethod = "POST", notes = "商业黑名单数据提交")
-    @Workflow(flowKey = "syhmdsp", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "syhmdsp", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public CommonResult<ScmZsjCommerceFirst> sendApply(
             @ApiParam(name = "scmZsjCommerceBlackList", value = "采购合同对象", required = true) @RequestBody ScmZsjCommerceBlackList scmZsjCommerceBlackList,
             HttpServletRequest request) throws Exception {
@@ -169,10 +179,24 @@ public class ScmZsjCommerceBlackListController extends BaseController {
         scmZsjCommerceBlackList.setOperatorName(userName);
         scmZsjCommerceBlackList.setApprovalState("1");
         scmZsjCommerceBlackList.setApprovalDate(new Date());
-        if (scmZsjCommerceBlackListManager.get(scmZsjCommerceBlackList.getId()) == null) {
+        StartFlowParam startFlowParam = new StartFlowParam("fxsxyhztk", "SCM", "approvalId");
+        startFlowParam.setFormType("frame");
+        CustomStartResult customStartResult = null;
+        try {
+            System.out.println("发起商业黑名单申请");
+            customStartResult = bpmRuntimeFeignService.customStart(startFlowParam);
+            String approvalId = customStartResult.getInstId();
+            scmZsjCommerceBlackList.setApprovalId(approvalId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("启动工作流失败");
+        }
+        ScmZsjCommerceBlackList commerceBlackList = scmZsjCommerceBlackListManager.get(scmZsjCommerceBlackList.getId());
+        if (commerceBlackList == null) {
             scmZsjCommerceBlackList.setApprovalCode(QuarterUtil.getCode("HMD"));
             scmZsjCommerceBlackListManager.create(scmZsjCommerceBlackList);
         } else {
+            scmZsjCommerceBlackList.setApprovalCode(commerceBlackList.getApprovalCode());
             scmZsjCommerceBlackListManager.update(scmZsjCommerceBlackList);
         }
         return new CommonResult<ScmZsjCommerceFirst>(true, "审批发起成功");

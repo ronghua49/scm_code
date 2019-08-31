@@ -7,6 +7,8 @@ import com.hotent.base.manager.Manager;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.winway.scm.model.ScmFhShipmentsDatail;
+import com.winway.scm.vo.ScmFhFmsListShipmentVo;
+import com.winway.scm.vo.ScmFhShipMentsCountVo;
 import com.winway.scm.vo.ScmFhShipmentsDataiAndMessageVo;
 
 /**
@@ -27,5 +29,13 @@ public interface ScmFhShipmentsDatailManager extends Manager<String, ScmFhShipme
 	PageList<ScmFhShipmentsDatail> messageList(QueryFilter queryFilter);
 
 	PageList<ScmFhShipmentsDataiAndMessageVo> firstList(QueryFilter queryFilter);
-	
+
+	List<ScmFhFmsListShipmentVo> fmsListShipments(String startMonth, String endMonth, String ownerId,
+			String[] businessCodeList);
+
+	PageList<ScmFhShipMentsCountVo> shipMentsCountlist(QueryFilter queryFilter);
+
+	Map<String, Object> dataDownBox();
+
+	boolean verifyDeliveryAmount(String commerceFirstId, Double priceSum);
 }

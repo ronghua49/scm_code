@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmCgProOrderProduct;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -22,21 +23,22 @@ public interface ScmCgProOrderProductDao extends MyBatisDao<String, ScmCgProOrde
 	 * @param proOrderId
 	 * @return
 	 */
-	public List<ScmCgProOrderProduct> getByMainId(String proOrderId);
+    List<ScmCgProOrderProduct> getByMainId(String proOrderId);
 	
 	/**
 	 * 根据外键删除子表记录
 	 * @param proOrderId
 	 * @return
 	 */
-	public void delByMainId(String proOrderId);
+    void delByMainId(String proOrderId);
 	/**
 	 * 统计商品总数
 	 * @param proOrderId
 	 * @return
 	 */
-	public Map listProductByProOrderId(String proOrderId);
+    Map listProductByProOrderId(String proOrderId);
 
-	public List<ScmCgProOrderProduct> listProductByOrderId(ScmCgProOrderProduct scmCgProOrderProduct);
-	
+	List<ScmCgProOrderProduct> listProductByOrderId(ScmCgProOrderProduct scmCgProOrderProduct);
+
+    List<ScmCgProOrderProduct> getByOrderCodeAndProCode(@Param(value = "procurementCode") String procurementCode, @Param(value = "productCode") String productCode);
 }

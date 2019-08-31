@@ -25,7 +25,7 @@ public interface ScmXsBigContractManager extends Manager<String, ScmXsBigContrac
 
 	ScmXsBigContract getIsContract(String ownerName,String dealer);
 
-	String sendApply(ScmXsBigContract scmXsBigContract);
+	String sendApply(ScmXsBigContract scmXsBigContract) throws Exception;
 
 	void endApply(JsonNode jsonNode);
 

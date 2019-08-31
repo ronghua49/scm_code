@@ -67,8 +67,14 @@ public class ScmXsDistributorClause extends BaseModel<String>{
 	@ApiModelProperty(value="省级平台")
 	protected String provincePlatformId; 
 	
+	@ApiModelProperty(value="省级平台")
+	protected String provincePlatform; 
+	
 	@ApiModelProperty(value="上游商业")
 	protected String upCommerceId; 
+	
+	@ApiModelProperty(value="上游商业")
+	protected String upCommerce; 
 	
 	@ApiModelProperty(value="备注")
 	protected String memo; 
@@ -104,7 +110,7 @@ public class ScmXsDistributorClause extends BaseModel<String>{
 	protected String scm_zsj_commerceState; 
 	
 	@ApiModelProperty(value="积分")
-	protected String integral; 
+	protected int integral; 
 	
 	@ApiModelProperty(value="编号")
 	protected String agreementSummaryCode; 
@@ -112,6 +118,113 @@ public class ScmXsDistributorClause extends BaseModel<String>{
 	@ApiModelProperty(value="年度")
 	protected String year; 
 
+	@ApiModelProperty(value="认可状态")
+	protected String acceptState; 
+	
+	@ApiModelProperty(value="认可状态中文")
+	protected String acceptStateStr; 
+	
+	@ApiModelProperty(value="开始年")
+	protected String startYear; 
+	
+	@ApiModelProperty(value="结束年")
+	protected String endYear;
+
+	 @ApiModelProperty(value="是否签合")
+	 protected String isSign;
+
+	 @ApiModelProperty(value="注册地址")
+	 protected String registerAddress;
+
+	 @ApiModelProperty(value="商务大区code")
+	 protected String businessCode;
+
+	 @ApiModelProperty(value="省区code")
+	 protected String provinceCode;
+
+	 public String getBusinessCode() {
+		 return businessCode;
+	 }
+
+	 public void setBusinessCode(String businessCode) {
+		 this.businessCode = businessCode;
+	 }
+
+	 public String getProvinceCode() {
+		 return provinceCode;
+	 }
+
+	 public void setProvinceCode(String provinceCode) {
+		 this.provinceCode = provinceCode;
+	 }
+
+	 public String getIsSign() {
+		 return isSign;
+	 }
+
+	 public void setIsSign(String isSign) {
+		 this.isSign = isSign;
+	 }
+
+	 public String getRegisterAddress() {
+		 return registerAddress;
+	 }
+
+	 public void setRegisterAddress(String registerAddress) {
+		 this.registerAddress = registerAddress;
+	 }
+
+	 public String getStartYear() {
+		return startYear;
+	}
+
+	public void setStartYear(String startYear) {
+		this.startYear = startYear;
+	}
+
+	public String getEndYear() {
+		return endYear;
+	}
+
+	public void setEndYear(String endYear) {
+		this.endYear = endYear;
+	}
+	
+	public String getProvincePlatform() {
+		return provincePlatform;
+	}
+
+	public void setProvincePlatform(String provincePlatform) {
+		this.provincePlatform = provincePlatform;
+	}
+
+	public String getUpCommerce() {
+		return upCommerce;
+	}
+
+	public void setUpCommerce(String upCommerce) {
+		this.upCommerce = upCommerce;
+	}
+
+	public String getAcceptState() {
+		return acceptState;
+	}
+
+	public void setAcceptState(String acceptState) {
+		this.acceptState = acceptState;
+	}
+
+	public String getAcceptStateStr() {
+		return acceptStateStr;
+	}
+
+	public void setAcceptStateStr(String acceptStateStr) {
+		this.acceptStateStr = acceptStateStr;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public String getYear() {
 		return year;
@@ -253,11 +366,11 @@ public class ScmXsDistributorClause extends BaseModel<String>{
 		this.scm_zsj_commerceState = scm_zsj_commerceState;
 	}
 
-	public String getIntegral() {
+	public int getIntegral() {
 		return integral;
 	}
 
-	public void setIntegral(String integral) {
+	public void setIntegral(int integral) {
 		this.integral = integral;
 	}
 

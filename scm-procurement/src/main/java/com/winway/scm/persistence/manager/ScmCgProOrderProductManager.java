@@ -21,5 +21,8 @@ public interface ScmCgProOrderProductManager extends Manager<String, ScmCgProOrd
 	void listProductByOrderId(ScmCgProOrderProduct scmCgProOrderProduct);
 
 	List<ScmCgProOrderProduct> getByMainId(String id);
-	
+
+	void updatebyParam(String procurementCode, String productCode, String rejectSum);
+
+	ScmCgProOrderProduct getbyParam(String procurementCode, String productCode);
 }

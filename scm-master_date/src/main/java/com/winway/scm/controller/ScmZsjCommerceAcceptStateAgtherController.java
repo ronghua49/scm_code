@@ -145,14 +145,13 @@ public class ScmZsjCommerceAcceptStateAgtherController extends BaseController{
 	 */
 	@PostMapping(value = "sendApply")
     @ApiOperation(value = "商业认可状态申请", httpMethod = "POST", notes = "商业认可状态申请")
-    @Workflow(flowKey = "syrkztsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = { "account", "isFinance" })
+//    @Workflow(flowKey = "syrkztsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = { "account", "isFinance" })
     public CommonResult<ScmZsjCommerceAcceptStateAgther> sendApply(
             @ApiParam(name = "scmZsjCommerceBlackList", value = "采购合同对象", required = true) @RequestBody ScmZsjCommerceAcceptStateAgther scmZsjCommerceAcceptStateAgther,
             HttpServletRequest request) throws Exception {
 		JsonNode user = ucFeignService.getUser(current(), "");
 		String userName = user.get("fullname").asText();
 		scmZsjCommerceAcceptStateAgther.setOperatorName(userName);
-		scmZsjCommerceAcceptStateAgther.setApprovalState("1");
 		scmZsjCommerceAcceptStateAgtherManager.sendApply(scmZsjCommerceAcceptStateAgther);
 		return new CommonResult<ScmZsjCommerceAcceptStateAgther>(true, "审批发起成功",scmZsjCommerceAcceptStateAgther);
 	}

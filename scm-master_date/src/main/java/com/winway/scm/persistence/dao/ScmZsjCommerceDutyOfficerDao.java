@@ -1,6 +1,9 @@
 package com.winway.scm.persistence.dao;
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmZsjCommerceDutyOfficer;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 
@@ -15,5 +18,11 @@ import com.winway.scm.model.ScmZsjCommerceDutyOfficer;
  */
 public interface ScmZsjCommerceDutyOfficerDao extends MyBatisDao<String, ScmZsjCommerceDutyOfficer> {
 
-	ScmZsjCommerceDutyOfficer getByApprovalId(String approvalId);
+	List<ScmZsjCommerceDutyOfficer> getByApprovalId(String approvalId);
+
+    ScmZsjCommerceDutyOfficer getApprovalDublicate(@Param(value = "commerceId") String commerceId);
+
+    List<ScmZsjCommerceDutyOfficer> getByCommerceId(String commerceId);
+
+    ScmZsjCommerceDutyOfficer getlastDutyOfficer(String commerceId);
 }

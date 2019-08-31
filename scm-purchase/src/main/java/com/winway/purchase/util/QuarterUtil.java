@@ -2,7 +2,10 @@ package com.winway.purchase.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class QuarterUtil {
@@ -37,12 +40,12 @@ public class QuarterUtil {
 	public static String getQuarter(String month){
 		String quarter = null;
 		
-		if (!(quarter == null || "".equals(quarter))) {		
-			if ("1".equals(quarter) || "2".equals(quarter) || "3".equals(quarter)) {
+		if (!(month == null || "".equals(month))) {		
+			if ("1".equals(month) || "2".equals(month) || "3".equals(month)) {
 				quarter = "1"; 
-			}else if ("4".equals(quarter)||"5".equals(quarter)||"6".equals(quarter)) {
+			}else if ("4".equals(month)||"5".equals(month)||"6".equals(month)) {
 				quarter = "2";
-			}else if ("7".equals(quarter)||"8".equals(quarter)||"9".equals(quarter)) {
+			}else if ("7".equals(month)||"8".equals(month)||"9".equals(month)) {
 				quarter = "3";
 			}else {
 				quarter = "4";
@@ -71,8 +74,38 @@ public class QuarterUtil {
 		if (hashCodeV < 0) {//有可能是负数
 			hashCodeV = -hashCodeV;
 		}
-		return new StringBuffer().append(type).append(time).append(String.format("%010d", hashCodeV)).toString();
+		String string = new StringBuffer().append(type).append(time).append(String.format("%09d", hashCodeV)).toString();
+		if(string.length() > 18) {
+			string = string.substring(0, 18);
+		}
+		
+		return string;
+		
 	}
 	
+	public static void main(String[] args) {
+		for( int a = 0;a < 10000;a++ ) {
+			String code = getCode("CGDD");
+			System.out.println(code.length());
+		}
 
+	}
+	
+	//判断指定时间是否在两个时间区间内
+	public static boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
+		if (nowTime.getTime() == startTime.getTime()|| nowTime.getTime() == endTime.getTime()) {
+			return true;
+		}
+
+		Calendar date = Calendar.getInstance();
+		date.setTime(nowTime);
+
+		Calendar begin = Calendar.getInstance();
+		begin.setTime(startTime);
+
+		Calendar end = Calendar.getInstance();
+		end.setTime(endTime);
+
+        return date.after(begin) && date.before(end);
+	}
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmProdCostPriceDao">
+	<resultMap id="ScmProdCostPrice" type="com.winway.scm.model.ScmProdCostPrice">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="status" column="status" jdbcType="NUMERIC"/>
+		<result property="year" column="year" jdbcType="NUMERIC"/>
+		<result property="prodCode" column="prod_code" jdbcType="VARCHAR"/>
+		<result property="erpPriceHk" column="erp_price_hk" jdbcType="NUMERIC"/>
+		<result property="erpPriceCn" column="erp_price_cn" jdbcType="NUMERIC"/>
+		<result property="customsPriceHk" column="customs_price_hk" jdbcType="NUMERIC"/>
+		<result property="customsPriceCn" column="customs_price_cn" jdbcType="NUMERIC"/>
+		<result property="costPrice" column="cost_price" jdbcType="NUMERIC"/>
+		<result property="effectDate" column="effect_date" jdbcType="DATE"/>
+		<result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+		<result property="createBy" column="CREATE_BY" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="createName" column="CREATE_NAME" jdbcType="VARCHAR"/>
+		<result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateName" column="UPDATE_NAME" jdbcType="VARCHAR"/>
+		<result property="createOrgId" column="CREATE_ORG_ID" jdbcType="VARCHAR"/>
+		<result property="createOrgName" column="CREATE_ORG_NAME" jdbcType="VARCHAR"/>
+		<result property="COMPANY" column="COMPANY" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmProdCostPrice">
+		INSERT INTO scm_prod_cost_price
+		(id,status,year,prod_code,erp_price_hk,erp_price_cn,customs_price_hk,customs_price_cn,cost_price,effect_date,remarks,CREATE_BY,CREATE_TIME,CREATE_NAME,UPDATE_BY,UPDATE_TIME,UPDATE_NAME,CREATE_ORG_ID,CREATE_ORG_NAME,COMPANY)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{status,jdbcType=NUMERIC}, #{year,jdbcType=NUMERIC}, #{prodCode,jdbcType=VARCHAR}, #{erpPriceHk,jdbcType=NUMERIC}, #{erpPriceCn,jdbcType=NUMERIC}, #{customsPriceHk,jdbcType=NUMERIC}, #{customsPriceCn,jdbcType=NUMERIC}, #{costPrice,jdbcType=NUMERIC}, #{effectDate,jdbcType=DATE}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createName,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateName,jdbcType=VARCHAR}, #{createOrgId,jdbcType=VARCHAR}, #{createOrgName,jdbcType=VARCHAR}, #{COMPANY,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmProdCostPrice">
+		SELECT * FROM scm_prod_cost_price 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmProdCostPrice">
+		SELECT * FROM scm_prod_cost_price
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmProdCostPrice">
+		UPDATE scm_prod_cost_price SET
+		status=#{status,jdbcType=NUMERIC},
+		year=#{year,jdbcType=NUMERIC},
+		prod_code=#{prodCode,jdbcType=VARCHAR},
+		erp_price_hk=#{erpPriceHk,jdbcType=NUMERIC},
+		erp_price_cn=#{erpPriceCn,jdbcType=NUMERIC},
+		customs_price_hk=#{customsPriceHk,jdbcType=NUMERIC},
+		customs_price_cn=#{customsPriceCn,jdbcType=NUMERIC},
+		cost_price=#{costPrice,jdbcType=NUMERIC},
+		effect_date=#{effectDate,jdbcType=DATE},
+		remarks=#{remarks,jdbcType=VARCHAR},
+		CREATE_BY=#{createBy,jdbcType=VARCHAR},
+		CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+		CREATE_NAME=#{createName,jdbcType=VARCHAR},
+		UPDATE_BY=#{updateBy,jdbcType=VARCHAR},
+		UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+		UPDATE_NAME=#{updateName,jdbcType=VARCHAR},
+		CREATE_ORG_ID=#{createOrgId,jdbcType=VARCHAR},
+		CREATE_ORG_NAME=#{createOrgName,jdbcType=VARCHAR},
+		COMPANY=#{COMPANY,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_prod_cost_price 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

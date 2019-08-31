@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.hotent.base.feign.BpmRuntimeFeignService;
+import com.hotent.base.modelvo.CustomStartResult;
+import com.hotent.base.modelvo.StartFlowParam;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,6 +19,7 @@ import com.winway.scm.persistence.dao.ScmXsDistributorAgreementSummaryDao;
 import com.winway.scm.persistence.dao.ScmXsDistributorClauseDao;
 import com.winway.scm.persistence.manager.ScmXsDistributorAgreementSummaryManager;
 import com.winway.scm.persistence.manager.ScmXsDistributorClauseManager;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -36,6 +40,8 @@ public class ScmXsDistributorAgreementSummaryManagerImpl extends AbstractManager
 	ScmXsDistributorClauseDao scmXsDistributorClauseDao;
 	@Resource
 	ScmXsDistributorClauseManager scmXsDistributorClauseManager;
+	@Resource
+	BpmRuntimeFeignService bpmRuntimeFeignService;
 	@Override
 	protected MyBatisDao<String, ScmXsDistributorAgreementSummary> getDao() {
 		return scmXsDistributorAgreementSummaryDao;
@@ -49,6 +55,12 @@ public class ScmXsDistributorAgreementSummaryManagerImpl extends AbstractManager
     	List<ScmXsDistributorClause> scmXsDistributorClauseList=scmXsDistributorAgreementSummary.getScmXsDistributorClauseList();
     	for(ScmXsDistributorClause scmXsDistributorClause:scmXsDistributorClauseList){
     		scmXsDistributorClause.setDistributorAgreementId(pk);
+    		String startYear = scmXsDistributorClause.getStartYear();
+    		String endYear = scmXsDistributorClause.getEndYear();
+    		List<ScmXsDistributorClause> scmXsDistributorClauses = scmXsDistributorClauseDao.findByStartYearAndEndYear(startYear,endYear,scmXsDistributorClause.getCommerceId());
+    		if(scmXsDistributorClauses.size() > 0) {
+    			throw new RuntimeException(scmXsDistributorClause.getCommerceName() + "已经发起过"+startYear + "至" + endYear + "的申请!");
+    		}
     		scmXsDistributorClause.setClauseCode(scmXsDistributorAgreementSummary.getAgreementSummaryCode());
     		scmXsDistributorClauseManager.create(scmXsDistributorClause);
     	}
@@ -94,6 +106,8 @@ public class ScmXsDistributorAgreementSummaryManagerImpl extends AbstractManager
     		scmXsDistributorClauseManager.create(scmXsDistributorClause);
     	}
     }
+
+    @Transactional
 	@Override
 	public void sendApply(ScmXsDistributorAgreementSummary scmXsDistributorAgreementSummary) {
 		// TODO Auto-generated method stub
@@ -111,9 +125,23 @@ public class ScmXsDistributorAgreementSummaryManagerImpl extends AbstractManager
 				throw new RuntimeException("当前数据已经在审批中,不可重复提交");
 			}else{
 				//修改主表，删除从表数据
+				scmXsDistributorAgreementSummary.setAgreementSummaryCode(scmXsDistributorAgreementSummaryById.getAgreementSummaryCode());
 				scmXsDistributorAgreementSummary.setApprovalState("1");
 				update(scmXsDistributorAgreementSummary);
 			}
+		}
+		StartFlowParam startFlowParam = new StartFlowParam("fxsxyhztk", "SCM", "approvalId");
+		startFlowParam.setFormType("frame");
+		CustomStartResult customStartResult = null;
+		try {
+			System.out.println("分销商协议合作条款申请");
+			customStartResult = bpmRuntimeFeignService.customStart(startFlowParam);
+			String approvalId = customStartResult.getInstId();
+			scmXsDistributorAgreementSummary.setApprovalId(approvalId);
+			super.update(scmXsDistributorAgreementSummary);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("启动工作流失败");
 		}
 	}
 	@Override
@@ -125,15 +153,20 @@ public class ScmXsDistributorAgreementSummaryManagerImpl extends AbstractManager
 		if(scmXsDistributorAgreementSummaryId == null) {
 			throw new RuntimeException("未查询到业务数据,处理异常");
 		}
-		if ("agree".equals(actionName)) {			
+		String endEvent = jsonNode.get("eventType").asText();
+		if ("agree".equals(actionName) && "endEvent".equals(endEvent)) {
 			//审批状态调整为通过
 			scmXsDistributorAgreementSummaryId.setApprovalState("2");
-		}else if("oppose".equals(actionName)){
-			//审批状态调整为通过
+			scmXsDistributorAgreementSummaryDao.update(scmXsDistributorAgreementSummaryId);
+		} else if ("agree".equals(actionName)) {
+		} else if ("reject".equals(actionName)) {
+		} else if ("backToStart".equals(actionName)) {
+		} else if ("opposeTrans".equals(actionName)) {
+		} else if ("endProcess".equals(actionName)) {
+			//审批状态调整为拒绝
 			scmXsDistributorAgreementSummaryId.setApprovalState("3");
-
-		}
-		scmXsDistributorAgreementSummaryDao.update(scmXsDistributorAgreementSummaryId);			
+			scmXsDistributorAgreementSummaryDao.update(scmXsDistributorAgreementSummaryId);
+		}	
 	}
 	
 }

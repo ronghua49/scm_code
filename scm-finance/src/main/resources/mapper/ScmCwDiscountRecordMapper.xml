@@ -9,13 +9,16 @@
 		<result property="invoiceId" column="invoiceId" jdbcType="VARCHAR"/>
 		<result property="discountPrice" column="discountPrice" jdbcType="NUMERIC"/>
 		<result property="discountDate" column="discountDate" jdbcType="TIMESTAMP"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmCwDiscountRecord">
 		INSERT INTO SCM_CW_DiscountRecord
-		(id,discountId,discountCode,invoiceCode,invoiceId,discountPrice,discountDate)
+		(id,discountId,discountCode,invoiceCode,invoiceId,discountPrice,discountDate,commerceName)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{discountId,jdbcType=VARCHAR}, #{discountCode,jdbcType=VARCHAR}, #{invoiceCode,jdbcType=VARCHAR}, #{invoiceId,jdbcType=VARCHAR}, #{discountPrice,jdbcType=NUMERIC}, #{discountDate,jdbcType=TIMESTAMP})
+		(#{id,jdbcType=VARCHAR}, #{discountId,jdbcType=VARCHAR}, #{discountCode,jdbcType=VARCHAR}, 
+		#{invoiceCode,jdbcType=VARCHAR}, #{invoiceId,jdbcType=VARCHAR}, #{discountPrice,jdbcType=NUMERIC}, 
+		#{discountDate,jdbcType=TIMESTAMP},#{commerceName,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDiscountRecord">
@@ -46,7 +49,8 @@
 		invoiceCode=#{invoiceCode,jdbcType=VARCHAR},
 		invoiceId=#{invoiceId,jdbcType=VARCHAR},
 		discountPrice=#{discountPrice,jdbcType=NUMERIC},
-		discountDate=#{discountDate,jdbcType=TIMESTAMP}
+		discountDate=#{discountDate,jdbcType=TIMESTAMP},
+		commerceName=#{commerceName,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

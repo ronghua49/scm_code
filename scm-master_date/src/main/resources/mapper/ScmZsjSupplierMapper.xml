@@ -1,138 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmZsjSupplierDao">
-	<resultMap id="ScmZsjSupplier" type="com.winway.scm.model.ScmZsjSupplier">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="supplierName" column="supplierName" jdbcType="VARCHAR"/>
-		<result property="fileCode" column="fileCode" jdbcType="VARCHAR"/>
-		<result property="supplierCode" column="supplierCode" jdbcType="VARCHAR"/>
-		<result property="conpanyPersion" column="conpanyPersion" jdbcType="VARCHAR"/>
-		<result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
-		<result property="phone" column="phone" jdbcType="VARCHAR"/>
-		<result property="openBank" column="openBank" jdbcType="VARCHAR"/>
-		<result property="bankCode" column="bankCode" jdbcType="VARCHAR"/>
-		<result property="dutyParagraph" column="dutyParagraph" jdbcType="VARCHAR"/>
-		<result property="qualityValidity" column="qualityValidity" jdbcType="TIMESTAMP"/>
-		<result property="registerAddress" column="registerAddress" jdbcType="VARCHAR"/>
-		<result property="sealStyle" column="sealStyle" jdbcType="VARCHAR"/>
-		<result property="billsStyle" column="billsStyle" jdbcType="VARCHAR"/>
-		<result property="enterDate" column="enterDate" jdbcType="TIMESTAMP"/>
-		<result property="legalPersion" column="legalPersion" jdbcType="VARCHAR"/>
-		<result property="licenseKey" column="licenseKey" jdbcType="VARCHAR"/>
-		<result property="validity" column="validity" jdbcType="TIMESTAMP"/>
-		<result property="register" column="register" jdbcType="VARCHAR"/>
-		<result property="licenseValidity" column="licenseValidity" jdbcType="TIMESTAMP"/>
-		<result property="registerPrice" column="registerPrice" jdbcType="VARCHAR"/>
-		<result property="managementScope" column="managementScope" jdbcType="VARCHAR"/>
-		<result property="supplierNameStr" column="supplierNameStr" jdbcType="VARCHAR"/>
-		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
-		<result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
-		<result property="approvalStateStr" column="approvalStateStr" jdbcType="VARCHAR"/>
-		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
-		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
-		<result property="supplierFirstId" column="supplierFirstId" jdbcType="VARCHAR"/>
-	</resultMap>
-	
-	<insert id="create" parameterType="com.winway.scm.model.ScmZsjSupplier">
+    <resultMap id="ScmZsjSupplier" type="com.winway.scm.model.ScmZsjSupplier">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="supplierName" column="supplierName" jdbcType="VARCHAR"/>
+        <result property="fileCode" column="fileCode" jdbcType="VARCHAR"/>
+        <result property="supplierCode" column="supplierCode" jdbcType="VARCHAR"/>
+        <result property="conpanyPersion" column="conpanyPersion" jdbcType="VARCHAR"/>
+        <result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="openBank" column="openBank" jdbcType="VARCHAR"/>
+        <result property="bankCode" column="bankCode" jdbcType="VARCHAR"/>
+        <result property="dutyParagraph" column="dutyParagraph" jdbcType="VARCHAR"/>
+        <result property="qualityValidity" column="qualityValidity" jdbcType="TIMESTAMP"/>
+        <result property="registerAddress" column="registerAddress" jdbcType="VARCHAR"/>
+        <result property="sealStyle" column="sealStyle" jdbcType="VARCHAR"/>
+        <result property="billsStyle" column="billsStyle" jdbcType="VARCHAR"/>
+        <result property="enterDate" column="enterDate" jdbcType="TIMESTAMP"/>
+        <result property="legalPersion" column="legalPersion" jdbcType="VARCHAR"/>
+        <result property="licenseKey" column="licenseKey" jdbcType="VARCHAR"/>
+        <result property="validity" column="validity" jdbcType="TIMESTAMP"/>
+        <result property="register" column="register" jdbcType="VARCHAR"/>
+        <result property="licenseValidity" column="licenseValidity" jdbcType="TIMESTAMP"/>
+        <result property="registerPrice" column="registerPrice" jdbcType="VARCHAR"/>
+        <result property="managementScope" column="managementScope" jdbcType="VARCHAR"/>
+        <result property="supplierNameStr" column="supplierNameStr" jdbcType="VARCHAR"/>
+        <result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+        <result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
+        <result property="approvalStateStr" column="approvalStateStr" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="supplierFirstId" column="supplierFirstId" jdbcType="VARCHAR"/>
+        <result property="isToMasterData" column="isToMasterData" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmZsjSupplier">
 		INSERT INTO SCM_ZSJ_Supplier
-		(id,supplierName,fileCode,supplierCode,conpanyPersion,contactPersion,phone,openBank,bankCode,dutyParagraph,qualityValidity,registerAddress,sealStyle,billsStyle,enterPersion,enterDate)
+		(id,supplierName,fileCode,supplierCode,conpanyPersion,
+		openBank,bankCode,dutyParagraph,
+		registerAddress,enterPersion,enterDate,
+		approvalId,approvalState,isToMasterData)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{fileCode,jdbcType=VARCHAR}, #{supplierCode,jdbcType=VARCHAR}, #{conpanyPersion,jdbcType=VARCHAR}, #{contactPersion,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, #{dutyParagraph,jdbcType=VARCHAR}, #{qualityValidity,jdbcType=TIMESTAMP}, #{registerAddress,jdbcType=VARCHAR}, #{sealStyle,jdbcType=VARCHAR}, #{billsStyle,jdbcType=VARCHAR}, #{enterPersion,jdbcType=VARCHAR}, #{enterDate,jdbcType=TIMESTAMP})
+		(#{id,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{fileCode,jdbcType=VARCHAR}, 
+		#{supplierCode,jdbcType=VARCHAR},#{conpanyPersion,jdbcType=VARCHAR},#{openBank,jdbcType=VARCHAR},
+		#{bankCode,jdbcType=VARCHAR},#{dutyParagraph,jdbcType=VARCHAR},#{registerAddress,jdbcType=VARCHAR}, 
+		#{enterPersion,jdbcType=VARCHAR}, #{enterDate,jdbcType=TIMESTAMP},#{approvalId,jdbcType=VARCHAR},
+		#{approvalState,jdbcType=VARCHAR},#{isToMasterData,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjSupplier">
+
+    <select id="getSupplierCode" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT NEXTVAL('commerceCode') AS productCode
+	</select>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
 		SELECT * FROM SCM_ZSJ_Supplier 
 		WHERE 
 		id=#{id}
 	</select>
-	
-	<select id="getByName"   parameterType="java.lang.String" resultMap="ScmZsjSupplier">
+
+    <select id="getByApprovalId" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
+		SELECT * FROM SCM_ZSJ_Supplier 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+
+    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
+		SELECT * FROM SCM_ZSJ_Supplier 
+		WHERE 
+		id=#{id}
+	</select>
+    <select id="getByName" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
 		SELECT * FROM SCM_ZSJ_Supplier 
 		WHERE 
 		supplierName=#{supplierName}
 	</select>
-	
-	<select id="getByNameOrId"   parameterType="java.lang.String" resultMap="ScmZsjSupplier">
-		SELECT * FROM SCM_ZSJ_Supplier 
-		WHERE 
-		<if test="id!=null">
-			id!=#{id} and
-		</if>
-		supplierName=#{supplierName}
-	</select>
-	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjSupplier">
-		SELECT * FROM SCM_ZSJ_Supplier
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmZsjSupplier">
+
+    <select id="getByNameOrId" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
+        SELECT * FROM SCM_ZSJ_Supplier
+        WHERE
+        <if test="id!=null">
+            id!=#{id} and
+        </if>
+        supplierName=#{supplierName}
+    </select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmZsjSupplier">
+        SELECT * FROM SCM_ZSJ_Supplier
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmZsjSupplier">
 		UPDATE SCM_ZSJ_Supplier SET
 		supplierName=#{supplierName,jdbcType=VARCHAR},
 		fileCode=#{fileCode,jdbcType=VARCHAR},
 		supplierCode=#{supplierCode,jdbcType=VARCHAR},
 		conpanyPersion=#{conpanyPersion,jdbcType=VARCHAR},
-		contactPersion=#{contactPersion,jdbcType=VARCHAR},
-		phone=#{phone,jdbcType=VARCHAR},
 		openBank=#{openBank,jdbcType=VARCHAR},
 		bankCode=#{bankCode,jdbcType=VARCHAR},
 		dutyParagraph=#{dutyParagraph,jdbcType=VARCHAR},
-		qualityValidity=#{qualityValidity,jdbcType=TIMESTAMP},
 		registerAddress=#{registerAddress,jdbcType=VARCHAR},
-		sealStyle=#{sealStyle,jdbcType=VARCHAR},
-		billsStyle=#{billsStyle,jdbcType=VARCHAR},
 		enterPersion=#{enterPersion,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		isToMasterData=#{isToMasterData,jdbcType=VARCHAR},
 		enterDate=#{enterDate,jdbcType=TIMESTAMP}
+
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_ZSJ_Supplier 
 		WHERE
 		id=#{id}
 	</delete>
-	
-	<select id="firstList" parameterType="java.util.Map" resultMap="ScmZsjSupplier">
-		SELECT * FROM v_SupplierFirstList
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	
-	<select id="downBox" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
+
+    <select id="firstList" parameterType="java.util.Map" resultMap="ScmZsjSupplier">
+        SELECT * FROM v_SupplierFirstList
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+
+    <select id="downBox" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
 		SELECT a.*,
 		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.supplierName) 
-		AS supplierNameStr 
-		FROM SCM_ZSJ_Supplier a
-		LEFT JOIN (SELECT * FROM scm_zsj_supplierfirst WHERE ownerId = #{ownerId}) b ON a.id = b.supplierId
-	</select>
-	<select id="downBoxApplySuccess" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
-		SELECT a.*,
-		b.approvalId as approvalId,b.approvalState as approvalState,
-		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.supplierName) 
-		AS supplierNameStr 
+		AS supplierNameStr ,
+		(CASE WHEN b.id  IS NULL THEN 0 ELSE 1 END) as orderBy
 		FROM SCM_ZSJ_Supplier a
 		LEFT JOIN (SELECT * FROM scm_zsj_supplierfirst WHERE ownerId = #{ownerId}) b ON a.id = b.supplierId 
-		where approvalState = 2
+		where a.approvalState = 2 order by orderBy asc
 	</select>
+    <select id="downBoxApplySuccess" parameterType="java.lang.String" resultMap="ScmZsjSupplier">
+        SELECT
+        a.id,a.supplierName,a.fileCode,a.supplierCode,a.conpanyPersion,a.conpanyPersion,b.phone,a.openBank,a.bankCode,a.dutyParagraph,
+        b.qualityValidity,a.registerAddress,b.sealStyle,b.billsStyle,a.enterPersion,a.enterDate,
+        b.approvalId AS approvalId,b.approvalState AS approvalState,c.managementScope,
+        CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.supplierName)
+        AS supplierNameStr
+        FROM SCM_ZSJ_Supplier a
+        LEFT JOIN (SELECT * FROM scm_zsj_supplierfirst WHERE ownerId = #{ownerId}) b ON a.id = b.supplierId LEFT JOIN
+        scm_zsj_supplierlicence c on b.id = c.supplierFirstId
+        <where>
+            b.approvalState = 2 and a.approvalState =2
+            <if test="managementScope !=null and managementScope!='' ">
+                and managementScope like  CONCAT('%',#{managementScope},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

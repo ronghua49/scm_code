@@ -20,5 +20,9 @@ public interface ScmCwDynamicDiscountManager extends Manager<String, ScmCwDynami
 
     //返回商业购买货主的所有商品可票折的数量和百分比 ownerId: commerceId: productIds:[]
     Map<String,Object> getDiscountDetail(Map<String,Object> purchaseDetails);
+
+	ScmCwDynamicDiscount getByProductCode(String productCode, String ownerId);
+
+	ScmCwDynamicDiscount getByProductCodeAndCommerceId(String productCode, String commerceId, String ownerId);
 	
 }

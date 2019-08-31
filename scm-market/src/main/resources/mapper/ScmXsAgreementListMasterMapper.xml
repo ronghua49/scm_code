@@ -10,13 +10,15 @@
 		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
 		<result property="MasterCode" column="MasterCode" jdbcType="VARCHAR"/>
 		<result property="isEffect" column="isEffect" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPerson" column="createPerson" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmXsAgreementListMaster">
 		INSERT INTO SCM_XS_AgreementListMaster
-		(id,businessDivision,businessDivisionId,ownerId,approvalId,approvalState,MasterCode,isEffect)
+		(id,businessDivision,businessDivisionId,ownerId,approvalId,approvalState,MasterCode,isEffect,createDate,createPerson)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{MasterCode,jdbcType=VARCHAR},#{isEffect,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{MasterCode,jdbcType=VARCHAR},#{isEffect,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP},#{createPerson,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsAgreementListMaster">
@@ -54,7 +56,9 @@
 		approvalId=#{approvalId,jdbcType=VARCHAR},
 		approvalState=#{approvalState,jdbcType=VARCHAR},
 		MasterCode=#{MasterCode,jdbcType=VARCHAR},
-		isEffect=#{isEffect,jdbcType=VARCHAR}
+		isEffect=#{isEffect,jdbcType=VARCHAR},
+		createDate = #{createDate,jdbcType=TIMESTAMP},
+		createPerson = #{createPerson,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

@@ -75,13 +75,13 @@ public class ScmFhShipmentsTask extends BaseModel<String>{
 	protected String aChange;
 
 	@ApiModelProperty(value="件数")
-	protected  int packageNum;
+	protected  double packageNum;
 
-	public int getPackageNum() {
+	public double getPackageNum() {
 		return packageNum;
 	}
 
-	public void setPackageNum(int packageNum) {
+	public void setPackageNum(double packageNum) {
 		this.packageNum = packageNum;
 	}
 
@@ -103,6 +103,9 @@ public class ScmFhShipmentsTask extends BaseModel<String>{
 	@ApiModelProperty(value="联系人")
 	protected String contactPersion; 
 	
+	@ApiModelProperty(value="商品子码")
+	protected String code; 
+	
 	@ApiModelProperty(value="联系电话")
 	protected String phone; 
 	@ApiModelProperty(value="总价")
@@ -111,7 +114,87 @@ public class ScmFhShipmentsTask extends BaseModel<String>{
 	protected String allocationCode; 
 	@ApiModelProperty(value="计划发货时间")
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected java.util.Date sendProductDate; 
+	protected java.util.Date sendProductDate;
+
+	@ApiModelProperty(value="通用名")
+	protected String commonName;
+	@ApiModelProperty(value="单位")
+	protected String unit;
+	@ApiModelProperty(value="剂型")
+	protected String AgentType;
+	@ApiModelProperty(value="厂家")
+	protected String manufacturer;
+	@ApiModelProperty(value="批准文号")
+	protected String approvalCode;
+	@ApiModelProperty(value="药品分类")
+	protected String medicineClassify;
+	@ApiModelProperty(value="经营范围")
+	protected String businessScope;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getCommonName() {
+		return commonName;
+	}
+
+	public void setCommonName(String commonName) {
+		this.commonName = commonName;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public String getAgentType() {
+		return AgentType;
+	}
+
+	public void setAgentType(String agentType) {
+		AgentType = agentType;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getApprovalCode() {
+		return approvalCode;
+	}
+
+	public void setApprovalCode(String approvalCode) {
+		this.approvalCode = approvalCode;
+	}
+
+	public String getMedicineClassify() {
+		return medicineClassify;
+	}
+
+	public void setMedicineClassify(String medicineClassify) {
+		this.medicineClassify = medicineClassify;
+	}
+
+	public String getBusinessScope() {
+		return businessScope;
+	}
+
+	public void setBusinessScope(String businessScope) {
+		this.businessScope = businessScope;
+	}
+
 	//非数据库字段
 	@ApiModelProperty(value="地址")
 	protected String address; 

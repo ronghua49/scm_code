@@ -1,10 +1,12 @@
 package com.winway.scm.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,14 +18,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.hotent.base.controller.BaseController;
 import com.hotent.base.model.CommonResult;
+import com.hotent.base.model.WinwayResult;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.StringUtil;
+import com.winway.purchase.util.ScmPuthWmsUtil;
+import com.winway.purchase.vo.ScmWmsReturnData;
 import com.winway.scm.model.ScmFhShipmentsDatail;
+import com.winway.scm.persistence.dao.ScmFhShipmentsDatailDao;
 import com.winway.scm.persistence.manager.ScmFhShipmentsDatailManager;
 import com.winway.scm.vo.ScmFhBatchNumber;
+import com.winway.scm.vo.ScmFhFmsListShipmentVo;
+import com.winway.scm.vo.ScmFhShipMentsCountVo;
 import com.winway.scm.vo.ScmFhShipmentsDataiAndMessageVo;
 
 import io.swagger.annotations.Api;
@@ -46,11 +55,11 @@ import io.swagger.annotations.ApiParam;
 public class ScmFhShipmentsDatailController extends BaseController {
     @Resource
     ScmFhShipmentsDatailManager scmFhShipmentsDatailManager;
-
+    
     /**
      * 发货明细表列表(分页条件查询)数据
      *
-     * @param request
+     * @param
      * @return
      * @throws Exception PageJson
      * @throws
@@ -58,7 +67,20 @@ public class ScmFhShipmentsDatailController extends BaseController {
     @PostMapping("/list")
     @ApiOperation(value = "发货明细表数据列表", httpMethod = "POST", notes = "获取发货明细表列表")
     public PageList<ScmFhShipmentsDatail> list(@ApiParam(name = "queryFilter", value = "查询对象") @RequestBody QueryFilter queryFilter) throws Exception {
-        return scmFhShipmentsDatailManager.query(queryFilter);
+    	return scmFhShipmentsDatailManager.query(queryFilter);
+    }
+    /**
+     * 发货滚动表
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/shipMentsCountlist")
+    @ApiOperation(value = "发货明细表数据列表", httpMethod = "POST", notes = "获取发货明细表列表")
+    public PageList<ScmFhShipMentsCountVo> shipMentsCountlist(@ApiParam(name = "queryFilter", value = "查询对象") @RequestBody QueryFilter queryFilter) throws Exception {
+    	return scmFhShipmentsDatailManager.shipMentsCountlist(queryFilter);
     }
 
     /**
@@ -140,7 +162,7 @@ public class ScmFhShipmentsDatailController extends BaseController {
     /**
      * 日常发货明细查询
      *
-     * @param request
+     * @param
      * @return
      * @throws Exception PageJson
      * @throws
@@ -154,7 +176,7 @@ public class ScmFhShipmentsDatailController extends BaseController {
     /**
      * 发货运输设置页首页调用
      *
-     * @param request
+     * @param
      * @return
      * @throws Exception PageJson
      * @throws
@@ -171,42 +193,79 @@ public class ScmFhShipmentsDatailController extends BaseController {
      * @throws Exception PageJson
      * @throws
      */
-    @PostMapping("/batchNumbers/{productNum}")
+    @PostMapping("/batchNumbers/{code}/{ownerId}/{warehouseCode}")
     @ApiOperation(value = "查询合同批号列表", httpMethod = "POST", notes = "调用远程接口查询合同批号列表")
-    public CommonResult<List<ScmFhBatchNumber>> messageList(@ApiParam(name = "productNum", value = "商品编号") @PathVariable(value = "productNum") String productNum) throws Exception {
-    	ScmFhBatchNumber sfbn1 = new ScmFhBatchNumber();
-    	ScmFhBatchNumber sfbn2 = new ScmFhBatchNumber();
-    	ScmFhBatchNumber sfbn3 = new ScmFhBatchNumber();
-    	ScmFhBatchNumber sfbn4 = new ScmFhBatchNumber();
-    	sfbn1.setaChange("400");
-    	sfbn1.setBatchNumber("1512357");
-    	sfbn1.setExpiryDate("8");
-    	sfbn1.setInventoryNum("100");
-    	sfbn1.setWarehouse("海口仓库");
-    	sfbn1.setWarehouseCode("HK001");
-    	sfbn2.setaChange("400");
-    	sfbn2.setBatchNumber("1512123");
-    	sfbn2.setExpiryDate("10");
-    	sfbn2.setInventoryNum("200");
-    	sfbn2.setWarehouse("海口仓库");
-    	sfbn2.setWarehouseCode("HK001");
-    	sfbn3.setaChange("400");
-    	sfbn3.setBatchNumber("1512456");
-    	sfbn3.setExpiryDate("19");
-    	sfbn3.setInventoryNum("150");
-    	sfbn3.setWarehouse("苏州仓库");
-    	sfbn3.setWarehouseCode("SZ001");
-    	sfbn4.setaChange("400");
-    	sfbn4.setBatchNumber("1512963");
-    	sfbn4.setExpiryDate("12");
-    	sfbn4.setInventoryNum("400");
-    	sfbn4.setWarehouse("苏州仓库");
-    	sfbn4.setWarehouseCode("SZ001");
+    public CommonResult<List<ScmFhBatchNumber>> batchNumbers(@ApiParam(name = "code", value = "商品编号字码") @PathVariable(value = "code") String code,
+    		@ApiParam(name = "ownerId", value = "货主ID") @PathVariable(value = "ownerId") String ownerId,
+    		@ApiParam(name = "warehouseCode", value = "仓库编号") @PathVariable(value = "warehouseCode") String warehouseCode) throws Exception {
+    	Map map = new HashMap<>();
+    	map.put("productCode", code);
+    	map.put("ownerId", ownerId);
+    	if(!"-1".equals(warehouseCode)) {
+    		map.put("warehouseCode", warehouseCode);
+    	}
+    	String jsonString = JSON.toJSONString(map);
+    	ScmWmsReturnData datPputh = ScmPuthWmsUtil.getDatPputh(jsonString, "/prolog_aomei_interface/interface/singleQuery/itemInventory/scmItemInventorySingleQuery.json");
+    	if(datPputh == null) {
+    		throw new RuntimeException("从WMS获取库存数据失败");
+    	}
+    	List<String> data = datPputh.getData();
     	List<ScmFhBatchNumber> list = new ArrayList<ScmFhBatchNumber>();
-    	list.add(sfbn1);
-    	list.add(sfbn2);
-    	list.add(sfbn3);
-    	list.add(sfbn4);
-    	return  new CommonResult<List<ScmFhBatchNumber>>(true,"批号获取成功",list);
+    	for (String string : data) {
+			ScmFhBatchNumber parseObject = JSON.parseObject(string,ScmFhBatchNumber.class);
+			list.add(parseObject);
+		}
+    	return new CommonResult<List<ScmFhBatchNumber>>(true,"批号获取成功",list);
+    }
+    
+    
+    /**
+     * 费控系统获取发货数据
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/fmsListShipments")
+    @ApiOperation(value = "发货运输设置页首页调用", httpMethod = "POST", notes = "发货运输设置页首页调用")
+    public WinwayResult<List<ScmFhFmsListShipmentVo>> fmsListShipments(HttpServletRequest request,
+    		@ApiParam(name = "StartMonth", value = "开始时间") @RequestParam String StartMonth,
+    		@ApiParam(name = "EndMonth", value = "结束时间") @RequestParam String EndMonth,
+    		@ApiParam(name = "ownerId", value = "货主ID") @RequestParam String ownerId,
+    		@ApiParam(name = "BusinessCodeList", value = "商业编码数组") @RequestParam String... BusinessCodeList
+    		) throws Exception {
+    	if(BusinessCodeList.length == 0) {
+    		throw new RuntimeException("商业编码数组不能为空");
+    	}
+    	List<ScmFhFmsListShipmentVo> list = scmFhShipmentsDatailManager.fmsListShipments(StartMonth,EndMonth,ownerId,BusinessCodeList);
+        return new WinwayResult<List<ScmFhFmsListShipmentVo>>(request.getRequestURI(), "获取成功", list);
+    }
+
+
+    /**
+     * 发货明细表列表批号和品规
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/dataDownBox")
+    @ApiOperation(value = "退货页面商品列表带品规和批号", httpMethod = "POST", notes = "退货页面商品列表带品规和批号")
+    public Map<String,Object> dataDownBox() throws Exception {
+        return scmFhShipmentsDatailManager.dataDownBox();
+    }
+    
+    /**
+     * 验证发货金额是否超过近三个月平均金额的两倍
+     *
+     * @return
+     */
+    @GetMapping(value = "/verifyDeliveryAmount/{commerceFirstId}/{priceSum}")
+    @ApiOperation(value = "验证发货金额是否超过近三个月平均金额的两倍", httpMethod = "GET", notes = "")
+    public boolean verifyDeliveryAmount(@ApiParam(name = "commerceFirstId", value = "货主ID", required = true) @PathVariable String commerceFirstId,
+    		@ApiParam(name = "priceSum", value = "货主ID", required = true) @PathVariable Double priceSum) {
+        return scmFhShipmentsDatailManager.verifyDeliveryAmount(commerceFirstId,priceSum);
     }
 }

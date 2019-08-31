@@ -11,7 +11,6 @@
 		<result property="AgreementStartDate" column="AgreementStartDate" jdbcType="TIMESTAMP"/>
 		<result property="AgreementChangeDate" column="AgreementChangeDate" jdbcType="TIMESTAMP"/>
 		<result property="AgreementEndDate" column="AgreementEndDate" jdbcType="TIMESTAMP"/>
-		<result property="paymentType" column="paymentType" jdbcType="VARCHAR"/>
 		<result property="returnMoneyDay" column="returnMoneyDay" jdbcType="NUMERIC"/>
 		<result property="promiseProvince" column="promiseProvince" jdbcType="VARCHAR"/>
 		<result property="messageStandard" column="messageStandard" jdbcType="NUMERIC"/>
@@ -21,19 +20,14 @@
 		<result property="subsidiarySum" column="subsidiarySum" jdbcType="NUMERIC"/>
 		<result property="memo" column="memo" jdbcType="VARCHAR"/>
 		<result property="isOverfulfil" column="isOverfulfil" jdbcType="VARCHAR"/>
-		<result property="StardDay" column="StardDay" jdbcType="NUMERIC"/>
-		<result property="endDay" column="endDay" jdbcType="NUMERIC"/>
-		<result property="theApplication" column="theApplication" jdbcType="NUMERIC"/>
-		<result property="lastTheApplication" column="lastTheApplication" jdbcType="NUMERIC"/>		
 		<result property="isSpecial" column="isSpecial" jdbcType="VARCHAR"/>
-		<result property="lastPaymentType" column="lastPaymentType" jdbcType="VARCHAR"/>
 		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
 		<result property="lastReturnMoneyDay" column="lastReturnMoneyDay" jdbcType="NUMERIC"/>
 		<result property="quarterPaymentPercent" column="quarterPaymentPercent" jdbcType="NUMERIC"/>
 		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
-		<result property="lastTheApplication" column="lastTheApplication" jdbcType="NUMERIC"/>
 		<result property="actualLevel" column="actualLevel" jdbcType="VARCHAR"/>
 		<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+		<result property="paymentType" column="paymentType" jdbcType="VARCHAR"/>
 		
 		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
 		<result property="Province" column="Province" jdbcType="VARCHAR"/>
@@ -44,6 +38,13 @@
 		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
 		<result property="agreementSummaryCode" column="agreementSummaryCode" jdbcType="VARCHAR"/>
 			
+		<!-- <result property="paymentType" column="paymentType" jdbcType="VARCHAR"/> -->
+		<!-- <result property="StardDay" column="StardDay" jdbcType="NUMERIC"/> -->
+		<!-- <result property="endDay" column="endDay" jdbcType="NUMERIC"/> -->
+		<!-- <result property="theApplication" column="theApplication" jdbcType="NUMERIC"/> -->
+		<!-- <result property="lastTheApplication" column="lastTheApplication" jdbcType="NUMERIC"/>		 -->
+		<!-- <result property="lastPaymentType" column="lastPaymentType" jdbcType="VARCHAR"/> -->
+		<!-- <result property="lastTheApplication" column="lastTheApplication" jdbcType="NUMERIC"/> -->
 		
 	</resultMap>
 	
@@ -53,32 +54,30 @@
 		clauseCode,commerceName,
 		functionType,AgreementType,
 		AgreementStartDate,AgreementChangeDate,
-		AgreementEndDate,paymentType,
+		AgreementEndDate,
 		returnMoneyDay,promiseProvince,
 		messageStandard,flowStandard,
 		transportationDiscount,unloadPayer,
 		subsidiarySum,memo,
-		isOverfulfil,StardDay,
-		endDay,theApplication,
-		isSpecial,lastPaymentType,
+		isOverfulfil,
+		isSpecial,
 		lastReturnMoneyDay,quarterPaymentPercent,
-		commerceCode,lastTheApplication,
+		commerceCode,
 		actualLevel,commerceFirstId)
 		VALUES 
 		(#{id,jdbcType=VARCHAR}, #{AgreementSummaryId,jdbcType=VARCHAR}, 
 		#{clauseCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, 
 		#{functionType,jdbcType=VARCHAR},#{AgreementType,jdbcType=VARCHAR}, 
 		#{AgreementStartDate,jdbcType=TIMESTAMP}, #{AgreementChangeDate,jdbcType=TIMESTAMP}, 
-		#{AgreementEndDate,jdbcType=TIMESTAMP}, #{paymentType,jdbcType=VARCHAR}, 
+		#{AgreementEndDate,jdbcType=TIMESTAMP},
 		#{returnMoneyDay,jdbcType=NUMERIC}, #{promiseProvince,jdbcType=VARCHAR},
 		#{messageStandard,jdbcType=NUMERIC},#{flowStandard,jdbcType=NUMERIC}, 
 		#{transportationDiscount,jdbcType=NUMERIC},#{unloadPayer,jdbcType=VARCHAR},
 		#{subsidiarySum,jdbcType=NUMERIC},#{memo,jdbcType=VARCHAR},
-		#{isOverfulfil,jdbcType=VARCHAR},#{StardDay,jdbcType=NUMERIC}, 
-		#{endDay,jdbcType=NUMERIC},#{theApplication,jdbcType=NUMERIC}, 
-		#{isSpecial,jdbcType=VARCHAR},#{lastPaymentType,jdbcType=VARCHAR},
+		#{isOverfulfil,jdbcType=VARCHAR},
+		#{isSpecial,jdbcType=VARCHAR},
 		#{lastReturnMoneyDay,jdbcType=NUMERIC},#{quarterPaymentPercent,jdbcType=NUMERIC},
-		#{commerceCode,jdbcType=VARCHAR},#{lastTheApplication,jdbcType=NUMERIC},
+		#{commerceCode,jdbcType=VARCHAR},
 		#{actualLevel,jdbcType=VARCHAR},#{commerceFirstId,jdbcType=VARCHAR})
 	</insert>
 	
@@ -125,7 +124,6 @@
 		AgreementStartDate=#{AgreementStartDate,jdbcType=TIMESTAMP},
 		AgreementChangeDate=#{AgreementChangeDate,jdbcType=TIMESTAMP},
 		AgreementEndDate=#{AgreementEndDate,jdbcType=TIMESTAMP},
-		paymentType=#{paymentType,jdbcType=VARCHAR},
 		returnMoneyDay=#{returnMoneyDay,jdbcType=NUMERIC},
 		promiseProvince=#{promiseProvince,jdbcType=VARCHAR},
 		messageStandard=#{messageStandard,jdbcType=NUMERIC},
@@ -135,15 +133,10 @@
 		subsidiarySum=#{subsidiarySum,jdbcType=NUMERIC},
 		memo=#{memo,jdbcType=VARCHAR},
 		isOverfulfil=#{isOverfulfil,jdbcType=VARCHAR},
-		StardDay=#{StardDay,jdbcType=NUMERIC},
-		endDay=#{endDay,jdbcType=NUMERIC},
-		theApplication=#{theApplication,jdbcType=NUMERIC},
 		isSpecial=#{isSpecial,jdbcType=VARCHAR},
-		lastPaymentType=#{lastPaymentType,jdbcType=VARCHAR},
 		commerceCode=#{commerceCode,jdbcType=VARCHAR},
 		lastReturnMoneyDay=#{lastReturnMoneyDay,jdbcType=NUMERIC},
 		quarterPaymentPercent=#{quarterPaymentPercent,jdbcType=NUMERIC},
-		lastTheApplication=#{lastTheApplication,jdbcType=NUMERIC},
 		commerceFirstId=#{commerceFirstId,jdbcType=NUMERIC}
 		WHERE
 		id=#{id}
@@ -176,11 +169,11 @@
 		</if>
 	</select>
 	
-	<select id="getYears"   parameterType="java.lang.String" resultMap="ScmXsDealerClause">
-		SELECT DATE_FORMAT(AgreementStartDate, '%Y') AS AgreementStartDate 
+	<select id="getYears"   parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT DATE_FORMAT(AgreementStartDate, '%Y') AS year 
 		FROM v_dealerclause 
 		WHERE 
-		ownerId=#{org0} group by AgreementStartDate
+		ownerId=#{org0} AND AgreementStartDate IS NOT NULL group by YEAR
 	</select>
 	
 	<select id="lastPaymentType"   parameterType="java.lang.String" resultMap="ScmXsDealerClause">

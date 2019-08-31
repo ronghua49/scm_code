@@ -3,6 +3,7 @@ package com.winway.scm.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.hotent.base.feign.UCFeignService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.util.Date;
+
 /**
  * 
  * <pre> 
@@ -46,10 +49,11 @@ import io.swagger.annotations.ApiParam;
 public class ScmXsAgreementListMasterController extends BaseController{
 	@Resource
 	ScmXsAgreementListMasterManager scmXsAgreementListMasterManager;
-	
+	@Resource
+	UCFeignService ucFeignService;
 	/**
 	 * 商业协议合作名单主表列表(分页条件查询)数据
-	 * @param request
+	 * @param
 	 * @return
 	 * @throws Exception 
 	 * PageJson
@@ -88,6 +92,10 @@ public class ScmXsAgreementListMasterController extends BaseController{
 		//申请状态
 		scmXsAgreementListMaster.setApprovalState("0");
 		scmXsAgreementListMaster.setIsEffect("0");
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsAgreementListMaster.setCreateDate(new Date());
+		scmXsAgreementListMaster.setCreatePerson(fullname);
 		if(StringUtil.isEmpty(scmXsAgreementListMaster.getId())){
 			scmXsAgreementListMasterManager.create(scmXsAgreementListMaster);
 		}else{
@@ -126,7 +134,7 @@ public class ScmXsAgreementListMasterController extends BaseController{
 	}
 	
 	/**
-	 * @param 经销商协议合作名单申请
+	 * @param
 	 * @param request
 	 * @return
 	 * @throws Exception
@@ -137,10 +145,14 @@ public class ScmXsAgreementListMasterController extends BaseController{
 	 */
 	@PostMapping(value = "sendApply")
     @ApiOperation(value = "经销商协议合作名单申请", httpMethod = "POST", notes = "提交时需要在scmXsAgreementListMaster对象中封装好名单对象提交")
-    @Workflow(flowKey = "syxyhzmdsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "syxyhzmdsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public  CommonResult<ScmXsAgreementListMaster> sendApply(
             @ApiParam(name = "scmXsAgreementListMaster", value = "经销商协议合作名单总表对象", required = true) @RequestBody ScmXsAgreementListMaster scmXsAgreementListMaster,
             HttpServletRequest request) throws Exception {
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsAgreementListMaster.setCreateDate(new Date());
+		scmXsAgreementListMaster.setCreatePerson(fullname);
 		scmXsAgreementListMasterManager.sendApply(scmXsAgreementListMaster);
 	   return new CommonResult<ScmXsAgreementListMaster>(true, "审批发起成功",scmXsAgreementListMaster);
 	}

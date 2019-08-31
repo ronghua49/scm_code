@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwSpecialTicketDiscountDao">
+	<resultMap id="ScmCwSpecialTicketDiscount" type="com.winway.scm.model.ScmCwSpecialTicketDiscount">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="serialNum" column="serialNum" jdbcType="VARCHAR"/>
+		<result property="discountCode" column="discountCode" jdbcType="VARCHAR"/>
+		<result property="discountDate" column="discountDate" jdbcType="TIMESTAMP"/>
+		<result property="discountSource" column="discountSource" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="bu" column="bu" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceLevel" column="commerceLevel" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="teminalName" column="teminalName" jdbcType="VARCHAR"/>
+		<result property="discountPrice" column="discountPrice" jdbcType="NUMERIC"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="isAffirm" column="isAffirm" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwSpecialTicketDiscount">
+		INSERT INTO Scm_Cw_SpecialTicketDiscount
+		(id,serialNum,discountCode,discountDate,discountSource,businessDivision,bu,province,commerceName,commerceCode,commerceLevel,productName,productCode,commonName,teminalName,discountPrice,ownerId,isAffirm)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{serialNum,jdbcType=VARCHAR}, #{discountCode,jdbcType=VARCHAR}, #{discountDate,jdbcType=TIMESTAMP}, #{discountSource,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{bu,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceLevel,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{commonName,jdbcType=VARCHAR}, #{teminalName,jdbcType=VARCHAR}, #{discountPrice,jdbcType=NUMERIC}, #{ownerId,jdbcType=VARCHAR}, #{isAffirm,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwSpecialTicketDiscount">
+		SELECT * FROM Scm_Cw_SpecialTicketDiscount 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwSpecialTicketDiscount">
+		SELECT * FROM Scm_Cw_SpecialTicketDiscount
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwSpecialTicketDiscount">
+		UPDATE Scm_Cw_SpecialTicketDiscount SET
+		serialNum=#{serialNum,jdbcType=VARCHAR},
+		discountCode=#{discountCode,jdbcType=VARCHAR},
+		discountDate=#{discountDate,jdbcType=TIMESTAMP},
+		discountSource=#{discountSource,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		bu=#{bu,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceLevel=#{commerceLevel,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		commonName=#{commonName,jdbcType=VARCHAR},
+		teminalName=#{teminalName,jdbcType=VARCHAR},
+		discountPrice=#{discountPrice,jdbcType=NUMERIC},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		isAffirm=#{isAffirm,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Cw_SpecialTicketDiscount 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

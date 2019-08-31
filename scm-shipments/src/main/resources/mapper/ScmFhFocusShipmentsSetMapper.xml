@@ -43,7 +43,21 @@
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmFhFocusShipmentsSet">
-		SELECT * FROM SCM_FH_FocusShipmentsSet
+		SELECT * FROM (SELECT
+		a.*,
+		b.AgentType,
+		b.businessScope,
+		b.commonName,
+		b.manufacturer,
+		b.medicineClassify,
+		b.MedicineType,
+		b.productState,
+		b.unit,
+		c.approvalCode
+		FROM
+		SCM_FH_FocusShipmentsSet a
+		LEFT JOIN scm_zsj_product b ON a.productId = b.id
+		LEFT JOIN scm_zsj_productfirst c ON b.id = c.productId)a
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}

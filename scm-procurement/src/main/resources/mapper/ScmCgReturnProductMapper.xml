@@ -26,13 +26,28 @@
 		<result property="proReturnId" column="proReturnId" jdbcType="VARCHAR"/>
 		<result property="returnId" column="returnId" jdbcType="VARCHAR"/>
 		<result property="returnCode" column="returnCode" jdbcType="VARCHAR"/>
+
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="agentType" column="agentType" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+		<result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+        <result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+        <result property="currInventoryNum" column="currInventoryNum" jdbcType="VARCHAR"/>
+		<result property="achage" column="achage" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="procurementCode" column="procurementCode" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmCgReturnProduct">
 		INSERT INTO SCM_CG_ReturnProduct
-		(id,batchNum,productId,productName,medicineTypeId,medicineType,achange,unit,manufacturer,producedDate,validity,getMoneyWarehouseId,getMoneyWarehouse,inboundDate,returnNumber,returnDate,unitPrice,sumPrice,returnRequestCauseId,returnRequestCause,memo,proReturnId,returnId,returnCode)
+		(id,batchNum,productId,productName,medicineTypeId,medicineType,achange,unit,manufacturer,producedDate,validity,getMoneyWarehouseId,getMoneyWarehouse,inboundDate,returnNumber,returnDate,unitPrice,sumPrice,returnRequestCauseId,returnRequestCause,memo,proReturnId,returnId,returnCode,
+		commonName,productState,agentType,approvalCode,businessScope,medicineClassify,masterId,productCode,currInventoryNum,achage,code,procurementCode)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{batchNum,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{medicineTypeId,jdbcType=VARCHAR}, #{medicineType,jdbcType=VARCHAR}, #{achange,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{producedDate,jdbcType=TIMESTAMP}, #{validity,jdbcType=TIMESTAMP}, #{getMoneyWarehouseId,jdbcType=VARCHAR}, #{getMoneyWarehouse,jdbcType=VARCHAR}, #{inboundDate,jdbcType=TIMESTAMP},#{returnNumber,jdbcType=NUMERIC}, #{returnDate,jdbcType=TIMESTAMP}, #{unitPrice,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{returnRequestCauseId,jdbcType=VARCHAR}, #{returnRequestCause,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{proReturnId,jdbcType=VARCHAR}, #{returnId,jdbcType=VARCHAR}, #{returnCode,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{batchNum,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{medicineTypeId,jdbcType=VARCHAR}, #{medicineType,jdbcType=VARCHAR}, #{achange,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{producedDate,jdbcType=TIMESTAMP}, #{validity,jdbcType=TIMESTAMP}, #{getMoneyWarehouseId,jdbcType=VARCHAR}, #{getMoneyWarehouse,jdbcType=VARCHAR}, #{inboundDate,jdbcType=TIMESTAMP},#{returnNumber,jdbcType=NUMERIC}, #{returnDate,jdbcType=TIMESTAMP}, #{unitPrice,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{returnRequestCauseId,jdbcType=VARCHAR}, #{returnRequestCause,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{proReturnId,jdbcType=VARCHAR}, #{returnId,jdbcType=VARCHAR}, #{returnCode,jdbcType=VARCHAR},
+		#{commonName,jdbcType=VARCHAR},#{productState,jdbcType=VARCHAR},#{agentType,jdbcType=VARCHAR},#{approvalCode,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},#{medicineClassify,jdbcType=VARCHAR},#{masterId,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{currInventoryNum,jdbcType=VARCHAR},#{achage,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{procurementCode,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgReturnProduct">
@@ -44,7 +59,7 @@
 	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmCgReturnProduct">
 		SELECT * FROM SCM_CG_ReturnProduct 
 		WHERE 
-		productId=#{productId}
+		masterId=#{masterId}
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmCgReturnProduct">
@@ -86,7 +101,19 @@
 		memo=#{memo,jdbcType=VARCHAR},
 		proReturnId=#{proReturnId,jdbcType=VARCHAR},
 		returnId=#{returnId,jdbcType=VARCHAR},
-		returnCode=#{returnCode,jdbcType=VARCHAR}
+		returnCode=#{returnCode,jdbcType=VARCHAR},
+		commonName = #{commonName,jdbcType=VARCHAR},
+		productState = #{productState,jdbcType=VARCHAR},
+		agentType = #{agentType,jdbcType=VARCHAR},
+		approvalCode = #{approvalCode,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR},
+		medicineClassify = #{medicineClassify,jdbcType=VARCHAR},
+		masterId = #{masterId,jdbcType=VARCHAR},
+		productCode = #{productCode,jdbcType=VARCHAR},
+		currInventoryNum = #{currInventoryNum,jdbcType=VARCHAR},
+		achage = #{achage,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR},
+		procurementCode = #{procurementCode,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

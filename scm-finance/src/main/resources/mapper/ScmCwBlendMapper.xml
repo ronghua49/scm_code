@@ -26,6 +26,11 @@
 		WHERE 
 		id=#{id}
 	</select>
+	<select id="listByReturnMoneyId"   parameterType="java.lang.String" resultMap="ScmCwBlend">
+		SELECT * FROM SCM_CW_Blend 
+		WHERE 
+		returnMoneyId=#{arg0}
+	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmCwBlend">
 		SELECT * FROM SCM_CW_Blend

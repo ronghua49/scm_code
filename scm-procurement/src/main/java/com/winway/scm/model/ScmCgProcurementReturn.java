@@ -72,7 +72,32 @@ public class ScmCgProcurementReturn extends BaseModel<String>{
 	protected String procurementId; 
 	
 	@ApiModelProperty(value="采购订单号")
-	protected String procurementCode; 
+	protected String procurementCode;
+
+	 @ApiModelProperty(value="是否推送值SMS 0未推送；1已推送",required = true)
+	 protected String isSMS="0";
+
+	 @ApiModelProperty(value="商品总数")
+	 protected Integer returnTotal;
+	 
+	 @ApiModelProperty(value="WMS确认状态(0:未确认,1:已确认)")
+	 protected String isAffirmWms;
+	 
+	 public Integer getReturnTotal() {
+		 return returnTotal;
+	 }
+
+	 public void setReturnTotal(Integer returnTotal) {
+		 this.returnTotal = returnTotal;
+	 }
+
+	 public String getIsSMS() {
+		 return isSMS;
+	 }
+
+	 public void setIsSMS(String isSMS) {
+		 this.isSMS = isSMS;
+	 }
 	
 	/**
 	*采购退货商品表列表
@@ -282,27 +307,32 @@ public class ScmCgProcurementReturn extends BaseModel<String>{
 	public List<ScmCgReturnProduct> getScmCgReturnProductList() {
 		return this.scmCgReturnProductList;
 	}
+	
+	public void setIsAffirmWms(String isAffirmWms) {
+		this.isAffirmWms = isAffirmWms;
+	}
+	
+	/**
+	 * 返回 WMS确认状态(0:未确认,1:已确认)
+	 * @return
+	 */
+	public String getIsAffirmWms() {
+		return isAffirmWms;
+	}
+	
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
-		return new ToStringBuilder(this)
-		.append("id", this.id) 
-		.append("returnCode", this.returnCode) 
-		.append("supplierId", this.supplierId) 
-		.append("supplier", this.supplier) 
-		.append("getMoneyWarehouseId", this.getMoneyWarehouseId) 
-		.append("getMoneyWarehouse", this.getMoneyWarehouse) 
-		.append("speciesSum", this.speciesSum) 
-		.append("sumPrice", this.sumPrice) 
-		.append("returnDate", this.returnDate) 
-		.append("approvalId", this.approvalId) 
-		.append("approvalState", this.approvalState) 
-		.append("ownerId", this.ownerId) 
-		.append("operatorId", this.operatorId) 
-		.append("operatorName", this.operatorName) 
-		.append("procurementId", this.procurementId) 
-		.append("procurementCode", this.procurementCode) 
-		.toString();
+		return "ScmCgProcurementReturn [id=" + id + ", returnCode=" + returnCode + ", supplierId=" + supplierId
+				+ ", supplier=" + supplier + ", getMoneyWarehouseId=" + getMoneyWarehouseId + ", getMoneyWarehouse="
+				+ getMoneyWarehouse + ", speciesSum=" + speciesSum + ", sumPrice=" + sumPrice + ", returnDate="
+				+ returnDate + ", approvalId=" + approvalId + ", approvalState=" + approvalState + ", ownerId="
+				+ ownerId + ", operatorId=" + operatorId + ", operatorName=" + operatorName + ", procurementId="
+				+ procurementId + ", procurementCode=" + procurementCode + ", isSMS=" + isSMS + ", returnTotal="
+				+ returnTotal + ", isAffirmWms=" + isAffirmWms + ", scmCgReturnProductList=" + scmCgReturnProductList
+				+ "]";
 	}
+	
 }

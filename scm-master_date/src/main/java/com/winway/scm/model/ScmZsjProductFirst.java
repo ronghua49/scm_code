@@ -1,5 +1,7 @@
 package com.winway.scm.model;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -54,8 +56,8 @@ public class ScmZsjProductFirst extends BaseModel<String>{
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date approvalValidity; 
 	
-	@ApiModelProperty(value="经营范围")
-	protected String businessScope; 
+	@ApiModelProperty(value="是否推送至WMS（0：否，1）")
+	protected String isToWms; 
 	
 	@ApiModelProperty(value="GMP证书")
 	protected String gmp; 
@@ -68,33 +70,74 @@ public class ScmZsjProductFirst extends BaseModel<String>{
 	protected String startBatch; 
 	
 	@ApiModelProperty(value="质量标准")
-	protected String qualityStandard; 
-	
-	@ApiModelProperty(value="长(厘米)")
-	protected Double length; 
-	
-	@ApiModelProperty(value="宽(厘米)")
-	protected Double wide; 
-	
-	@ApiModelProperty(value="高(厘米)")
-	protected Double high; 
-	
-	@ApiModelProperty(value="体积(立方米)")
-	protected Double volume; 
-	
-	@ApiModelProperty(value="毛重(KG)")
-	protected Double roughWeight; 
-	
-	@ApiModelProperty(value="外箱条码")
-	protected String cartonBarcode; 
-	
-	@ApiModelProperty(value="小盒条码")
-	protected String smallBarcode; 
-	
+	protected String qualityStandard;
+
+	 public String getQualityStandard() {
+		 return qualityStandard;
+	 }
+
+	 @ApiModelProperty(value="申请人 ")
+	protected String operatorPerson;
+
+	@ApiModelProperty(value="申请时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date operatorDate;
+
 	@ApiModelProperty(value="商品对象")
 	protected ScmZsjProduct scmZsjProduct;
+
+	 @ApiModelProperty(value="档案编码")
+	 protected String fileCode;
+
+	 @ApiModelProperty(value="是否首映通过过（0否1是）")
+	 protected String isPassed="0";
+	 public String getIsPassed() {
+		 return isPassed;
+	 }
+
+	 public void setIsPassed(String isPassed) {
+		 this.isPassed = isPassed;
+	 }
+
+
+	 public String getFileCode() {
+		 return fileCode;
+	 }
+
+	 public void setFileCode(String fileCode) {
+		 this.fileCode = fileCode;
+	 }
+
+	 /**
+	 * 附件
+	 */
+	protected List<ScmZsjAccessory> scmZsjAccessoryList = new ArrayList<ScmZsjAccessory>();
 	
-	public ScmZsjProduct getScmZsjProduct() {
+	public List<ScmZsjAccessory> getScmZsjAccessoryList() {
+		return scmZsjAccessoryList;
+	}
+
+	public void setScmZsjAccessoryList(List<ScmZsjAccessory> scmZsjAccessoryList) {
+		this.scmZsjAccessoryList = scmZsjAccessoryList;
+	}
+
+	public String getOperatorPerson() {
+		 return operatorPerson;
+	}
+
+	 public void setOperatorPerson(String operatorPerson) {
+		 this.operatorPerson = operatorPerson;
+	 }
+
+	 public Date getOperatorDate() {
+		 return operatorDate;
+	 }
+
+	 public void setOperatorDate(Date operatorDate) {
+		 this.operatorDate = operatorDate;
+	 }
+
+	 public ScmZsjProduct getScmZsjProduct() {
 		return scmZsjProduct;
 	}
 
@@ -106,6 +149,18 @@ public class ScmZsjProductFirst extends BaseModel<String>{
 		this.id = id;
 	}
 	
+	public String getIsToWms() {
+		return isToWms;
+	}
+
+	public void setIsToWms(String isToWms) {
+		this.isToWms = isToWms;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	/**
 	 * 返回 id
 	 * @return
@@ -209,106 +264,12 @@ public class ScmZsjProductFirst extends BaseModel<String>{
 	public java.util.Date getApprovalValidity() {
 		return this.approvalValidity;
 	}
-	
-	public void setBusinessScope(String businessScope) {
-		this.businessScope = businessScope;
-	}
-	
-	/**
-	 * 返回 经营范围
-	 * @return
-	 */
-	public String getBusinessScope() {
-		return this.businessScope;
-	}
-	
-	
-	
 
-	
 	public void setQualityStandard(String qualityStandard) {
 		this.qualityStandard = qualityStandard;
 	}
 	
-	/**
-	 * 返回 质量标准
-	 * @return
-	 */
-	public String getQualityStandard() {
-		return this.qualityStandard;
-	}
-	
-	public void setLength(Double length) {
-		this.length = length;
-	}
-	
-	/**
-	 * 返回 长(厘米)
-	 * @return
-	 */
-	public Double getLength() {
-		return this.length;
-	}
-	
-	public void setWide(Double wide) {
-		this.wide = wide;
-	}
-	
-	/**
-	 * 返回 宽(厘米)
-	 * @return
-	 */
-	public Double getWide() {
-		return this.wide;
-	}
-	
-	public void setHigh(Double high) {
-		this.high = high;
-	}
-	
-	/**
-	 * 返回 高(厘米)
-	 * @return
-	 */
-	public Double getHigh() {
-		return this.high;
-	}
-	
-	public void setVolume(Double volume) {
-		this.volume = volume;
-	}
-	
-	/**
-	 * 返回 体积(立方米)
-	 * @return
-	 */
-	public Double getVolume() {
-		return this.volume;
-	}
-	
-	public void setRoughWeight(Double roughWeight) {
-		this.roughWeight = roughWeight;
-	}
-	
-	/**
-	 * 返回 毛重(KG)
-	 * @return
-	 */
-	public Double getRoughWeight() {
-		return this.roughWeight;
-	}
-	
-	public void setCartonBarcode(String cartonBarcode) {
-		this.cartonBarcode = cartonBarcode;
-	}
-	
-	/**
-	 * 返回 外箱条码
-	 * @return
-	 */
-	public String getCartonBarcode() {
-		return this.cartonBarcode;
-	}
+
 	
 
 	public String getGmp() {
@@ -335,13 +296,6 @@ public class ScmZsjProductFirst extends BaseModel<String>{
 		this.startBatch = startBatch;
 	}
 
-	public String getSmallBarcode() {
-		return smallBarcode;
-	}
-
-	public void setSmallBarcode(String smallBarcode) {
-		this.smallBarcode = smallBarcode;
-	}
 
 	/**
 	 * @see java.lang.Object#toString()
@@ -357,18 +311,10 @@ public class ScmZsjProductFirst extends BaseModel<String>{
 		.append("supplier", this.supplier) 
 		.append("approvalCode", this.approvalCode) 
 		.append("approvalValidity", this.approvalValidity) 
-		.append("businessScope", this.businessScope) 
-		.append("gmp", this.gmp) 
+		.append("gmp", this.gmp)
 		.append("gmpValidity", this.gmpValidity) 
 		.append("startBatch", this.startBatch) 
-		.append("qualityStandard", this.qualityStandard) 
-		.append("length", this.length) 
-		.append("wide", this.wide) 
-		.append("high", this.high) 
-		.append("volume", this.volume) 
-		.append("roughWeight", this.roughWeight) 
-		.append("cartonBarcode", this.cartonBarcode) 
-		.append("smallBarcode", this.smallBarcode) 
+		.append("qualityStandard", this.qualityStandard)
 		.toString();
 	}
 }

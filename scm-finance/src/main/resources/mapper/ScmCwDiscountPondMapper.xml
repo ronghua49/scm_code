@@ -24,19 +24,43 @@
 		<result property="discountCommerce" column="discountCommerce" jdbcType="VARCHAR"/>
 		<result property="discountType" column="discountType" jdbcType="VARCHAR"/>
 		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="discountGenre" column="discountGenre" jdbcType="VARCHAR"/>
+		<result property="bu" column="bu" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
 	</resultMap>
+	<resultMap type="com.winway.scm.vo.ScmCwCompensationVo" id="ScmCwCompensationVo"></resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmCwDiscountPond">
 		INSERT INTO SCM_CW_DiscountPond
-		(id,discountCode,discountDate,discountSource,businessDivision,province,businessDivisionId,provinceId,commerceId,commerceCode,commerceName,commerceLevel,treminal,mayDeduction,isFreeze,isDeduction,deductionPrice,yetDeduction,balance,discountCommerce,discountType,ownerId)
+		(id,discountCode,discountDate,discountSource,businessDivision,province,businessDivisionId,provinceId,
+		commerceId,commerceCode,commerceName,commerceLevel,treminal,mayDeduction,isFreeze,isDeduction,deductionPrice,
+		yetDeduction,balance,discountCommerce,discountType,ownerId,discountGenre,bu,productName)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{discountCode,jdbcType=VARCHAR}, #{discountDate,jdbcType=TIMESTAMP}, #{discountSource,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceLevel,jdbcType=VARCHAR}, #{treminal,jdbcType=VARCHAR}, #{mayDeduction,jdbcType=NUMERIC}, #{isFreeze,jdbcType=VARCHAR}, #{isDeduction,jdbcType=VARCHAR}, #{deductionPrice,jdbcType=NUMERIC}, #{yetDeduction,jdbcType=NUMERIC}, #{balance,jdbcType=NUMERIC}, #{discountCommerce,jdbcType=VARCHAR}, #{discountType,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{discountCode,jdbcType=VARCHAR}, #{discountDate,jdbcType=TIMESTAMP}, #{discountSource,jdbcType=VARCHAR}, 
+		#{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, 
+		#{provinceId,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, 
+		#{commerceLevel,jdbcType=VARCHAR}, #{treminal,jdbcType=VARCHAR}, #{mayDeduction,jdbcType=NUMERIC}, #{isFreeze,jdbcType=VARCHAR}, 
+		#{isDeduction,jdbcType=VARCHAR}, #{deductionPrice,jdbcType=NUMERIC}, #{yetDeduction,jdbcType=NUMERIC}, #{balance,jdbcType=NUMERIC}, 
+		#{discountCommerce,jdbcType=VARCHAR}, #{discountType,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR},#{discountGenre,jdbcType=VARCHAR},
+		#{bu,jdbcType=VARCHAR},#{productName,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDiscountPond">
 		SELECT * FROM SCM_CW_DiscountPond 
 		WHERE 
 		id=#{id}
+	</select>
+	
+	<select id="listCommerceIdByAnddiscountTypeId"   parameterType="java.lang.String" resultMap="ScmCwCompensationVo">
+		SELECT * FROM SCM_CW_DiscountPond 
+		WHERE 
+		commerceCode=#{arg0} and  discountGenre = #{arg1} and ownerId = #{arg2} and discountType != 2
+	</select>
+	
+	<select id="listCommerceIdByAnddiscountTypeId1"   parameterType="java.lang.String" resultMap="ScmCwDiscountPond">
+		SELECT * FROM SCM_CW_DiscountPond 
+		WHERE 
+		commerceCode=#{arg0} and  discountGenre = #{arg1} and ownerId = #{arg2} and discountType != 2
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDiscountPond">
@@ -76,7 +100,10 @@
 		balance=#{balance,jdbcType=NUMERIC},
 		discountCommerce=#{discountCommerce,jdbcType=VARCHAR},
 		discountType=#{discountType,jdbcType=VARCHAR},
-		ownerId=#{ownerId,jdbcType=VARCHAR}
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		discountGenre=#{discountGenre,jdbcType=VARCHAR},
+		bu=#{bu,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

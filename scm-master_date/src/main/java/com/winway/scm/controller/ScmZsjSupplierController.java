@@ -1,8 +1,10 @@
 package com.winway.scm.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.hotent.base.annotation.Workflow;
 import com.hotent.base.controller.BaseController;
 import com.hotent.base.feign.UCFeignService;
 import com.hotent.base.model.CommonResult;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
+import com.hotent.base.util.JsonUtil;
 import com.hotent.base.util.StringUtil;
 import com.winway.purchase.util.QuarterUtil;
 import com.winway.scm.model.ScmZsjCommerce;
@@ -75,6 +79,19 @@ public class ScmZsjSupplierController extends BaseController{
 	public ScmZsjSupplier get(@ApiParam(name="id",value="业务对象主键", required = true)@PathVariable String id) throws Exception{
 		return scmZsjSupplierManager.get(id);
 	}
+	/**
+	 * 供应商表明细页面
+	 * @param id
+	 * @return
+	 * @throws Exception 
+	 * ModelAndView
+	 */
+	@GetMapping(value="/getByApprovalId/{approvalId}")
+	@ApiOperation(value="供应商表数据详情",httpMethod = "GET",notes = "供应商表数据详情")
+	public CommonResult<ScmZsjSupplier> getByApprovalId(@ApiParam(name="approvalId",value="业务对象主键", required = true)@PathVariable String approvalId) throws Exception{
+		ScmZsjSupplier byApprovalId = scmZsjSupplierManager.getByApprovalId(approvalId);
+		return new CommonResult<ScmZsjSupplier>(true,"获取成功",byApprovalId);
+	}
 	
     /**
 	 * 新增供应商表
@@ -91,6 +108,8 @@ public class ScmZsjSupplierController extends BaseController{
 		JsonNode user = ucFeignService.getUser(current(), "");
 		String userName = user.get("fullname").asText();
 		scmZsjSupplier.setEnterPersion(userName);
+		scmZsjSupplier.setApprovalState("2");
+		scmZsjSupplier.setEnterDate(new Date());
 		if(StringUtil.isEmpty(scmZsjSupplier.getId())){
 			scmZsjSupplier.setFileCode(QuarterUtil.getCode("GYS"));
 			scmZsjSupplierManager.create(scmZsjSupplier);
@@ -168,8 +187,72 @@ public class ScmZsjSupplierController extends BaseController{
 	 */
 	@GetMapping("/downBoxApplySuccess/{ownerId}")
 	@ApiOperation(value="供应商信息下拉框,首营审批通过", httpMethod = "GET", notes = "供应商信息下拉框,首营审批通过")
-	public List<ScmZsjSupplier> downBoxApplySuccess(@ApiParam(name="ownerId",value="货主ID")@PathVariable String ownerId) throws Exception{
-		return scmZsjSupplierManager.downBoxApplySuccess(ownerId);
+	public List<ScmZsjSupplier> downBoxApplySuccess(@ApiParam(name="ownerId",value="货主ID")@PathVariable String ownerId,@RequestParam(required = false) String managementScope) throws Exception{
+		return scmZsjSupplierManager.downBoxApplySuccess(ownerId,managementScope);
 	}
 	
+	/**
+	 * @param 商品申请
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 * flowKey:审批类型
+	 * sysCode:系统别名
+	 * instanceIdField:与实体类审批ID相同,controller层接到对象会有审批ID,处理业务逻辑后,保存对象即可
+	 * varKeys:脚本使用参数
+	 */
+	@PostMapping(value = "sendApply")
+    @ApiOperation(value = "供应商申请", httpMethod = "POST", notes = "供应商申请")
+//    @Workflow(flowKey = "gys", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+    public CommonResult<String> sendApply(
+            @ApiParam(name = "ScmZsjSupplier", value = "供应商对象", required = true) @RequestBody ScmZsjSupplier scmZsjSupplier,
+            HttpServletRequest request) throws Exception {
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String userName = user.get("fullname").asText();
+		scmZsjSupplier.setEnterPersion(userName);
+		scmZsjSupplier.setEnterDate(new Date());
+		scmZsjSupplierManager.sendApply(scmZsjSupplier);
+		return new CommonResult<String>(true,"供应商审批发起成功");
+	}
+	
+	
+	/***
+	 * ┌───┐   ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
+	 * │Esc│   │ F1│ F2│ F3│ F4│ │ F5│ F6│ F7│ F8│ │ F9│F10│F11│F12│ │P/S│S L│P/B│  ┌┐    ┌┐    ┌┐
+	 * └───┘   └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┘  └┘    └┘    └┘
+	 * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐ ┌───┬───┬───┐ ┌───┬───┬───┬───┐
+	 * │~ `│! 1│@ 2│# 3│$ 4│% 5│^ 6│& 7│* 8│( 9│) 0│_ -│+ =│ BacSp │ │Ins│Hom│PUp│ │N L│ / │ * │ - │
+	 * ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤ ├───┼───┼───┤ ├───┼───┼───┼───┤
+	 * │ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │{ [│} ]│ | \ │ │Del│End│PDn│ │ 7 │ 8 │ 9 │   │
+	 * ├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤ └───┴───┴───┘ ├───┼───┼───┤ + │
+	 * │ Caps │ A │ S │ D │ F │ G │ H │ J │ K │ L │: ;│" '│ Enter  │               │ 4 │ 5 │ 6 │   │
+	 * ├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────────┤     ┌───┐     ├───┼───┼───┼───┤
+	 * │ Shift  │ Z │ X │ C │ V │ B │ N │ M │< ,│> .│? /│  Shift   │     │ ↑ │     │ 1 │ 2 │ 3 │   │
+	 * ├─────┬──┴─┬─┴──┬┴───┴───┴───┴───┴───┴──┬┴───┼───┴┬────┬────┤ ┌───┼───┼───┐ ├───┴───┼───┤ E││
+	 * │ Ctrl│    │Alt │         Space         │ Alt│ FN │    │Ctrl│ │ ← │ ↓ │ → │ │   0   │ . │←─┘│
+	 * └─────┴────┴────┴───────────────────────┴────┴────┴────┴────┘ └───┴───┴───┘ └───────┴───┴───┘
+	 * 键盘给你,你来
+	 */
+    @PostMapping(value = "/endApply")
+    @ApiOperation(value = "商品申请审批流程通过", httpMethod = "POST", notes = "供应商首营审批流程通过,修改审批状态")
+    public void endApply(@ApiParam(name = "params", value = "流程事件参数", required = true) @RequestBody String params, 
+    		HttpServletRequest request) throws Exception {
+    	JsonNode jsonNode = JsonUtil.toJsonNode(params);
+    	scmZsjSupplierManager.endApply(jsonNode);
+    }
+	
+	/**
+	 * 供应商数据修改同步
+	 * @param
+	 * @return
+	 * @throws Exception
+	 * ModelAndView
+	 */
+    @GetMapping(value="/updateSyn/{id}")
+	@ApiOperation(value="供应商数据修改同步",httpMethod = "GET",notes = "供应商数据修改同步")
+	public CommonResult<String> updateSyn(@ApiParam(name="id",value="商品主键")@PathVariable String id) throws Exception{
+		scmZsjSupplierManager.updateSyn(id);
+		return new CommonResult<>(true, "同步成功");
+	}
+    
 }

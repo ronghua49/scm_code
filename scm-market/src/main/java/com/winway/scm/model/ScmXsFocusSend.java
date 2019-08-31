@@ -1,4 +1,5 @@
 package com.winway.scm.model;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,10 +10,11 @@ import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hotent.base.model.BaseModel;
 
-
- /**
+/**
  * 集中发货合同
- * <pre> 
+ * 
+ * <pre>
+ *  
  * 描述：集中发货合同 实体对象
  * 构建组：x7
  * 作者:原浩
@@ -21,97 +23,187 @@ import com.hotent.base.model.BaseModel;
  * 版权：美达开发小组
  * </pre>
  */
- @ApiModel(value = "ScmXsFocusSend",description = "集中发货合同") 
-public class ScmXsFocusSend extends BaseModel<String>{
+@ApiModel(value = "ScmXsFocusSend", description = "集中发货合同")
+public class ScmXsFocusSend extends BaseModel<String> {
 
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value="id")
-	protected String id; 
-	
-	@ApiModelProperty(value="集中发货编号")
-	protected String focusSendCode; 
-	
-	@ApiModelProperty(value="特求意见")
-	protected String specialOpinion; 
-	
-	@ApiModelProperty(value="货主ID")
-	protected String ownerId; 
-	
-	@ApiModelProperty(value="协议ID")
-	protected String dealerClauseId; 
-	
-	@ApiModelProperty(value="减免合同次数理由")
-	protected String reduceContractTime; 
-	
-	@ApiModelProperty(value="审批ID")
-	protected String approvalId; 
-	
-	@ApiModelProperty(value="审批状态")
-	protected String approvalState; 
-	
-	@ApiModelProperty(value="供货商")
-	protected String ownerName; 
-	
-	@ApiModelProperty(value="商业首营ID")
-	protected String commerceFirstId; 
-	
-	@ApiModelProperty(value="商业名称")
-	protected String commerceName; 
-	
-	@ApiModelProperty(value="商业编号")
-	protected String commerceCode; 
-	
-	@ApiModelProperty(value="购销方式")
-	protected String marketingWay; 
-	
-	@ApiModelProperty(value="签订时间")
+
+	@ApiModelProperty(value = "id")
+	protected String id;
+
+	@ApiModelProperty(value = "集中发货编号")
+	protected String focusSendCode;
+
+	@ApiModelProperty(value = "特求意见")
+	protected String specialOpinion;
+
+	@ApiModelProperty(value = "货主ID")
+	protected String ownerId;
+
+	@ApiModelProperty(value = "协议ID")
+	protected String dealerClauseId;
+
+	@ApiModelProperty(value = "减免合同次数理由")
+	protected String reduceContractTime;
+
+	@ApiModelProperty(value = "审批ID")
+	protected String approvalId;
+
+	@ApiModelProperty(value = "审批状态")
+	protected String approvalState;
+
+	@ApiModelProperty(value = "供货商")
+	protected String ownerName;
+
+	@ApiModelProperty(value = "商业首营ID")
+	protected String commerceFirstId;
+
+	@ApiModelProperty(value = "商业名称")
+	protected String commerceName;
+
+	@ApiModelProperty(value = "商业编号")
+	protected String commerceCode;
+
+	@ApiModelProperty(value = "购销方式")
+	protected String marketingWay;
+
+	@ApiModelProperty(value = "签订时间")
 	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-	protected Date dateOfSigning; 
+	protected Date dateOfSigning;
+
+	@ApiModelProperty(value = "录单人")
+	protected String entryPeople;
+
+	@ApiModelProperty(value = "录入人")
+	protected String createPerson;
+
+	@ApiModelProperty(value = "录入时间")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+	protected Date createDate;
+
+	@ApiModelProperty(value = "药品类型")
+	protected String medicineType;
+
+	@ApiModelProperty(value = "总价")
+	protected String totalPrice;
+
+	@ApiModelProperty(value = "资信扣减价")
+	protected String creditPrice;
 	
-	
+	@ApiModelProperty(value = "是否超近三个月平均值2倍")
+	protected String isoverfuifil;
+
+	public String getIsoverfuifil() {
+		return isoverfuifil;
+	}
+
+	public void setIsoverfuifil(String isoverfuifil) {
+		this.isoverfuifil = isoverfuifil;
+	}
+
+	public String getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public String getCreditPrice() {
+		return creditPrice;
+	}
+
+	public void setCreditPrice(String creditPrice) {
+		this.creditPrice = creditPrice;
+	}
+
+	public String getMedicineType() {
+		return medicineType;
+	}
+
+	public void setMedicineType(String medicineType) {
+		this.medicineType = medicineType;
+	}
+
+	public String getCreatePerson() {
+		return createPerson;
+	}
+
+	public void setCreatePerson(String createPerson) {
+		this.createPerson = createPerson;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	@ApiModelProperty(value = "收货联系人")
+	protected String contactPersion;
+
+	public String getContactPersion() {
+		return contactPersion;
+	}
+
+	public void setContactPersion(String contactPersion) {
+		this.contactPersion = contactPersion;
+	}
+
+	public String getEntryPeople() {
+		return entryPeople;
+	}
+
+	public void setEntryPeople(String entryPeople) {
+		this.entryPeople = entryPeople;
+	}
+
 	/**
-	*集中发货商品表列表
-	*/
-	protected List<ScmXsFocusSendProduct> scmXsFocusSendProductList=new ArrayList<ScmXsFocusSendProduct>(); 
-	
+	 * 集中发货商品表列表
+	 */
+	protected List<ScmXsFocusSendProduct> scmXsFocusSendProductList = new ArrayList<ScmXsFocusSendProduct>();
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * 返回 id
+	 * 
 	 * @return
 	 */
 	public String getId() {
 		return this.id;
 	}
-	
-	
+
 	public void setSpecialOpinion(String specialOpinion) {
 		this.specialOpinion = specialOpinion;
 	}
-	
+
 	/**
 	 * 返回 特求意见
+	 * 
 	 * @return
 	 */
 	public String getSpecialOpinion() {
 		return this.specialOpinion;
 	}
-	
+
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 	}
-	
+
 	/**
 	 * 返回 货主ID
+	 * 
 	 * @return
 	 */
 	public String getOwnerId() {
 		return this.ownerId;
 	}
-	
+
 	public String getFocusSendCode() {
 		return focusSendCode;
 	}
@@ -119,7 +211,6 @@ public class ScmXsFocusSend extends BaseModel<String>{
 	public void setFocusSendCode(String focusSendCode) {
 		this.focusSendCode = focusSendCode;
 	}
-
 
 	public String getDealerClauseId() {
 		return dealerClauseId;
@@ -136,33 +227,36 @@ public class ScmXsFocusSend extends BaseModel<String>{
 	public void setReduceContractTime(String reduceContractTime) {
 		this.reduceContractTime = reduceContractTime;
 	}
-	
+
 	/**
 	 * 返回 减免合同次数理由
+	 * 
 	 * @return
 	 */
 	public String getReduceContractTime() {
 		return this.reduceContractTime;
 	}
-	
+
 	public void setApprovalId(String approvalId) {
 		this.approvalId = approvalId;
 	}
-	
+
 	/**
 	 * 返回 审批ID
+	 * 
 	 * @return
 	 */
 	public String getApprovalId() {
 		return this.approvalId;
 	}
-	
+
 	public void setApprovalState(String approvalState) {
 		this.approvalState = approvalState;
 	}
-	
+
 	/**
 	 * 返回 审批状态
+	 * 
 	 * @return
 	 */
 	public String getApprovalState() {
@@ -172,17 +266,16 @@ public class ScmXsFocusSend extends BaseModel<String>{
 	public void setScmXsFocusSendProductList(List<ScmXsFocusSendProduct> scmXsFocusSendProductList) {
 		this.scmXsFocusSendProductList = scmXsFocusSendProductList;
 	}
-	
+
 	/**
 	 * 返回 集中发货商品表列表
+	 * 
 	 * @return
 	 */
 	public List<ScmXsFocusSendProduct> getScmXsFocusSendProductList() {
 		return this.scmXsFocusSendProductList;
 	}
-	
-	
-	
+
 	public String getOwnerName() {
 		return ownerName;
 	}
@@ -235,15 +328,9 @@ public class ScmXsFocusSend extends BaseModel<String>{
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this)
-		.append("id", this.id) 
-		.append("FocusSendCode", this.focusSendCode) 
-		.append("specialOpinion", this.specialOpinion) 
-		.append("ownerId", this.ownerId) 
-		.append("BigContractId", this.dealerClauseId) 
-		.append("reduceContractTime", this.reduceContractTime) 
-		.append("approvalId", this.approvalId) 
-		.append("approvalState", this.approvalState) 
-		.toString();
+		return new ToStringBuilder(this).append("id", this.id).append("FocusSendCode", this.focusSendCode)
+				.append("specialOpinion", this.specialOpinion).append("ownerId", this.ownerId)
+				.append("BigContractId", this.dealerClauseId).append("reduceContractTime", this.reduceContractTime)
+				.append("approvalId", this.approvalId).append("approvalState", this.approvalState).toString();
 	}
 }

@@ -3,6 +3,7 @@ package com.winway.scm.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.hotent.base.feign.UCFeignService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * 
  * <pre> 
@@ -56,8 +62,12 @@ public class ScmZsjProductFirstController extends BaseController{
 	
 	@Resource
 	ScmZsjProductFirstDao scmZsjProductFirstDao;
-	
-	
+
+	@Resource
+	UCFeignService ucFeignService;
+
+
+
 	/**
 	 * 商品首营记录表列表(分页条件查询)数据
 	 * @param request
@@ -101,11 +111,15 @@ public class ScmZsjProductFirstController extends BaseController{
 		if(StringUtil.isEmpty(scmZsjProductFirst.getProductId())) {
 			throw new RuntimeException("请选择商品后暂存");
 		}
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmZsjProductFirst.setOperatorPerson(fullname);
+		scmZsjProductFirst.setOperatorDate(new Date());
 		if(StringUtil.isEmpty(scmZsjProductFirst.getId())){
 			//判断当前商品在当前商业是否已经申请
 			scmZsjProductFirstManager.isSave(scmZsjProductFirst);
 			scmZsjProductFirst.setApprovalState("0");
-			scmZsjProductManager.isExist(scmZsjProductFirst.getScmZsjProduct());
+//			scmZsjProductManager.isExist(scmZsjProductFirst.getScmZsjProduct());
 			scmZsjProductFirstManager.create(scmZsjProductFirst);
 		}else{
 			scmZsjProductFirst.setApprovalState("0");
@@ -157,18 +171,50 @@ public class ScmZsjProductFirstController extends BaseController{
 	 */
 	@PostMapping(value = "/sendApply")
     @ApiOperation(value = "商品首营申请", httpMethod = "POST", notes = "在商品首营类中加入商品对象,商品数据在发起审批时判断是否存在该商品,如果存在则不保存,不存在则保存商品数据")
-    @Workflow(flowKey = "spsy", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
-    public WinwayResult<String> sendApply(
+//    @Workflow(flowKey = "spsy", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+    public CommonResult<String> sendApply(
             @ApiParam(name = "scmZsjCommerceFirst", value = "采购合同对象", required = true) @RequestBody ScmZsjProductFirst scmZsjProductFirst,
             HttpServletRequest request) throws Exception {
 		ScmZsjProductFirst scmZsjProductFirst2 = scmZsjProductFirstDao.get(scmZsjProductFirst.getId());
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmZsjProductFirst.setOperatorPerson(fullname);
+		scmZsjProductFirst.setOperatorDate(new Date());
 		if(scmZsjProductFirst2 == null) {
 			scmZsjProductFirstManager.sendApply(scmZsjProductFirst);
 		}else{
 			scmZsjProductFirstManager.updateSendApply(scmZsjProductFirst);
 		}
-		return new WinwayResult<>("true", "商品首营申请提交成功");
+		return new CommonResult<String>(true, "商品首营申请提交成功");
 	}
+
+
+	/**
+	 *  商品首映编辑发起申请
+	 * @param scmZsjProductFirst
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping(value = "/sendApplyEdit")
+	@ApiOperation(value = "商品首营申请", httpMethod = "POST", notes = "在商品首营类中加入商品对象,商品数据在发起审批时判断是否存在该商品,如果存在则不保存,不存在则保存商品数据")
+	@Workflow(flowKey = "spsyxgsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+	public CommonResult<String> sendApplyEdit(
+			@ApiParam(name = "scmZsjCommerceFirst", value = "采购合同对象", required = true) @RequestBody ScmZsjProductFirst scmZsjProductFirst,
+			HttpServletRequest request) throws Exception {
+		ScmZsjProductFirst scmZsjProductFirst2 = scmZsjProductFirstDao.get(scmZsjProductFirst.getId());
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmZsjProductFirst.setOperatorPerson(fullname);
+		scmZsjProductFirst.setOperatorDate(new Date());
+		if(scmZsjProductFirst2 == null) {
+			scmZsjProductFirstManager.sendApply(scmZsjProductFirst);
+		}else{
+			scmZsjProductFirstManager.updateSendApply(scmZsjProductFirst);
+		}
+		return new CommonResult<String>(true, "商品首营申请提交成功");
+	}
+
 	
     @PostMapping(value = "/endApply")
     @ApiOperation(value = "商品首营审批流程通过", httpMethod = "POST", notes = "商品首营审批流程通过,修改审批状态")
@@ -194,7 +240,7 @@ public class ScmZsjProductFirstController extends BaseController{
 	}
     
 	/**
-	 * @param 商品修改首营申请
+	 * @param
 	 * @param request
 	 * @return
 	 * @throws Exception
@@ -213,4 +259,20 @@ public class ScmZsjProductFirstController extends BaseController{
 		return new CommonResult<String>(true, "审批发起成功");
 	}
 	
+    /**
+     * 停用启用接口
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/startOrStop/{id}")
+    @ApiOperation(value = "停用启用接口", httpMethod = "POST", notes = "停用启用接口")
+    public CommonResult<String> startOrStop(@ApiParam(name = "id", value = "查询对象") @PathVariable String id) throws Exception {
+    	String type = scmZsjProductFirstManager.startOrStop(id);
+    	return new CommonResult<String>(true, "停用成功");
+    }
+	
+    
+
 }

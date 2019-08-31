@@ -1,0 +1,105 @@
+spring:
+  profiles:
+    active: dev
+    base: com.winway.scm.controller
+    title: "@@project.name@@"
+    description: "@@project.description@@"
+    version: "@@project.version@@"
+    platform: mysql
+    #platform: oracle
+  application:
+    name: scm-gsp
+  datasource:
+    name: dev
+    url: jdbc:mysql://114.116.86.0:3306/ww_scm_dev?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
+    username: root
+    password: 123456
+    #url: jdbc:oracle:thin:@127.0.0.1:1521:ORCL 
+    #username: X7_PORTAL_INIT
+    #password: X7_PORTAL_INIT
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    #driver-class-name: oracle.jdbc.driver.OracleDriver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    # validationQuery  hsqldb  select 1 from INFORMATION_SCHEMA.SYSTEM_USERS 
+    # Oracle select 1 from dual 
+    # DB2 select 1 from sysibm.sysdummy1
+    # MySql,Microsoft SqlServer,ingres,derby,H2 select 1
+    # postgresql select version()
+    #validationQuery: select 'x'
+    validationQuery: select 1 
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    maxPoolPreparedStatementPerConnectionSize: 20
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  http:
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 1024MB
+    
+# Server settings (ServerProperties)
+server:
+  port: 8998
+  address: 0.0.0.0
+  sessionTimeout: 30
+  contextPath: /
+  session:
+    timeout: 30
+    
+system:
+  mail:
+    address: PortalDevTest@Winwayworld.com
+  id: 
+    machineName: portal
+
+#eureka:
+#  client:
+#    healthcheck:
+#      enabled:  true
+#    service-url:
+#      defaultZone: http://114.116.86.0:8761/eureka/
+#  instance:
+#    lease-expiration-duration-in-seconds: 30
+#    lease-renewal-interval-in-seconds: 10
+
+#feign 配置
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 50000
+        readTimeout: 50000
+        loggerLevel: full
+# 断路器配置
+hystrix:
+  metrics:
+    enabled: true    
+  command:    
+    default:    
+      execution:    
+        isolation:
+          strategy: SEMAPHORE    
+          semaphore: 
+            maxConcurrentRequests: 100
+          thread:    
+            timeoutInMilliseconds: 50000 #缺省为1000 
+      fallback: 
+        isolation: 
+          semaphore: 
+            maxConcurrentRequests: 100
+# 负载均衡配置
+ribbon:
+  eureka:
+    enabled: true  

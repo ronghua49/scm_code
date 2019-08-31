@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="scm_xs_clauseSupply" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="840acb81-b118-41ab-9950-77a8753277da">
+	<parameter name="clauseCode" class="java.lang.String"/>
+	<parameter name="year1" class="java.lang.String"/>
+	<parameter name="month1" class="java.lang.String"/>
+	<parameter name="day1" class="java.lang.String"/>
+	<parameter name="productName" class="java.lang.String"/>
+	<parameter name="commonName" class="java.lang.String"/>
+	<parameter name="AgentType" class="java.lang.String"/>
+	<parameter name="commerceGauge" class="java.lang.String"/>
+	<parameter name="supplyPrice" class="java.lang.String"/>
+	<parameter name="purePinPrice" class="java.lang.String"/>
+	<parameter name="wireTransferPrice" class="java.lang.String"/>
+	<parameter name="acceptPrice" class="java.lang.String"/>
+	<parameter name="year2" class="java.lang.String"/>
+	<parameter name="month2" class="java.lang.String"/>
+	<parameter name="day2" class="java.lang.String"/>
+	<parameter name="commerceName" class="java.lang.String"/>
+	<parameter name="img_ht" class="java.awt.image.BufferedImage"/>
+	<parameter name="img_hc" class="java.awt.image.BufferedImage"/>
+	<parameter name="product_before" class="java.util.List"/>
+	<parameter name="product_after" class="java.util.List"/>
+	<parameter name="payStyle_before" class="java.util.List"/>
+	<parameter name="payStyle_after" class="java.util.List"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="588" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="30" uuid="e3b263f1-01c2-4410-bf87-3f52bc719fd1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体"/>
+				</textElement>
+				<text><![CDATA[商业补充协议]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="30" width="80" height="20" uuid="bbb84135-8bf7-4b80-9789-59f1533a503c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[协议编号：]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="30" width="95" height="20" uuid="5b645d0f-1d64-4e6b-8edd-2e7dbfdccc5d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{clauseCode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="50" width="555" height="30" uuid="82335082-959a-4fa7-a8c4-eed2a0129a93"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[根据甲乙双方《购销协议》的具体事宜，经双方友好协商，现对原协议中的部分条款的变更达成一致意见，具体变更内容如下：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="80" height="20" uuid="f0d47df9-e2f1-4ef2-8f63-7b9281a043d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[(生效日期：自]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="80" width="50" height="20" uuid="f1b733ff-ac02-462f-8f93-300b85379612"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{year1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="130" y="80" width="50" height="20" uuid="f6c178f1-e927-493c-8f11-89bc106650ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[年]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="80" width="50" height="20" uuid="347ba590-c960-40d9-bc24-3725595938aa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{month1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="230" y="80" width="50" height="20" uuid="dbaefda1-2e8d-446d-a1ad-4c468dc3eca2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[月]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="80" width="50" height="20" uuid="09487eae-1428-4979-87ab-975a9886fcd4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{day1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="330" y="80" width="50" height="20" uuid="1f6770d9-4db9-4993-8c7e-8a8171226251"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[日起)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="100" width="80" height="20" uuid="4826ed28-cf5e-4d5f-9bfa-6a316995a26a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[一、价格调整：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="120" width="258" height="20" uuid="2398fc59-6113-4815-9ddc-67c301f394c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[甲方项目产品信息]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="120" width="255" height="20" uuid="8957314f-3c0a-4dfa-b55c-d7e3a3f70c21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[乙方项目]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="120" width="40" height="60" uuid="0f7559b2-52a4-4a21-945e-a813bf3008f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[调整前]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="180" width="258" height="20" uuid="fe64469b-e9ff-43cf-b082-d8041555aac0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[甲方项目产品信息]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="180" width="255" height="20" uuid="bcca0aab-b2c2-402c-be2d-22d2b91113a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[乙方项目]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="180" width="40" height="80" uuid="709d2b00-9a69-4530-b6ec-2901b37649ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[调整后]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="41" y="140" width="513" height="40" uuid="4c5f28ae-a56c-4ed2-b323-f4a30c0ad28a"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{product_before})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["jaspertemplate/product_before.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="41" y="200" width="513" height="60" uuid="65448e1b-154f-4b9c-9684-44237ba291cf"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{product_after})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["jaspertemplate/product_after.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="260" width="80" height="20" uuid="ca7368da-4960-4dbc-bdcf-88f9927ed8f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[二、结算调整：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="280" width="80" height="80" uuid="07450c8b-2cbf-4c88-8468-f579e56445e4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[调整前]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="80" y="280" width="98" height="20" uuid="5cee7633-0ebd-480f-9f3b-153651fabb66"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[电汇方式]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="180" y="280" width="100" height="20" uuid="eb6bbb59-6058-4981-9fd3-9d6100d6c754"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[回款天数
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="280" y="280" width="100" height="20" uuid="9be457c6-c4ec-4543-a65b-5c311f8adf68"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[预付款占比（%）
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="380" y="280" width="100" height="20" uuid="880338cc-5621-43d3-b102-45dd3c632511"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[付款折扣（%）
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="360" width="80" height="80" uuid="d3d2849b-220e-4e8b-bcce-a74d6a0bea41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[调整后]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="80" y="360" width="100" height="20" uuid="8678e1e9-e591-4434-921a-986f63ac25f6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[电汇方式]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="180" y="360" width="100" height="20" uuid="e9954d29-a15d-4126-8cd4-c2451dfa2110"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[回款天数
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="280" y="360" width="100" height="20" uuid="350cd54d-d546-4870-8aee-7b959bf9e801"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[预付款占比（%）
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="380" y="360" width="100" height="20" uuid="c96c8362-5123-42c9-91c2-5621a6590b38"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[付款折扣（%）
+]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="80" y="300" width="399" height="60" uuid="fb5e70f9-5bd5-4c82-893a-d1021d670211"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{payStyle_before})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["jaspertemplate/payStyle_before.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="80" y="380" width="399" height="60" uuid="36fb35d8-3e65-4224-a97d-cedabf8cee85"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{payStyle_after})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["jaspertemplate/payStyle_after.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="440" width="555" height="30" uuid="d82abcc8-cf52-430d-9a58-7156c66a6efb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[其他未变动的条款均以甲、乙双方原《购销协议》中的约定为准。本补充协议经双方法定代表或授权委托负责人签字盖章方可生效。补充协议一式两份，双方各执一份。]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="470" width="180" height="20" uuid="a88af080-b0e2-44bb-af00-0795f9fe9fd1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[甲方（供货商）：海南天祥药业有限公司   ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="490" width="180" height="20" uuid="1a5ecc99-ff3b-45ea-b972-af0ee4e5c8a3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[授权代表：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="80" y="560" width="30" height="20" uuid="a03d4623-1a75-42be-ad27-edc13564de53"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[年]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="150" y="560" width="30" height="20" uuid="7c815388-49b1-4280-9c8e-b3b5975ff2bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[月]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="210" y="560" width="30" height="20" uuid="e424e097-81f1-4b45-b416-9f75ab8f4e55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[日]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="41" y="560" width="39" height="20" uuid="c7e7a09b-8d75-47de-9160-69239f915991"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{year2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="110" y="560" width="40" height="20" uuid="4e4bffe4-908e-4d58-aaf8-2d49e8abcc00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{month2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="180" y="560" width="30" height="20" uuid="e80ca218-086f-42b6-9d10-46c4e31c5cda"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{day2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="300" y="470" width="80" height="20" uuid="ab354e4e-4f51-4a01-8755-fb515f0c9a52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[甲方（供货商）：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="300" y="490" width="180" height="20" uuid="481a590d-12ad-4b41-babb-3b23733e20a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[授权代表：]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="380" y="470" width="175" height="20" uuid="0bcfd18e-5dbb-4496-8b47-af7e6beb9181"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{commerceName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="395" y="560" width="30" height="20" uuid="103a40fb-eb30-4023-b8ae-1fbd6274800b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[年]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="465" y="560" width="30" height="20" uuid="a3d58c5e-db71-4c8f-a7d3-666f41b8f52f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[月]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="525" y="560" width="30" height="20" uuid="bba307c1-3638-4a11-a90c-ffd5a4ba19db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[日]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="356" y="560" width="39" height="20" uuid="ed300da9-c900-4861-9968-28e603363523"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{year2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="425" y="560" width="40" height="20" uuid="3a12a744-428b-4402-ad6d-278575957580"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{month2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="495" y="560" width="30" height="20" uuid="d029fd43-8a79-4f26-862a-a418f3ba6b85"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{day2}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement positionType="Float" x="100" y="500" width="70" height="70" uuid="4cba3e40-570f-46f5-99be-8244fb4f11a9"/>
+				<imageExpression><![CDATA[$P{img_ht}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement positionType="Float" x="432" y="490" width="70" height="70" uuid="f0887aed-e0bd-47f6-9781-2cc58d5daa4d"/>
+				<imageExpression><![CDATA[$P{img_hc}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+</jasperReport>

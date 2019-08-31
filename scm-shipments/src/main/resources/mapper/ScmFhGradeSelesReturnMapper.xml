@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhGradeSelesReturnDao">
+    <resultMap id="ScmFhGradeSelesReturn" type="com.winway.scm.model.ScmFhGradeSelesReturn">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+        <result property="directiveCode" column="directiveCode" jdbcType="VARCHAR"/>
+        <result property="productName" column="productName" jdbcType="VARCHAR"/>
+        <result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+        <result property="aChange" column="aChange" jdbcType="NUMERIC"/>
+        <result property="productState" column="productState" jdbcType="VARCHAR"/>
+        <result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+        <result property="batchNumber" column="batchNumber" jdbcType="VARCHAR"/>
+        <result property="actualDeliveryDate" column="actualDeliveryDate" jdbcType="TIMESTAMP"/>
+        <result property="returnMessage" column="returnMessage" jdbcType="VARCHAR"/>
+        <result property="memo" column="memo" jdbcType="VARCHAR"/>
+        <result property="shipmentsId" column="shipmentsId" jdbcType="VARCHAR"/>
+        <result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+        <result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+        <result property="AgentType" column="unit" jdbcType="VARCHAR"/>
+        <result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+        <result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+        <result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+        <result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="houstWareCode" column="houstWareCode" jdbcType="VARCHAR"/>
+     </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmFhGradeSelesReturn">
+		INSERT INTO Scm_Fh_GradeSelesReturn
+		(id,masterId,directiveCode,
+		productName,productCode,aChange,
+		productState,productSum,price,
+		priceSum,batchNumber,actualDeliveryDate,
+		returnMessage,memo,shipmentsId,
+		commonName,manufacturer,unit,
+		AgentType,approvalCode,medicineClassify,
+		medicineType,businessScope,code,houstWareCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{directiveCode,jdbcType=VARCHAR}, 
+		#{productName,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{aChange,jdbcType=NUMERIC}, 
+		#{productState,jdbcType=VARCHAR}, #{productSum,jdbcType=NUMERIC}, #{price,jdbcType=NUMERIC}, 
+		#{priceSum,jdbcType=NUMERIC}, #{batchNumber,jdbcType=VARCHAR}, #{actualDeliveryDate,jdbcType=TIMESTAMP}, 
+		#{returnMessage,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{shipmentsId,jdbcType=VARCHAR},
+		#{commonName,jdbcType=VARCHAR},#{manufacturer,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},
+		#{AgentType,jdbcType=VARCHAR},#{approvalCode,jdbcType=VARCHAR},#{medicineClassify,jdbcType=VARCHAR},
+		#{medicineType,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{houstWareCode,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmFhGradeSelesReturn">
+		SELECT * FROM Scm_Fh_GradeSelesReturn 
+		WHERE 
+		id=#{id}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmFhGradeSelesReturn">
+        SELECT
+        b.*, a.ownerId
+        FROM
+        `scm_fh_gradeselesreturnmaster` a,
+        `scm_fh_gradeselesreturn` b
+        <where>
+            b.masterId = a.id
+            <if test="whereSql!=null">
+                and ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmFhGradeSelesReturn">
+		UPDATE Scm_Fh_GradeSelesReturn SET
+		masterId=#{masterId,jdbcType=VARCHAR},
+		directiveCode=#{directiveCode,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		aChange=#{aChange,jdbcType=NUMERIC},
+		productState=#{productState,jdbcType=VARCHAR},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		price=#{price,jdbcType=NUMERIC},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		batchNumber=#{batchNumber,jdbcType=VARCHAR},
+		actualDeliveryDate=#{actualDeliveryDate,jdbcType=TIMESTAMP},
+		returnMessage=#{returnMessage,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		commonName=#{commonName,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR},
+		unit = #{unit,jdbcType=VARCHAR},
+		AgentType = #{AgentType,jdbcType=VARCHAR},
+		approvalCode  = #{approvalCode,jdbcType=VARCHAR},
+		medicineClassify = #{medicineClassify,jdbcType=VARCHAR},
+		medicineType = #{medicineType,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR},
+		houstWareCode = #{houstWareCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Fh_GradeSelesReturn 
+		WHERE
+		id=#{id}
+	</delete>
+
+    <delete id="delByMainId">
+	    DELETE FROM Scm_Fh_GradeSelesReturn
+	    WHERE
+	    masterId=#{masterId}
+	</delete>
+
+    <select id="getByMainId" resultMap="ScmFhGradeSelesReturn">
+	    SELECT *
+	    FROM Scm_Fh_GradeSelesReturn 
+	    WHERE masterId=#{masterId}
+	</select>
+
+</mapper>

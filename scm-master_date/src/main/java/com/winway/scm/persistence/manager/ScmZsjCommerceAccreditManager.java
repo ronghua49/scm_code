@@ -15,5 +15,7 @@ import com.winway.scm.model.ScmZsjCommerceAccredit;
  * </pre>
  */
 public interface ScmZsjCommerceAccreditManager extends Manager<String, ScmZsjCommerceAccredit>{
+
+	void saveList(ScmZsjCommerceAccredit[] scmZsjCommerceAccredit);
 	
 }

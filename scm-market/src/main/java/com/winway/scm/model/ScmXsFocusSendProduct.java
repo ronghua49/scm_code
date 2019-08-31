@@ -33,7 +33,7 @@ public class ScmXsFocusSendProduct extends BaseModel<String> {
 	protected Integer theNumber;
 
 	@ApiModelProperty(value = "件数")
-	protected Integer packageNum;
+	protected double packageNum;
 
 	@ApiModelProperty(value = "含税单价")
 	protected Double unitPrice;
@@ -53,7 +53,7 @@ public class ScmXsFocusSendProduct extends BaseModel<String> {
 	protected String BigContractProductId;
 
 	@ApiModelProperty(value = "件装量")
-	protected Integer Achange;
+	protected Integer achage;
 
 	@ApiModelProperty(value = "年月")
 	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM")
@@ -74,6 +74,21 @@ public class ScmXsFocusSendProduct extends BaseModel<String> {
 	
 	@ApiModelProperty(value = "药品编号")
 	protected String productCode;
+
+	@ApiModelProperty(value = "商品名")
+	protected String productName;
+	@ApiModelProperty(value = "剂型")
+	protected String AgentType;
+	@ApiModelProperty(value = "生产厂家")
+	protected String manufacturer;
+	@ApiModelProperty(value = "批准文号")
+	protected String approvalCode;
+	@ApiModelProperty(value = "经营范围")
+	protected String medicineClassify;
+	@ApiModelProperty(value = "经营范围")
+	protected String businessScope;
+	@ApiModelProperty(value = "商品子码")
+	protected String code;
 
 	@ApiModelProperty(value = "货主ID")
 	protected String v_ownerId;
@@ -107,6 +122,63 @@ public class ScmXsFocusSendProduct extends BaseModel<String> {
 	protected String v_productCode;
 
 	
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getAgentType() {
+		return AgentType;
+	}
+
+	public void setAgentType(String agentType) {
+		AgentType = agentType;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getApprovalCode() {
+		return approvalCode;
+	}
+
+	public void setApprovalCode(String approvalCode) {
+		this.approvalCode = approvalCode;
+	}
+
+	public String getMedicineClassify() {
+		return medicineClassify;
+	}
+
+	public void setMedicineClassify(String medicineClassify) {
+		this.medicineClassify = medicineClassify;
+	}
+
+	public String getBusinessScope() {
+		return businessScope;
+	}
+
+	public void setBusinessScope(String businessScope) {
+		this.businessScope = businessScope;
+	}
+
 	public String getMedicineType() {
 		return MedicineType;
 	}
@@ -330,7 +402,7 @@ public class ScmXsFocusSendProduct extends BaseModel<String> {
 		return this.theNumber;
 	}
 
-	public void setPackageNum(Integer packageNum) {
+	public void setPackageNum(double packageNum) {
 		this.packageNum = packageNum;
 	}
 
@@ -339,7 +411,7 @@ public class ScmXsFocusSendProduct extends BaseModel<String> {
 	 * 
 	 * @return
 	 */
-	public Integer getPackageNum() {
+	public double getPackageNum() {
 		return this.packageNum;
 	}
 
@@ -399,12 +471,12 @@ public class ScmXsFocusSendProduct extends BaseModel<String> {
 		this.yearAndMonth = yearAndMonth;
 	}
 
-	public Integer getAchange() {
-		return Achange;
+	public Integer getAchage() {
+		return achage;
 	}
 
-	public void setAchange(Integer achange) {
-		Achange = achange;
+	public void setAchage(Integer achage) {
+		this.achage = achage;
 	}
 
 	/**

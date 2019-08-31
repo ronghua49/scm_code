@@ -17,11 +17,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.hotent</groupId>
-			<artifactId>base</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.hotent</groupId>-->
+			<!--<artifactId>base</artifactId>-->
+			<!--<version>${project.version}</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>com.hotent</groupId>
 			<artifactId>scm-purchase</artifactId>
@@ -39,9 +39,9 @@
 		</dependency>
 	</dependencies>
 
-	<build>
+	<!-- <build>
 		<plugins>
-			<!-- 用于生成jar文件 -->
+			用于生成jar文件
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -58,5 +58,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-	</build>
+	</build> -->
 </project>

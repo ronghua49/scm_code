@@ -1,8 +1,12 @@
 package com.winway.scm.model;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hotent.base.model.BaseModel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.hotent.base.model.BaseModel;
 
 
  /**
@@ -16,7 +20,11 @@ import com.hotent.base.model.BaseModel;
  * 版权：美达开发小组
  * </pre>
  */
- @ApiModel(value = "ScmCwDynamicDiscount",description = "动态票折规则") 
+ /**
+ * @author Administrator
+ *
+ */
+@ApiModel(value = "ScmCwDynamicDiscount",description = "动态票折规则") 
 public class ScmCwDynamicDiscount extends BaseModel<String>{
 
 	private static final long serialVersionUID = 1L;
@@ -37,12 +45,14 @@ public class ScmCwDynamicDiscount extends BaseModel<String>{
 	protected Integer productSum; 
 	
 	@ApiModelProperty(value="可票折百分比")
-	protected Integer mayDeductionPercent; 
+	protected Double mayDeductionPercent;
 	
 	@ApiModelProperty(value="票折时间起")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date deductionDateStart; 
 	
 	@ApiModelProperty(value="票折时间止")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date deductionDateStop; 
 	
 	@ApiModelProperty(value="是否失效")
@@ -52,23 +62,82 @@ public class ScmCwDynamicDiscount extends BaseModel<String>{
 	protected String setPersion; 
 	
 	@ApiModelProperty(value="设置时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date setTime; 
 	
 	@ApiModelProperty(value="货主ID")
 	protected String ownerId;
 
-	 @ApiModelProperty(value="是否删除 0:正常 1：删除" )
-	 protected String isDelete;
-
-	 @ApiModelProperty(value="规则使用结束后是否正常票折（0：正常票折，1：禁止票折）")
-	 protected String state;
-
-
-
-	 public void setId(String id) {
+	@ApiModelProperty(value="是否删除 0:正常 1：删除" )
+	protected String isDelete;
+	
+	@ApiModelProperty(value="规则使用结束后是否正常票折（0：正常票折，1：禁止票折）")
+	protected String state;
+	
+	@ApiModelProperty(value="商业id")
+	protected String commerceId;
+	
+	@ApiModelProperty(value="商业编号")
+	protected String commerceCode;
+	
+	@ApiModelProperty(value="商品名称")
+	protected String commerceName;
+	
+	@ApiModelProperty(value="产品系列ID")
+	protected String productLineId; 
+	
+	@ApiModelProperty(value="产品系列名称")
+	protected String productLineName; 
+	/**
+	*分销商流向管理费列表
+	*/
+	@ApiModelProperty(value="票折类型数组")
+	protected List<ScmCwDynamicDiscountType> scmCwDynamicDiscountTypeList = new ArrayList<ScmCwDynamicDiscountType>(); 
+	
+	public void setId(String id) {
 		this.id = id;
 	}
 	
+	public List<ScmCwDynamicDiscountType> getScmCwDynamicDiscountTypeList() {
+		return scmCwDynamicDiscountTypeList;
+	}
+
+	public void setScmCwDynamicDiscountTypeList(List<ScmCwDynamicDiscountType> scmCwDynamicDiscountTypeList) {
+		this.scmCwDynamicDiscountTypeList = scmCwDynamicDiscountTypeList;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getCommerceId() {
+		return commerceId;
+	}
+
+	public String getCommerceCode() {
+		return commerceCode;
+	}
+
+	public String getCommerceName() {
+		return commerceName;
+	}
+
+	public String getProductLineId() {
+		return productLineId;
+	}
+
+	public void setProductLineId(String productLineId) {
+		this.productLineId = productLineId;
+	}
+
+	public String getProductLineName() {
+		return productLineName;
+	}
+
+	public void setProductLineName(String productLineName) {
+		this.productLineName = productLineName;
+	}
+
 	/**
 	 * 返回 id
 	 * @return
@@ -77,6 +146,18 @@ public class ScmCwDynamicDiscount extends BaseModel<String>{
 		return this.id;
 	}
 	
+	public void setCommerceId(String commerceId) {
+		this.commerceId = commerceId;
+	}
+
+	public void setCommerceCode(String commerceCode) {
+		this.commerceCode = commerceCode;
+	}
+
+	public void setCommerceName(String commerceName) {
+		this.commerceName = commerceName;
+	}
+
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
@@ -125,7 +206,7 @@ public class ScmCwDynamicDiscount extends BaseModel<String>{
 		return this.productSum;
 	}
 	
-	public void setMayDeductionPercent(Integer mayDeductionPercent) {
+	public void setMayDeductionPercent(Double mayDeductionPercent) {
 		this.mayDeductionPercent = mayDeductionPercent;
 	}
 	
@@ -133,7 +214,7 @@ public class ScmCwDynamicDiscount extends BaseModel<String>{
 	 * 返回 可票折百分比
 	 * @return
 	 */
-	public Integer getMayDeductionPercent() {
+	public Double getMayDeductionPercent() {
 		return this.mayDeductionPercent;
 	}
 	

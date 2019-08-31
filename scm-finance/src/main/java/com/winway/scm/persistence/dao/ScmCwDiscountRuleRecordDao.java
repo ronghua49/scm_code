@@ -3,6 +3,7 @@ import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmCwDiscountRuleRecord;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -17,4 +18,6 @@ import java.util.List;
  */
 public interface ScmCwDiscountRuleRecordDao extends MyBatisDao<String, ScmCwDiscountRuleRecord> {
     List<ScmCwDiscountRuleRecord> getByIdInfo(String commerceId, String productId, String id);
+
+	Map<String, Object> getProductCountByDiscountId(String id, String commerceId, String productId);
 }

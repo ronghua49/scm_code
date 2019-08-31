@@ -102,5 +102,20 @@
 		WHERE
 			a.id IN ( SELECT b.commerceId FROM scm_zsj_commercefirst b WHERE b.ownerId=#{ownerId})
 	</select>
-	
+
+    <select id="getByParam" resultType="com.winway.scm.model.ScmCwReturnMoney">
+		select * FROM SCM_CW_ReturnMoney
+		WHERE
+		commerceCode = #{commerceCode} and remittanceDate = #{remittanceDate} and price=#{price}
+	</select>
+	<select id="sumList" resultType="com.winway.scm.model.ScmCwReturnMoney">
+		SELECT ownerId,commerceName,SUM(price) as price,isAffirm FROM SCM_CW_ReturnMoney
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		GROUP  BY  commerceName,isAffirm,ownerId
+	</select>
+
 </mapper>

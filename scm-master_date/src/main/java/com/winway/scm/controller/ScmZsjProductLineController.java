@@ -87,13 +87,8 @@ public class ScmZsjProductLineController extends BaseController{
 	public CommonResult<String> save(@ApiParam(name="scmZsjProductLine",value="产品系列业务对象", required = true)@RequestBody ScmZsjProductLine scmZsjProductLine) throws Exception{
 		String msg = "添加产品系列成功";
 		JsonNode user = ucFeignService.getUser(current(), "");
-		JsonNode jsonNode = user.get("fullname");
-		if(jsonNode == null) {
-			new RuntimeException("登入人信息异常");
-		}
-		String oldStr = jsonNode.toString();
-		String createPersion = oldStr.substring(1, oldStr.length()-1);
-		scmZsjProductLine.setCreatePersion(createPersion);
+		String userName = user.get("fullname").asText();
+		scmZsjProductLine.setCreatePersion(userName);
 		if(StringUtil.isEmpty(scmZsjProductLine.getId())){
 			scmZsjProductLineManager.create(scmZsjProductLine);
 		}else{
@@ -145,4 +140,19 @@ public class ScmZsjProductLineController extends BaseController{
 		String changeState = scmZsjProductLineManager.changeState(id);
 		return  new CommonResult<String>(true, "批量删除成功",changeState);
 	}
+	
+	/**
+	 * 商品系列数据修改同步
+	 * @param
+	 * @return
+	 * @throws Exception
+	 * ModelAndView
+	 */
+	@GetMapping(value="/updateSyn/{id}")
+	@ApiOperation(value="商品系列数据修改同步",httpMethod = "GET",notes = "商品系列数据修改同步")
+	public CommonResult<String> updateSyn(@ApiParam(name="id",value="商品主键")@PathVariable String id) throws Exception{
+		scmZsjProductLineManager.updateSyn(id);
+		return new CommonResult<>(true, "同步成功");
+	}
+	
 }

@@ -78,8 +78,104 @@ public class ScmFhFocusShipmentsSet extends BaseModel<String>{
 	
 	@ApiModelProperty(value="商品编号")
 	protected String productCode;
-	
-	public void setId(String id) {
+
+	 @ApiModelProperty(value="药品类型")
+	 protected String medicineType;
+
+	 @ApiModelProperty(value="通用名")
+	 protected String commonName;
+
+	 @ApiModelProperty(value="商品规格")
+	 protected String productState;
+
+	 @ApiModelProperty(value="单位")
+	 protected String unit;
+
+	 @ApiModelProperty(value="剂型")
+	 protected String AgentType;
+	 @ApiModelProperty(value="生产厂商")
+	 protected String manufacturer;
+	 @ApiModelProperty(value="批准文号")
+	 protected String approvalCode;
+	 @ApiModelProperty(value="药品分类")
+	 protected String medicineClassify;
+	 @ApiModelProperty(value="经营范围")
+	 protected String businessScope;
+
+
+	 public String getMedicineType() {
+		 return medicineType;
+	 }
+
+	 public void setMedicineType(String medicineType) {
+		 this.medicineType = medicineType;
+	 }
+
+	 public String getCommonName() {
+		 return commonName;
+	 }
+
+	 public void setCommonName(String commonName) {
+		 this.commonName = commonName;
+	 }
+
+	 public String getProductState() {
+		 return productState;
+	 }
+
+	 public void setProductState(String productState) {
+		 this.productState = productState;
+	 }
+
+	 public String getUnit() {
+		 return unit;
+	 }
+
+	 public void setUnit(String unit) {
+		 this.unit = unit;
+	 }
+
+	 public String getAgentType() {
+		 return AgentType;
+	 }
+
+	 public void setAgentType(String agentType) {
+		 AgentType = agentType;
+	 }
+
+	 public String getManufacturer() {
+		 return manufacturer;
+	 }
+
+	 public void setManufacturer(String manufacturer) {
+		 this.manufacturer = manufacturer;
+	 }
+
+	 public String getApprovalCode() {
+		 return approvalCode;
+	 }
+
+	 public void setApprovalCode(String approvalCode) {
+		 this.approvalCode = approvalCode;
+	 }
+
+	 public String getMedicineClassify() {
+		 return medicineClassify;
+	 }
+
+	 public void setMedicineClassify(String medicineClassify) {
+		 this.medicineClassify = medicineClassify;
+	 }
+
+	 public String getBusinessScope() {
+		 return businessScope;
+	 }
+
+	 public void setBusinessScope(String businessScope) {
+		 this.businessScope = businessScope;
+	 }
+
+	 public void setId(String id) {
 		this.id = id;
 	}
 	

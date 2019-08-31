@@ -1,5 +1,8 @@
 package com.winway.scm.vo;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -39,10 +42,12 @@ public class VInvoice {
 	protected String invoiceType; 
 	
 	@ApiModelProperty(value="开票日期")
-	protected java.util.Date invoiceDate; 
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date invoiceDate; 
 	
 	@ApiModelProperty(value="调整后开票日期")
-	protected java.util.Date updateInvoiceDate; 
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date updateInvoiceDate; 
 	
 	@ApiModelProperty(value="发票号码")
 	protected String invoiceCode; 
@@ -63,7 +68,8 @@ public class VInvoice {
 	protected Double priceTaxSum; 
 	
 	@ApiModelProperty(value="发货日期")
-	protected java.util.Date shipmentDate; 
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date shipmentDate; 
 	
 	@ApiModelProperty(value="发货单号")
 	protected String shipmentCode; 
@@ -81,13 +87,15 @@ public class VInvoice {
 	protected String gatherPersion; 
 	
 	@ApiModelProperty(value="采集时间")
-	protected java.util.Date gathererDate; 
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date gathererDate; 
 	
 	@ApiModelProperty(value="调整人")
 	protected String setUpPersion; 
 	
 	@ApiModelProperty(value="调整时间")
-	protected java.util.Date setUpDate; 
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date setUpDate; 
 	
 	@ApiModelProperty(value="货主ID")
 	protected String ownerId; 
@@ -103,6 +111,72 @@ public class VInvoice {
 	@ApiModelProperty(value="回款表主键")
 	protected String returnMoneyId;
 	
+	@ApiModelProperty(value="勾兑时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date blendDate;
+
+	@ApiModelProperty(value="确认人")
+	protected String blendPersion;
+
+
+	@ApiModelProperty(value="勾兑人")
+	protected String affirmPersion;
+
+
+
+	@ApiModelProperty(value="确认日期")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date affirmDate;
+	
+	@ApiModelProperty(value="勾兑金额")
+	protected String blendprice;
+
+
+	@ApiModelProperty(value="剩余金额")
+	protected String balancePrice;
+
+	public String getBalancePrice() {
+		return balancePrice;
+	}
+
+	public void setBalancePrice(String balancePrice) {
+		this.balancePrice = balancePrice;
+	}
+
+	public String getBlendPersion() {
+		return blendPersion;
+	}
+
+	public void setBlendPersion(String blendPersion) {
+		this.blendPersion = blendPersion;
+	}
+
+	public String getAffirmPersion() {
+		return affirmPersion;
+	}
+
+	public void setAffirmPersion(String affirmPersion) {
+		this.affirmPersion = affirmPersion;
+	}
+
+	public Date getBlendDate() {
+		return blendDate;
+	}
+	public void setBlendDate(Date blendDate) {
+		this.blendDate = blendDate;
+	}
+	public Date getAffirmDate() {
+		return affirmDate;
+	}
+	public void setAffirmDate(Date affirmDate) {
+		this.affirmDate = affirmDate;
+	}
+	public String getBlendprice() {
+		return blendprice;
+	}
+	public void setBlendprice(String blendprice) {
+		this.blendprice = blendprice;
+	}
 	public String getId() {
 		return id;
 	}

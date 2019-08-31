@@ -91,14 +91,19 @@ public class ScmCwReturnMoney extends BaseModel<String>{
 	
 	@ApiModelProperty(value="货主ID")
 	protected String ownerId; 
+	
 	@ApiModelProperty(value="匹配商业名称")
 	protected String matchCommerceName;
+	
 	@ApiModelProperty(value="匹配结果")
 	protected String matchResult;
+	
 	@ApiModelProperty(value="是否确认(0:未确认,1:已确认)")
 	protected String isAffirm;
 	//回款月份
+	@ApiModelProperty(value="回款月份")
 	protected String getMoth;
+	
 	@ApiModelProperty(value="剩余金额")
 	protected Double balancePrice;
 	
@@ -143,7 +148,14 @@ public class ScmCwReturnMoney extends BaseModel<String>{
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public void setGetMoth(String getMoth) {
+		this.getMoth = getMoth;
+	}
+
 	/**
 	 * 返回 id
 	 * @return

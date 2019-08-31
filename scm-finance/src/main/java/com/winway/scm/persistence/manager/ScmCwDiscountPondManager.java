@@ -1,7 +1,14 @@
 package com.winway.scm.persistence.manager;
 
+import java.util.List;
+
 import com.hotent.base.manager.Manager;
 import com.winway.scm.model.ScmCwDiscountPond;
+import com.winway.scm.model.ScmCwDiscountPondPriceChange;
+import com.winway.scm.model.ScmCwToSapDiscount;
+import com.winway.scm.vo.SO_HEADER;
+import com.winway.scm.vo.ScmCwCompensationVo;
+import com.winway.scm.vo.ScmCwInvoiceVo;
 
 /**
  * 
@@ -15,5 +22,13 @@ import com.winway.scm.model.ScmCwDiscountPond;
  * </pre>
  */
 public interface ScmCwDiscountPondManager extends Manager<String, ScmCwDiscountPond>{
+
+	String freezeManage(String id);
+
+	ScmCwToSapDiscount autoDiscount(String id, String discountTypeId);
+
+	List<ScmCwCompensationVo> saveByCompensation(List<ScmCwCompensationVo> scmCwCompensationVo);
+
+	void changePoodPrice(ScmCwDiscountPondPriceChange scmCwDiscountPondPriceChange);
 	
 }

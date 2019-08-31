@@ -1,6 +1,9 @@
 package com.winway.scm.model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -36,9 +39,55 @@ public class ScmXsCreditCollect extends BaseModel<String>{
 	protected String approvalState; 
 	
 	@ApiModelProperty(value="申请单号")
-	protected String requestCode; 
-	
-	/**
+	protected String requestCode;
+
+	 @ApiModelProperty(value="录入人")
+	 protected String  createPerson;
+
+	 @ApiModelProperty(value="录入时间")
+	 @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+	 protected Date createDate;
+
+	 @ApiModelProperty(value="商务分区")
+	 protected String  businessDivision;
+
+	 @ApiModelProperty(value="商务分区id")
+	 protected String  businessDivisionId;
+
+
+	 public String getBusinessDivision() {
+		 return businessDivision;
+	 }
+
+	 public void setBusinessDivision(String businessDivision) {
+		 this.businessDivision = businessDivision;
+	 }
+
+	 public String getBusinessDivisionId() {
+		 return businessDivisionId;
+	 }
+
+	 public void setBusinessDivisionId(String businessDivisionId) {
+		 this.businessDivisionId = businessDivisionId;
+	 }
+
+	 public String getCreatePerson() {
+		 return createPerson;
+	 }
+
+	 public void setCreatePerson(String createPerson) {
+		 this.createPerson = createPerson;
+	 }
+
+	 public Date getCreateDate() {
+		 return createDate;
+	 }
+
+	 public void setCreateDate(Date createDate) {
+		 this.createDate = createDate;
+	 }
+
+	 /**
 	*商业资信申请表列表
 	*/
 	protected List<ScmXsCreditApply> scmXsCreditApplyList=new ArrayList<ScmXsCreditApply>(); 

@@ -38,8 +38,15 @@
 			ORDER BY id DESC
 		</if>
 	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmFhLogisticsAgreement">
+    <select id="getAgreementDays" resultType="java.lang.String">
+		SELECT
+		   maxArrivalTime
+		FROM
+		  SCM_FH_LogisticsAgreement
+		WHERE shippedTo like  concat('%',#{param1},'%')  AND  destination like concat('%',#{param2},'%')
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmFhLogisticsAgreement">
 		UPDATE SCM_FH_LogisticsAgreement SET
 		shippedTo=#{shippedTo,jdbcType=VARCHAR},
 		destination=#{destination,jdbcType=VARCHAR},

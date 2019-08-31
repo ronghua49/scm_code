@@ -12,7 +12,7 @@
 		<result property="AgentTypeId" column="AgentTypeId" jdbcType="VARCHAR"/>
 		<result property="AgentType" column="AgentType" jdbcType="VARCHAR"/>
 		<result property="unit" column="unit" jdbcType="VARCHAR"/>
-		<result property="OTC" column="OTC" jdbcType="VARCHAR"/>
+		<result property="otc" column="OTC" jdbcType="VARCHAR"/>
 		<result property="traceCode" column="traceCode" jdbcType="VARCHAR"/>
 		<result property="MedicineTypeId" column="MedicineTypeId" jdbcType="VARCHAR"/>
 		<result property="MedicineType" column="MedicineType" jdbcType="VARCHAR"/>
@@ -37,21 +37,70 @@
 		<result property="approvalStateStr" column="approvalStateStr" jdbcType="VARCHAR"/>
 		<result property="gmp" column="gmp" jdbcType="VARCHAR"/>
 		<result property="registerCode" column="registerCode" jdbcType="VARCHAR"/>
+		<result property="externalUse" column="externalUse" jdbcType="VARCHAR"/>
+		<result property="placeOfOrigin" column="placeOfOrigin" jdbcType="VARCHAR"/>
+		<result property="validityMonth" column="validityMonth" jdbcType="VARCHAR"/>
+		<result property="isToMasterData" column="isToMasterData" jdbcType="VARCHAR"/>	
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmZsjProduct">
 		INSERT INTO SCM_ZSJ_Product
-		(id,productName,ProductLineId,ProductLineName,productCode,commonName,productState,AgentTypeId,AgentType,unit,OTC,traceCode,MedicineTypeId,MedicineType,medicineClassifyId,medicineClassify,KeepingCondition,suggestWarehouse,SupplierId,supplierName,manufacturer,InventoryCode,operatorName,productNum,operatorDate)
+		(id,productName,ProductLineId,
+		ProductLineName,productCode,commonName,
+		productState,AgentTypeId,AgentType,
+		unit,OTC,traceCode,
+		MedicineTypeId,MedicineType,medicineClassifyId,
+		medicineClassify,KeepingCondition,suggestWarehouse,
+		manufacturer,
+		InventoryCode,operatorName,productNum,
+		operatorDate,externalUse,placeOfOrigin,
+		approvalId,approvalState,businessScope,validityMonth,isToMasterData)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{ProductLineId,jdbcType=VARCHAR}, #{ProductLineName,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{commonName,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{AgentTypeId,jdbcType=VARCHAR}, #{AgentType,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},#{OTC,jdbcType=VARCHAR}, #{traceCode,jdbcType=VARCHAR}, #{MedicineTypeId,jdbcType=VARCHAR}, #{MedicineType,jdbcType=VARCHAR}, #{medicineClassifyId,jdbcType=VARCHAR}, #{medicineClassify,jdbcType=VARCHAR}, #{KeepingCondition,jdbcType=VARCHAR}, #{suggestWarehouse,jdbcType=VARCHAR}, #{SupplierId,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{InventoryCode,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR},#{productNum,jdbcType=VARCHAR}, #{operatorDate,jdbcType=TIMESTAMP})
+		(#{id,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{ProductLineId,jdbcType=VARCHAR}, 
+		#{ProductLineName,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR}, #{commonName,jdbcType=VARCHAR}, 
+		#{productState,jdbcType=VARCHAR}, #{AgentTypeId,jdbcType=VARCHAR},#{AgentType,jdbcType=VARCHAR}, 
+		#{unit,jdbcType=VARCHAR},#{otc,jdbcType=VARCHAR}, #{traceCode,jdbcType=VARCHAR}, 
+		#{MedicineTypeId,jdbcType=VARCHAR}, #{MedicineType,jdbcType=VARCHAR}, #{medicineClassifyId,jdbcType=VARCHAR}, 
+		#{medicineClassify,jdbcType=VARCHAR}, #{KeepingCondition,jdbcType=VARCHAR}, #{suggestWarehouse,jdbcType=VARCHAR}, 
+	 #{manufacturer,jdbcType=VARCHAR},
+		#{InventoryCode,jdbcType=VARCHAR},#{operatorName,jdbcType=VARCHAR},#{productNum,jdbcType=VARCHAR},
+		#{operatorDate,jdbcType=TIMESTAMP},#{externalUse,jdbcType=VARCHAR},#{placeOfOrigin,jdbcType=VARCHAR},
+		#{approvalId,jdbcType=VARCHAR},#{approvalState,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},#{validityMonth,jdbcType=VARCHAR},
+		#{isToMasterData,jdbcType=VARCHAR})
 	</insert>
+	
+	<select id="getProductCode"   parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT NEXTVAL('productCode') AS productCode
+	</select>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
 		SELECT * FROM SCM_ZSJ_Product 
 		WHERE 
 		id=#{id}
 	</select>
+	<select id="getProductMessageByCode"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
+		SELECT a.* FROM `scm_zsj_product` a
+		LEFT JOIN `scm_zsj_achange` b ON a.id = b.`productId`
+		WHERE b.code = #{arg0}
+	</select>
 	
+	<select id="getbyProductNum"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
+		SELECT * FROM SCM_ZSJ_Product 
+		WHERE 
+		productNum=#{arg0}
+	</select>
+	
+	<select id="getByApprovalId"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
+		SELECT * FROM SCM_ZSJ_Product 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="getbyMainId"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
+		SELECT * FROM SCM_ZSJ_Product 
+		WHERE 
+		id=#{id}
+	</select>
 	<select id="getByName"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
 		SELECT * FROM SCM_ZSJ_Product 
 		WHERE 
@@ -85,7 +134,7 @@
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjProduct">
-		SELECT * FROM SCM_ZSJ_Product
+		SELECT * FROM SCM_ZSJ_Product 
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}
@@ -110,7 +159,7 @@
 		AgentTypeId=#{AgentTypeId,jdbcType=VARCHAR},
 		AgentType=#{AgentType,jdbcType=VARCHAR},
 		unit=#{unit,jdbcType=VARCHAR},
-		OTC=#{OTC,jdbcType=VARCHAR},
+		OTC=#{otc,jdbcType=VARCHAR},
 		traceCode=#{traceCode,jdbcType=VARCHAR},
 		MedicineTypeId=#{MedicineTypeId,jdbcType=VARCHAR},
 		MedicineType=#{MedicineType,jdbcType=VARCHAR},
@@ -118,17 +167,23 @@
 		medicineClassify=#{medicineClassify,jdbcType=VARCHAR},
 		KeepingCondition=#{KeepingCondition,jdbcType=VARCHAR},
 		suggestWarehouse=#{suggestWarehouse,jdbcType=VARCHAR},
-		SupplierId=#{SupplierId,jdbcType=VARCHAR},
-		supplierName=#{supplierName,jdbcType=VARCHAR},
 		manufacturer=#{manufacturer,jdbcType=VARCHAR},
 		InventoryCode=#{InventoryCode,jdbcType=VARCHAR},
 		operatorName=#{operatorName,jdbcType=VARCHAR},
 		productNum=#{productNum,jdbcType=VARCHAR},
-		operatorDate=#{operatorDate,jdbcType=TIMESTAMP}
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		operatorDate=#{operatorDate,jdbcType=TIMESTAMP},
+		externalUse=#{externalUse,jdbcType=VARCHAR},
+		placeOfOrigin=#{placeOfOrigin,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR},
+		validityMonth = #{validityMonth,jdbcType=VARCHAR},
+		isToMasterData = #{isToMasterData,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
-	
+
+
 	<delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_ZSJ_Product 
 		WHERE
@@ -151,34 +206,77 @@
 	</select>
 	<select id="downBox"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
 		SELECT a.*,
-		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.productname) AS productNameStr
+		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.productname) AS productNameStr,
+		(CASE WHEN b.id  IS NULL THEN 0 ELSE 1 END) AS orderBy
 		FROM scm_zsj_product a
 		LEFT JOIN (SELECT * FROM scm_zsj_productfirst 
-		WHERE ownerId = #{ownerId}) b on a.id = b.productId
+		WHERE ownerId = #{ownerId}) b ON a.id = b.productId 
+		WHERE a.approvalState = 2 order by orderBy asc
 	</select>
 	
 	<select id="listByLineId"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
 		SELECT * FROM scm_zsj_product WHERE ProductLineId = #{arg0}
 	</select>
 	
+	<select id="listByLineIdAndFirst"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
+		SELECT a.*,b.supplier as supplierName,b.supplierId,c.supplierCode,b.approvalCode FROM scm_zsj_product a
+		INNER JOIN scm_zsj_productfirst b ON a.id = b.productId
+		LEFT JOIN scm_zsj_supplier c ON b.supplierId = c.id
+		WHERE a.ProductLineId = #{arg0} and b.ownerId = #{arg1}
+	</select>
+	
 	<select id="listAndAchage"   parameterType="java.lang.String" resultType="java.util.HashMap">
 		SELECT b.achage FROM scm_zsj_product a INNER JOIN scm_zsj_achange b
 			ON a.id = b.productId 
-			WHERE productCode = #{arg0}
+			WHERE a.productCode = #{arg0}
 	</select>
-	
+
 	<select id="downBoxApplySuccess"   parameterType="java.lang.String" resultMap="ScmZsjProduct">
-		SELECT a.*,
+<!-- 		SELECT a.*,
 		b.approvalId as approvalId,b.approvalState as approvalState,
 		b.supplierId AS supplierId,b.approvalCode as approvalCode,
+		a.businessScope,
 		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.productname) AS productNameStr
 		FROM scm_zsj_product a
-		LEFT JOIN (SELECT * FROM scm_zsj_productfirst 
-		WHERE ownerId = #{arg0}) b on a.id = b.productId
-		where approvalState = 2 
-		<if test="arg1!=null">
-		AND b.supplierId=#{arg1}
-		</if>
+		LEFT JOIN (SELECT * FROM scm_zsj_productfirst
+		WHERE ownerId = #{arg0}) b on a.id = b.productId -->
+		SELECT 
+		b.*,b.businessScope,CONCAT((CASE WHEN a.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',b.productname) AS productNameStr,
+		a.approvalId AS approvalId,a.approvalState AS approvalState,
+		a.supplierId AS supplierId,a.approvalCode AS approvalCode
+		FROM (
+		SELECT * FROM (SELECT * FROM scm_zsj_productfirst WHERE ownerId = #{arg0}) a) a
+		INNER JOIN scm_zsj_product b ON a.productId = b.id
+		<where>
+			a.approvalState = 2 and  productCode in ( '0'
+			<foreach collection="arg2" separator="," item="code" index="index" open="," >
+				#{code}
+			</foreach>
+			)
+			<if test="arg1!=null">
+				AND supplierId=#{arg1}
+			</if>
+		</where>
+
 	</select>
-	
+	<select id="productAndAchage" resultType="com.winway.scm.model.ScmZsjProduct">
+	SELECT a.*,b.code,b.achage FROM scm_zsj_product a
+		LEFT JOIN (SELECT * FROM scm_zsj_achange WHERE isdelete = 1) b ON a.id=b.productId
+	</select>
+    <select id="getProductByName" resultType="com.winway.scm.model.ScmZsjProduct">
+		SELECT * FROM SCM_ZSJ_Product
+		WHERE
+		productName=#{productName}
+	</select>
+    <select id="getProductByCommonName" resultType="com.winway.scm.model.ScmZsjProduct">
+		SELECT * FROM SCM_ZSJ_Product
+		WHERE
+		commonName=#{commonName}
+	</select>
+    <select id="getProductByCommonNameAndState" resultType="com.winway.scm.model.ScmZsjProduct">
+		SELECT * FROM SCM_ZSJ_Product
+		WHERE
+		commonName=#{commonName} and productState like concat(#{productState},"%")
+	</select>
+
 </mapper>

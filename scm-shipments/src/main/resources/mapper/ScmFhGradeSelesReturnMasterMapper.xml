@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhGradeSelesReturnMasterDao">
+    <resultMap id="ScmFhGradeSelesReturnMaster" type="com.winway.scm.model.ScmFhGradeSelesReturnMaster">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+        <result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+        <result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+        <result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+        <result property="shipmentsCode" column="shipmentsCode" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="gradeSelesCode" column="gradeSelesCode" jdbcType="VARCHAR"/>
+        <result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
+        <result property="isManageSap" column="isManageSap" jdbcType="VARCHAR"/>
+        <result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
+        <result property="wmsAffirmDate" column="wmsAffirmDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmFhGradeSelesReturnMaster">
+		INSERT INTO Scm_Fh_GradeSelesReturnMaster
+		(id,commerceName,commerceId,
+		commerceFirstId,commerceCode,shipmentsCode,
+		approvalId,approvalState,ownerId,
+		createPersion,createDate,gradeSelesCode,
+		isSMS,isManageSap,isAffirmWms,wmsAffirmDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR},
+		#{commerceFirstId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{shipmentsCode,jdbcType=VARCHAR}, 
+		#{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, 
+		#{createPersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{gradeSelesCode,jdbcType=VARCHAR},
+		#{isSMS,jdbcType=VARCHAR},#{isManageSap,jdbcType=VARCHAR},#{isAffirmWms,jdbcType=VARCHAR},#{wmsAffirmDate,jdbcType=TIMESTAMP})
+	</insert>
+
+    <select id="getByOrderCode" parameterType="java.lang.String" resultMap="ScmFhGradeSelesReturnMaster">
+		SELECT * FROM Scm_Fh_GradeSelesReturnMaster
+		WHERE 
+		gradeSelesCode=#{arg0}
+	</select>
+	
+    <select id="get" parameterType="java.lang.String" resultMap="ScmFhGradeSelesReturnMaster">
+		SELECT * FROM v_gradeselesreturnmaster
+		WHERE
+		id=#{id}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmFhGradeSelesReturnMaster">
+        SELECT * FROM v_gradeselesreturnmaster
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="getByApprovalState" resultType="com.winway.scm.model.ScmFhGradeSelesReturnMaster">
+		SELECT * FROM Scm_Fh_GradeSelesReturnMaster
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmFhGradeSelesReturnMaster">
+		UPDATE Scm_Fh_GradeSelesReturnMaster SET
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceFirstId=#{commerceFirstId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		shipmentsCode=#{shipmentsCode,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		wmsAffirmDate=#{wmsAffirmDate,jdbcType=TIMESTAMP},
+		gradeSelesCode=#{gradeSelesCode,jdbcType=VARCHAR},
+		isSMS = #{isSMS,jdbcType=VARCHAR},
+		isManageSap = #{isManageSap,jdbcType=VARCHAR},
+		isAffirmWms = #{isAffirmWms,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Fh_GradeSelesReturnMaster 
+		WHERE
+		id=#{id}
+	</delete>
+
+
+</mapper>

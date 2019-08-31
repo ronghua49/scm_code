@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspMarketExceptionSetDao">
+	<resultMap id="ScmGspMarketExceptionSet" type="com.winway.scm.model.ScmGspMarketExceptionSet">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productLine" column="productLine" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="warningNum" column="warningNum" jdbcType="NUMERIC"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="ScmGspMarketExceptionMonitorListVo" type="com.winway.scm.vo.ScmGspMarketExceptionMonitorListVo"/>
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspMarketExceptionSet">
+		INSERT INTO Scm_Gsp_MarketExceptionSet
+		(id,productCode,productLine,productName,productState,warningNum,createDate,createPersion,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{productLine,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{warningNum,jdbcType=NUMERIC}, #{createDate,jdbcType=TIMESTAMP}, #{createPersion,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspMarketExceptionSet">
+		SELECT * FROM Scm_Gsp_MarketExceptionSet 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="monitorList"   parameterType="java.lang.String" resultMap="ScmGspMarketExceptionMonitorListVo">
+		SELECT * FROM scm_gsp_marketexceptionset a 
+		INNER JOIN 
+		(SELECT productName,productNum,
+		SUM(IF(sendMonth = #{arg0},deliveringAmount,0)) AS oneMonth,
+		SUM(IF(sendMonth = #{arg1},deliveringAmount,0)) AS towMonth
+		FROM 
+		(SELECT * FROM (
+		SELECT b.productName,b.productNum,b.deliveringAmount,
+		DATE_FORMAT(b.shipmentsAffirmDate, "%Y-%m") AS sendMonth
+		FROM `scm_fh_shipmentsdatailmaster` a 
+		LEFT JOIN `scm_fh_shipmentsdatail` b ON a.id = b.masterId
+		WHERE a.approvalstate = 2 
+		) a WHERE a.sendMonth = #{arg0} OR a.sendMonth = #{arg1}) a
+		GROUP BY productName,productNum ) b ON a.productCode = b.productNum
+		WHERE ownerId = #{arg2}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspMarketExceptionSet">
+		SELECT a.* FROM (
+		SELECT a.id,a.productCode,a.productName,a.productState,a.warningnum,a.createDate,a.createPersion,a.ownerid,b.ProductLineName AS productLine FROM Scm_Gsp_MarketExceptionSet a
+		LEFT JOIN scm_zsj_productline b ON a.productLine = b.id
+		) a
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmGspMarketExceptionSet">
+		UPDATE Scm_Gsp_MarketExceptionSet SET
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productLine=#{productLine,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		warningNum=#{warningNum,jdbcType=NUMERIC},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_MarketExceptionSet 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

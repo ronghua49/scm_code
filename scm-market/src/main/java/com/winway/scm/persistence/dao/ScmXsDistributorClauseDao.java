@@ -3,8 +3,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.hotent.base.dao.MyBatisDao;
-import com.winway.scm.model.ScmXsDistributorAgreementSummary;
 import com.winway.scm.model.ScmXsDistributorClause;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -23,19 +23,22 @@ public interface ScmXsDistributorClauseDao extends MyBatisDao<String, ScmXsDistr
 	 * @param DistributorAgreementId
 	 * @return
 	 */
-	public List<ScmXsDistributorClause> getByMainId(String DistributorAgreementId);
+    List<ScmXsDistributorClause> getByMainId(String DistributorAgreementId);
 	
 	/**
 	 * 根据外键删除子表记录
 	 * @param DistributorAgreementId
 	 * @return
 	 */
-	public void delByMainId(String DistributorAgreementId);
+    void delByMainId(String DistributorAgreementId);
 
-	public List<ScmXsDistributorClause> firstList(Map<String, Object> params);
+	List<ScmXsDistributorClause> firstList(Map<String, Object> params);
 	
 	List<ScmXsDistributorClause> commerceAndAcceptState(Map<String, Object> params);
 
-	public List<ScmXsDistributorClause> getYears(String ownerId);
+	List<ScmXsDistributorClause> getYears(String ownerId);
 
+	List<ScmXsDistributorClause> findByStartYearAndEndYear(String startYear, String endYear, String string);
+
+    List<ScmXsDistributorClause> list1(@Param(value = "businessCode") String businessCode, @Param(value = "commerceName") String commerceName, @Param(value = "acceptState") String acceptState,@Param(value = "provinceCode") String provinceCode,@Param(value = "commerceCode") String commerceCode );
 }

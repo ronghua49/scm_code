@@ -13,6 +13,7 @@
 		<result property="currency" column="currency" jdbcType="VARCHAR"/>
 		<result property="orderDate" column="orderDate" jdbcType="TIMESTAMP"/>
 		<result property="isToWMS" column="isToWMS" jdbcType="VARCHAR"/>
+		<result property="isManageSap" column="isManageSap" jdbcType="VARCHAR"/>
 		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
 		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
 		<result property="getTicket" column="getTicket" jdbcType="VARCHAR"/>
@@ -22,22 +23,32 @@
 		<result property="contractId" column="contractId" jdbcType="VARCHAR"/>
 		<result property="deliveryDate" column="deliveryDate" jdbcType="TIMESTAMP"/>
         <result property="getMoneyWarehouse" column="getMoneyWarehouse" jdbcType="VARCHAR"/>
+		<result property="warehouseCode" column="warehouseCode" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
 	</resultMap>
-	
+		<resultMap id="ScmZsjDrogPuchaseRecords" type="com.winway.scm.vo.ScmZsjDrogPuchaseRecords"/>
+		
 	<insert id="create" parameterType="com.winway.scm.model.ScmCgProcurementOrder">
 		INSERT INTO SCM_CG_ProcurementOrder
-		(id,procurementCode,supplierId,supplier,contractCode,speciesSum,productSum,sumPrice,currency,orderDate,isToWMS,approvalId,approvalState,getTicket,ownerId,operatorId,operatorName,contractId,deliveryDate,getMoneyWarehouse)
-		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{procurementCode,jdbcType=VARCHAR},
-        #{supplierId,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
-        #{contractCode,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, 
-        #{productSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, 
-        #{currency,jdbcType=VARCHAR}, #{orderDate,jdbcType=TIMESTAMP}, 
-        #{isToWMS,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, 
-        #{approvalState,jdbcType=VARCHAR}, #{getTicket,jdbcType=VARCHAR}, 
-        #{ownerId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, 
-        #{operatorName,jdbcType=VARCHAR}, #{contractId,jdbcType=VARCHAR}, 
-        #{deliveryDate,jdbcType=TIMESTAMP},#{getMoneyWarehouse,jdbcType=VARCHAR})
+		(id,procurementCode,supplierId,
+		supplier,contractCode,speciesSum,
+		productSum,sumPrice,currency,
+		orderDate,isToWMS,approvalId,
+		approvalState,getTicket,ownerId,
+		operatorId,operatorName,contractId,
+		deliveryDate,getMoneyWarehouse,warehouseCode,
+		memo,isManageSap,isAffirmWms)
+		VALUES
+		(#{id,jdbcType=VARCHAR}, #{procurementCode,jdbcType=VARCHAR},#{supplierId,jdbcType=VARCHAR}, 
+		#{supplier,jdbcType=VARCHAR},#{contractCode,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, 
+        #{productSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC},#{currency,jdbcType=VARCHAR}, 
+        #{orderDate,jdbcType=TIMESTAMP},#{isToWMS,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, 
+        #{approvalState,jdbcType=VARCHAR}, #{getTicket,jdbcType=VARCHAR},#{ownerId,jdbcType=VARCHAR},
+        #{operatorId,jdbcType=VARCHAR},#{operatorName,jdbcType=VARCHAR}, #{contractId,jdbcType=VARCHAR}, 
+        #{deliveryDate,jdbcType=TIMESTAMP},#{getMoneyWarehouse,jdbcType=VARCHAR},#{warehouseCode,jdbcType=VARCHAR}, 
+        #{memo,jdbcType=VARCHAR},#{isManageSap,jdbcType=VARCHAR},#{isAffirmWms,jdbcType=VARCHAR})
+
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgProcurementOrder">
@@ -48,6 +59,30 @@
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmCgProcurementOrder">
 		SELECT * FROM SCM_CG_ProcurementOrder
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="drogPuchaseRecords" parameterType="java.util.Map" resultMap="ScmZsjDrogPuchaseRecords">
+		SELECT a.* FROM (
+		SELECT
+		a.id,b.procurementCode,b.contractCode,b.orderDate,c.MedicineType,c.`medicineClassify`,c.`businessScope`,a.`productName`,a.productCode,c.ProductLineName,c.ProductLineId,c.commonName,c.productState,
+		c.AgentType,c.manufacturer,d.supplier,a.productSum,a.unit,d.approvalCode,a.unitPrice,a.sumPrice,a.currency,b.operatorName,b.ownerId
+		FROM scm_cg_proorderproduct a
+		LEFT JOIN scm_cg_procurementorder b ON a.proOrderId = b.id
+		INNER JOIN scm_zsj_product c ON a.productCode = c.productCode
+		INNER JOIN scm_zsj_productfirst d ON c.id = d.productId
+		WHERE b.approvalState = 2
+		) a
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}
@@ -81,7 +116,11 @@
 		operatorName=#{operatorName,jdbcType=VARCHAR},
 		contractId=#{contractId,jdbcType=VARCHAR},
 		deliveryDate=#{deliveryDate,jdbcType=TIMESTAMP},
-        getMoneyWarehouse=#{getMoneyWarehouse,jdbcType=VARCHAR} 
+        getMoneyWarehouse=#{getMoneyWarehouse,jdbcType=VARCHAR},
+        memo = #{memo,jdbcType=VARCHAR},
+        isManageSap = #{isManageSap,jdbcType=VARCHAR},
+        isAffirmWms = #{isAffirmWms,jdbcType=VARCHAR},
+        warehouseCode=#{warehouseCode,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -98,4 +137,50 @@
 		approvalId=#{approvalId}
 	</select>
 	
+	<select id="getByOrdercode"   parameterType="java.lang.String" resultMap="ScmCgProcurementOrder">
+		SELECT * FROM SCM_CG_ProcurementOrder 
+		WHERE 
+		procurementCode=#{arg0} limit 1
+	</select>
+    <select id="drogPuchaseRecordsMap" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.* FROM (
+		SELECT
+		cast(@j:=@j+1 as signed) as j,
+		a.id,b.procurementCode,b.contractCode,b.orderDate,c.MedicineType as medicineType,c.`medicineClassify`,c.`businessScope`,a.`productName`,a.productCode,c.ProductLineName,c.ProductLineId,c.commonName,c.productState,
+		c.AgentType as agentType,c.manufacturer,d.supplier,d.`supplierId`,a.productSum,a.unit,d.approvalCode,a.unitPrice,a.sumPrice,a.currency,b.operatorName,b.ownerId
+		FROM scm_cg_proorderproduct a
+		LEFT JOIN scm_cg_procurementorder b ON a.proOrderId = b.id
+		INNER JOIN scm_zsj_product c ON a.productCode = c.productCode
+		INNER JOIN scm_zsj_productfirst d ON c.id = d.productId,(select @j:=0) as j
+		WHERE b.approvalState = 2
+		) a
+		<if test="params!=null">
+			<if test="params.medicineType!=null and params.medicineType !=''and params.medicineType == 0">
+				and  a.medicineType != "特殊管理药品"
+			</if>
+			<if test="params.medicineType!=null and params.medicineType !='' and params.medicineType !=0">
+				and a.medicineType = "特殊管理药品"
+			</if>
+			<if test="params.procurementCode!=null and params.procurementCode !=''">
+				and a.procurementCode = #{params.procurementCode,jdbcType=VARCHAR}
+			</if>
+			<if test="params.startDate!=null and params.startDate !=''">
+				and a.orderDate between #{params.startDate,jdbcType=TIMESTAMP} and #{params.endDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params.productCode!=null and params.productCode !=''">
+				a.productCode= #{params.productCode,jdbcType=VARCHAR}
+			</if>
+			<if test="params.commonName!=null and params.commonName !=''">
+				a.commonName = #{params.commonName,jdbcType=VARCHAR}
+			</if>
+			<if test="params.contractCode!=null and params.contractCode !=''">
+				a.contractCode = #{params.contractCode,jdbcType=VARCHAR}
+			</if>
+			<if test="params.productLineName!=null and params.productLineName !=''">
+				a.productLineName = #{params.productLineName,jdbcType=VARCHAR}
+			</if>
+		</if>
+
+
+	</select>
 </mapper>

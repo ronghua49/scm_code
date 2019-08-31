@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmXsAgreementListDao">
-	<resultMap id="ScmXsAgreementList" type="com.winway.scm.model.ScmXsAgreementList">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
-		<result property="year" column="year" jdbcType="VARCHAR"/>
-		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
-		<result property="commerceClassify" column="commerceClassify" jdbcType="VARCHAR"/>
-		<result property="commerceLevel" column="commerceLevel" jdbcType="VARCHAR"/>
-		<result property="memo" column="memo" jdbcType="VARCHAR"/>
-		<result property="isSign" column="isSign" jdbcType="VARCHAR"/>
-		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
-		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
-		<result property="type" column="type" jdbcType="VARCHAR"/>
-		<result property="lastYear" column="lastYear" jdbcType="VARCHAR"/>
-		<result property="shipments" column="shipments" jdbcType="VARCHAR"/>
-		<result property="allocating" column="allocating" jdbcType="VARCHAR"/>
-		<result property="sales" column="sales" jdbcType="VARCHAR"/>
-		<result property="acceptState" column="acceptState" jdbcType="VARCHAR"/>
-		
-		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
-		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
-		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
-		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
-		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
-		<result property="MasterCode" column="MasterCode" jdbcType="VARCHAR"/>
-		<result property="isEffect" column="isEffect" jdbcType="VARCHAR"/>
-		
-	</resultMap>
-	
-	<insert id="create" parameterType="com.winway.scm.model.ScmXsAgreementList">
+    <resultMap id="ScmXsAgreementList" type="com.winway.scm.model.ScmXsAgreementList">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="VARCHAR"/>
+        <result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+        <result property="commerceClassify" column="commerceClassify" jdbcType="VARCHAR"/>
+        <result property="commerceLevel" column="commerceLevel" jdbcType="VARCHAR"/>
+        <result property="memo" column="memo" jdbcType="VARCHAR"/>
+        <result property="isSign" column="isSign" jdbcType="VARCHAR"/>
+        <result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+        <result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="lastYear" column="lastYear" jdbcType="VARCHAR"/>
+        <result property="shipments" column="shipments" jdbcType="VARCHAR"/>
+        <result property="allocating" column="allocating" jdbcType="VARCHAR"/>
+        <result property="sales" column="sales" jdbcType="VARCHAR"/>
+        <result property="acceptState" column="acceptState" jdbcType="VARCHAR"/>
+
+        <result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+        <result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="MasterCode" column="MasterCode" jdbcType="VARCHAR"/>
+        <result property="isEffect" column="isEffect" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmXsAgreementList">
 		INSERT INTO SCM_XS_AgreementList
 		(id,commerceFirstId,year,commerceCode,commerceClassify,commerceLevel,memo,isSign,masterId,commerceName,type,lastYear,shipments,allocating,sales)
 		VALUES 
 		(#{id,jdbcType=VARCHAR}, #{commerceFirstId,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceClassify,jdbcType=VARCHAR}, #{commerceLevel,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{isSign,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{lastYear,jdbcType=VARCHAR},#{shipments,jdbcType=VARCHAR},#{allocating,jdbcType=VARCHAR},#{sales,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsAgreementList">
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmXsAgreementList">
 		SELECT * FROM SCM_XS_AgreementList 
 		WHERE 
 		id=#{id}
 	</select>
-	
-	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmXsAgreementList">
+
+    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmXsAgreementList">
 		SELECT a.id AS id,a.commerceFirstId AS commerceFirstId,a.masterId,
 		a.year AS YEAR,a.commerceCode AS commerceCode,
 		a.commerceClassify AS commerceClassify,a.commerceLevel AS commerceLevel,
@@ -62,23 +62,23 @@
 		WHERE
 		masterId=#{masterId}
 	</select>
-	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
-		SELECT * FROM SCM_XS_AgreementList
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmXsAgreementList">
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
+        SELECT * FROM SCM_XS_AgreementList
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmXsAgreementList">
 		UPDATE SCM_XS_AgreementList SET
 		commerceFirstId=#{commerceFirstId,jdbcType=VARCHAR},
 		year=#{year,jdbcType=VARCHAR},
@@ -97,86 +97,103 @@
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_XS_AgreementList 
 		WHERE
 		id=#{id}
 	</delete>
-	
-	<delete id="delByMainId" parameterType="java.lang.String">
+
+    <delete id="delByMainId" parameterType="java.lang.String">
 	    DELETE FROM SCM_XS_AgreementList
 	    WHERE
 	    masterId=#{masterId}
-	</delete>    
-	
-	<select id="getScmXsAgreementListList" resultMap="ScmXsAgreementList">
+	</delete>
+
+    <select id="getScmXsAgreementListList" resultMap="ScmXsAgreementList">
 	    SELECT *
 	    FROM SCM_XS_AgreementList 
 	    WHERE masterId=#{masterId}
 	</select>
-	
-	<select id="masterList" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
-		SELECT approvalState,id,isSign,commerceFirstId, YEAR, 
-		commerceCode, commerceName, masterId,businessDivision,businessDivisionId,masterCode,approvalId,isEffect,
-		(CASE TYPE WHEN '0' THEN '经销商' WHEN '1' THEN '两票制经销商' WHEN '2' THEN '终止认可' WHEN '3' THEN '转分销商' ELSE '未选择' END) AS TYPE, 
-		acceptState,memo FROM v_agreementlistmaster
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	<select id="commerceAndSales" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
-		SELECT * FROM v_updateAgreementList
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<select id="addAgreementlist" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
-		SELECT * FROM v_addagreementlist
 
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<select id="updateAgreementlist" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
+    <select id="masterList" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
+	select * from (	SELECT a.ownerId,a.approvalState,a.id,a.isSign,a.commerceFirstId, a.YEAR,createDate,b.province,b.provinceId,
+		a.commerceCode, a.commerceName, a.masterId,a.businessDivision,a.businessDivisionId,a.masterCode,a.approvalId,a.isEffect,
+		(CASE a.TYPE WHEN '0' THEN '经销商' WHEN '1' THEN '两票制经销商' WHEN '2' THEN '终止认可' WHEN '3' THEN '转分销商' ELSE '未选择' END)
+		AS TYPE,a.acceptState,a.memo FROM v_agreementlistmaster a LEFT JOIN scm_zsj_commerce b on a.commerceCode = b.commerceCode where  type in (0,1)) a
+        <where>
+            <if test="whereSql!=null">
+              and   ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="commerceAndSales" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
+        SELECT * FROM v_updateAgreementList
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="addAgreementlist" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
+        SELECT * FROM v_addagreementlist
+
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="updateAgreementlist" parameterType="java.util.Map" resultMap="ScmXsAgreementList">
 		SELECT * FROM (
 			SELECT 
 			(CASE `c`.`acceptState` WHEN '0' THEN '认可' WHEN '1' THEN '考察中' WHEN '2' THEN '终止' ELSE '未认可' END) AS `acceptState`,
-			a.*,0 AS shipments,0 AS allocating,0 AS Sales,IFNULL(d.isSign,0) AS lastYear,b.id AS firstId,
-			b.ownerId ,e.type,IFNULL(e.isSign,0) AS isSign, e.commerceFirstId ,f.approvalId,f.approvalState
+				`a`.`id` AS `id`,
+			`a`.`commerceName` AS `commerceName`,
+			`a`.`fileCode` AS `fileCode`,
+			`a`.`commerceState` AS `commerceState`,
+			`a`.`commerceCode` AS `commerceCode`,
+			`a`.`conpanyPersion` AS `conpanyPersion`,
+			`a`.`openBank` AS `openBank`,
+			`a`.`bankCode` AS `bankCode`,
+			`a`.`dutyParagraph` AS `dutyParagraph`,
+			`a`.`businessDivisionId` AS `businessDivisionId`,
+			`a`.`businessDivision` AS `businessDivision`,
+			`a`.`provinceId` AS `provinceId`,
+			`a`.`province` AS `province`,
+			`a`.`registerAddress` AS `registerAddress`,
+			`a`.`enterPersion` AS `enterPersion`,
+			`a`.`enterDate` AS `enterDate`,
+			`a`.`commerceLevel` AS `commerceLevel`,
+			`a`.`functionType` AS `functionType`,0 AS shipments,0 AS allocating,0 AS Sales,IFNULL(d.isSign,0) AS lastYear,b.id AS firstId,
+			f.ownerId ,e.type,IFNULL(e.isSign,0) AS isSign, e.commerceFirstId ,f.approvalId,f.approvalState
 			,f.MasterCode,f.isEffect,e.masterId,e.year,e.memo
 			FROM scm_zsj_commerce a 
 			INNER JOIN scm_zsj_commercefirst b 
 			ON a.id = b.commerceId AND b.approvalState = 2
 			LEFT JOIN scm_zsj_commerceacceptstate c 
-			ON a.id = c.commerceId
-			LEFT JOIN (SELECT c.commerceCode,c.isSign FROM scm_xs_agreementlist c WHERE YEAR = (DATE_FORMAT(NOW(),'%Y')-1) GROUP BY c.commerceCode) d
+			ON a.id = c.commerceId AND c.iseffect = 1
+			LEFT JOIN (SELECT c.commerceCode,c.isSign FROM scm_xs_agreementlist c WHERE YEAR = (DATE_FORMAT(NOW(),'%Y')-1) GROUP BY c.commerceCode,c.isSign) d
 			ON a.commerceCode = d.commerceCode
 			LEFT JOIN scm_xs_agreementlist e
 			ON a.commerceCode = e.commerceCode LEFT JOIN scm_xs_agreementlistmaster f ON e.masterId = f.id 
@@ -184,14 +201,14 @@
 		WHERE f.masterId = #{arg0} 
 		AND f.ownerid = #{arg1} AND  f.businessDivisionId = #{arg2}
 	</select>
-	
-	<select id="getYears"   parameterType="java.lang.String" resultMap="ScmXsAgreementList">
+
+    <select id="getYears" parameterType="java.lang.String" resultMap="ScmXsAgreementList">
 		SELECT year FROM v_agreementlistmaster 
 		WHERE 
 		ownerId=#{org0} AND YEAR IS NOT NULL group by year
 	</select>
-	
-	<select id="getType"   parameterType="java.lang.String" resultMap="ScmXsAgreementList">
+
+    <select id="getType" parameterType="java.lang.String" resultMap="ScmXsAgreementList">
 		SELECT * FROM scm_xs_agreementlist a 
 		LEFT JOIN scm_xs_agreementlistmaster b 
 		ON a.masterId = b.id 

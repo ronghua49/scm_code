@@ -22,4 +22,10 @@ public interface ScmCwInvoiceDao extends MyBatisDao<String, ScmCwInvoice> {
 	List<ScmCwInvoice> selAll(Map<String, Object> params);
 
 	List<VInvoice> history(Map<String, Object> params);
+
+    List<Map<String, Object>> sumList(Map<String, Object> params);
+
+    List<ScmCwInvoice> checklist(Map<String, Object> params);
+
+	List<ScmCwInvoice> listByCommerceCode(String commerceCode);
 }

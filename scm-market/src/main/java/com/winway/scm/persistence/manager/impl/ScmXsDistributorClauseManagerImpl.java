@@ -1,21 +1,21 @@
 package com.winway.scm.persistence.manager.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.hotent.base.query.*;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
-import com.hotent.base.model.CommonResult;
+import com.hotent.base.query.PageBean;
+import com.hotent.base.query.PageList;
+import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.BeanUtils;
-import com.winway.scm.persistence.dao.ScmXsDistributorClauseDao;
-import com.winway.scm.model.ScmXsCreditApply;
-import com.winway.scm.model.ScmXsDistributorAgreementSummary;
 import com.winway.scm.model.ScmXsDistributorClause;
+import com.winway.scm.persistence.dao.ScmXsDistributorClauseDao;
 import com.winway.scm.persistence.manager.ScmXsDistributorClauseManager;
 
 /**
@@ -65,5 +65,10 @@ public class ScmXsDistributorClauseManagerImpl extends AbstractManagerImpl<Strin
 	@Override
 	public List<ScmXsDistributorClause> getYears(String ownerId) {
 		return scmXsDistributorClauseDao.getYears(ownerId);
+	}
+
+	@Override
+	public List<ScmXsDistributorClause> list1(String businessDivisionId, String commerceName, String acceptState,String provinceId,String commerceCode) {
+		return scmXsDistributorClauseDao.list1(businessDivisionId,commerceName,acceptState,provinceId,commerceCode);
 	}
 }

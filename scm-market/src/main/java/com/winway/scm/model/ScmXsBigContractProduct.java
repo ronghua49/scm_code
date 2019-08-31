@@ -82,8 +82,14 @@ public class ScmXsBigContractProduct extends BaseModel<String>{
 	protected Integer surplusSUm; 
 	
 	@ApiModelProperty(value="v_经销商协议主表Id")
-	protected String AgreementSummaryId; 
-	//非数据库字段
+	protected String AgreementSummaryId;
+
+
+	 @ApiModelProperty(value="是否失效")
+	 protected String invalid;
+
+
+	 //非数据库字段
 	@ApiModelProperty(value="v_经销商协议主表Id")
 	protected String approvalState; 
 	@ApiModelProperty(value="v_经销商协议主表Id")
@@ -92,10 +98,91 @@ public class ScmXsBigContractProduct extends BaseModel<String>{
 	protected String commerceFirstId;
 	@ApiModelProperty(value="产品名")
 	protected String productName;
-	
-	
-	
-	public String getAgreementSummaryId() {
+
+	 @ApiModelProperty(value="剂型")
+	 protected String AgentType;
+	 @ApiModelProperty(value="生产厂商")
+	 protected String manufacturer;
+	 @ApiModelProperty(value="批准文号")
+	 protected String approvalCode;
+	 @ApiModelProperty(value="药品分类")
+	 protected String medicineClassify;
+	 @ApiModelProperty(value="经营范围")
+	 protected String businessScope;
+
+
+	 @ApiModelProperty(value="件装量")
+	 protected String achage;
+
+	 @ApiModelProperty(value="子码")
+	 protected String code;
+
+
+	 public String getInvalid() {
+		 return invalid;
+	 }
+
+	 public void setInvalid(String invalid) {
+		 this.invalid = invalid;
+	 }
+
+	 public String getAchage() {
+		 return achage;
+	 }
+
+	 public void setAchage(String achage) {
+		 this.achage = achage;
+	 }
+
+	 public String getCode() {
+		 return code;
+	 }
+
+	 public void setCode(String code) {
+		 this.code = code;
+	 }
+
+	 public String getAgentType() {
+		 return AgentType;
+	 }
+
+	 public void setAgentType(String agentType) {
+		 AgentType = agentType;
+	 }
+
+	 public String getManufacturer() {
+		 return manufacturer;
+	 }
+
+	 public void setManufacturer(String manufacturer) {
+		 this.manufacturer = manufacturer;
+	 }
+
+	 public String getApprovalCode() {
+		 return approvalCode;
+	 }
+
+	 public void setApprovalCode(String approvalCode) {
+		 this.approvalCode = approvalCode;
+	 }
+
+	 public String getMedicineClassify() {
+		 return medicineClassify;
+	 }
+
+	 public void setMedicineClassify(String medicineClassify) {
+		 this.medicineClassify = medicineClassify;
+	 }
+
+	 public String getBusinessScope() {
+		 return businessScope;
+	 }
+
+	 public void setBusinessScope(String businessScope) {
+		 this.businessScope = businessScope;
+	 }
+
+	 public String getAgreementSummaryId() {
 		return AgreementSummaryId;
 	}
 

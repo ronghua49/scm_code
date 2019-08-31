@@ -3,8 +3,14 @@ package com.winway.scm.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.hotent.base.query.PageList;
+import com.hotent.base.query.QueryFilter;
+import com.winway.purchase.model.ScmSysLog;
+import com.winway.purchase.persistence.manager.ScmSysLogManager;
+import com.winway.scm.model.ScmZdGetMoneyWarehouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,6 +61,10 @@ public class FastEntryController extends BaseController{
 	
 	@Autowired
 	PortalFeignService portalFeign;
+
+
+	@Resource
+	ScmSysLogManager scmSysLogManager;
 	/**
 	 * 快速入口明细页面
 	 * @param ID
@@ -175,4 +185,18 @@ public class FastEntryController extends BaseController{
 		fastEntryManager.saveAll(paramData);
 		return new WinwayResult<String>(request.getRequestURI(),"保存成功");
 	}
+
+
+	/**
+	 * 日志查询接口
+	 * @param
+	 * @throws Exception
+	 * @return
+	 * @exception
+	 */
+	@PostMapping("/list")
+	public PageList<ScmSysLog> list(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
+		return  scmSysLogManager.query(queryFilter);
+	}
+
 }

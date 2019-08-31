@@ -1,11 +1,14 @@
 package com.winway.scm.model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import com.hotent.base.model.BaseModel;
 
+import java.util.Date;
 
- /**
+
+/**
  * 经销商协议名单申请表
  * <pre> 
  * 描述：经销商协议名单申请表 实体对象
@@ -86,11 +89,47 @@ public class ScmXsAgreementList extends BaseModel<String>{
 	protected String MasterCode; 
 		
 	@ApiModelProperty(value="v_认可状态(0:认可,1:考察中,2:终止)")
-	protected String acceptState; 
+	protected String acceptState;
 	
 	@ApiModelProperty(value="是否生效")
-	protected String isEffect;  
-	
+	protected String isEffect;
+
+	@ApiModelProperty(value="省区")
+	protected String province;
+
+	@ApiModelProperty(value="省区id")
+	protected String provinceId;
+
+
+	@ApiModelProperty(value="录入时间")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+	 protected Date createDate;
+
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getProvinceId() {
+		return provinceId;
+	}
+
+	public void setProvinceId(String provinceId) {
+		this.provinceId = provinceId;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
 	public void setId(String id) {
 		this.id = id;
 	}

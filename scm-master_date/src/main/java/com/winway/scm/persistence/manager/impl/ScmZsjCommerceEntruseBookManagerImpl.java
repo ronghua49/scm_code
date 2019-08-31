@@ -8,8 +8,10 @@ import com.winway.scm.persistence.dao.ScmZsjCommerceAccreditDao;
 import com.winway.scm.model.ScmZsjCommerceAccredit;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
+import com.hotent.base.util.UniqueIdUtil;
 import com.winway.scm.persistence.dao.ScmZsjCommerceEntruseBookDao;
 import com.winway.scm.model.ScmZsjCommerceEntruseBook;
+import com.winway.scm.persistence.manager.ScmZsjCommerceAccreditManager;
 import com.winway.scm.persistence.manager.ScmZsjCommerceEntruseBookManager;
 
 /**
@@ -29,6 +31,8 @@ public class ScmZsjCommerceEntruseBookManagerImpl extends AbstractManagerImpl<St
 	ScmZsjCommerceEntruseBookDao scmZsjCommerceEntruseBookDao;
 	@Resource
 	ScmZsjCommerceAccreditDao scmZsjCommerceAccreditDao;
+	@Resource
+	ScmZsjCommerceAccreditManager scmZsjCommerceAccreditManager;
 	@Override
 	protected MyBatisDao<String, ScmZsjCommerceEntruseBook> getDao() {
 		return scmZsjCommerceEntruseBookDao;
@@ -39,12 +43,11 @@ public class ScmZsjCommerceEntruseBookManagerImpl extends AbstractManagerImpl<St
 	public void create(ScmZsjCommerceEntruseBook scmZsjCommerceEntruseBook){
     	super.create(scmZsjCommerceEntruseBook);
     	String pk=scmZsjCommerceEntruseBook.getId();
-    	
     	List<ScmZsjCommerceAccredit> scmZsjCommerceAccreditList=scmZsjCommerceEntruseBook.getScmZsjCommerceAccreditList();
-    	
     	for(ScmZsjCommerceAccredit scmZsjCommerceAccredit:scmZsjCommerceAccreditList){
     		scmZsjCommerceAccredit.setEntrustId(pk);
-    		scmZsjCommerceAccreditDao.create(scmZsjCommerceAccredit);
+    		scmZsjCommerceAccredit.setId(UniqueIdUtil.getSuid());
+    		scmZsjCommerceAccreditManager.create(scmZsjCommerceAccredit);
     	}
     }
 	
@@ -75,6 +78,17 @@ public class ScmZsjCommerceEntruseBookManagerImpl extends AbstractManagerImpl<St
     	return scmZsjCommerceEntruseBook;
     }
     
+    
+    public List<ScmZsjCommerceEntruseBook> getByCommerceFirstId(String entityId){
+    	List<ScmZsjCommerceEntruseBook> byMainId = scmZsjCommerceEntruseBookDao.getByMainId(entityId);
+    	for (ScmZsjCommerceEntruseBook scmZsjCommerceEntruseBook2 : byMainId) {
+    		List<ScmZsjCommerceAccredit> scmZsjCommerceAccreditList=scmZsjCommerceAccreditDao.getByMainId(scmZsjCommerceEntruseBook2.getId());
+    		
+    		scmZsjCommerceEntruseBook2.setScmZsjCommerceAccreditList(scmZsjCommerceAccreditList);
+		}
+    	return byMainId;
+    }
+    
     /**
      * 更新实体同时更新子表记录
      */
@@ -85,7 +99,7 @@ public class ScmZsjCommerceEntruseBookManagerImpl extends AbstractManagerImpl<St
     	List<ScmZsjCommerceAccredit> scmZsjCommerceAccreditList=scmZsjCommerceEntruseBook.getScmZsjCommerceAccreditList();
     	for(ScmZsjCommerceAccredit scmZsjCommerceAccredit:scmZsjCommerceAccreditList){
     		scmZsjCommerceAccredit.setEntrustId(id);
-    		scmZsjCommerceAccreditDao.create(scmZsjCommerceAccredit);
+    		scmZsjCommerceAccreditManager.create(scmZsjCommerceAccredit);
     	}
     }
 	

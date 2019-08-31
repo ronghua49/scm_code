@@ -1,6 +1,12 @@
 package com.winway.scm.persistence.dao;
 import com.hotent.base.dao.MyBatisDao;
+import com.hotent.base.query.QueryFilter;
 import com.winway.scm.model.ScmCwReturnMoney;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -20,4 +26,8 @@ public interface ScmCwReturnMoneyDao extends MyBatisDao<String, ScmCwReturnMoney
 	 * @return
 	 */
 	String findByName(String ownerId);
+
+    List<ScmCwReturnMoney> getByParam(@Param(value = "commerceCode") String commerceCode, @Param(value = "remittanceDate") Date remittanceDate, @Param(value = "price") Double price);
+
+	List<ScmCwReturnMoney> sumList(Map<String, Object> params);
 }

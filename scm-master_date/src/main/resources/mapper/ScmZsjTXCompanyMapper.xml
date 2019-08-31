@@ -11,13 +11,29 @@
 		<result property="phone" column="phone" jdbcType="VARCHAR"/>
 		<result property="postcode" column="postcode" jdbcType="VARCHAR"/>
 		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="managementScope" column="managementScope" jdbcType="VARCHAR"/>
+		<result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
+		<result property="contactPhone" column="contactPhone" jdbcType="VARCHAR"/>
+		<result property="taxPoint" column="taxPoint" jdbcType="DOUBLE"/>
+		<result property="informationCost" column="informationCost" jdbcType="DOUBLE"/>
+		<result property="flowDiscount" column="flowDiscount" jdbcType="DOUBLE"/>
+		<result property="storageManager" column="storageManager" jdbcType="DOUBLE"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmZsjTXCompany">
 		INSERT INTO SCM_ZSJ_TXCompany
-		(name,address,openBank,bankCode,dutyParagraph,phone,postcode,id,ownerId)
+		(name,address,openBank,
+		bankCode,dutyParagraph,phone,
+		postcode,id,ownerId,taxPoint,
+		managementScope,contactPersion,contactPhone,
+		informationCost,flowDiscount,storageManager)
 		VALUES 
-		(#{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, #{dutyParagraph,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR})
+		(#{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, 
+		#{bankCode,jdbcType=VARCHAR}, #{dutyParagraph,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+		#{postcode,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}，
+		#{taxPoint,jdbcType=DOUBLE}, #{managementScope,jdbcType=VARCHAR}， #{contactPersion,jdbcType=VARCHAR}，
+		#{contactPhone,jdbcType=VARCHAR},#{informationCost,jdbcType=DOUBLE},#{flowDiscount,jdbcType=DOUBLE},
+		#{storageManager,jdbcType=DOUBLE})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjTXCompany">
@@ -56,7 +72,14 @@
 		dutyParagraph=#{dutyParagraph,jdbcType=VARCHAR},
 		phone=#{phone,jdbcType=VARCHAR},
 		postcode=#{postcode,jdbcType=VARCHAR},
-		ownerId=#{ownerId,jdbcType=VARCHAR}
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		managementScope=#{managementScope,jdbcType=VARCHAR},
+		contactPersion=#{contactPersion,jdbcType=VARCHAR},
+		contactPhone=#{contactPhone,jdbcType=VARCHAR},
+		taxPoint = #{taxPoint,jdbcType=DOUBLE},
+		informationCost = #{informationCost,jdbcType=DOUBLE},
+		flowDiscount = #{flowDiscount,jdbcType=DOUBLE},
+		storageManager = #{storageManager,jdbcType=DOUBLE}
 		WHERE
 		id=#{id}
 	</update>

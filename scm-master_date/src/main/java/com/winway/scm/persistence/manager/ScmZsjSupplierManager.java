@@ -2,6 +2,7 @@ package com.winway.scm.persistence.manager;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
@@ -29,6 +30,14 @@ public interface ScmZsjSupplierManager extends Manager<String, ScmZsjSupplier>{
 
 	List<ScmZsjSupplier> downBox(String ownerId);
 
-	List<ScmZsjSupplier> downBoxApplySuccess(String ownerId);
+	List<ScmZsjSupplier> downBoxApplySuccess(String ownerId,String managementScope);
+
+	void endApply(JsonNode jsonNode);
+
+	void sendApply(ScmZsjSupplier scmZsjSupplier);
+
+	ScmZsjSupplier getByApprovalId(String approvalId);
+
+	void updateSyn(String id);
 	
 }

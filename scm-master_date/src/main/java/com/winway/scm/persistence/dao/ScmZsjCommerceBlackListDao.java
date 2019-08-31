@@ -21,4 +21,6 @@ public interface ScmZsjCommerceBlackListDao extends MyBatisDao<String, ScmZsjCom
 	//根据审批ID获取对应数据
 	ScmZsjCommerceBlackList  getScmZsjCommerceBlackListByApprovalId(String approvalId);
 	ScmZsjCommerceBlackList getByApplId(String applyId);
+
+	ScmZsjCommerceBlackList getByCommerceCode(String commerceCode);
 }

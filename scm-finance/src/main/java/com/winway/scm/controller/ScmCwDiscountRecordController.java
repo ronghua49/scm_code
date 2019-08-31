@@ -1,5 +1,4 @@
 package com.winway.scm.controller;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,7 +20,6 @@ import com.hotent.base.model.CommonResult;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.StringUtil;
-
 /**
  * 
  * <pre> 
@@ -37,12 +35,12 @@ import com.hotent.base.util.StringUtil;
 @RequestMapping(value="/scm/scmCwDiscountRecord/v1",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 @Api(tags="scmCwDiscountRecordController 票折记录表 控制器类")
 public class ScmCwDiscountRecordController extends BaseController{
+
 	@Resource
 	ScmCwDiscountRecordManager scmCwDiscountRecordManager;
-	
 	/**
 	 * 票折记录表列表(分页条件查询)数据
-	 * @param request
+	 * @param
 	 * @return
 	 * @throws Exception 
 	 * PageJson
@@ -114,8 +112,4 @@ public class ScmCwDiscountRecordController extends BaseController{
 		scmCwDiscountRecordManager.removeByIds(ids);
 		return new CommonResult<String>(true, "批量删除成功");
 	}
-
-
-
-
 }

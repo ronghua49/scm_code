@@ -8,12 +8,12 @@ spring:
     platform: mysql
     #platform: oracle
   application:
-    name: scm-market
+    name: scm-market_local
   datasource:
     name: dev
-    url: jdbc:mysql://114.116.86.0:3306/ww_scm_dev?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/213_copy?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
-    password: 123456
+    password: root
     #url: jdbc:oracle:thin:@127.0.0.1:1521:ORCL 
     #username: X7_PORTAL_INIT
     #password: X7_PORTAL_INIT
@@ -46,11 +46,13 @@ spring:
     multipart:
       maxFileSize: 100MB
       maxRequestSize: 1024MB
-    
+
+  cache:
+    cache-names:
 # Server settings (ServerProperties)
 server:
-  port: 8995
-  address: 0.0.0.0
+  port: 8081
+#  address: 172.18.252.71
   sessionTimeout: 30
   contextPath: /
   session:
@@ -67,39 +69,43 @@ system:
 #    healthcheck:
 #      enabled:  true
 #    service-url:
-#      defaultZone: http://114.116.86.0:8761/eureka/
+#      defaultZone: http://192.18.1.141:8761/eureka/
 #  instance:
 #    lease-expiration-duration-in-seconds: 30
 #    lease-renewal-interval-in-seconds: 10
+#
+##feign 配置
+#feign:
+#  hystrix:
+#    enabled: true
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 50000
+#        readTimeout: 50000
+#        loggerLevel: full
+## 断路器配置
+#hystrix:
+#  metrics:
+#    enabled: true
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          strategy: SEMAPHORE
+#          semaphore:
+#            maxConcurrentRequests: 100
+#          thread:
+#            timeoutInMilliseconds: 50000 #缺省为1000
+#      fallback:
+#        isolation:
+#          semaphore:
+#            maxConcurrentRequests: 100
+## 负载均衡配置
+#ribbon:
+#  eureka:
+#    enabled: true
 
-#feign 配置
-feign:
-  hystrix:
-    enabled: true
-  client:
-    config:
-      default:
-        connectTimeout: 50000
-        readTimeout: 50000
-        loggerLevel: full
-# 断路器配置
-hystrix:
-  metrics:
-    enabled: true    
-  command:    
-    default:    
-      execution:    
-        isolation:
-          strategy: SEMAPHORE    
-          semaphore: 
-            maxConcurrentRequests: 100
-          thread:    
-            timeoutInMilliseconds: 50000 #缺省为1000 
-      fallback: 
-        isolation: 
-          semaphore: 
-            maxConcurrentRequests: 100
-# 负载均衡配置
-ribbon:
-  eureka:
-    enabled: true  
+## 扫码前缀
+scan:
+  url: user/url/name?pic=

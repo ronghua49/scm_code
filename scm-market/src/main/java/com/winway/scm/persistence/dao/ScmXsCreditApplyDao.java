@@ -22,19 +22,23 @@ public interface ScmXsCreditApplyDao extends MyBatisDao<String, ScmXsCreditApply
 	 * @param CreditCollectId
 	 * @return
 	 */
-	public List<ScmXsCreditApply> getByMainId(String CreditCollectId);
+    List<ScmXsCreditApply> getByMainId(String CreditCollectId);
 	
 	/**
 	 * 根据外键删除子表记录
 	 * @param CreditCollectId
 	 * @return
 	 */
-	public void delByMainId(String CreditCollectId);
+    void delByMainId(String CreditCollectId);
 
-	public List<ScmXsCreditApply> firstList(Map<String, Object> params);
+	List<ScmXsCreditApply> firstList(Map<String, Object> params);
 
-	public List<ScmXsCreditApply> getYears(String arg0);
+	List<ScmXsCreditApply> getYears(String arg0);
 
-	public ScmXsCreditApply selectLastTimePrice(String commerceId, String ownerId);
+	ScmXsCreditApply selectLastTimePrice(String commerceId, String ownerId);
+
+	ScmXsCreditApply getByCommerceCode(String commerceCode, String ownerId);
+
+	Map<String, Object> getResidueCreditByCommerceCode(String commerceCode, String ownerId, String format);
 	
 }

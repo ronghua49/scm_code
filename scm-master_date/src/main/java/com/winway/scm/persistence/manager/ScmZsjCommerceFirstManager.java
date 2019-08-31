@@ -2,7 +2,12 @@ package com.winway.scm.persistence.manager;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
+import com.hotent.base.query.PageList;
+import com.hotent.base.query.QueryFilter;
+import com.winway.scm.model.ScmZsjCommerce;
 import com.winway.scm.model.ScmZsjCommerceFirst;
+
+import java.util.Set;
 
 /**
  * 
@@ -26,5 +31,19 @@ public interface ScmZsjCommerceFirstManager extends Manager<String, ScmZsjCommer
 	void endApply(JsonNode jsonNode);
 
 	void updateSendApply(ScmZsjCommerceFirst scmZsjCommerceFirst);
-	
+
+    PageList<ScmZsjCommerce> licenseWaring(QueryFilter queryFilter);
+
+	PageList<ScmZsjCommerce> gsplist(QueryFilter queryFilter);
+
+	PageList<ScmZsjCommerce> creditlist(QueryFilter queryFilter);
+
+	PageList<ScmZsjCommerce> qlist(QueryFilter queryFilter);
+
+	String startOrStop(String id);
+
+	boolean getCommerceStateByFirstId(String commerceFirstId);
+
+    Set<String> getAccreditProCodes(String commerceFirstId);
+
 }

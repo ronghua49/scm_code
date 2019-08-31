@@ -3,8 +3,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.hotent.base.dao.MyBatisDao;
+import com.hotent.base.exception.SystemException;
 import com.winway.scm.model.ScmFhShipmentsDatail;
+import com.winway.scm.vo.ScmFhFmsListShipmentVo;
+import com.winway.scm.vo.ScmFhShipMentsCountVo;
 import com.winway.scm.vo.ScmFhShipmentsDataiAndMessageVo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -23,20 +27,34 @@ public interface ScmFhShipmentsDatailDao extends MyBatisDao<String, ScmFhShipmen
 	 * @param masterId
 	 * @return
 	 */
-	public List<ScmFhShipmentsDatail> getByMainId(String masterId);
+	List<ScmFhShipmentsDatail> getByMainId(String masterId);
 	
 	/**
 	 * 根据外键删除子表记录
 	 * @param masterId
 	 * @return
 	 */
-	public void delByMainId(String masterId);
+	void delByMainId(String masterId);
 
-	public List<Map<String, Object>> getYear(String org0);
+	List<Map<String, Object>> getYear(String org0);
 
 
-	public List<ScmFhShipmentsDatail> messageList(Map<String, Object> params);
+	List<ScmFhShipmentsDatail> messageList(Map<String, Object> params);
 
-	public List<ScmFhShipmentsDataiAndMessageVo> firstList(Map<String, Object> params);
-	
+	List<ScmFhShipmentsDataiAndMessageVo> firstList(Map<String, Object> params);
+
+	List<ScmFhFmsListShipmentVo> fmsListShipments(String startMonth, String endMonth, String ownerId,
+												  String[] businessCodeList);
+
+	ScmFhShipmentsDatail getByOrderCode(String orderCode);
+
+	List<ScmFhShipMentsCountVo> shipMentsCountlist(String commerceId, String year);
+
+    List<ScmFhShipmentsDatail> getByCommerceAndWareHouse(@Param(value = "commerceFirstId")String commerceFirstId);
+
+	List<ScmFhShipmentsDatail> query(Map<String, Object> map) throws SystemException;
+
+	List<ScmFhShipmentsDatail> queryAll();
+
+	Double verifyDeliveryAmount(String commerceFirstId, String monthStr);
 }

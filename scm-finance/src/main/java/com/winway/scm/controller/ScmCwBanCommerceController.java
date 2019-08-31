@@ -1,6 +1,8 @@
 package com.winway.scm.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.controller.BaseController;
+import com.hotent.base.feign.UCFeignService;
 import com.hotent.base.model.CommonResult;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
@@ -12,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -32,7 +36,8 @@ import javax.annotation.Resource;
 public class ScmCwBanCommerceController extends BaseController{
 	@Resource
 	ScmCwBanCommerceManager scmCwBanCommerceManager;
-
+	@Resource
+	UCFeignService ucFeignService;
 	
 	/**
 	 * 禁止票折商业表列表(分页条件查询)数据
@@ -71,8 +76,15 @@ public class ScmCwBanCommerceController extends BaseController{
 	@PostMapping(value="save")
 	@ApiOperation(value = "新增,更新禁止票折商业表数据", httpMethod = "POST", notes = "新增,更新禁止票折商业表数据")
 	public CommonResult<String> save(@ApiParam(name="scmCwBanCommerce",value="禁止票折商业表业务对象", required = true)@RequestBody ScmCwBanCommerce scmCwBanCommerce) throws Exception{
+		if(scmCwBanCommerce.getOwnerId() == null|| "".equals(scmCwBanCommerce.getOwnerId()) || "null".equals(scmCwBanCommerce.getOwnerId())) {
+			throw new RuntimeException("货主ID不能为空");
+		}
 		String msg = "添加禁止票折商业表成功";
 		if(StringUtil.isEmpty(scmCwBanCommerce.getId())){
+			JsonNode user = ucFeignService.getUser(current(), "");
+		    String fullname = user.get("fullname").asText();
+		    scmCwBanCommerce.setSetPersion(fullname);
+		    scmCwBanCommerce.setSetTime(new Date());
 			scmCwBanCommerceManager.create(scmCwBanCommerce);
 		}else{
 			scmCwBanCommerceManager.update(scmCwBanCommerce);

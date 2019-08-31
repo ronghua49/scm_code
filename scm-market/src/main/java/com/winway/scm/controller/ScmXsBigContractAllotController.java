@@ -150,7 +150,7 @@ public class ScmXsBigContractAllotController extends BaseController{
 	
 	@PostMapping(value = "sendApply")
     @ApiOperation(value = "大合同分配申请", httpMethod = "POST", notes = "提交时需要在ScmXsBigContractAllot对象中封装好详细数据以及列表数据")
-    @Workflow(flowKey = "dhtfpsp", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "dhtfpsp", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {"totalPrice","creditPrice"})
     public CommonResult<String> sendApply(
             @ApiParam(name = "ScmXsAgreementSummary", value = "经销商协议合作名单总表对象", required = true) @RequestBody ScmXsBigContractAllot scmXsBigContractAllot,
             HttpServletRequest request) throws Exception {

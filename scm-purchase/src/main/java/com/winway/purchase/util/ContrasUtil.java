@@ -21,6 +21,9 @@ public class ContrasUtil {
             if (field.getName().equals("serialVersionUID")) {
                 continue;
             }
+            if (field.getName().equals("id")) {
+            	continue;
+            }
             //获取Bean字段注解value
             ApiModelProperty apiModelProperty = field.getAnnotation(ApiModelProperty.class);
             Method getmeMethod = new PropertyDescriptor(field.getName(), oldBean.getClass()).getReadMethod();

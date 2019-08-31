@@ -7,13 +7,17 @@
 		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
 		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
 		<result property="requestCode" column="requestCode" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPerson" column="createPerson" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmXsCreditCollect">
 		INSERT INTO SCM_XS_CreditCollect
-		(id,ownerId,approvalId,approvalState,requestCode)
+		(id,ownerId,approvalId,approvalState,requestCode,createDate,createPerson,businessDivision,businessDivisionId)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{requestCode,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{requestCode,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP},#{createPerson,jdbcType=VARCHAR},#{businessDivision,jdbcType=VARCHAR},#{businessDivisionId,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsCreditCollect">
@@ -48,7 +52,11 @@
 		ownerId=#{ownerId,jdbcType=VARCHAR},
 		approvalId=#{approvalId,jdbcType=VARCHAR},
 		approvalState=#{approvalState,jdbcType=VARCHAR},
-		requestCode=#{requestCode,jdbcType=VARCHAR}
+		requestCode=#{requestCode,jdbcType=VARCHAR},
+		createDate = #{createDate,jdbcType=TIMESTAMP},
+		createPerson = #{createPerson,jdbcType=VARCHAR},
+		businessDivision = #{businessDivision,jdbcType=VARCHAR},
+		businessDivisionId =#{businessDivisionId,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

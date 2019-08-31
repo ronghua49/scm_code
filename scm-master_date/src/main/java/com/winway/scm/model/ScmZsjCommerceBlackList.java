@@ -73,10 +73,13 @@ public class ScmZsjCommerceBlackList extends BaseModel<String>{
 	protected java.util.Date approvalDate; 
 	
 	@ApiModelProperty(value="操作人")
-	protected String operatorName; 
-	
+	protected String operatorName;
 
-	public void setId(String id) {
+	 public String getOperatorName() {
+		 return operatorName;
+	 }
+
+	 public void setId(String id) {
 		this.id = id;
 	}
 	

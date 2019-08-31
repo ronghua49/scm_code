@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwDistributorFlowCostDao">
+	<resultMap id="ScmCwDistributorFlowCost" type="com.winway.scm.model.ScmCwDistributorFlowCost">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="acceptState" column="acceptState" jdbcType="VARCHAR"/>
+		<result property="signType" column="signType" jdbcType="VARCHAR"/>
+		<result property="flowManagementGrade" column="flowManagementGrade" jdbcType="NUMERIC"/>
+		<result property="systemCount" column="systemCount" jdbcType="NUMERIC"/>
+		<result property="thisTimeApply" column="thisTimeApply" jdbcType="NUMERIC"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwDistributorFlowCost">
+		INSERT INTO Scm_Cw_DistributorFlowCost
+		(id,masterId,businessDivision,province,businessDivisionId,provinceId,commerceName,commerceCode,commerceId,acceptState,signType,flowManagementGrade,systemCount,thisTimeApply,memo)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{acceptState,jdbcType=VARCHAR}, #{signType,jdbcType=VARCHAR}, #{flowManagementGrade,jdbcType=NUMERIC}, #{systemCount,jdbcType=NUMERIC}, #{thisTimeApply,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDistributorFlowCost">
+		SELECT * FROM Scm_Cw_DistributorFlowCost 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmCwDistributorFlowCost">
+		SELECT * FROM Scm_Cw_DistributorFlowCost 
+		WHERE 
+		masterId=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDistributorFlowCost">
+		SELECT * FROM Scm_Cw_DistributorFlowCost
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwDistributorFlowCost">
+		UPDATE Scm_Cw_DistributorFlowCost SET
+		masterId=#{masterId,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		acceptState=#{acceptState,jdbcType=VARCHAR},
+		signType=#{signType,jdbcType=VARCHAR},
+		flowManagementGrade=#{flowManagementGrade,jdbcType=NUMERIC},
+		systemCount=#{systemCount,jdbcType=NUMERIC},
+		thisTimeApply=#{thisTimeApply,jdbcType=NUMERIC},
+		memo=#{memo,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Cw_DistributorFlowCost 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="getScmCwDistributorFlowCostList" resultMap="ScmCwDistributorFlowCost">
+	    SELECT *
+	    FROM Scm_Cw_DistributorFlowCost 
+	    WHERE masterId=#{masterId}
+	</select>
+	
+</mapper>

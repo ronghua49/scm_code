@@ -18,13 +18,15 @@
 		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
 		<result property="procurementId" column="procurementId" jdbcType="VARCHAR"/>
 		<result property="procurementCode" column="procurementCode" jdbcType="VARCHAR"/>
+		<result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
+		<result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
 	</resultMap>
-	
+	<resultMap id="ScmZsjDrogPuchaseReturn" type="com.winway.scm.vo.ScmZsjDrogPuchaseReturn"/>
 	<insert id="create" parameterType="com.winway.scm.model.ScmCgProcurementReturn">
 		INSERT INTO SCM_CG_ProcurementReturn
-		(id,returnCode,supplierId,supplier,getMoneyWarehouseId,getMoneyWarehouse,speciesSum,sumPrice,returnDate,approvalId,approvalState,ownerId,operatorId,operatorName,procurementId,procurementCode)
+		(id,returnCode,supplierId,supplier,getMoneyWarehouseId,getMoneyWarehouse,speciesSum,sumPrice,returnDate,approvalId,approvalState,ownerId,operatorId,operatorName,procurementId,procurementCode,isSMS,isAffirmWms)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{returnCode,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{getMoneyWarehouseId,jdbcType=VARCHAR}, #{getMoneyWarehouse,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{returnDate,jdbcType=TIMESTAMP}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{procurementId,jdbcType=VARCHAR}, #{procurementCode,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{returnCode,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{getMoneyWarehouseId,jdbcType=VARCHAR}, #{getMoneyWarehouse,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{returnDate,jdbcType=TIMESTAMP}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{procurementId,jdbcType=VARCHAR}, #{procurementCode,jdbcType=VARCHAR},#{isSMS,jdbcType=VARCHAR},#{isAffirmWms,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgProcurementReturn">
@@ -48,7 +50,50 @@
 		</if>
 	</select>
 	
-	<update id="update" parameterType="com.winway.scm.model.ScmCgProcurementReturn">
+	<select id="drugPuchaseReturn" parameterType="java.util.Map" resultMap="ScmZsjDrogPuchaseReturn">
+		SELECT a.* FROM (
+		SELECT a.id,b.returnCode,b.returnDate,c.productCode,c.MedicineType,c.ProductLineName,c.ProductLineId,c.commonName,c.productState,c.AgentType,
+		c.manufacturer,d.supplier,a.batchNum,a.producedDate,a.validity,a.returnNumber,a.unit,a.unitPrice,a.sumPrice,a.returnRequestCause,b.operatorName,a.memo,d.ownerId
+		FROM scm_cg_returnproduct a
+		LEFT JOIN scm_cg_procurementreturn b ON a.returnId = b.id
+		INNER JOIN scm_zsj_product c ON a.productId = c.id
+		INNER JOIN scm_zsj_productfirst d ON c.id = d.productId
+		WHERE b.approvalState = 2
+		) a
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+    <select id="getByApprovalState" resultType="com.winway.scm.model.ScmCgProcurementReturn">
+		SELECT * FROM SCM_CG_ProcurementReturn
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+    <select id="getById" resultType="Map">
+       select * from
+			(
+			   SELECT a.id,
+			        a.returnCode,
+					a.supplier,
+					b.`supplierCode` AS supplierCode,
+					a.returnDate,
+					a.getMoneyWarehouseId as getMoneyWarehouse,
+					a.operatorName,
+					a.ownerId
+				 FROM `scm_cg_procurementreturn` a
+	        		  LEFT JOIN `scm_zsj_supplier` b ON a.`supplierId` = b.`id`
+	        ) t where id = #{id} LIMIT 1
+	</select>
+    <update id="update" parameterType="com.winway.scm.model.ScmCgProcurementReturn">
 		UPDATE SCM_CG_ProcurementReturn SET
 		returnCode=#{returnCode,jdbcType=VARCHAR},
 		supplierId=#{supplierId,jdbcType=VARCHAR},
@@ -64,7 +109,9 @@
 		operatorId=#{operatorId,jdbcType=VARCHAR},
 		operatorName=#{operatorName,jdbcType=VARCHAR},
 		procurementId=#{procurementId,jdbcType=VARCHAR},
-		procurementCode=#{procurementCode,jdbcType=VARCHAR}
+		procurementCode=#{procurementCode,jdbcType=VARCHAR},
+		isSMS =  #{isSMS,jdbcType=VARCHAR},
+		isAffirmWms =  #{isAffirmWms,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -74,6 +121,10 @@
 		WHERE
 		id=#{id}
 	</delete>
-	
+	<select id="getByCode"   parameterType="java.lang.String" resultMap="ScmCgProcurementReturn">
+		SELECT * FROM SCM_CG_ProcurementReturn 
+		WHERE 
+		returnCode=#{orderCode} LIMIT 1
+	</select>
 	
 </mapper>

@@ -1,4 +1,6 @@
 package com.winway.scm.persistence.dao;
+import java.util.List;
+
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmCwBlend;
 
@@ -14,4 +16,6 @@ import com.winway.scm.model.ScmCwBlend;
  * </pre>
  */
 public interface ScmCwBlendDao extends MyBatisDao<String, ScmCwBlend> {
+
+	List<ScmCwBlend> listByReturnMoneyId(String id);
 }

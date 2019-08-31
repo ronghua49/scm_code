@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZdCurrencyDao">
+	<resultMap id="ScmZdCurrency" type="com.winway.scm.model.ScmZdCurrency">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		<result property="currencyCode" column="currencyCode" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZdCurrency">
+		INSERT INTO scm_zd_currency
+		(id,currency,currencyCode,createDate,createPersion,memo)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{currencyCode,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createPersion,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZdCurrency">
+		SELECT * FROM scm_zd_currency 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZdCurrency">
+		SELECT * FROM scm_zd_currency
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZdCurrency">
+		UPDATE scm_zd_currency SET
+		currency=#{currency,jdbcType=VARCHAR},
+		currencyCode=#{currencyCode,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_zd_currency 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

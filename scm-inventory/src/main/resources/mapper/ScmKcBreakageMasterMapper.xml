@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmKcBreakageMasterDao">
+	<resultMap id="ScmKcBreakageMaster" type="com.winway.scm.model.ScmKcBreakageMaster">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="breakageCode" column="breakageCode" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="varietySum" column="varietySum" jdbcType="NUMERIC"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="breakageDate" column="breakageDate" jdbcType="TIMESTAMP"/>
+		<result property="isToWms" column="isToWms" jdbcType="VARCHAR"/>
+		<result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="BreakageRecord" type="com.winway.scm.vo.BreakageRecord"/>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmKcBreakageMaster">
+		INSERT INTO Scm_Kc_BreakageMaster
+		(id,breakageCode,createDate,
+		createPersion,ownerId,varietySum,
+		productSum,priceSum,approvalId,
+		approvalState,breakageDate,isToWms,
+		isAffirmWms)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{breakageCode,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP}, 
+		#{createPersion,jdbcType=VARCHAR},#{ownerId,jdbcType=VARCHAR}, #{varietySum,jdbcType=NUMERIC}, 
+		#{productSum,jdbcType=NUMERIC}, #{priceSum,jdbcType=NUMERIC},#{approvalId,jdbcType=VARCHAR}, 
+		#{approvalState,jdbcType=VARCHAR},#{breakageDate,jdbcType=TIMESTAMP},#{isToWms,jdbcType=VARCHAR},
+		#{isAffirmWms,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmKcBreakageMaster">
+		SELECT * FROM Scm_Kc_BreakageMaster 
+		WHERE 
+		id=#{id}
+	</select>
+	<select id="getByOrderCode"   parameterType="java.lang.String" resultMap="ScmKcBreakageMaster">
+		SELECT * FROM Scm_Kc_BreakageMaster 
+		WHERE 
+		breakageCode=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmKcBreakageMaster">
+		SELECT * FROM Scm_Kc_BreakageMaster
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="breakageRecord" parameterType="java.util.Map" resultMap="BreakageRecord">
+		SELECT a.* FROM (
+		SELECT a.id,b.breakageCode,a.productCode,a.medicineType,c.ProductLineName,c.ProductLineId,c.commonName,a.productState,c.AgentType,c.manufacturer,
+		c.unit,a.batchNum,a.expiryDate,d.approvalCode,d.supplier,d.ownerId,a.memo,a.dutyPersion,a.purchasingCost,a.breakageSum,(a.purchasingCost*a.breakageSum) AS priceSum,
+		b.createPersion,b.createDate
+		FROM scm_kc_breakage a 
+		LEFT JOIN scm_kc_breakagemaster b ON a.masterId = b.id
+		INNER JOIN scm_zsj_product c ON a.productCode = c.productCode
+		INNER JOIN scm_zsj_productfirst d ON c.id = d.productId
+		) a
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+    <select id="getByApprovalState" resultType="com.winway.scm.model.ScmKcBreakageMaster">
+		SELECT *
+	    FROM Scm_Kc_BreakageMaster
+	    WHERE approvalId=#{approvalId}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmKcBreakageMaster">
+		UPDATE Scm_Kc_BreakageMaster SET
+		breakageCode=#{breakageCode,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		varietySum=#{varietySum,jdbcType=NUMERIC},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		breakageDate=#{breakageDate,jdbcType=TIMESTAMP},
+		isToWms = #{isToWms,jdbcType=VARCHAR},
+		isAffirmWms = #{isAffirmWms,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Kc_BreakageMaster 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

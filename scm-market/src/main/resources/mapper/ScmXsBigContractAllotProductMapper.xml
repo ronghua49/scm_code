@@ -1,80 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmXsBigContractAllotProductDao">
-	<resultMap id="ScmXsBigContractAllotProduct" type="com.winway.scm.model.ScmXsBigContractAllotProduct">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="bigContractAllotId" column="BigContractAllotId" jdbcType="VARCHAR"/>
-		<result property="theNumber" column="theNumber" jdbcType="NUMERIC"/>
-		<result property="packageNum" column="packageNum" jdbcType="NUMERIC"/>
-		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
-		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
-		<result property="aChange" column="aChange" jdbcType="NUMERIC"/>
-		<result property="bigContractProductId" column="BigContractProductId" jdbcType="VARCHAR"/>
-		<result property="smscurrentMonthSales" column="smscurrentMonthSales" jdbcType="NUMERIC"/>
-		<result property="suggestApplyNum" column="suggestApplyNum" jdbcType="NUMERIC"/>
-		<result property="lastShipmentDate" column="lastShipmentDate" jdbcType="TIMESTAMP"/>
-		<result property="suppyType" column="suppyType" jdbcType="VARCHAR"/>
-		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
-		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
-		<result property="productName" column="productName" jdbcType="VARCHAR"/>
-		<result property="productState" column="productState" jdbcType="VARCHAR"/>
-		<result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
-		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
-		<result property="unit" column="unit" jdbcType="VARCHAR"/>
-	</resultMap>
-	
-	<insert id="create" parameterType="com.winway.scm.model.ScmXsBigContractAllotProduct">
+    <resultMap id="ScmXsBigContractAllotProduct" type="com.winway.scm.model.ScmXsBigContractAllotProduct">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="bigContractAllotId" column="BigContractAllotId" jdbcType="VARCHAR"/>
+        <result property="theNumber" column="theNumber" jdbcType="NUMERIC"/>
+        <result property="packageNum" column="packageNum" jdbcType="NUMERIC"/>
+        <result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
+        <result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
+        <result property="achage" column="aChange" jdbcType="NUMERIC"/>
+        <result property="bigContractProductId" column="BigContractProductId" jdbcType="VARCHAR"/>
+        <result property="smscurrentMonthSales" column="smscurrentMonthSales" jdbcType="NUMERIC"/>
+        <result property="suggestApplyNum" column="suggestApplyNum" jdbcType="NUMERIC"/>
+        <result property="lastShipmentDate" column="lastShipmentDate" jdbcType="TIMESTAMP"/>
+        <result property="suppyType" column="suppyType" jdbcType="VARCHAR"/>
+        <result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+        <result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+        <result property="productName" column="productName" jdbcType="VARCHAR"/>
+        <result property="productState" column="productState" jdbcType="VARCHAR"/>
+        <result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
+        <result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+
+        <result property="AgentType" column="AgentType" jdbcType="VARCHAR"/>
+        <result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+        <result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+        <result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+        <result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+		<result property="surplusSUm" column="surplusSUm" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmXsBigContractAllotProduct">
 		INSERT INTO SCM_XS_BigContractAllotProduct
 		(id,bigContractAllotId,theNumber,packageNum,
 		unitPrice,sumPrice,bigContractProductId,aChange,
 		smscurrentMonthSales,suggestApplyNum,lastShipmentDate,
 		suppyType,medicineType,productCode,productName,productState,isSMS,
-		commonName,unit)
+		commonName,unit,AgentType,manufacturer,approvalCode,medicineClassify,businessScope,surplusSUm,code)
 		VALUES 
 		(#{id,jdbcType=VARCHAR}, #{bigContractAllotId,jdbcType=VARCHAR}, #{theNumber,jdbcType=NUMERIC}, #{packageNum,jdbcType=NUMERIC}, 
-		#{unitPrice,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{bigContractProductId,jdbcType=VARCHAR}, #{aChange,jdbcType=VARCHAR},
+		#{unitPrice,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{bigContractProductId,jdbcType=VARCHAR}, #{achage,jdbcType=VARCHAR},
 		#{smscurrentMonthSales,jdbcType=VARCHAR}, #{suggestApplyNum,jdbcType=VARCHAR},
 		#{lastShipmentDate,jdbcType=TIMESTAMP}, #{suppyType,jdbcType=VARCHAR},
 		#{medicineType,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},
 		#{productName,jdbcType=VARCHAR},#{productState,jdbcType=VARCHAR},
-		#{isSMS,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR})
+		#{isSMS,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},
+		#{AgentType,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{approvalCode,jdbcType=VARCHAR}, 
+		#{medicineClassify,jdbcType=VARCHAR}, #{businessScope,jdbcType=VARCHAR},#{surplusSUm,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsBigContractAllotProduct">
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmXsBigContractAllotProduct">
 		SELECT * FROM SCM_XS_BigContractAllotProduct 
 		WHERE 
 		id=#{id}
 	</select>
-	
-	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmXsBigContractAllotProduct">
+
+    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmXsBigContractAllotProduct">
 		SELECT * FROM SCM_XS_BigContractAllotProduct 
 		WHERE 
 		bigContractAllotId=#{arg0}
 	</select>
-	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmXsBigContractAllotProduct">
-		SELECT * FROM SCM_XS_BigContractAllotProduct
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmXsBigContractAllotProduct">
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmXsBigContractAllotProduct">
+        SELECT * FROM SCM_XS_BigContractAllotProduct
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmXsBigContractAllotProduct">
 		UPDATE SCM_XS_BigContractAllotProduct SET
 		BigContractAllotId=#{bigContractAllotId,jdbcType=VARCHAR},
 		theNumber=#{theNumber,jdbcType=NUMERIC},
 		packageNum=#{packageNum,jdbcType=NUMERIC},
 		unitPrice=#{unitPrice,jdbcType=NUMERIC},
 		sumPrice=#{sumPrice,jdbcType=NUMERIC},
-		aChange=#{aChange,jdbcType=VARCHAR},
+		aChange=#{achage,jdbcType=VARCHAR},
 		BigContractProductId=#{bigContractProductId,jdbcType=VARCHAR},
 		smscurrentMonthSales=#{smscurrentMonthSales,jdbcType=VARCHAR},
 		suggestApplyNum=#{suggestApplyNum,jdbcType=VARCHAR},
@@ -86,27 +98,53 @@
 		productState=#{productState,jdbcType=VARCHAR},
 		isSMS=#{isSMS,jdbcType=VARCHAR},
 		commonName=#{commonName,jdbcType=VARCHAR},
-		unit=#{unit,jdbcType=VARCHAR}
+		unit=#{unit,jdbcType=VARCHAR},
+		AgentType = #{AgentType,jdbcType=VARCHAR},
+		manufacturer =  #{manufacturer,jdbcType=VARCHAR},
+		 approvalCode = #{approvalCode,jdbcType=VARCHAR},
+		medicineClassify =  #{medicineClassify,jdbcType=VARCHAR},
+		 businessScope = #{businessScope,jdbcType=VARCHAR},
+		surplusSUm =  #{surplusSUm,jdbcType=VARCHAR},
+		code =  #{code,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_XS_BigContractAllotProduct 
 		WHERE
 		id=#{id}
 	</delete>
-	
-	<delete id="delByMainId">
+
+    <delete id="delByMainId">
 	    DELETE FROM SCM_XS_BigContractAllotProduct
 	    WHERE
 	    BigContractAllotId=#{bigContractAllotId}
-	</delete>    
-	
-	<select id="getScmXsBigContractAllotProductList" resultMap="ScmXsBigContractAllotProduct">
+	</delete>
+
+    <select id="getScmXsBigContractAllotProductList" resultMap="ScmXsBigContractAllotProduct">
 	    SELECT *
 	    FROM SCM_XS_BigContractAllotProduct 
 	    WHERE BigContractAllotId=#{bigContractAllotId}
 	</select>
-	
+    <select id="getSumDetail" parameterType="java.lang.String" resultType="Map">
+	    SELECT concat(IFNULL(SUM(packageNum),0),'') AS sumpackageNum,
+		       concat(IFNULL(SUM(theNumber),0),'') AS sumtheNumber,
+		       concat(IFNULL(SUM(sumPrice),0),'') AS sumsumPrice
+		  FROM SCM_XS_BigContractAllotProduct 
+		 WHERE BigContractAllotId = #{id}
+    </select>
+    <select id="getDetail" parameterType="java.lang.String" resultType="Map">
+	    SELECT commonName,
+				productName,
+				productState AS productGauge,
+				unit,
+				concat(IFNULL(packageNum,0),'') as packageNum,
+				concat(IFNULL(theNumber,0),'') as theNumber,
+				concat(IFNULL(unitPrice,0),'') as unitPrice,
+				concat(IFNULL(sumPrice,0),'') as sumPrice,
+				CONCAT(IFNULL(Achange,0),'') AS  Achange
+			FROM SCM_XS_BigContractAllotProduct
+		 WHERE BigContractAllotId = #{id}
+    </select>
 </mapper>

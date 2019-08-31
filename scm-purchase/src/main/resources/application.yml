@@ -10,9 +10,9 @@ spring:
     platform: mysql
   datasource:
     name: dev
-    url: jdbc:mysql://114.116.86.0:3306/ww_oa_test_portal_dev?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8
-    username: root
-    password: 123456
+    url: jdbc:mysql://localhost:3306/213_copy?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
+      username: root
+      password: root
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver

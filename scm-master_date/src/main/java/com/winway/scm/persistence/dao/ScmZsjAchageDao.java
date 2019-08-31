@@ -23,4 +23,7 @@ public interface ScmZsjAchageDao extends MyBatisDao<String, ScmZsjAchage>{
 
 	List<ScmZsjAchage> getByachage(String arg0, String arg1);
 
+    ScmZsjAchage getByCode(String arg0);
+
+	List<ScmZsjAchage> getAllByMainId(String productId);
 }

@@ -34,9 +34,12 @@ public class ScmZsjCommerceDutyOfficer extends BaseModel<String>{
 	protected String dutyOfficerId; 
 	
 	@ApiModelProperty(value="责任人")
-	protected String dutyOfficer; 
-	
-	@ApiModelProperty(value="审批ID")
+	protected String dutyOfficer;
+
+	 @ApiModelProperty(value="新责任人")
+	 protected String newDutyOfficer;
+
+	 @ApiModelProperty(value="审批ID")
 	protected String approvalId; 
 	
 	@ApiModelProperty(value="审批状态")
@@ -49,10 +52,39 @@ public class ScmZsjCommerceDutyOfficer extends BaseModel<String>{
 	protected String operatorName; 
 	
 	@ApiModelProperty(value="操作人ID")
-	protected String operatorId; 
-	
-	
-	public void setId(String id) {
+	protected String operatorId;
+
+	 @ApiModelProperty(value="是否生效(0:未生效，1:生效)")
+	 protected String iseffect="1";
+
+	 @ApiModelProperty(value="备注")
+	 protected String memo;
+
+	 public String getNewDutyOfficer() {
+		 return newDutyOfficer;
+	 }
+
+	 public void setNewDutyOfficer(String newDutyOfficer) {
+		 this.newDutyOfficer = newDutyOfficer;
+	 }
+
+	 public String getMemo() {
+		 return memo;
+	 }
+
+	 public void setMemo(String memo) {
+		 this.memo = memo;
+	 }
+
+	 public String getIseffect() {
+		 return iseffect;
+	 }
+
+	 public void setIseffect(String iseffect) {
+		 this.iseffect = iseffect;
+	 }
+
+	 public void setId(String id) {
 		this.id = id;
 	}
 	

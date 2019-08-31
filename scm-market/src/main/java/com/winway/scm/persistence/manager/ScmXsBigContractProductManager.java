@@ -23,5 +23,6 @@ public interface ScmXsBigContractProductManager extends Manager<String, ScmXsBig
 	PageList<ScmXsBigContractProduct> bigcontractProductList(QueryFilter queryFilter);
 
 	PageList<ScmXsBigContractProduct> groupList(QueryFilter queryFilter);
-	
+
+	PageList<ScmXsBigContractProduct> everyDayContractProductList(QueryFilter queryFilter);
 }

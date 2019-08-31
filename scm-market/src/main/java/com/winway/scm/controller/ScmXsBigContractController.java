@@ -155,7 +155,7 @@ public class ScmXsBigContractController extends BaseController{
 	 */
 	@PostMapping(value = "sendApply")
     @ApiOperation(value = "大合同申请", httpMethod = "POST", notes = "提交时需要把商品数据封装至大合同对象中一起提交")
-    @Workflow(flowKey = "dhtsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "dhtsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {"totalPrice","creditPrice"})
     public  CommonResult<String> sendApply(
             @ApiParam(name = "scmXsBigContract", value = "经销商协议合作名单总表对象", required = true) @RequestBody ScmXsBigContract scmXsBigContract,
             HttpServletRequest request) throws Exception {
@@ -163,7 +163,7 @@ public class ScmXsBigContractController extends BaseController{
 		String fullname = user.get("fullname").asText();
 		scmXsBigContract.setEntryPeople(fullname);
 		String contractCode = scmXsBigContractManager.sendApply(scmXsBigContract);
-	   return new CommonResult<String>(true, "contractCode", contractCode);
+	    return new CommonResult<String>(true, "大合同发起申请成功", contractCode);
 	}
 	
 	@PostMapping(value = "/endApply")

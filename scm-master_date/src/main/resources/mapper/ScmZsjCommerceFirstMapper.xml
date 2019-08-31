@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmZsjCommerceFirstDao">
-	<resultMap id="ScmZsjCommerceFirst" type="com.winway.scm.model.ScmZsjCommerceFirst">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
-		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
-		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
-		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
-		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
-		<result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
-	</resultMap>
-	
-	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceFirst">
+    <resultMap id="ScmZsjCommerceFirst" type="com.winway.scm.model.ScmZsjCommerceFirst">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+        <result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
+        <result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="sealStyle" column="sealStyle" jdbcType="VARCHAR"/>
+        <result property="billsStyle" column="billsStyle" jdbcType="VARCHAR"/>
+        <result property="qualityValidity" column="qualityValidity" jdbcType="TIMESTAMP"/>
+        <result property="isPassed" column="isPassed" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerceFirst">
 		INSERT INTO SCM_ZSJ_CommerceFirst
-		(id,commerceId,ownerId,approvalId,approvalState,operatorName,operatorDate)
+		(id,commerceId,ownerId,approvalId,approvalState,operatorName,operatorDate,mergeState,
+		contactPersion,phone,sealStyle,billsStyle,qualityValidity,isPassed)
 		VALUES 
 		(#{id,jdbcType=VARCHAR},
 		 #{commerceId,jdbcType=VARCHAR},
@@ -21,68 +28,319 @@
 		 #{approvalId,jdbcType=VARCHAR}, 
 		 #{approvalState,jdbcType=VARCHAR},
 		 #{operatorName,jdbcType=VARCHAR},
-		 now())
+		 now(),
+		 #{mergeState,jdbcType=VARCHAR},
+		 #{contactPersion,jdbcType=VARCHAR},
+		 #{phone,jdbcType=VARCHAR},
+		 #{sealStyle,jdbcType=VARCHAR},
+		 #{billsStyle,jdbcType=VARCHAR},
+		 #{qualityValidity,jdbcType=TIMESTAMP},#{isPassed,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
-		SELECT * FROM SCM_ZSJ_CommerceFirst 
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
+		SELECT a.*,b.commerceCode FROM SCM_ZSJ_CommerceFirst a
+		left join SCM_ZSJ_Commerce b on a.commerceId = b.id 
 		WHERE 
-		id=#{id}
+		a.id=#{id}
 	</select>
-	
-	<select id="getCommerceFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
+
+    <select id="getCommerceFirstByApprovalId" parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
 		SELECT * FROM SCM_ZSJ_CommerceFirst 
 		WHERE 
 		approvalId=#{approvalId}
 	</select>
-	
-	<select id="isSave"   parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
-		SELECT * FROM SCM_ZSJ_CommerceFirst 
-		WHERE 
-		<if test="commerceId!=null">
-			commerceId=#{commerceId} and 
-		</if>
-		ownerId=#{ownerId}
-	</select>
-	
-	<select id="getCommerceFirstByOwnerIdAndCommerceId"   parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
+
+    <select id="isSave" parameterType="java.lang.String" resultMap="ScmZsjCommerceFirst">
+        SELECT * FROM SCM_ZSJ_CommerceFirst
+        WHERE
+        <if test="commerceId!=null">
+            commerceId=#{commerceId} and
+        </if>
+        ownerId=#{ownerId}
+    </select>
+
+    <select id="getCommerceFirstByOwnerIdAndCommerceId" parameterType="java.lang.String"
+            resultMap="ScmZsjCommerceFirst">
 		SELECT * FROM SCM_ZSJ_CommerceFirst 
 		WHERE 
 		ownerId=#{ownerId} and commerceId=#{commerceId} 
 	</select>
-	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceFirst">
-		SELECT * FROM SCM_ZSJ_CommerceFirst
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceFirst">
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceFirst">
+        SELECT * FROM SCM_ZSJ_CommerceFirst
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="getByCommerceId" resultType="com.winway.scm.model.ScmZsjCommerceFirst">
+        SELECT * FROM SCM_ZSJ_CommerceFirst
+		WHERE
+		commerceId=#{commerceId}
+    </select>
+    <select id="gsplist" resultType="com.winway.scm.model.ScmZsjCommerce">
+   select * from (     SELECT
+        (CASE (DATEDIFF(d.validity,NOW())>0) WHEN TRUE THEN "未到期" ELSE "已到期" END) as licenceState,
+        b.id,
+        a.commerceName,
+        a.fileCode,
+        a.businessDivision,
+        a.businessDivisionId,
+        a.province,
+        a.provinceId,
+        a.enterDate,
+        a.enterPersion,
+        a.conpanyPersion,
+        b.ownerId,
+        c.legalPersion,
+        c.register,
+        c.registerPrice,
+        d.GSP as gsp,
+        d.validity
+        FROM
+        scm_zsj_commerce a,
+        scm_zsj_commercefirst b,
+        scm_zsj_commercebusiness c,
+        scm_zsj_gsp d
+        where
+        a.id = b.commerceId
+        AND b.id = c.commerceFirstId
+        AND d.commerceFirstId = b.id) a
+        <where>
+            <if test="whereSql!=null">
+                and ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="licenseWaring" resultType="com.winway.scm.model.ScmZsjCommerce">
+        SELECT * FROM v_licencewarning
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+
+    </select>
+    <select id="creditlist" resultType="com.winway.scm.model.ScmZsjCommerce">
+       select * from ( SELECT
+        (
+        CASE (
+        DATEDIFF(d.entrustValidity, NOW()) > 0
+        )
+        WHEN TRUE THEN
+        "未到期"
+        ELSE
+        "已到期"
+        END
+        ) AS licenceState,
+        b.id,
+        a.commerceName,
+        a.fileCode,
+        a.enterDate,
+        a.enterPersion,
+        a.conpanyPersion,
+        a.businessDivision,
+        a.businessDivisionId,
+        a.province,
+        a.provinceId,
+        b.contactPersion,
+        b.ownerId,
+        c.legalPersion,
+        c.register,
+        c.registerPrice,
+        c.commerceType,
+        e.managementScope,
+        d.entrustCode,
+        d.entrustName,
+        d.entrustValidity AS validity
+        FROM
+        scm_zsj_commerce a,
+        scm_zsj_commercefirst b,
+        scm_zsj_commercebusiness c,
+        scm_zsj_commerceentrusebook d,
+        scm_zsj_commercelicence e
+        where
+        a.id = b.commerceId
+        AND b.id = c.commerceFirstId
+        AND d.commerceFirstId = b.id
+        AND e.commerceFirstId = b.id) a
+        <where>
+            <if test="whereSql!=null">
+                and ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="qlist" resultType="com.winway.scm.model.ScmZsjCommerce">
+       select * from ( SELECT
+        (
+        CASE (
+        DATEDIFF(b.qualityValidity, NOW()) > 0
+        )
+        WHEN TRUE THEN
+        "未到期"
+        ELSE
+        "已到期"
+        END
+        ) AS licenceState,
+        b.id,
+        a.commerceName,
+        a.fileCode,
+        a.enterDate,
+        a.enterPersion,
+        a.conpanyPersion,
+        a.businessDivision,
+        a.businessDivisionId,
+        a.province,
+        a.provinceId,
+        b.contactPersion,
+        b.ownerId,
+        c.commerceType,
+        c.legalPersion,
+        c.register,
+        c.registerPrice
+        FROM
+        scm_zsj_commerce a,
+        scm_zsj_commercefirst b,
+        scm_zsj_commercebusiness c
+        where
+        a.id = b.commerceId
+        AND b.id = c.commerceFirstId) a
+        <where>
+            <if test="whereSql!=null">
+                and ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="printBymainId" resultType="java.util.Map">
+     SELECT
+         b.commerceLevel,
+          b.functionType,
+          a.contactPersion,
+          a.phone,
+          DATE_FORMAT(a.qualityValidity, '%Y-%m-%d') AS qualityValidity,
+          a.sealStyle,
+          a.billsStyle,
+           b.`fileCode`,
+          b.commerceName,
+          b.commerceCode,
+          b.conpanyPersion,
+          b.openBank,
+          b.bankCode,
+          b.dutyParagraph,
+          b.businessDivision,
+          b.province,
+          b.registerAddress,
+          c.licenseKey,
+          DATE_FORMAT(c.validity, '%Y-%m-%d') AS validity,
+          c.managementScope,
+          d.register,
+          DATE_FORMAT(d.licenseValidity, '%Y-%m-%d') AS licenseValidity,
+          d.legalPersion,
+          d.registerPrice,
+          d.commerceType,
+          DATE_FORMAT(
+            d.yearReportValidity,
+            '%Y-%m-%d'
+          ) AS yearReportValidity,
+          e.GSP,
+          DATE_FORMAT(e.validity, '%Y-%m-%d') AS gspvalidity,
+          f.address as addressStr
+        FROM
+          `scm_zsj_commercefirst` a
+          LEFT JOIN `scm_zsj_commerce` b
+            ON a.commerceId = b.id
+          LEFT JOIN `scm_zsj_commercelicence` c
+            ON a.id = c.commerceFirstId
+          LEFT JOIN `scm_zsj_commercebusiness` d
+            ON a.id = d.commerceFirstId
+          LEFT JOIN `scm_zsj_gsp` e
+            ON a.id = e.commerceFirstId
+            left join scm_zsj_commercewarehouse f on a.id = f.commerceFirstId and f.isDefault = '1'
+        WHERE a.id = #{commerceFirstId}
+    </select>
+    <select id="printAddressBymainId" resultType="java.util.Map">
+        SELECT
+          cast((@i:=@i+1) as signed) i,
+          g.isDufault,
+          g.contactPersion AS rContactPersion,
+          g.phone AS rPhone,
+          g.headPhone,
+          g.province AS rprovince,
+          g.city,
+          g.district,
+          g.street,
+          g.postcode,
+          g.address
+        FROM
+          `scm_zsj_commerceshipaddress` g,(SELECT @i:=0) AS i
+        WHERE commerceFirstId = #{commerceFirstId}
+    </select>
+    <select id="printEntruseBookBymainId" resultType="java.util.Map">
+        SELECT
+        cast((@i:=@i+1) as signed) j,
+          f.entrustCode,
+          f.entrustName,
+           DATE_FORMAT(f.entrustValidity, '%Y-%m-%d') as  entrustValidity,
+          f.IDNumber,
+          DATE_FORMAT(f.idValidity, '%Y-%m-%d') as idValidity
+        FROM
+          `scm_zsj_commerceentrusebook` f,(SELECT @i:=0) AS j
+        WHERE commerceFirstId = #{commerceFirstId}
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmZsjCommerceFirst">
 		UPDATE SCM_ZSJ_CommerceFirst SET
 		commerceId=#{commerceId,jdbcType=VARCHAR},
 		ownerId=#{ownerId,jdbcType=VARCHAR},
 		approvalId=#{approvalId,jdbcType=VARCHAR},
 		operatorName=#{operatorName,jdbcType=VARCHAR},
 		operatorDate=now(),
-		approvalState=#{approvalState,jdbcType=VARCHAR}
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		mergeState = #{mergeState,jdbcType=VARCHAR},
+		contactPersion=#{contactPersion,jdbcType=VARCHAR},
+		phone=#{phone,jdbcType=VARCHAR},
+		sealStyle=#{sealStyle,jdbcType=VARCHAR},
+		billsStyle=#{billsStyle,jdbcType=VARCHAR},
+		qualityValidity=#{qualityValidity,jdbcType=TIMESTAMP},
+		isPassed = #{isPassed,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_ZSJ_CommerceFirst 
 		WHERE
 		id=#{id}
 	</delete>
-	
-	
 </mapper>

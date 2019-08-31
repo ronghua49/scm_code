@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwAnnualFeeDao">
+	<resultMap id="ScmCwAnnualFee" type="com.winway.scm.model.ScmCwAnnualFee">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceType" column="commerceType" jdbcType="VARCHAR"/>
+		<result property="commerceClasses" column="commerceClasses" jdbcType="VARCHAR"/>
+		<result property="messagePrice" column="messagePrice" jdbcType="NUMERIC"/>
+		<result property="flowDirection" column="flowDirection" jdbcType="NUMERIC"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwAnnualFee">
+		INSERT INTO Scm_Cw_AnnualFee
+		(id,masterId,commerceName,commerceId,commerceCode,commerceType,commerceClasses,messagePrice,flowDirection,memo)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceType,jdbcType=VARCHAR}, #{commerceClasses,jdbcType=VARCHAR}, #{messagePrice,jdbcType=NUMERIC}, #{flowDirection,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwAnnualFee">
+		SELECT * FROM Scm_Cw_AnnualFee 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwAnnualFee">
+		SELECT * FROM Scm_Cw_AnnualFee
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwAnnualFee">
+		UPDATE Scm_Cw_AnnualFee SET
+		masterId=#{masterId,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceType=#{commerceType,jdbcType=VARCHAR},
+		commerceClasses=#{commerceClasses,jdbcType=VARCHAR},
+		messagePrice=#{messagePrice,jdbcType=NUMERIC},
+		flowDirection=#{flowDirection,jdbcType=NUMERIC},
+		memo=#{memo,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Cw_AnnualFee 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM Scm_Cw_AnnualFee
+	    WHERE
+	    masterId=#{masterId}
+	</delete>    
+	
+	<select id="getByMainId" resultMap="ScmCwAnnualFee">
+	    SELECT *
+	    FROM Scm_Cw_AnnualFee 
+	    WHERE masterId=#{masterId}
+	</select>
+	
+</mapper>

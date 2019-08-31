@@ -1,4 +1,6 @@
 package com.winway.scm.persistence.dao;
+import java.util.Map;
+
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmXsBigContractAllot;
 
@@ -18,4 +20,6 @@ public interface ScmXsBigContractAllotDao extends MyBatisDao<String, ScmXsBigCon
 	ScmXsBigContractAllot getAllotByApprovalId(String approvalId);
 
 	ScmXsBigContractAllot getByApplyId(String applyId);
+
+	Map getMain(String id);
 }

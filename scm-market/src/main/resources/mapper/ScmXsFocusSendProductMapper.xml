@@ -2,44 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmXsFocusSendProductDao">
 	<resultMap id="ScmXsFocusSendProduct" type="com.winway.scm.model.ScmXsFocusSendProduct">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="theNumber" column="theNumber" jdbcType="NUMERIC"/>
-		<result property="packageNum" column="packageNum" jdbcType="NUMERIC"/>
-		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
-		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
-		<result property="FocusSendId" column="FocusSendId" jdbcType="VARCHAR"/>
-		<result property="BigContractProductId" column="BigContractProductId" jdbcType="VARCHAR"/>
-		<result property="yearAndMonth" column="yearAndMonth" jdbcType="TIMESTAMP"/>
-		<result property="Achange" column="Achange" jdbcType="NUMERIC"/>
-		<result property="MedicineType" column="MedicineType" jdbcType="VARCHAR"/>
-		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
-		<result property="suppyType" column="suppyType" jdbcType="VARCHAR"/>
-		<result property="suggestApplyNum" column="suggestApplyNum" jdbcType="NUMERIC"/>
-		<result property="lastShipmentDate" column="lastShipmentDate" jdbcType="TIMESTAMP"/>
-		<result property="smscurrentMonthSales" column="SMSCurrentMonthSales" jdbcType="NUMERIC"/>
-		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
-		<result property="unit" column="unit" jdbcType="VARCHAR"/>
-		<result property="productGauge" column="productGauge" jdbcType="VARCHAR"/>
+		<id property="id" column="id" jdbcType="VARCHAR" />
+		<result property="theNumber" column="theNumber" jdbcType="NUMERIC" />
+		<result property="packageNum" column="packageNum" jdbcType="NUMERIC" />
+		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC" />
+		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC" />
+		<result property="FocusSendId" column="FocusSendId" jdbcType="VARCHAR" />
+		<result property="BigContractProductId" column="BigContractProductId" jdbcType="VARCHAR" />
+		<result property="yearAndMonth" column="yearAndMonth" jdbcType="TIMESTAMP" />
+		<result property="achage" column="Achange" jdbcType="NUMERIC" />
+		<result property="MedicineType" column="MedicineType" jdbcType="VARCHAR" />
+		<result property="commonName" column="commonName" jdbcType="VARCHAR" />
+		<result property="suppyType" column="suppyType" jdbcType="VARCHAR" />
+		<result property="suggestApplyNum" column="suggestApplyNum" jdbcType="NUMERIC" />
+		<result property="lastShipmentDate" column="lastShipmentDate" jdbcType="TIMESTAMP" />
+		<result property="smscurrentMonthSales" column="SMSCurrentMonthSales" jdbcType="NUMERIC" />
+		<result property="productCode" column="productCode" jdbcType="VARCHAR" />
+		<result property="unit" column="unit" jdbcType="VARCHAR" />
+		<result property="productGauge" column="productGauge" jdbcType="VARCHAR" />
 
-		<result property="v_ownerId" column="ownerId" jdbcType="VARCHAR"/>
-		<result property="v_FocusSendCode" column="FocusSendCode" jdbcType="VARCHAR"/>
-		<result property="v_isSMS" column="isSMS" jdbcType="VARCHAR"/>
-		<result property="v_commonName" column="commonName" jdbcType="VARCHAR"/>
-		<result property="v_MedicineType" column="MedicineType" jdbcType="VARCHAR"/>
-		<result property="v_productGauge" column="productGauge" jdbcType="VARCHAR"/>
-		<result property="v_specialOpinion" column="specialOpinion" jdbcType="VARCHAR"/>
-		<result property="v_commerceState" column="commerceState" jdbcType="VARCHAR"/>
-		<result property="v_functionType" column="functionType" jdbcType="VARCHAR"/>
-		<result property="v_contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
-		<result property="v_phone" column="phone" jdbcType="VARCHAR"/>
-		<result property="v_commerceName" column="commerceName" jdbcType="VARCHAR"/>
-		<result property="v_commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
-		<result property="v_marketingWay" column="marketingWay" jdbcType="VARCHAR"/>
-		<result property="v_productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR" />
+		<result property="AgentType" column="AgentType" jdbcType="VARCHAR" />
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR" />
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR" />
+		<result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR" />
+		<result property="businessScope" column="businessScope" jdbcType="VARCHAR" />
+		<result property="code" column="code" jdbcType="VARCHAR" />
+
+		<result property="v_ownerId" column="ownerId" jdbcType="VARCHAR" />
+		<result property="v_FocusSendCode" column="FocusSendCode" jdbcType="VARCHAR" />
+		<result property="v_isSMS" column="isSMS" jdbcType="VARCHAR" />
+		<result property="v_commonName" column="commonName" jdbcType="VARCHAR" />
+		<result property="v_MedicineType" column="MedicineType" jdbcType="VARCHAR" />
+		<result property="v_productGauge" column="productGauge" jdbcType="VARCHAR" />
+		<result property="v_specialOpinion" column="specialOpinion" jdbcType="VARCHAR" />
+		<result property="v_commerceState" column="commerceState" jdbcType="VARCHAR" />
+		<result property="v_functionType" column="functionType"
+			jdbcType="VARCHAR" />
+		<result property="v_contactPersion" column="contactPersion"
+			jdbcType="VARCHAR" />
+		<result property="v_phone" column="phone" jdbcType="VARCHAR" />
+		<result property="v_commerceName" column="commerceName"
+			jdbcType="VARCHAR" />
+		<result property="v_commerceFirstId" column="commerceFirstId"
+			jdbcType="VARCHAR" />
+		<result property="v_marketingWay" column="marketingWay"
+			jdbcType="VARCHAR" />
+		<result property="v_productCode" column="productCode" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<insert id="create" parameterType="com.winway.scm.model.ScmXsFocusSendProduct">
-		INSERT INTO SCM_XS_FocusSendProduct
+		INSERT INTO
+		SCM_XS_FocusSendProduct
 		(id,theNumber,
 		packageNum,unitPrice,
 		sumPrice,FocusSendId,
@@ -48,32 +62,38 @@
 		commonName,suppyType,
 		suggestApplyNum,lastShipmentDate,
 		SMSCurrentMonthSales,productCode,
-		unit,productGauge)
-		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{theNumber,jdbcType=NUMERIC}, 
-		#{packageNum,jdbcType=NUMERIC}, #{unitPrice,jdbcType=NUMERIC}, 
-		#{sumPrice,jdbcType=NUMERIC}, #{FocusSendId,jdbcType=VARCHAR}, 
-		#{BigContractProductId,jdbcType=VARCHAR}, #{yearAndMonth,jdbcType=TIMESTAMP},
-		#{Achange,jdbcType=NUMERIC},#{MedicineType,jdbcType=VARCHAR},
+		unit,productGauge,productName,
+		AgentType,manufacturer,approvalCode,
+		medicineClassify,businessScope,code)
+		VALUES
+		(#{id,jdbcType=VARCHAR}, #{theNumber,jdbcType=NUMERIC},
+		#{packageNum,jdbcType=NUMERIC}, #{unitPrice,jdbcType=NUMERIC},
+		#{sumPrice,jdbcType=NUMERIC}, #{FocusSendId,jdbcType=VARCHAR},
+		#{BigContractProductId,jdbcType=VARCHAR},
+		#{yearAndMonth,jdbcType=TIMESTAMP},
+		#{achage,jdbcType=NUMERIC},#{MedicineType,jdbcType=VARCHAR},
 		#{commonName,jdbcType=VARCHAR},#{suppyType,jdbcType=VARCHAR},
 		#{suggestApplyNum,jdbcType=NUMERIC},#{lastShipmentDate,jdbcType=TIMESTAMP},
 		#{smscurrentMonthSales,jdbcType=NUMERIC},#{productCode,jdbcType=VARCHAR},
-		#{unit,jdbcType=VARCHAR},#{productGauge,jdbcType=VARCHAR}
+		#{unit,jdbcType=VARCHAR},#{productGauge,jdbcType=VARCHAR},#{productName,jdbcType=VARCHAR},
+		#{AgentType,jdbcType=VARCHAR},#{manufacturer,jdbcType=VARCHAR},#{approvalCode,jdbcType=VARCHAR},
+		#{medicineClassify,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR}
 		)
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsFocusSendProduct">
-		SELECT * FROM SCM_XS_FocusSendProduct 
-		WHERE 
+
+	<select id="get" parameterType="java.lang.String" resultMap="ScmXsFocusSendProduct">
+		SELECT * FROM SCM_XS_FocusSendProduct
+		WHERE
 		id=#{id}
 	</select>
-	
-	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmXsFocusSendProduct">
-		SELECT * FROM SCM_XS_FocusSendProduct 
-		WHERE 
+
+	<select id="getByMainId" parameterType="java.lang.String"
+		resultMap="ScmXsFocusSendProduct">
+		SELECT * FROM SCM_XS_FocusSendProduct
+		WHERE
 		FocusSendId=#{arg0}
 	</select>
-	
+
 	<select id="query" parameterType="java.util.Map" resultMap="ScmXsFocusSendProduct">
 		SELECT * FROM SCM_XS_FocusSendProduct
 		<where>
@@ -88,9 +108,10 @@
 			ORDER BY id DESC
 		</if>
 	</select>
-	
+
 	<update id="update" parameterType="com.winway.scm.model.ScmXsFocusSendProduct">
-		UPDATE SCM_XS_FocusSendProduct SET
+		UPDATE SCM_XS_FocusSendProduct
+		SET
 		theNumber=#{theNumber,jdbcType=NUMERIC},
 		packageNum=#{packageNum,jdbcType=NUMERIC},
 		unitPrice=#{unitPrice,jdbcType=NUMERIC},
@@ -98,7 +119,7 @@
 		FocusSendId=#{FocusSendId,jdbcType=VARCHAR},
 		BigContractProductId=#{BigContractProductId,jdbcType=VARCHAR},
 		yearAndMonth=#{yearAndMonth,jdbcType=TIMESTAMP},
-		Achange=#{Achange,jdbcType=NUMERIC},
+		Achange=#{achage,jdbcType=NUMERIC},
 		MedicineType=#{MedicineType,jdbcType=VARCHAR},
 		commonName=#{commonName,jdbcType=VARCHAR},
 		suppyType=#{suppyType,jdbcType=VARCHAR},
@@ -107,35 +128,46 @@
 		smscurrentMonthSales=#{smscurrentMonthSales,jdbcType=NUMERIC},
 		productCode=#{productCode,jdbcType=VARCHAR},
 		unit=#{unit,jdbcType=VARCHAR},
-		productGauge=#{productGauge,jdbcType=VARCHAR}
+		productGauge=#{productGauge,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=NUMERIC},
+		AgentType =
+		#{AgentType,jdbcType=VARCHAR},
+		manufacturer =
+		#{manufacturer,jdbcType=VARCHAR},
+		approvalCode = #{approvalCode,jdbcType=VARCHAR},
+		medicineClassify =
+		#{medicineClassify,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
-	
+
 	<delete id="remove" parameterType="java.lang.String">
-		DELETE FROM SCM_XS_FocusSendProduct 
+		DELETE FROM
+		SCM_XS_FocusSendProduct
 		WHERE
 		id=#{id}
 	</delete>
-	
+
 	<delete id="delByMainId">
-	    DELETE FROM SCM_XS_FocusSendProduct
-	    WHERE
-	    FocusSendId=#{FocusSendId}
-	</delete>    
-	
-	
-	
+		DELETE FROM SCM_XS_FocusSendProduct
+		WHERE
+		FocusSendId=#{FocusSendId}
+	</delete>
+
+
+
 	<select id="getFocussendToTask" resultMap="ScmXsFocusSendProduct">
-	    SELECT *
-	    FROM v_focussendtotask
-	    WHERE FocusSendId=#{arg0} and ownerId=#{arg1}
+		SELECT *
+		FROM v_focussendtotask
+		WHERE FocusSendId=#{arg0} and ownerId=#{arg1}
 	</select>
-	
+
 	<select id="getScmXsFocusSendProductList" resultMap="ScmXsFocusSendProduct">
-	    SELECT *
-	    FROM SCM_XS_FocusSendProduct 
-	    WHERE FocusSendId=#{FocusSendId}
+		SELECT *
+		FROM SCM_XS_FocusSendProduct
+		WHERE FocusSendId=#{FocusSendId}
 	</select>
-	
+
 </mapper>

@@ -17,4 +17,8 @@ import com.winway.scm.model.ScmZsjAchage;
  */
 public interface ScmZsjAchageManager extends Manager<String, ScmZsjAchage>{
 
+	String getProductNumByCode(String code);
+
+	String getProductMessageByCode(String code);
+
 }

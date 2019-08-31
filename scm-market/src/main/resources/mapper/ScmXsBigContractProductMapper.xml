@@ -1,107 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmXsBigContractProductDao">
-	<resultMap id="ScmXsBigContractProduct" type="com.winway.scm.model.ScmXsBigContractProduct">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="bigContractId" column="bigContractId" jdbcType="VARCHAR"/>
-		<result property="productGauge" column="productGauge" jdbcType="VARCHAR"/>
-		<result property="MedicineType" column="MedicineType" jdbcType="VARCHAR"/>
-		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
-		<result property="unit" column="unit" jdbcType="VARCHAR"/>
-		<result property="Achange" column="Achange" jdbcType="NUMERIC"/>
-		<result property="suppyType" column="suppyType" jdbcType="VARCHAR"/>
-		<result property="suggestApplyNum" column="suggestApplyNum" jdbcType="NUMERIC"/>
-		<result property="lastShipmentDate" column="lastShipmentDate" jdbcType="TIMESTAMP"/>
-		<result property="SMSCurrentMonthSales" column="SMSCurrentMonthSales" jdbcType="NUMERIC"/>
-		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
-		<result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
-		<result property="theNumber" column="theNumber" jdbcType="NUMERIC"/>
-		<result property="packageNum" column="packageNum" jdbcType="NUMERIC"/>
-		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
-		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
-		<result property="surplusSUm" column="surplusSUm" jdbcType="NUMERIC"/>
-		
-		<result property="AgreementSummaryId" column="AgreementSummaryId" jdbcType="VARCHAR"/>
-		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
-		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
-		<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
-		<result property="productName" column="productName" jdbcType="VARCHAR"/>
-	</resultMap>
-	
-	<insert id="create" parameterType="com.winway.scm.model.ScmXsBigContractProduct">
+    <resultMap id="ScmXsBigContractProduct" type="com.winway.scm.model.ScmXsBigContractProduct">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="bigContractId" column="bigContractId" jdbcType="VARCHAR"/>
+        <result property="productGauge" column="productGauge" jdbcType="VARCHAR"/>
+        <result property="MedicineType" column="MedicineType" jdbcType="VARCHAR"/>
+        <result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+        <result property="Achange" column="Achange" jdbcType="NUMERIC"/>
+        <result property="suppyType" column="suppyType" jdbcType="VARCHAR"/>
+        <result property="suggestApplyNum" column="suggestApplyNum" jdbcType="NUMERIC"/>
+        <result property="lastShipmentDate" column="lastShipmentDate" jdbcType="TIMESTAMP"/>
+        <result property="SMSCurrentMonthSales" column="SMSCurrentMonthSales" jdbcType="NUMERIC"/>
+        <result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+        <result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
+        <result property="theNumber" column="theNumber" jdbcType="NUMERIC"/>
+        <result property="packageNum" column="packageNum" jdbcType="NUMERIC"/>
+        <result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
+        <result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
+        <result property="surplusSUm" column="surplusSUm" jdbcType="NUMERIC"/>
+        <result property="invalid" column="invalid" jdbcType="VARCHAR"/>
+
+        <result property="AgreementSummaryId" column="AgreementSummaryId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+        <result property="productName" column="productName" jdbcType="VARCHAR"/>
+
+        <result property="AgentType" column="AgentType" jdbcType="VARCHAR"/>
+        <result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+        <result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+        <result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+        <result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmXsBigContractProduct">
 		INSERT INTO SCM_XS_BigContractProduct
-		(id,bigContractId,productGauge,MedicineType,commonName,unit,Achange,suppyType,suggestApplyNum,lastShipmentDate,SMSCurrentMonthSales,productCode,isSMS,theNumber,packageNum,unitPrice,sumPrice,surplusSUm,productName)
+		(id,bigContractId,productGauge,
+		MedicineType,commonName,unit,
+		Achange,suppyType,suggestApplyNum,
+		lastShipmentDate,SMSCurrentMonthSales,productCode,
+		isSMS,theNumber,packageNum,
+		unitPrice,sumPrice,surplusSUm,
+		productName,AgentType,manufacturer,
+		approvalCode,medicineClassify,businessScope,
+		invalid)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{bigContractId,jdbcType=VARCHAR}, #{productGauge,jdbcType=VARCHAR}, #{MedicineType,jdbcType=VARCHAR}, 
-		#{commonName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{Achange,jdbcType=NUMERIC}, #{suppyType,jdbcType=VARCHAR}, 
-		#{suggestApplyNum,jdbcType=NUMERIC}, #{lastShipmentDate,jdbcType=TIMESTAMP}, #{SMSCurrentMonthSales,jdbcType=NUMERIC}, 
-		#{productCode,jdbcType=VARCHAR}, #{isSMS,jdbcType=VARCHAR}, #{theNumber,jdbcType=NUMERIC}, #{packageNum,jdbcType=NUMERIC}, 
-		#{unitPrice,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{surplusSUm,jdbcType=NUMERIC},#{productName,jdbcType=NUMERIC})
+		(#{id,jdbcType=VARCHAR}, #{bigContractId,jdbcType=VARCHAR}, #{productGauge,jdbcType=VARCHAR}, 
+		#{MedicineType,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
+		#{Achange,jdbcType=NUMERIC}, #{suppyType,jdbcType=VARCHAR},#{suggestApplyNum,jdbcType=NUMERIC}, 
+		#{lastShipmentDate,jdbcType=TIMESTAMP},#{SMSCurrentMonthSales,jdbcType=NUMERIC},#{productCode,jdbcType=VARCHAR}, 
+		#{isSMS,jdbcType=VARCHAR}, #{theNumber,jdbcType=NUMERIC}, #{packageNum,jdbcType=NUMERIC}, 
+		#{unitPrice,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{surplusSUm,jdbcType=NUMERIC},
+		#{productName,jdbcType=NUMERIC},#{AgentType,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, 
+		#{approvalCode,jdbcType=VARCHAR}, #{medicineClassify,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},
+		#{invalid,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsBigContractProduct">
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmXsBigContractProduct">
 		SELECT * FROM SCM_XS_BigContractProduct 
 		WHERE 
 		id=#{id}
 	</select>
-	
-	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmXsBigContractProduct">
+
+    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmXsBigContractProduct">
 		SELECT * FROM SCM_XS_BigContractProduct 
 		WHERE 
 		bigContractId=#{bigContractId}
 	</select>
-	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmXsBigContractProduct">
-		SELECT * FROM SCM_XS_BigContractProduct
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<select id="bigcontractProductList" parameterType="java.util.Map" resultMap="ScmXsBigContractProduct">
-		SELECT * FROM v_bigscmXsBigContractSendApply
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY unitPrice DESC
-		</if>
-	</select>
-	
-	<select id="groupByList" parameterType="java.util.Map" resultMap="ScmXsBigContractProduct">
-		SELECT 
-		   id,productCode,productGauge,MedicineType,commonName,unit,Achange,suppyType,
-           suggestApplyNum,lastShipmentDate,SMSCurrentMonthSales,productCode,isSMS ,theNumber,
-           packageNum,unitPrice,sumPrice,SUM(surplusSUm) AS surplusSUm 
-        FROM scm_xs_bigcontractproduct 
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-		GROUP BY productCode
-	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmXsBigContractProduct">
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmXsBigContractProduct">
+        SELECT * FROM SCM_XS_BigContractProduct
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="bigcontractProductList" parameterType="java.util.Map" resultMap="ScmXsBigContractProduct">
+        SELECT * FROM (
+        SELECT
+        `b`.`id` AS `productId`,`a`.`productName` AS `productName`,`b`.`MedicineType` AS `MedicineType`,`a`.`commonName`
+        AS `commonName`,
+        `a`.`commerceGauge` AS `productGauge`,`a`.`unit` AS `unit`,`a`.`id` AS
+        `agreementproductdetailId`,`a`.`agreementSummaryId` AS `agreementSummaryId`,
+        `a`.`commerceGauge` AS `productState`,`a`.`commerceCode` AS `productCode`,`a`.`purePinPrice` AS
+        `unitPrice`,`a`.`manufacturer` AS `manufacturer`,
+        `a`.`AgentType` AS `AgentType`,`a`.`medicineClassify` AS `medicineClassify`,`a`.`approvalCode` AS
+        `approvalCode`,`a`.`businessScope` AS `businessScope`
+        FROM ((
+        SELECT `a`.`id` AS `id`,`a`.`agreementSummaryId` AS `agreementSummaryId`,`a`.`commerceGauge` AS `commerceGauge`,
+        `a`.`isSign` AS `isSign`,`a`.`effectiveDate` AS `effectiveDate`,`a`.`gaugeType` AS `gaugeType`,`a`.`isBidding`
+        AS `isBidding`,`a`.`isImplement` AS `isImplement`,
+        `a`.`biddingPrice` AS `biddingPrice`,`a`.`supplyPrice` AS `supplyPrice`,`a`.`allotGross` AS
+        `allotGross`,`a`.`acceptGross` AS `acceptGross`,`a`.`purePinGross` AS `purePinGross`,
+        `a`.`wireTransferPrice` AS `wireTransferPrice`,`a`.`acceptPrice` AS `acceptPrice`,`a`.`supplyPrice` AS
+        `purePinPrice`,`a`.`memo` AS `memo`,`a`.`commerceCode` AS `commerceCode`,
+        `a`.`delivery` AS `delivery`,`a`.`lastIsSign` AS `lastIsSign`,`a`.`lastSupplyPrice` AS
+        `lastSupplyPrice`,`a`.`lastAllotGross` AS `lastAllotGross`,`a`.`lastAcceptGross` AS `lastAcceptGross`,
+        `a`.`lastPurePinGross` AS `lastPurePinGross`,`a`.`commonName` AS `commonName`,`a`.`productName` AS
+        `productName`,`a`.`unit` AS `unit`,`a`.`AgentType` AS `AgentType`,
+        `a`.`manufacturer` AS `manufacturer`,`a`.`approvalCode` AS `approvalCode`,`a`.`medicineClassify` AS
+        `medicineClassify`,`a`.`businessScope` AS `businessScope`,
+        `b`.`approvalState` AS `approvalState`
+        FROM (scm_xs_agreementproductdetail a
+        LEFT JOIN scm_xs_agreementsummary b
+        ON `a`.`agreementSummaryId` = `b`.`id`)
+        WHERE `b`.`approvalState` = '2' AND `a`.`isSign` = '1') `a`
+        LEFT JOIN scm_zsj_product b ON `a`.`commerceCode` = `b`.`productCode`
+        )
+        ) a
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY unitPrice DESC
+        </if>
+    </select>
+
+    <select id="groupByList" parameterType="java.util.Map" resultMap="ScmXsBigContractProduct">
+        SELECT
+        id,productCode,productGauge,MedicineType,commonName,unit,Achange,suppyType,
+        suggestApplyNum,lastShipmentDate,SMSCurrentMonthSales,productCode,isSMS ,theNumber,
+        packageNum,unitPrice,sumPrice,SUM(surplusSUm) AS surplusSUm
+        FROM scm_xs_bigcontractproduct
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+        GROUP BY productCode
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmXsBigContractProduct">
 		UPDATE SCM_XS_BigContractProduct SET
 		bigContractId=#{bigContractId,jdbcType=VARCHAR},
 		productGauge=#{productGauge,jdbcType=VARCHAR},
@@ -120,48 +171,122 @@
 		unitPrice=#{unitPrice,jdbcType=NUMERIC},
 		sumPrice=#{sumPrice,jdbcType=NUMERIC},
 		surplusSUm=#{surplusSUm,jdbcType=NUMERIC},
-		productName=#{productName,jdbcType=VARCHAR}
+		productName=#{productName,jdbcType=VARCHAR},
+		AgentType = #{AgentType,jdbcType=VARCHAR},
+		manufacturer =  #{manufacturer,jdbcType=VARCHAR},
+		 approvalCode = #{approvalCode,jdbcType=VARCHAR},
+		medicineClassify =  #{medicineClassify,jdbcType=VARCHAR},
+		 businessScope = #{businessScope,jdbcType=VARCHAR},
+		invalid =  #{invalid,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_XS_BigContractProduct 
 		WHERE
 		id=#{id}
 	</delete>
-	
-	<delete id="delByMainId">
+
+    <delete id="delByMainId">
 	    DELETE FROM SCM_XS_BigContractProduct
 	    WHERE
 	    bigContractId=#{bigContractId}
-	</delete>    
-	
-	<select id="getScmXsBigContractProductList" resultMap="ScmXsBigContractProduct">
+	</delete>
+
+    <select id="getScmXsBigContractProductList" resultMap="ScmXsBigContractProduct">
 	    SELECT *
 	    FROM SCM_XS_BigContractProduct 
 	    WHERE bigContractId=#{bigContractId}
 	</select>
-	
-	<select id="groupList" parameterType="java.util.Map" resultMap="ScmXsBigContractProduct">
-	    SELECT a.* FROM (
-		SELECT a.approvalState,a.ownerId,a.commerceFirstId,b.id,b.bigContractId,b.productGauge,b.MedicineType,
-		b.commonName,b.unit,b.Achange,b.suppyType,b.suggestApplyNum,b.lastShipmentDate,
-		b.SMSCurrentMonthSales,b.productCode,b.isSMS,b.unitPrice,SUM(b.surplusSUm)AS surplusSUm
-		FROM scm_xs_bigcontract a 
-		LEFT JOIN scm_xs_bigcontractproduct b 
-		ON a.id=b.bigContractId) a 
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-		GROUP BY productCode
-	</select>
+
+    <select id="groupList" parameterType="java.util.Map" resultMap="ScmXsBigContractProduct">
+        SELECT a.* FROM (
+        SELECT a.approvalState,a.ownerId,a.commerceFirstId,b.id,b.bigContractId,b.productGauge,b.MedicineType,
+        b.commonName,b.unit,b.Achange,b.suppyType,b.suggestApplyNum,b.lastShipmentDate,
+        b.SMSCurrentMonthSales,b.productCode,b.isSMS,b.unitPrice,SUM(b.surplusSUm)AS surplusSUm
+        FROM scm_xs_bigcontract a
+        LEFT JOIN scm_xs_bigcontractproduct b
+        ON a.id=b.bigContractId) a
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+        GROUP BY productCode
+    </select>
+    <select id="everyDayContractProductList" resultType="com.winway.scm.model.ScmXsBigContractProduct">
+        SELECT * FROM (
+        SELECT
+        `b`.`id` AS `productId`,`a`.`productName` AS `productName`,`b`.`MedicineType` AS `MedicineType`,`a`.`commonName`
+        AS `commonName`,
+        `a`.`commerceGauge` AS `productGauge`,`a`.`unit` AS `unit`,`a`.`id` AS
+        `agreementproductdetailId`,`a`.`agreementSummaryId` AS `agreementSummaryId`,
+        `a`.`commerceGauge` AS `productState`,`a`.`commerceCode` AS `productCode`,`a`.`purePinPrice` AS
+        `unitPrice`,`a`.`manufacturer` AS `manufacturer`,
+        `a`.`AgentType` AS `AgentType`,`a`.`medicineClassify` AS `medicineClassify`,`a`.`approvalCode` AS
+        `approvalCode`,`a`.`businessScope` AS `businessScope`,
+        c.achage,c.code
+        FROM ((
+        SELECT `a`.`id` AS `id`,`a`.`agreementSummaryId` AS `agreementSummaryId`,`a`.`commerceGauge` AS `commerceGauge`,
+        `a`.`isSign` AS `isSign`,`a`.`effectiveDate` AS `effectiveDate`,`a`.`gaugeType` AS `gaugeType`,`a`.`isBidding`
+        AS `isBidding`,`a`.`isImplement` AS `isImplement`,
+        `a`.`biddingPrice` AS `biddingPrice`,`a`.`supplyPrice` AS `supplyPrice`,`a`.`allotGross` AS
+        `allotGross`,`a`.`acceptGross` AS `acceptGross`,`a`.`purePinGross` AS `purePinGross`,
+        `a`.`wireTransferPrice` AS `wireTransferPrice`,`a`.`acceptPrice` AS `acceptPrice`,`a`.`supplyPrice` AS
+        `purePinPrice`,`a`.`memo` AS `memo`,`a`.`commerceCode` AS `commerceCode`,
+        `a`.`delivery` AS `delivery`,`a`.`lastIsSign` AS `lastIsSign`,`a`.`lastSupplyPrice` AS
+        `lastSupplyPrice`,`a`.`lastAllotGross` AS `lastAllotGross`,`a`.`lastAcceptGross` AS `lastAcceptGross`,
+        `a`.`lastPurePinGross` AS `lastPurePinGross`,`a`.`commonName` AS `commonName`,`a`.`productName` AS
+        `productName`,`a`.`unit` AS `unit`,`a`.`AgentType` AS `AgentType`,
+        `a`.`manufacturer` AS `manufacturer`,`a`.`approvalCode` AS `approvalCode`,`a`.`medicineClassify` AS
+        `medicineClassify`,`a`.`businessScope` AS `businessScope`,
+        `b`.`approvalState` AS `approvalState`
+        FROM (scm_xs_agreementproductdetail a
+        LEFT JOIN scm_xs_agreementsummary b
+        ON `a`.`agreementSummaryId` = `b`.`id`)
+        WHERE `b`.`approvalState` = '2' AND `a`.`isSign` = '1') `a`
+        LEFT JOIN scm_zsj_product b ON `a`.`commerceCode` = `b`.`productCode`
+        LEFT JOIN `scm_zsj_achange` c ON a.commerceCode = c.productCode
+        ) WHERE c.isdelete = 1
+        ) a
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY unitPrice DESC
+        </if>
+    </select>
+    
+    <select id="getScmXsBigcontractPrintDetail" parameterType="java.lang.String" resultType="Map">
+	    SELECT concat(IFNULL(SUM(packageNum),0),'') AS sumpackageNum,
+		       concat(IFNULL(SUM(theNumber),0),'') AS sumtheNumber,
+		       concat(IFNULL(SUM(sumPrice),0),'') AS sumsumPrice
+		  FROM scm_xs_bigcontractproduct 
+		 WHERE bigContractId = #{id}
+    </select>
+    <select id="getDetail" parameterType="java.lang.String" resultType="Map">
+	    SELECT commonName,
+				productName,
+				productGauge,
+				unit,
+				concat(IFNULL(packageNum,0),'') as packageNum,
+				concat(IFNULL(theNumber,0),'') as theNumber,
+				concat(IFNULL(unitPrice,0),'') as unitPrice,
+				concat(IFNULL(sumPrice,0),'') as sumPrice,
+				Achange 
+			FROM scm_xs_bigcontractproduct
+		 WHERE bigContractId = #{id}
+    </select>
 </mapper>

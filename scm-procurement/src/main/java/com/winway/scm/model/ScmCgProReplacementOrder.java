@@ -1,5 +1,6 @@
 package com.winway.scm.model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
@@ -54,9 +55,13 @@ public class ScmCgProReplacementOrder extends BaseModel<String>{
 	protected java.util.Date orderDate; 
 	
 	@ApiModelProperty(value="是否推送至WMS")
-	protected char isToWMS; 
-	
-	@ApiModelProperty(value="审批ID")
+	protected char isToWMS;
+
+     @ApiModelProperty(value = "sap是否处理(0:未处理,1:已处理)")
+     protected char isManageSap;
+
+
+     @ApiModelProperty(value="审批ID")
 	protected String approvalId; 
 	
 	@ApiModelProperty(value="审批状态")
@@ -74,6 +79,89 @@ public class ScmCgProReplacementOrder extends BaseModel<String>{
 	@ApiModelProperty(value="合同编号")
 	protected String contractCode; 
 	
+	@ApiModelProperty(value="供应商名称")
+	protected String supplier; 
+	
+	@ApiModelProperty(value="收票方")
+	protected String getTicket; 
+	
+	@ApiModelProperty(value="收货仓库")
+	protected String getMoneyWarehouse;
+
+	@ApiModelProperty(value = "到货日期")
+	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	protected java.util.Date deliveryDate;
+
+	@ApiModelProperty(value = "WMS确认状态(0:未确认,1:已确认)")
+	protected String isAffirmWms;
+
+	 @ApiModelProperty(value="收货仓库编号")
+	 protected String warehouseCode;
+
+
+	@ApiModelProperty(value = "备注")
+	protected String memo;
+
+	public String getMemo() {
+		return memo;
+	}
+
+	 public String getWarehouseCode() {
+		 return warehouseCode;
+	 }
+
+	 public void setWarehouseCode(String warehouseCode) {
+		 this.warehouseCode = warehouseCode;
+	 }
+
+
+	public char getIsManageSap() {
+		return isManageSap;
+	}
+
+	public void setIsManageSap(char isManageSap) {
+		this.isManageSap = isManageSap;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	 public Date getDeliveryDate() {
+		 return deliveryDate;
+	 }
+
+	 public void setDeliveryDate(Date deliveryDate) {
+		 this.deliveryDate = deliveryDate;
+	 }
+
+	 public String getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+
+	public String getGetTicket() {
+		return getTicket;
+	}
+
+	public void setGetTicket(String getTicket) {
+		this.getTicket = getTicket;
+	}
+
+	public String getGetMoneyWarehouse() {
+		return getMoneyWarehouse;
+	}
+
+	public void setGetMoneyWarehouse(String getMoneyWarehouse) {
+		this.getMoneyWarehouse = getMoneyWarehouse;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	/**
 	*采购补单商品表列表
 	*/
@@ -282,27 +370,34 @@ public class ScmCgProReplacementOrder extends BaseModel<String>{
 	public List<ScmCgProRepProduct> getScmCgProRepProductList() {
 		return this.scmCgProRepProductList;
 	}
+	
+	public void setIsAffirmWms(String isAffirmWms) {
+		this.isAffirmWms = isAffirmWms;
+	}
+	
+	/**
+	 * 返回 WMS确认状态(0:未确认,1:已确认)
+	 * @return
+	 */
+	public String getIsAffirmWms() {
+		return isAffirmWms;
+	}
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
-		return new ToStringBuilder(this)
-		.append("id", this.id) 
-		.append("contractId", this.contractId) 
-		.append("orderId", this.orderId) 
-		.append("ReplacementOrderCode", this.ReplacementOrderCode) 
-		.append("speciesSum", this.speciesSum) 
-		.append("productSum", this.productSum) 
-		.append("sumPrice", this.sumPrice) 
-		.append("currency", this.currency) 
-		.append("orderDate", this.orderDate) 
-		.append("isToWMS", this.isToWMS) 
-		.append("approvalId", this.approvalId) 
-		.append("approvalState", this.approvalState) 
-		.append("ownerId", this.ownerId) 
-		.append("operatorId", this.operatorId) 
-		.append("operatorName", this.operatorName) 
-		.append("contractCode", this.contractCode) 
-		.toString();
+		return "ScmCgProReplacementOrder [id=" + id + ", contractId=" + contractId + ", orderId=" + orderId
+				+ ", ReplacementOrderCode=" + ReplacementOrderCode + ", speciesSum=" + speciesSum + ", productSum="
+				+ productSum + ", sumPrice=" + sumPrice + ", currency=" + currency + ", orderDate=" + orderDate
+				+ ", isToWMS=" + isToWMS + ", approvalId=" + approvalId + ", approvalState=" + approvalState
+				+ ", ownerId=" + ownerId + ", operatorId=" + operatorId + ", operatorName=" + operatorName
+				+ ", contractCode=" + contractCode + ", supplier=" + supplier + ", getTicket=" + getTicket
+				+ ", getMoneyWarehouse=" + getMoneyWarehouse + ", deliveryDate=" + deliveryDate + ", isAffirmWms="
+				+ isAffirmWms + ", memo=" + memo + ", scmCgProRepProductList=" + scmCgProRepProductList + "]";
 	}
+	
+	
+	
 }

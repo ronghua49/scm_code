@@ -36,11 +36,25 @@ public interface ScmZsjCommerceDao extends MyBatisDao<String, ScmZsjCommerce> {
 
 	List<ScmZsjCommerce> listCommerceAcceptTS(Map<String, Object> params);
 
-	List<ScmZsjCommerce> downBoxApplySuccess(String ownerId);
+	List<ScmZsjCommerce> downBoxApplySuccess(@Param(value = "ownerId") String ownerId,@Param(value = "businessDivisionId") String businessDivisionId);
 
 	List<ScmZsjCommerce> agreementSendApplySuccessList(Map<String, Object> params);
 
 	List<String>  getCommerceName();
 	
 	List<ScmZsjCommerce> findByOwnerId(String ownerId);
+
+	List<ScmZsjCommerce> getByMainId(String id);
+
+	ScmZsjCommerce getByApprovalId(String approvalId);
+
+	List<ScmZsjCommerce> acceptCommerceList(String ownerId, String businessDivisionId, String provinceId);
+
+	ScmZsjCommerce getcommerceByCode(String commerceCode);
+
+	String getCommerceCode();
+
+	ScmZsjCommerce getcommerceFirstByCode(String commerceCode, String ownerId);
+
+    ScmZsjCommerce getcommerceByName(@Param(value = "commerceName") String commerceName);
 }

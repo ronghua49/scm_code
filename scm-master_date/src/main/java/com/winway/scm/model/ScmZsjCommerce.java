@@ -1,4 +1,5 @@
 package com.winway.scm.model;
+
 import java.util.Date;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -9,10 +10,11 @@ import com.hotent.base.model.BaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-
- /**
+/**
  * 商业表
- * <pre> 
+ * 
+ * <pre>
+ *  
  * 描述：商业表 实体对象
  * 构建组：x7
  * 作者:原浩
@@ -21,164 +23,314 @@ import io.swagger.annotations.ApiModelProperty;
  * 版权：美达开发小组
  * </pre>
  */
- @ApiModel(value = "ScmZsjCommerce",description = "商业表") 
-public class ScmZsjCommerce extends BaseModel<String>{
+@ApiModel(value = "ScmZsjCommerce", description = "商业表")
+public class ScmZsjCommerce extends BaseModel<String> {
 
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value="id")
-	protected String id; 
-	
-	@ApiModelProperty(value="商业名称")
-	protected String commerceName; 
-	
-	@ApiModelProperty(value="档案编号")
-	protected String fileCode; 
-	
-	@ApiModelProperty(value="企业类别(0药品经营企业,1医疗机构)")
-	protected String commerceState; 
-	
-	@ApiModelProperty(value="客户编号")
-	protected String commerceCode; 
-	
-	@ApiModelProperty(value="企业负责人")
-	protected String conpanyPersion; 
-	
-	@ApiModelProperty(value="联系人")
-	protected String contactPersion; 
-	
-	@ApiModelProperty(value="联系方式")
-	protected String phone; 
-	
-	@ApiModelProperty(value="开户行")
-	protected String openBank; 
-	
-	@ApiModelProperty(value="银行账号")
-	protected String bankCode; 
-	
-	@ApiModelProperty(value="税号")
-	protected String dutyParagraph; 
-	
-	@ApiModelProperty(value="商务分区ID")
-	protected String businessDivisionId; 
-	
-	@ApiModelProperty(value="商务分区")
-	protected String businessDivision; 
-	
-	@ApiModelProperty(value="省区ID")
-	protected String provinceId; 
-	
-	@ApiModelProperty(value="省区")
-	protected String province; 
-	
-	@ApiModelProperty(value="药品质量保证协议有效期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected Date qualityValidity; 
-	
-	@ApiModelProperty(value="注册地址")
-	protected String registerAddress; 
-	
-	@ApiModelProperty(value="印章样式")
-	protected String sealStyle; 
-	
-	@ApiModelProperty(value="随货单据样式")
-	protected String billsStyle; 
-	
-	@ApiModelProperty(value="录入人")
-	protected String enterPersion; 
-	
-	@ApiModelProperty(value="录入日期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected Date enterDate; 
-	
-	@ApiModelProperty(value="商业级别")
-	protected String commerceLevel; 
-	
-	@ApiModelProperty(value="职能类型")
+
+	@ApiModelProperty(value = "id")
+	protected String id;
+
+	@ApiModelProperty(value = "商业名称")
+	protected String commerceName;
+
+	@ApiModelProperty(value = "档案编号")
+	protected String fileCode;
+
+	@ApiModelProperty(value = "企业类别(0药品经营企业,1医疗机构)")
+	protected String commerceState;
+
+	@ApiModelProperty(value = "客户编号")
+	protected String commerceCode;
+
+	@ApiModelProperty(value = "企业负责人")
+	protected String conpanyPersion;
+
+	@ApiModelProperty(value = "联系人")
+	protected String contactPersion;
+
+	@ApiModelProperty(value = "联系方式")
+	protected String phone;
+
+	@ApiModelProperty(value = "开户行")
+	protected String openBank;
+
+	@ApiModelProperty(value = "银行账号")
+	protected String bankCode;
+
+	@ApiModelProperty(value = "税号")
+	protected String dutyParagraph;
+
+	@ApiModelProperty(value = "商务分区ID")
+	protected String businessDivisionId;
+
+	@ApiModelProperty(value = "商务分区")
+	protected String businessDivision;
+
+	@ApiModelProperty(value = "省区ID")
+	protected String provinceId;
+
+	@ApiModelProperty(value = "省区")
+	protected String province;
+
+	@ApiModelProperty(value = "药品质量保证协议有效期")
+	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	protected Date qualityValidity;
+
+	@ApiModelProperty(value = "注册地址")
+	protected String registerAddress;
+
+	@ApiModelProperty(value = "印章样式")
+	protected String sealStyle;
+
+	@ApiModelProperty(value = "随货单据样式")
+	protected String billsStyle;
+
+	@ApiModelProperty(value = "录入人")
+	protected String enterPersion;
+
+	@ApiModelProperty(value = "录入日期")
+	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	protected Date enterDate;
+
+	@ApiModelProperty(value = "商业级别")
+	protected String commerceLevel;
+
+	@ApiModelProperty(value = "职能类型")
 	protected String functionType;
-	
-	@ApiModelProperty(value="认可状态字符串")
+
+	@ApiModelProperty(value = "认可状态字符串")
 	protected String acceptStateStr;
-	
-	@ApiModelProperty(value="认可状态")
+
+	@ApiModelProperty(value = "认可状态")
 	protected String acceptState;
-	
-	@ApiModelProperty(value="企业类型字符串")
+
+	@ApiModelProperty(value = "企业类型字符串")
 	protected String commerceStateStr;
-	
-	@ApiModelProperty(value="法定代表人")
+
+	@ApiModelProperty(value = "法定代表人")
 	protected String legalPersion;
-	
-	@ApiModelProperty(value="许可证号")
+
+	@ApiModelProperty(value = "许可证号")
 	protected String licenseKey;
-	
-	@ApiModelProperty(value="有效期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+
+	@ApiModelProperty(value = "有效期")
+	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	protected Date validity;
-	
-	@ApiModelProperty(value="注册号")
+
+	@ApiModelProperty(value = "注册号")
 	protected String register;
-	
-	@ApiModelProperty(value="营业执照有效期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+
+	@ApiModelProperty(value = "营业执照有效期")
+	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	protected Date licenseValidity;
-	
-	@ApiModelProperty(value="注册资本(万元)")
+
+	@ApiModelProperty(value = "注册资本(万元)")
 	protected String registerPrice;
-	
-	@ApiModelProperty(value="生产/经营范围")
+
+	@ApiModelProperty(value = "生产/经营范围")
 	protected String managementScope;
-	
-	@ApiModelProperty(value="商业名带首营状态")
+
+	@ApiModelProperty(value = "商业名带首营状态")
 	protected String commerceNameStr;
-	
-	@ApiModelProperty(value="认可状态ID")
+
+	@ApiModelProperty(value = "认可状态ID")
 	protected String acceptStateId;
-	
-	@ApiModelProperty(value="认可时间")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+
+	@ApiModelProperty(value = "认可时间")
+	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	protected String effectiveDate;
-	
-	@ApiModelProperty(value="备注")
+
+	@ApiModelProperty(value = "备注")
 	protected String memo;
-	
-	@ApiModelProperty(value="责任人")
+
+	@ApiModelProperty(value = "责任人")
 	protected String dutyOfficer;
-	
-	@ApiModelProperty(value="认可状态总表ID")
+
+	@ApiModelProperty(value = "认可状态总表ID")
 	protected String acceptId;
-	
-	@ApiModelProperty(value="审批ID")
+
+	@ApiModelProperty(value = "审批ID")
 	protected String approvalId;
-	
-	@ApiModelProperty(value="审批状态")
+
+	@ApiModelProperty(value = "审批状态")
 	protected String approvalState;
-	
-	@ApiModelProperty(value="审批状态")
+
+	@ApiModelProperty(value = "审批状态")
 	protected String approvalStateStr;
-	
-	@ApiModelProperty(value="货主ID")
+
+	@ApiModelProperty(value = "货主ID")
 	protected String ownerId;
-	
-	@ApiModelProperty(value="操作人名称")
+
+	@ApiModelProperty(value = "操作人名称")
 	protected String operatorName;
-	
-	@ApiModelProperty(value="操作人名称")
+
+	@ApiModelProperty(value = "操作人名称")
 	protected String commerceFirstId;
-	
-	@ApiModelProperty(value="申请时间")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected Date operatorDate; 
-	
-	@ApiModelProperty(value="选择类型")
+
+	@ApiModelProperty(value = "申请时间")
+	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	protected Date operatorDate;
+
+	@ApiModelProperty(value = "选择类型")
 	protected String type;
-	
-	@ApiModelProperty(value="商业id")
+
+	@ApiModelProperty(value = "商业id")
 	protected String commerceId;
-	
-	@ApiModelProperty(value="v_实际类型")
+
+	@ApiModelProperty(value = "v_实际类型")
 	protected String actualLevel;
-	
+
+	@ApiModelProperty(value = "星级")
+	protected String starLevel;
+
+	@ApiModelProperty(value = "星级")
+	protected String newDutyOfficer;
+
+	@ApiModelProperty(value = "许可证状态")
+	protected String licenceState;
+
+	@ApiModelProperty(value = "营业执照状态")
+	protected String businessLicenceState;
+
+	@ApiModelProperty(value = "企业类型")
+	protected String commerceType;
+
+	@ApiModelProperty(value = "gsp编号")
+	protected String gsp;
+
+	@ApiModelProperty(value = "委托书编号")
+	protected String entrustCode;
+
+	@ApiModelProperty(value = "委托书姓名")
+	protected String entrustName;
+
+	@ApiModelProperty(value="是否推送至主数据中心(0:否,1:是)")
+	private String isToMasterData;
+
+
+	//资信字段
+
+	@ApiModelProperty(value="前年月均销售额(万)")
+	protected Integer beforeYearPrice;
+
+	@ApiModelProperty(value="去年月均销售额(万)")
+	protected Integer lastYearPrice;
+
+	@ApiModelProperty(value="上次批准资信额(万)")
+	protected Integer lastTimePrice;
+
+	@ApiModelProperty(value="系统预测资信额(万)")
+	protected Integer sysPrice;
+
+	public Integer getBeforeYearPrice() {
+		return beforeYearPrice;
+	}
+
+	public void setBeforeYearPrice(Integer beforeYearPrice) {
+		this.beforeYearPrice = beforeYearPrice;
+	}
+
+	public Integer getLastYearPrice() {
+		return lastYearPrice;
+	}
+
+	public void setLastYearPrice(Integer lastYearPrice) {
+		this.lastYearPrice = lastYearPrice;
+	}
+
+	public Integer getLastTimePrice() {
+		return lastTimePrice;
+	}
+
+	public void setLastTimePrice(Integer lastTimePrice) {
+		this.lastTimePrice = lastTimePrice;
+	}
+
+	public Integer getSysPrice() {
+		return sysPrice;
+	}
+
+	public void setSysPrice(Integer sysPrice) {
+		this.sysPrice = sysPrice;
+	}
+
+	public String getIsToMasterData() {
+		return isToMasterData;
+	}
+
+	public void setIsToMasterData(String isToMasterData) {
+		this.isToMasterData = isToMasterData;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getEntrustCode() {
+		return entrustCode;
+	}
+
+	public void setEntrustCode(String entrustCode) {
+		this.entrustCode = entrustCode;
+	}
+
+	public String getEntrustName() {
+		return entrustName;
+	}
+
+	public void setEntrustName(String entrustName) {
+		this.entrustName = entrustName;
+	}
+
+	public String getGsp() {
+		return gsp;
+	}
+
+	public void setGsp(String gsp) {
+		this.gsp = gsp;
+	}
+
+	public String getLicenceState() {
+		return licenceState;
+	}
+
+	public void setLicenceState(String licenceState) {
+		this.licenceState = licenceState;
+	}
+
+	public String getBusinessLicenceState() {
+		return businessLicenceState;
+	}
+
+	public void setBusinessLicenceState(String businessLicenceState) {
+		this.businessLicenceState = businessLicenceState;
+	}
+
+	public String getCommerceType() {
+		return commerceType;
+	}
+
+	public void setCommerceType(String commerceType) {
+		this.commerceType = commerceType;
+	}
+
+	public String getNewDutyOfficer() {
+		return newDutyOfficer;
+	}
+
+	public void setNewDutyOfficer(String newDutyOfficer) {
+		this.newDutyOfficer = newDutyOfficer;
+	}
+
+	public String getStarLevel() {
+		return starLevel;
+	}
+
+	public void setStarLevel(String starLevel) {
+		this.starLevel = starLevel;
+	}
+
 	public String getDutyOfficer() {
 		return dutyOfficer;
 	}
@@ -198,7 +350,7 @@ public class ScmZsjCommerce extends BaseModel<String>{
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getActualLevel() {
 		return actualLevel;
 	}
@@ -209,12 +361,13 @@ public class ScmZsjCommerce extends BaseModel<String>{
 
 	/**
 	 * 返回 id
+	 * 
 	 * @return
 	 */
 	public String getId() {
 		return this.id;
 	}
-	
+
 	public String getApprovalStateStr() {
 		return approvalStateStr;
 	}
@@ -242,7 +395,7 @@ public class ScmZsjCommerce extends BaseModel<String>{
 	public void setCommerceName(String commerceName) {
 		this.commerceName = commerceName;
 	}
-	
+
 	public String getCommerceNameStr() {
 		return commerceNameStr;
 	}
@@ -253,16 +406,17 @@ public class ScmZsjCommerce extends BaseModel<String>{
 
 	/**
 	 * 返回 商业名称
+	 * 
 	 * @return
 	 */
 	public String getCommerceName() {
 		return this.commerceName;
 	}
-	
+
 	public void setFileCode(String fileCode) {
 		this.fileCode = fileCode;
 	}
-	
+
 	public String getAcceptStateId() {
 		return acceptStateId;
 	}
@@ -329,40 +483,43 @@ public class ScmZsjCommerce extends BaseModel<String>{
 
 	/**
 	 * 返回 档案编号
+	 * 
 	 * @return
 	 */
 	public String getFileCode() {
 		return this.fileCode;
 	}
-	
+
 	public void setCommerceState(String commerceState) {
 		this.commerceState = commerceState;
 	}
-	
+
 	/**
 	 * 返回 企业类别(0药品经营企业,医疗机构)
+	 * 
 	 * @return
 	 */
 	public String getCommerceState() {
 		return this.commerceState;
 	}
-	
+
 	public void setCommerceCode(String commerceCode) {
 		this.commerceCode = commerceCode;
 	}
-	
+
 	/**
 	 * 返回 客户编号
+	 * 
 	 * @return
 	 */
 	public String getCommerceCode() {
 		return this.commerceCode;
 	}
-	
+
 	public void setConpanyPersion(String conpanyPersion) {
 		this.conpanyPersion = conpanyPersion;
 	}
-	
+
 	public String getAcceptStateStr() {
 		return acceptStateStr;
 	}
@@ -445,194 +602,211 @@ public class ScmZsjCommerce extends BaseModel<String>{
 
 	/**
 	 * 返回 企业负责人
+	 * 
 	 * @return
 	 */
 	public String getConpanyPersion() {
 		return this.conpanyPersion;
 	}
-	
+
 	public void setContactPersion(String contactPersion) {
 		this.contactPersion = contactPersion;
 	}
-	
+
 	/**
 	 * 返回 联系人
+	 * 
 	 * @return
 	 */
 	public String getContactPersion() {
 		return this.contactPersion;
 	}
-	
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	/**
 	 * 返回 联系方式
+	 * 
 	 * @return
 	 */
 	public String getPhone() {
 		return this.phone;
 	}
-	
+
 	public void setOpenBank(String openBank) {
 		this.openBank = openBank;
 	}
-	
+
 	/**
 	 * 返回 开户行
+	 * 
 	 * @return
 	 */
 	public String getOpenBank() {
 		return this.openBank;
 	}
-	
+
 	public void setBankCode(String bankCode) {
 		this.bankCode = bankCode;
 	}
-	
+
 	/**
 	 * 返回 银行账号
+	 * 
 	 * @return
 	 */
 	public String getBankCode() {
 		return this.bankCode;
 	}
-	
+
 	public void setDutyParagraph(String dutyParagraph) {
 		this.dutyParagraph = dutyParagraph;
 	}
-	
+
 	/**
 	 * 返回 税号
+	 * 
 	 * @return
 	 */
 	public String getDutyParagraph() {
 		return this.dutyParagraph;
 	}
-	
+
 	public void setBusinessDivisionId(String businessDivisionId) {
 		this.businessDivisionId = businessDivisionId;
 	}
-	
+
 	/**
 	 * 返回 商务分区ID
+	 * 
 	 * @return
 	 */
 	public String getBusinessDivisionId() {
 		return this.businessDivisionId;
 	}
-	
+
 	public void setBusinessDivision(String businessDivision) {
 		this.businessDivision = businessDivision;
 	}
-	
+
 	/**
 	 * 返回 商务分区
+	 * 
 	 * @return
 	 */
 	public String getBusinessDivision() {
 		return this.businessDivision;
 	}
-	
+
 	public void setProvinceId(String provinceId) {
 		this.provinceId = provinceId;
 	}
-	
+
 	/**
 	 * 返回 省区ID
+	 * 
 	 * @return
 	 */
 	public String getProvinceId() {
 		return this.provinceId;
 	}
-	
+
 	public void setProvince(String province) {
 		this.province = province;
 	}
-	
+
 	/**
 	 * 返回 省区
+	 * 
 	 * @return
 	 */
 	public String getProvince() {
 		return this.province;
 	}
-	
+
 	public void setQualityValidity(java.util.Date qualityValidity) {
 		this.qualityValidity = qualityValidity;
 	}
-	
+
 	/**
 	 * 返回 药品质量保证协议有效期
+	 * 
 	 * @return
 	 */
 	public java.util.Date getQualityValidity() {
 		return this.qualityValidity;
 	}
-	
+
 	public void setRegisterAddress(String registerAddress) {
 		this.registerAddress = registerAddress;
 	}
-	
+
 	/**
 	 * 返回 注册地址
+	 * 
 	 * @return
 	 */
 	public String getRegisterAddress() {
 		return this.registerAddress;
 	}
-	
+
 	public void setSealStyle(String sealStyle) {
 		this.sealStyle = sealStyle;
 	}
-	
+
 	/**
 	 * 返回 印章样式
+	 * 
 	 * @return
 	 */
 	public String getSealStyle() {
 		return this.sealStyle;
 	}
-	
+
 	public void setBillsStyle(String billsStyle) {
 		this.billsStyle = billsStyle;
 	}
-	
+
 	/**
 	 * 返回 随货单据样式
+	 * 
 	 * @return
 	 */
 	public String getBillsStyle() {
 		return this.billsStyle;
 	}
-	
+
 	public void setEnterPersion(String enterPersion) {
 		this.enterPersion = enterPersion;
 	}
-	
+
 	/**
 	 * 返回 录入人
+	 * 
 	 * @return
 	 */
 	public String getEnterPersion() {
 		return this.enterPersion;
 	}
-	
+
 	public void setEnterDate(java.util.Date enterDate) {
 		this.enterDate = enterDate;
 	}
-	
+
 	/**
 	 * 返回 录入日期
+	 * 
 	 * @return
 	 */
 	public java.util.Date getEnterDate() {
 		return this.enterDate;
 	}
-	
+
 	/**
 	 * 返回商业级别
+	 * 
 	 * @return
 	 */
 	public String getCommerceLevel() {
@@ -645,6 +819,7 @@ public class ScmZsjCommerce extends BaseModel<String>{
 
 	/**
 	 * 返回职能类型
+	 * 
 	 * @return
 	 */
 	public String getFunctionType() {
@@ -667,28 +842,16 @@ public class ScmZsjCommerce extends BaseModel<String>{
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this)
-		.append("id", this.id) 
-		.append("commerceName", this.commerceName) 
-		.append("fileCode", this.fileCode) 
-		.append("commerceState", this.commerceState) 
-		.append("commerceCode", this.commerceCode) 
-		.append("conpanyPersion", this.conpanyPersion) 
-		.append("contactPersion", this.contactPersion) 
-		.append("phone", this.phone) 
-		.append("openBank", this.openBank) 
-		.append("bankCode", this.bankCode) 
-		.append("dutyParagraph", this.dutyParagraph) 
-		.append("businessDivisionId", this.businessDivisionId) 
-		.append("businessDivision", this.businessDivision) 
-		.append("provinceId", this.provinceId) 
-		.append("province", this.province) 
-		.append("qualityValidity", this.qualityValidity) 
-		.append("registerAddress", this.registerAddress) 
-		.append("sealStyle", this.sealStyle) 
-		.append("billsStyle", this.billsStyle) 
-		.append("enterPersion", this.enterPersion) 
-		.append("enterDate", this.enterDate) 
-		.toString();
+		return new ToStringBuilder(this).append("id", this.id).append("commerceName", this.commerceName)
+				.append("fileCode", this.fileCode).append("commerceState", this.commerceState)
+				.append("commerceCode", this.commerceCode).append("conpanyPersion", this.conpanyPersion)
+				.append("contactPersion", this.contactPersion).append("phone", this.phone)
+				.append("openBank", this.openBank).append("bankCode", this.bankCode)
+				.append("dutyParagraph", this.dutyParagraph).append("businessDivisionId", this.businessDivisionId)
+				.append("businessDivision", this.businessDivision).append("provinceId", this.provinceId)
+				.append("province", this.province).append("qualityValidity", this.qualityValidity)
+				.append("registerAddress", this.registerAddress).append("sealStyle", this.sealStyle)
+				.append("billsStyle", this.billsStyle).append("enterPersion", this.enterPersion)
+				.append("enterDate", this.enterDate).toString();
 	}
 }

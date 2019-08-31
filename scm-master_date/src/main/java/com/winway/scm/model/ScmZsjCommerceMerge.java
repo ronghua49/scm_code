@@ -58,10 +58,54 @@ public class ScmZsjCommerceMerge extends BaseModel<String>{
 	protected String operatorName; 
 	
 	@ApiModelProperty(value="操作人ID")
-	protected String operatorId; 
-	
-	
-	public void setId(String id) {
+	protected String operatorId;
+
+	 @ApiModelProperty(value="主商业级别")
+	 protected String hcommerceLevcel;
+
+	 @ApiModelProperty(value="副商业级别")
+	 protected String vcommerceLevel;
+
+
+     @ApiModelProperty(value="主商业认可状态")
+     protected String hacceptState;
+
+     @ApiModelProperty(value="副商业认可状态")
+     protected String vacceptState;
+
+     public String getHacceptState() {
+         return hacceptState;
+     }
+
+     public void setHacceptState(String hacceptState) {
+         this.hacceptState = hacceptState;
+     }
+
+     public String getVacceptState() {
+         return vacceptState;
+     }
+
+     public void setVacceptState(String vacceptState) {
+         this.vacceptState = vacceptState;
+     }
+
+     public String getHcommerceLevcel() {
+		 return hcommerceLevcel;
+	 }
+
+	 public void setHcommerceLevcel(String hcommerceLevcel) {
+		 this.hcommerceLevcel = hcommerceLevcel;
+	 }
+
+	 public String getVcommerceLevel() {
+		 return vcommerceLevel;
+	 }
+
+	 public void setVcommerceLevel(String vcommerceLevel) {
+		 this.vcommerceLevel = vcommerceLevel;
+	 }
+
+	 public void setId(String id) {
 		this.id = id;
 	}
 	

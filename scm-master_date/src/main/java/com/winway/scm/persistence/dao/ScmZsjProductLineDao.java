@@ -14,4 +14,6 @@ import com.winway.scm.model.ScmZsjProductLine;
  * </pre>
  */
 public interface ScmZsjProductLineDao extends MyBatisDao<String, ScmZsjProductLine> {
+
+	String getProductLineCode();
 }

@@ -1,6 +1,7 @@
 package com.winway.scm.persistence.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import com.hotent.base.manager.Manager;
 import com.hotent.base.model.CommonResult;
@@ -25,6 +26,6 @@ public interface ScmXsDistributorClauseManager extends Manager<String, ScmXsDist
 	PageList<ScmXsDistributorClause> firstList(QueryFilter queryFilter);
 	PageList<ScmXsDistributorClause> commerceAndAcceptState(QueryFilter queryFilter);
 	List<ScmXsDistributorClause> getYears(String ownerId);
-	
 
+    List<ScmXsDistributorClause> list1(String businessDivisionId, String commerceName, String acceptState,String provinceId,String commerceCode);
 }

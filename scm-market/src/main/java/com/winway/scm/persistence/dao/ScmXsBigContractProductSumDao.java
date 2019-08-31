@@ -1,9 +1,11 @@
 package com.winway.scm.persistence.dao;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmXsBigContractProductSum;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -24,8 +26,11 @@ public interface ScmXsBigContractProductSumDao extends MyBatisDao<String, ScmXsB
 
 	ScmXsBigContractProductSum getByProductCode(String arg2);
 
-	List<ScmXsBigContractProductSum> listByFhFocusShipmentsSet(String commerceId, String ownerId, String agreementSummaryId, List lendReco);
+	List<ScmXsBigContractProductSum> listByFhFocusShipmentsSet(String commerceId, String ownerId, String agreementSummaryId, Set lendReco, String medicineType);
 
-	List<ScmXsBigContractProductSum> listConProductSumByUpdate(String bigContractAllotId, String agreementSummaryId);
+	List<ScmXsBigContractProductSum> listConProductSumByUpdate(String bigContractAllotId, String agreementSummaryId,String medicineType);
 
+    List<ScmXsBigContractProductSum> getByOwnerIdAndProCodeAndSummaryId(String arg0, String arg1, List<String> arg2);
+
+	List<ScmXsBigContractProductSum> getThisContractProduct(@Param(value = "ownerId") String ownerId, @Param(value = "dealerClauseId")String dealerClauseId, @Param(value = "commerceFirstId")String commerceFirstId, @Param(value = "productCode")String productCode);
 }

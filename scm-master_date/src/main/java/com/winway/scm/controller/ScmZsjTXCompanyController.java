@@ -43,7 +43,7 @@ public class ScmZsjTXCompanyController extends BaseController{
 	
 	/**
 	 * 公司信息列表(分页条件查询)数据
-	 * @param request
+	 * @param
 	 * @return
 	 * @throws Exception 
 	 * PageJson
@@ -129,5 +129,44 @@ public class ScmZsjTXCompanyController extends BaseController{
 	public CommonResult<String> removes(@ApiParam(name="ids",value="业务主键数组,多个业务主键之间用逗号分隔", required = true)@RequestParam String...ids) throws Exception{
 		scmZsjTXCompanyManager.removeByIds(ids);
 		return new CommonResult<String>(true, "批量删除成功");
+	}
+	/**
+	 * 根据货主id获取RB税点
+	 * @param ownerId
+	 * @return
+	 * @throws Exception
+	 * ModelAndView
+	 */
+	@GetMapping(value="/rb/{ownerId:\\d+}")
+	@ApiOperation(value="公司信息数据详情",httpMethod = "GET",notes = "公司信息数据详情")
+	public CommonResult<ScmZsjTXCompany> getRB(@ApiParam(name="ownerId",value="货主id", required = true)@PathVariable String ownerId) throws Exception{
+		ScmZsjTXCompany company = scmZsjTXCompanyManager.getRB(ownerId);
+		return new CommonResult<>(true,"获取rb税点成功",company);
+	}
+	/**
+	 * 根据货主id获取RB税点
+	 * @param ownerId
+	 * @return
+	 * @throws Exception
+	 * ModelAndView
+	 */
+	@GetMapping(value="/getRb/{ownerId}")
+	@ApiOperation(value="公司信息数据详情",httpMethod = "GET",notes = "公司信息数据详情")
+	public CommonResult<String> getFignRB(@ApiParam(name="ownerId",value="货主id", required = true)@PathVariable String ownerId) throws Exception{
+		String rb = scmZsjTXCompanyManager.getFignRB(ownerId);
+		return new CommonResult<String>(true,"获取rb税点成功",rb);
+	}
+	/**
+	 * 根据货主id和RB税点 修改RB税点
+	 * @param ownerId
+	 * @return
+	 * @throws Exception
+	 * ModelAndView
+	 */
+	@PostMapping(value="/updateRB")
+	@ApiOperation(value="rb税点设置",httpMethod = "POST",notes = "rb税点设置")
+	public CommonResult<String> updateRB(@ApiParam(name="scmZsjTXCompany",value="公司信息对象", required = true)@RequestBody ScmZsjTXCompany scmZsjTXCompany ) throws Exception{
+		scmZsjTXCompanyManager.updateRB(scmZsjTXCompany);
+		return new CommonResult<>("修改RB税点成功");
 	}
 }

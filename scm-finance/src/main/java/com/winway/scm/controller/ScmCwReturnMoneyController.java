@@ -1,13 +1,19 @@
 package com.winway.scm.controller;
 
+import com.winway.purchase.util.ExcelExportUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,17 +55,10 @@ public class ScmCwReturnMoneyController extends BaseController{
 	@Resource
 	UCFeignService ucFeignService;
 	
-	@GetMapping("/cc")
-	public void list(String businessKey,String success) throws Exception{
-		System.out.println("---------------------------");
-		System.out.println("businessKey-----"+businessKey);
-		System.out.println("success-----"+success);
-		System.out.println("---------------------------");
-	}
 	
 	/**
 	 * 商业回款表列表(分页条件查询)数据
-	 * @param request
+	 * @param
 	 * @return
 	 * @throws Exception 
 	 * PageJson
@@ -68,7 +67,8 @@ public class ScmCwReturnMoneyController extends BaseController{
 	@PostMapping("/list")
 	@ApiOperation(value="商业回款表数据列表", httpMethod = "POST", notes = "获取商业回款表列表")
 	public PageList<ScmCwReturnMoney> list(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
-		return scmCwReturnMoneyManager.query(queryFilter);
+		 PageList<ScmCwReturnMoney> query = scmCwReturnMoneyManager.query(queryFilter);
+		 return query;
 	}
 	
 	/**
@@ -96,8 +96,10 @@ public class ScmCwReturnMoneyController extends BaseController{
 	public CommonResult<String> save(@ApiParam(name="scmCwReturnMoney",value="商业回款表业务对象", required = true)@RequestBody ScmCwReturnMoney scmCwReturnMoney) throws Exception{
 		String msg = "添加商业回款表成功";
 		if(StringUtil.isEmpty(scmCwReturnMoney.getId())){
+			scmCwReturnMoney.setBalancePrice(scmCwReturnMoney.getPrice());
 			scmCwReturnMoneyManager.create(scmCwReturnMoney);
 		}else{
+			scmCwReturnMoney.setBalancePrice(scmCwReturnMoney.getUpdatePrice());
 			scmCwReturnMoneyManager.update(scmCwReturnMoney);
 			 msg = "更新商业回款表成功";
 		}
@@ -139,7 +141,7 @@ public class ScmCwReturnMoneyController extends BaseController{
 	 * @throws Exception
 	 */
 	@PostMapping("/leadExcel")
-	@ApiOperation(value="导入表格数据", httpMethod = "POST", notes = "导入表格数据")
+//	@ApiOperation(value="导入表格数据", httpMethod = "POST", notes = "导入表格数据")
 	public CommonResult<String> leadExcel(@ApiParam(name="file",value="导入excel文件") MultipartFile file,
 			@ApiParam(name="id",value="货主Id") @RequestParam String id) throws Exception{
 		JsonNode user = ucFeignService.getUser(current(), "");
@@ -149,13 +151,39 @@ public class ScmCwReturnMoneyController extends BaseController{
 		product.setToLeadPersion(fullname);
 		product.setToLeadDate(new Date());
 		product.setOwnerId(id);
-		String result=scmCwReturnMoneyManager.readExcelFile(file,product);  
-		
-		return new CommonResult<String>(result);
+		String s = scmCwReturnMoneyManager.readExcelFile(file, product);
+		return  new CommonResult<>(true,s);
+
 	}
+
+	/**
+	 * 商业回款模板下载ex
+	 * @param
+	 * @param
+	 * @return
+	 * @throws Exception
+	 */
+	@GetMapping("/downloadExcel")
+//	@ApiOperation(value="下载模板", httpMethod = "GET", notes = "下载商业回款模板")
+	public void downloadExcel(HttpServletResponse response) throws Exception {
+		String[] tableName = { "到款日期(格式2018-09-26)", "商业名称", "回款方式", "承兑汇票是否验真伪", "承兑汇票到款日", "是否预付款","回款金额", "备注"};
+		List<List<String>> data = new ArrayList<List<String>>();
+		List<String> br = new ArrayList<>();
+		br.add("2018-09-26");
+		br.add("九州药业有限公司");
+		br.add("电邮");
+		br.add("是");
+		br.add("2018-09-26");
+		br.add("预付款");
+		br.add("15000");
+		br.add("测试");
+		data.add(br);
+		ExcelExportUtil.download(response, "商业回款模板", "商业回款模板", tableName,data);
+	}
+
 	/**
 	 * 确认数据
-	 * @param id 信息主键
+	 * @param
 	 * @return
 	 * @throws Exception
 	 */
@@ -163,17 +191,9 @@ public class ScmCwReturnMoneyController extends BaseController{
 	@ApiOperation(value="确认数据", httpMethod = "POST", notes = "确认数据")
 	public CommonResult<String> affirmData(
 			@ApiParam(name="ids",value="数据主键") @RequestParam String...ids) throws Exception{
-		
 		JsonNode user = ucFeignService.getUser(current(), "");
 		String fullname = user.get("fullname").asText();
-		for (String id : ids) {
-			ScmCwReturnMoney money = scmCwReturnMoneyManager.get(id);
-			money.setToLeadPersion(fullname);
-			money.setToLeadDate(new Date());
-			money.setIsAffirm("1");
-			scmCwReturnMoneyManager.update(money);
-		}
-		
+		scmCwReturnMoneyManager.affirmData(ids,fullname);
 		return new CommonResult<String>(true,"确认成功！");
 	}
 	
@@ -185,19 +205,24 @@ public class ScmCwReturnMoneyController extends BaseController{
 			@ApiParam(name="memo",value="备注")@RequestParam String memo) throws Exception{
 		JsonNode user = ucFeignService.getUser(current(), "");
 		String fullname = user.get("fullname").asText();
-		ScmCwReturnMoney money = scmCwReturnMoneyManager.get(id);
-		if(money.getVerifyType().equals("1") || money.getVerifyType().equals("2")){
-			throw new RuntimeException("该数据已经开始核销，不能再进行调整了！");
-		}
-		if(StringUtils.isEmpty(updatePrice)){
-			throw new RuntimeException("调整金额不能为空，请输入金额！");
-		}
-		money.setMemo(memo);
-		money.setUpdatePrice(Double.valueOf(updatePrice));
-		money.setBalancePrice(Double.valueOf(updatePrice));
-		money.setAffirmPersion(fullname);
-		money.setAffirmDate(new Date());
-		scmCwReturnMoneyManager.update(money);
-		return new CommonResult<String>(true,"确认成功！");
+		scmCwReturnMoneyManager.updatePrice(fullname,id,updatePrice,memo);
+		return new CommonResult<String>(true,"修改成功！");
 	}
+
+	/**
+	 * 商业回款导入汇总列表
+	 * @param
+	 * @return
+	 * @throws Exception
+	 * PageJson
+	 * @exception
+	 */
+	@PostMapping("/sumList")
+//	@ApiOperation(value="商业回款导入汇总", httpMethod = "POST", notes = "商业回款导入汇总")
+	public PageList<Map<String,Object>> sumList(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
+		PageList<Map<String,Object>> query = scmCwReturnMoneyManager.sumList(queryFilter);
+		return query;
+	}
+
+
 }

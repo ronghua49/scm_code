@@ -88,6 +88,21 @@ public class ScmZsjCommerceAccreditController extends BaseController {
         }
         return new CommonResult<String>(msg);
     }
+    /**
+     * 新增商业授权销售品种
+     *
+     * @param scmZsjCommerceAccredit
+     * @return
+     * @throws Exception
+     * @throws
+     */
+    @PostMapping(value = "saveList")
+    @ApiOperation(value = "新增,更新商业授权销售品种数据", httpMethod = "POST", notes = "新增,更新商业授权销售品种数据")
+    public CommonResult<String> saveList(@ApiParam(name = "scmZsjCommerceAccreditList", value = "商业授权销售品种业务对象数组", required = true) @RequestBody ScmZsjCommerceAccredit... scmZsjCommerceAccredit) throws Exception {
+    	String msg = "添加商业授权销售品种成功";
+    	scmZsjCommerceAccreditManager.saveList(scmZsjCommerceAccredit);
+    	return new CommonResult<String>(msg);
+    }
 
     /**
      * 删除商业授权销售品种记录

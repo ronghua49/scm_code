@@ -3,9 +3,11 @@ package com.winway.scm.persistence.manager;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
+import com.winway.scm.model.ScmZsjCommerce;
 import com.winway.scm.model.ScmZsjProduct;
 import com.winway.scm.model.ScmZsjProductFirst;
 
@@ -39,5 +41,22 @@ public interface ScmZsjProductManager extends Manager<String, ScmZsjProduct>{
 	List<String> listAndAchage(String productCode);
 
 	ScmZsjProduct getProductByCode(String productCode);
-	
+
+	List<Map<String, Object>> LineAndProductDownBoxByfirst(String ownerId);
+
+	void sendApply(ScmZsjProduct scmZsjProduct);
+
+	void endApply(JsonNode jsonNode);
+
+	ScmZsjProduct getByApprovalId(String approvalId);
+
+    List<ScmZsjProduct> productAndAchage(QueryFilter queryFilter);
+
+	void updateSyn(String id);
+
+    ScmZsjProduct getProductByName(String productName);
+
+    List<ScmZsjProduct> getProductByCommonName(String commonName);
+
+    List<ScmZsjProduct> getProductByCommonNameAndState(String commonName, String productState);
 }

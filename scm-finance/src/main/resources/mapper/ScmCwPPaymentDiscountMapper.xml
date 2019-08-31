@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwPPaymentDiscountDao">
+	<resultMap id="ScmCwPPaymentDiscount" type="com.winway.scm.model.ScmCwPPaymentDiscount">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="paymentDiscountPrice" column="paymentDiscountPrice" jdbcType="NUMERIC"/>
+		<result property="commerceLevel" column="commerceLevel" jdbcType="VARCHAR"/>
+		<result property="clearForm" column="clearForm" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
+		<result property="invoiceCode" column="invoiceCode" jdbcType="VARCHAR"/>
+		<result property="invoiceMemo" column="invoiceMemo" jdbcType="VARCHAR"/>
+		<result property="paymentType" column="paymentType" jdbcType="VARCHAR"/>
+		<result property="price" column="price" jdbcType="NUMERIC"/>
+		<result property="remittanceDate" column="remittanceDate" jdbcType="TIMESTAMP"/>
+		<result property="affirmDate" column="affirmDate" jdbcType="TIMESTAMP"/>
+		<result property="invoiceDate" column="invoiceDate" jdbcType="TIMESTAMP"/>
+		<result property="updateInvoiceDate" column="updateInvoiceDate" jdbcType="TIMESTAMP"/>
+		<result property="returnMoneyDay" column="returnMoneyDay" jdbcType="NUMERIC"/>
+		<result property="rbRate" column="rbRate" jdbcType="NUMERIC"/>
+		<result property="totalRbRate" column="totalRbRate" jdbcType="NUMERIC"/>
+		<result property="thisCalculationRb" column="thisCalculationRb" jdbcType="NUMERIC"/>
+		<result property="thisShouldSendRb" column="thisShouldSendRb" jdbcType="NUMERIC"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="blendId" column="blendId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwPPaymentDiscount">
+		INSERT INTO Scm_Cw_PPaymentDiscount
+		(id,masterId,commerceId,commerceName,commerceCode,businessDivision,businessDivisionId,province,provinceId,paymentDiscountPrice,commerceLevel,clearForm,productName,contractCode,invoiceCode,invoiceMemo,paymentType,price,remittanceDate,affirmDate,invoiceDate,updateInvoiceDate,returnMoneyDay,rbRate,totalRbRate,thisCalculationRb,thisShouldSendRb,memo,blendId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{paymentDiscountPrice,jdbcType=NUMERIC}, #{commerceLevel,jdbcType=VARCHAR}, #{clearForm,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, #{invoiceCode,jdbcType=VARCHAR}, #{invoiceMemo,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, #{price,jdbcType=NUMERIC}, #{remittanceDate,jdbcType=TIMESTAMP}, #{affirmDate,jdbcType=TIMESTAMP}, #{invoiceDate,jdbcType=TIMESTAMP}, #{updateInvoiceDate,jdbcType=TIMESTAMP}, #{returnMoneyDay,jdbcType=NUMERIC}, #{rbRate,jdbcType=NUMERIC}, #{totalRbRate,jdbcType=NUMERIC}, #{thisCalculationRb,jdbcType=NUMERIC}, #{thisShouldSendRb,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{blendId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwPPaymentDiscount">
+		SELECT * FROM Scm_Cw_PPaymentDiscount 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwPPaymentDiscount">
+		SELECT * FROM Scm_Cw_PPaymentDiscount
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwPPaymentDiscount">
+		UPDATE Scm_Cw_PPaymentDiscount SET
+		masterId=#{masterId,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		paymentDiscountPrice=#{paymentDiscountPrice,jdbcType=NUMERIC},
+		commerceLevel=#{commerceLevel,jdbcType=VARCHAR},
+		clearForm=#{clearForm,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		contractCode=#{contractCode,jdbcType=VARCHAR},
+		invoiceCode=#{invoiceCode,jdbcType=VARCHAR},
+		invoiceMemo=#{invoiceMemo,jdbcType=VARCHAR},
+		paymentType=#{paymentType,jdbcType=VARCHAR},
+		price=#{price,jdbcType=NUMERIC},
+		remittanceDate=#{remittanceDate,jdbcType=TIMESTAMP},
+		affirmDate=#{affirmDate,jdbcType=TIMESTAMP},
+		invoiceDate=#{invoiceDate,jdbcType=TIMESTAMP},
+		updateInvoiceDate=#{updateInvoiceDate,jdbcType=TIMESTAMP},
+		returnMoneyDay=#{returnMoneyDay,jdbcType=NUMERIC},
+		rbRate=#{rbRate,jdbcType=NUMERIC},
+		totalRbRate=#{totalRbRate,jdbcType=NUMERIC},
+		thisCalculationRb=#{thisCalculationRb,jdbcType=NUMERIC},
+		thisShouldSendRb=#{thisShouldSendRb,jdbcType=NUMERIC},
+		memo=#{memo,jdbcType=VARCHAR},
+		blendId=#{blendId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Cw_PPaymentDiscount 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM Scm_Cw_PPaymentDiscount
+	    WHERE
+	    masterId=#{masterId}
+	</delete>    
+	
+	<select id="getByMainId" resultMap="ScmCwPPaymentDiscount">
+	    SELECT *
+	    FROM Scm_Cw_PPaymentDiscount 
+	    WHERE masterId=#{masterId}
+	</select>
+	
+</mapper>

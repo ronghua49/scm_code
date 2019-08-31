@@ -145,6 +145,23 @@ public class ScmXsBigContractProductController extends BaseController{
 	public PageList<ScmXsBigContractProduct> bigcontractProductList(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
 		return scmXsBigContractProductManager.bigcontractProductList(queryFilter);
 	}
+
+
+	/**
+	 * 日常合同同申请页获取药品信息
+	 * @param
+	 * @return
+	 * @throws Exception
+	 * PageJson
+	 * @exception
+	 */
+	@PostMapping("/everyDayContractProductList")
+	@ApiOperation(value="日常同申请页获取药品信息", httpMethod = "POST", notes = "日常同申请页获取药品信息,query必须添加协议总表id（agreementSummaryId，commerceFirstId）进行筛选")
+	public PageList<ScmXsBigContractProduct> everyDayContractProductList(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
+		return scmXsBigContractProductManager.everyDayContractProductList(queryFilter);
+	}
+
+
 	/**
 	 *  大合同分配 / 大合同商品表统计列表,提供给分配使用,按照供应商ID分组
 	 * @param request

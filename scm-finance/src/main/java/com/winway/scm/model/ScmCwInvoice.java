@@ -5,6 +5,8 @@ import java.util.Date;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hotent.base.model.BaseModel;
 
 
@@ -51,13 +53,15 @@ public class ScmCwInvoice extends BaseModel<String>{
 	@ApiModelProperty(value="省区id")
 	protected String provinceId; 
 	
-	@ApiModelProperty(value="发票类型(0:原始发票)")
+	@ApiModelProperty(value="发票类型(0:原始发票1:剩余发票)")
 	protected String invoiceType; 
 	
 	@ApiModelProperty(value="开票日期")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date invoiceDate; 
 	
 	@ApiModelProperty(value="调整后开票日期")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date updateInvoiceDate; 
 	
 	@ApiModelProperty(value="发票号码")
@@ -79,6 +83,7 @@ public class ScmCwInvoice extends BaseModel<String>{
 	protected Double priceTaxSum; 
 	
 	@ApiModelProperty(value="发货日期")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date shipmentDate; 
 	
 	@ApiModelProperty(value="发货单号")
@@ -87,7 +92,7 @@ public class ScmCwInvoice extends BaseModel<String>{
 	@ApiModelProperty(value="合同号")
 	protected String contractCode; 
 	
-	@ApiModelProperty(value="汇款方式")
+	@ApiModelProperty(value="回款方式")
 	protected String remittanceType; 
 	
 	@ApiModelProperty(value="备注")
@@ -97,30 +102,191 @@ public class ScmCwInvoice extends BaseModel<String>{
 	protected String gatherPersion; 
 	
 	@ApiModelProperty(value="采集时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date gathererDate; 
 	
 	@ApiModelProperty(value="调整人")
-	protected String setUpPersion; 
-	
-	@ApiModelProperty(value="调整时间")
+	protected String setUpPersion;
+
+	 @ApiModelProperty(value="确认时间")
+	 @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	 protected java.util.Date affirmDate;
+
+	 @ApiModelProperty(value="确认人")
+	 protected String affirmPerson;
+
+
+
+	 @ApiModelProperty(value="调整时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date setUpDate; 
 	
 	@ApiModelProperty(value="货主ID")
 	protected String ownerId; 
 	@ApiModelProperty(value="是否确认(0:未确认,1:已确认)")
 	protected String isAffirm;
-	
-	//回款月份
+
+	 @ApiModelProperty(value="批号")
+	 protected String batchNumber;
+
+	 @ApiModelProperty(value="指令编号")
+	 protected String directiveCode;
+
+	 @ApiModelProperty(value="失效日期")
+	 @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	 protected Date loseDate;
+
+	 @ApiModelProperty(value="到款日期")
+	 @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	 protected String paymentDate;
+
+	 @ApiModelProperty(value="商品名")
+	 protected String productName;
+
+	 @ApiModelProperty(value="匹配结果")
+	 protected String matchResult;
+
+
+	 @ApiModelProperty(value="一级商")
+	 protected String firstClassCommerce;
+
+	 @ApiModelProperty(value="商业级别")
+	 protected String commerceLevel;
+
+	 @ApiModelProperty(value="到款日期")
+	 @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	 protected Date remittanceDate;
+	 @ApiModelProperty(value="供应商")
+	 protected String supplier;
+	 @ApiModelProperty(value="系列名")
+	 protected String ProductLineName;
+	 @ApiModelProperty(value="核销金额")
+	 protected String blendprice;
+
+
+	 public String getFirstClassCommerce() {
+		 return firstClassCommerce;
+	 }
+
+	 public void setFirstClassCommerce(String firstClassCommerce) {
+		 this.firstClassCommerce = firstClassCommerce;
+	 }
+
+	 public Date getAffirmDate() {
+		 return affirmDate;
+	 }
+
+	 public void setAffirmDate(Date affirmDate) {
+		 this.affirmDate = affirmDate;
+	 }
+
+	 public String getAffirmPerson() {
+		 return affirmPerson;
+	 }
+
+	 public void setAffirmPerson(String affirmPerson) {
+		 this.affirmPerson = affirmPerson;
+	 }
+
+	 public String getMatchResult() {
+		 return matchResult;
+	 }
+
+	 public void setMatchResult(String matchResult) {
+		 this.matchResult = matchResult;
+	 }
+
+	 public Date getRemittanceDate() {
+		 return remittanceDate;
+	 }
+
+	 public void setRemittanceDate(Date remittanceDate) {
+		 this.remittanceDate = remittanceDate;
+	 }
+
+	 public String getSupplier() {
+		 return supplier;
+	 }
+
+	 public void setSupplier(String supplier) {
+		 this.supplier = supplier;
+	 }
+
+	 public String getProductLineName() {
+		 return ProductLineName;
+	 }
+
+	 public void setProductLineName(String productLineName) {
+		 ProductLineName = productLineName;
+	 }
+
+	 public String getBlendprice() {
+		 return blendprice;
+	 }
+
+	 public void setBlendprice(String blendprice) {
+		 this.blendprice = blendprice;
+	 }
+
+	 public String getCommerceLevel() {
+		 return commerceLevel;
+	 }
+
+	 public void setCommerceLevel(String commerceLevel) {
+		 this.commerceLevel = commerceLevel;
+	 }
+
+	 public String getPaymentDate() {
+		 return paymentDate;
+	 }
+
+	 public void setPaymentDate(String paymentDate) {
+		 this.paymentDate = paymentDate;
+	 }
+
+	 public String getBatchNumber() {
+		 return batchNumber;
+	 }
+
+	 public void setBatchNumber(String batchNumber) {
+		 this.batchNumber = batchNumber;
+	 }
+
+	 public String getDirectiveCode() {
+		 return directiveCode;
+	 }
+
+	 public void setDirectiveCode(String directiveCode) {
+		 this.directiveCode = directiveCode;
+	 }
+
+	 public Date getLoseDate() {
+		 return loseDate;
+	 }
+
+	 public void setLoseDate(Date loseDate) {
+		 this.loseDate = loseDate;
+	 }
+
+	 public void setGetMoth(String getMoth) {
+		 this.getMoth = getMoth;
+	 }
+
+	 //回款月份
 	protected String getMoth;
 	
 	@ApiModelProperty(value="剩余金额")
 	protected Double balancePrice;
-	
-	
-	
-	
 
-	public Double getBalancePrice() {
+	 public String getProductName() {
+		 return productName;
+	 }
+
+	 public void setProductName(String productName) {
+		 this.productName = productName;
+	 }
+
+	 public Double getBalancePrice() {
 		return balancePrice;
 	}
 
@@ -158,7 +324,7 @@ public class ScmCwInvoice extends BaseModel<String>{
 	}
 	
 	/**
-	 * 返回 核销状态(0:未核销,1:已核销)
+	 * 返回 核销状态(0:未核销,1 核销中 2:已核销)
 	 * @return
 	 */
 	public String getVerifyType() {

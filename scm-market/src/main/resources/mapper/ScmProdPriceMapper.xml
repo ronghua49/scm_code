@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmProdPriceDao">
+	<resultMap id="ScmProdPrice" type="com.winway.scm.model.ScmProdPrice">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="year" column="year" jdbcType="NUMERIC"/>
+		<result property="prodCode" column="prod_code" jdbcType="VARCHAR"/>
+		<result property="prodOwner" column="prod_owner" jdbcType="VARCHAR"/>
+		<result property="provinceCode" column="province_code" jdbcType="VARCHAR"/>
+		<result property="provinceName" column="province_name" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerce_code" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerce_name" jdbcType="VARCHAR"/>
+		<result property="commercePrice" column="commerce_price" jdbcType="NUMERIC"/>
+		<result property="terminalPrice" column="terminal_price" jdbcType="NUMERIC"/>
+		<result property="terminalSellPrice" column="terminal_sell_price" jdbcType="NUMERIC"/>
+		<result property="commerceRate" column="commerce_rate" jdbcType="NUMERIC"/>
+		<result property="terminalRate" column="terminal_rate" jdbcType="NUMERIC"/>
+		<result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+		<result property="createBy" column="CREATE_BY" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="createName" column="CREATE_NAME" jdbcType="VARCHAR"/>
+		<result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateName" column="UPDATE_NAME" jdbcType="VARCHAR"/>
+		<result property="createOrgId" column="CREATE_ORG_ID" jdbcType="VARCHAR"/>
+		<result property="createOrgName" column="CREATE_ORG_NAME" jdbcType="VARCHAR"/>
+		<result property="COMPANY" column="COMPANY" jdbcType="VARCHAR"/>
+		<result property="prodName" column="prod_name" jdbcType="VARCHAR"/>
+		<result property="prodCatCode" column="prod_cat_code" jdbcType="VARCHAR"/>
+		<result property="prodCatName" column="prod_cat_name" jdbcType="VARCHAR"/>
+		<result property="isCountry" column="is_country" jdbcType="NUMERIC"/>
+		<result property="priceOwner" column="price_owner" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmProdPrice">
+		INSERT INTO scm_prod_price
+		(id,year,prod_code,prod_owner,province_code,province_name,commerce_code,commerce_name,commerce_price,terminal_price,terminal_sell_price,commerce_rate,terminal_rate,remarks,CREATE_BY,CREATE_TIME,CREATE_NAME,UPDATE_BY,UPDATE_TIME,UPDATE_NAME,CREATE_ORG_ID,CREATE_ORG_NAME,COMPANY,prod_name,prod_cat_code,prod_cat_name,is_country,price_owner)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{year,jdbcType=NUMERIC}, #{prodCode,jdbcType=VARCHAR}, #{prodOwner,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, #{provinceName,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commercePrice,jdbcType=NUMERIC}, #{terminalPrice,jdbcType=NUMERIC}, #{terminalSellPrice,jdbcType=NUMERIC}, #{commerceRate,jdbcType=NUMERIC}, #{terminalRate,jdbcType=NUMERIC}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createName,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateName,jdbcType=VARCHAR}, #{createOrgId,jdbcType=VARCHAR}, #{createOrgName,jdbcType=VARCHAR}, #{COMPANY,jdbcType=VARCHAR}, #{prodName,jdbcType=VARCHAR}, #{prodCatCode,jdbcType=VARCHAR}, #{prodCatName,jdbcType=VARCHAR}, #{isCountry,jdbcType=NUMERIC}, #{priceOwner,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmProdPrice">
+		SELECT * FROM scm_prod_price 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmProdPrice">
+		SELECT * FROM scm_prod_price
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmProdPrice">
+		UPDATE scm_prod_price SET
+		year=#{year,jdbcType=NUMERIC},
+		prod_code=#{prodCode,jdbcType=VARCHAR},
+		prod_owner=#{prodOwner,jdbcType=VARCHAR},
+		province_code=#{provinceCode,jdbcType=VARCHAR},
+		province_name=#{provinceName,jdbcType=VARCHAR},
+		commerce_code=#{commerceCode,jdbcType=VARCHAR},
+		commerce_name=#{commerceName,jdbcType=VARCHAR},
+		commerce_price=#{commercePrice,jdbcType=NUMERIC},
+		terminal_price=#{terminalPrice,jdbcType=NUMERIC},
+		terminal_sell_price=#{terminalSellPrice,jdbcType=NUMERIC},
+		commerce_rate=#{commerceRate,jdbcType=NUMERIC},
+		terminal_rate=#{terminalRate,jdbcType=NUMERIC},
+		remarks=#{remarks,jdbcType=VARCHAR},
+		CREATE_BY=#{createBy,jdbcType=VARCHAR},
+		CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+		CREATE_NAME=#{createName,jdbcType=VARCHAR},
+		UPDATE_BY=#{updateBy,jdbcType=VARCHAR},
+		UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+		UPDATE_NAME=#{updateName,jdbcType=VARCHAR},
+		CREATE_ORG_ID=#{createOrgId,jdbcType=VARCHAR},
+		CREATE_ORG_NAME=#{createOrgName,jdbcType=VARCHAR},
+		COMPANY=#{COMPANY,jdbcType=VARCHAR},
+		prod_name=#{prodName,jdbcType=VARCHAR},
+		prod_cat_code=#{prodCatCode,jdbcType=VARCHAR},
+		prod_cat_name=#{prodCatName,jdbcType=VARCHAR},
+		is_country=#{isCountry,jdbcType=NUMERIC},
+		price_owner=#{priceOwner,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_prod_price 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="getScmprodprice"  resultMap="ScmProdPrice">
+	    select *  from    scm_prod_price  where  price_owner='深度'    and  province_code=#{param1}  and prod_code=#{param2}
+	</select>
+	
+	<select id="getScmprodpriceBycountry"  resultMap="ScmProdPrice">
+	    SELECT *  FROM    scm_prod_price  WHERE  price_owner='深度'    AND  is_country=1   AND    prod_code=#{param1}
+	</select>
+	
+</mapper>

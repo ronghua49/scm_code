@@ -42,7 +42,7 @@ public class ScmXsEveryDayContractProduct extends BaseModel<String>{
 	protected String unit; 
 	
 	@ApiModelProperty(value="标准包装数")
-	protected Integer Achange; 
+	protected Integer achage; 
 	
 	@ApiModelProperty(value="药品供应状态")
 	protected String suppyType; 
@@ -67,7 +67,7 @@ public class ScmXsEveryDayContractProduct extends BaseModel<String>{
 	protected Integer theNumber; 
 	
 	@ApiModelProperty(value="件数")
-	protected Integer packageNum; 
+	protected double packageNum; 
 	
 	@ApiModelProperty(value="含税单价")
 	protected Double unitPrice; 
@@ -78,12 +78,80 @@ public class ScmXsEveryDayContractProduct extends BaseModel<String>{
 	@ApiModelProperty(value="剩余数量")
 	protected Integer surplusSUm; 
 	
-	
 	@ApiModelProperty(value="商品名")
-	protected String productName; 
-	
+	protected String productName;
 
-	public String getProductName() {
+	 @ApiModelProperty(value="剂型")
+	 protected String AgentType;
+	 
+	 @ApiModelProperty(value="生产厂家")
+	 protected String manufacturer;
+	 
+	 @ApiModelProperty(value="批准文号")
+	 protected String approvalCode;
+	 
+	 @ApiModelProperty(value="药品分类")
+	 protected String medicineClassify;
+	 
+	 @ApiModelProperty(value="经营范围")
+	 protected String businessScope;
+	 
+	 @ApiModelProperty(value="产品子码")
+	 protected String code;
+	 
+	 public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getAgentType() {
+		 return AgentType;
+	 }
+
+	 public void setAgentType(String agentType) {
+		 AgentType = agentType;
+	 }
+
+	 public String getManufacturer() {
+		 return manufacturer;
+	 }
+
+	 public void setManufacturer(String manufacturer) {
+		 this.manufacturer = manufacturer;
+	 }
+
+	 public String getApprovalCode() {
+		 return approvalCode;
+	 }
+
+	 public void setApprovalCode(String approvalCode) {
+		 this.approvalCode = approvalCode;
+	 }
+
+	 public String getMedicineClassify() {
+		 return medicineClassify;
+	 }
+
+	 public void setMedicineClassify(String medicineClassify) {
+		 this.medicineClassify = medicineClassify;
+	 }
+
+	 public String getBusinessScope() {
+		 return businessScope;
+	 }
+
+	 public void setBusinessScope(String businessScope) {
+		 this.businessScope = businessScope;
+	 }
+
+
+
+
+
+	 public String getProductName() {
 		return productName;
 	}
 
@@ -167,17 +235,14 @@ public class ScmXsEveryDayContractProduct extends BaseModel<String>{
 		return this.unit;
 	}
 	
-	public void setAchange(Integer Achange) {
-		this.Achange = Achange;
+	public Integer getAchage() {
+		return achage;
 	}
-	
-	/**
-	 * 返回 标准包装数
-	 * @return
-	 */
-	public Integer getAchange() {
-		return this.Achange;
+
+	public void setAchage(Integer achage) {
+		this.achage = achage;
 	}
+
 	
 	public void setSuppyType(String suppyType) {
 		this.suppyType = suppyType;
@@ -263,7 +328,7 @@ public class ScmXsEveryDayContractProduct extends BaseModel<String>{
 		return this.theNumber;
 	}
 	
-	public void setPackageNum(Integer packageNum) {
+	public void setPackageNum(double packageNum) {
 		this.packageNum = packageNum;
 	}
 	
@@ -271,7 +336,7 @@ public class ScmXsEveryDayContractProduct extends BaseModel<String>{
 	 * 返回 件数
 	 * @return
 	 */
-	public Integer getPackageNum() {
+	public double getPackageNum() {
 		return this.packageNum;
 	}
 	
@@ -321,7 +386,7 @@ public class ScmXsEveryDayContractProduct extends BaseModel<String>{
 		.append("MedicineType", this.MedicineType) 
 		.append("commonName", this.commonName) 
 		.append("unit", this.unit) 
-		.append("Achange", this.Achange) 
+		.append("Achange", this.achage) 
 		.append("suppyType", this.suppyType) 
 		.append("suggestApplyNum", this.suggestApplyNum) 
 		.append("lastShipmentDate", this.lastShipmentDate) 

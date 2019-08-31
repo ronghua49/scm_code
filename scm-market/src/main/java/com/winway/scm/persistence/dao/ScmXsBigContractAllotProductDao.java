@@ -22,15 +22,19 @@ public interface ScmXsBigContractAllotProductDao extends MyBatisDao<String, ScmX
 	 * @param BigContractAllotId
 	 * @return
 	 */
-	public List<ScmXsBigContractAllotProduct> getByMainId(String BigContractAllotId);
+    List<ScmXsBigContractAllotProduct> getByMainId(String BigContractAllotId);
 	
 	/**
 	 * 根据外键删除子表记录
 	 * @param BigContractAllotId
 	 * @return
 	 */
-	public void delByMainId(String BigContractAllotId);
+    void delByMainId(String BigContractAllotId);
 
-	public List<ScmXsBigContractAllotProduct> getUpdate(String id);
+	List<ScmXsBigContractAllotProduct> getUpdate(String id);
+
+	Map getSumDetail(String id);
+
+	List<Map> getDetail(String id);
 	
 }

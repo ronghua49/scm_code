@@ -1,8 +1,11 @@
 package com.winway.scm.persistence.dao;
 import java.util.List;
+import java.util.Map;
 
 import com.hotent.base.dao.MyBatisDao;
+import com.winway.scm.model.ScmZsjCommerce;
 import com.winway.scm.model.ScmZsjCommerceFirst;
+import com.winway.scm.model.ScmZsjSupplier;
 import com.winway.scm.model.ScmZsjSupplierFirst;
 
 /**
@@ -23,4 +26,21 @@ public interface ScmZsjSupplierFirstDao extends MyBatisDao<String, ScmZsjSupplie
 	List<ScmZsjSupplierFirst> isSave(ScmZsjSupplierFirst scmZsjSupplierFirst);
 
 	ScmZsjSupplierFirst getSupplierFirstByApprovalId(String approvalId);
+
+    List<ScmZsjCommerce> licenseWaring(Map<String, Object> params);
+
+	List<ScmZsjSupplier> gmplist(Map<String, Object> params);
+
+	List<ScmZsjSupplier> creditlist(Map<String, Object> params);
+
+	List<ScmZsjSupplier> qlist(Map<String, Object> params);
+
+    ScmZsjSupplierFirst getBySupplierId(String supplierId);
+
+    Map printByMainId(String supplierFirstId);
+
+
+	List<Map> printEntrustBookByMainId(String supplierFirstId);
+
+	List<String> getAddressByMainId(String id);
 }

@@ -2,6 +2,9 @@ package com.winway.scm.persistence.manager.impl;
 
 import javax.annotation.Resource;
 
+import com.hotent.base.feign.BpmRuntimeFeignService;
+import com.hotent.base.modelvo.CustomStartResult;
+import com.hotent.base.modelvo.StartFlowParam;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -17,6 +20,7 @@ import com.winway.scm.persistence.dao.ScmXsAgreementListMasterDao;
 import com.winway.scm.model.ScmXsAgreementListMaster;
 import com.winway.scm.persistence.manager.ScmXsAgreementListManager;
 import com.winway.scm.persistence.manager.ScmXsAgreementListMasterManager;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -36,7 +40,9 @@ public class ScmXsAgreementListMasterManagerImpl extends AbstractManagerImpl<Str
 	@Resource
 	ScmXsAgreementListDao scmXsAgreementListDao;
 	@Resource
-	ScmXsAgreementListManager scmXsAgreementListManager;	
+	ScmXsAgreementListManager scmXsAgreementListManager;
+	@Resource
+	BpmRuntimeFeignService bpmRuntimeFeignService;
 	
 	@Override
 	protected MyBatisDao<String, ScmXsAgreementListMaster> getDao() {
@@ -127,19 +133,26 @@ public class ScmXsAgreementListMasterManagerImpl extends AbstractManagerImpl<Str
 		if(scmXsAgreementListMasterId == null) {
 			throw new RuntimeException("未查询到业务数据,处理异常");
 		}
-		if ("agree".equals(actionName)) {			
+		String endEvent = jsonNode.get("eventType").asText();
+		if ("agree".equals(actionName) && "endEvent".equals(endEvent)) {
 			//把当前商务大区下的数据调整为失效
 			scmXsAgreementListMasterDao.updateIsEffect(scmXsAgreementListMasterId.getBusinessDivisionId(),scmXsAgreementListMasterId.getId());
 			//审批状态调整为通过
 			scmXsAgreementListMasterId.setApprovalState("2");
 			scmXsAgreementListMasterId.setIsEffect("1");
-		}else if("oppose".equals(actionName)){
+			scmXsAgreementListMasterDao.update(scmXsAgreementListMasterId);	
+		} else if ("agree".equals(actionName)) {
+		} else if ("reject".equals(actionName)) {
+		} else if ("backToStart".equals(actionName)) {
+		} else if ("opposeTrans".equals(actionName)) {
+		} else if ("endProcess".equals(actionName)) {
 			scmXsAgreementListMasterId.setApprovalState("3");
 			scmXsAgreementListMasterId.setIsEffect("0");
+			scmXsAgreementListMasterDao.update(scmXsAgreementListMasterId);	
 		}
-		scmXsAgreementListMasterDao.update(scmXsAgreementListMasterId);	
-		
 	}
+
+	@Transactional
 	@Override
 	public void sendApply(ScmXsAgreementListMaster scmXsAgreementListMaster) {
 		// TODO Auto-generated method stub
@@ -148,6 +161,18 @@ public class ScmXsAgreementListMasterManagerImpl extends AbstractManagerImpl<Str
 		//是否失效。未通过审批都为失效
 		scmXsAgreementListMaster.setIsEffect("0");
 		ScmXsAgreementListMaster scmXsAgreementListMasterById = scmXsAgreementListMasterDao.get(scmXsAgreementListMaster.getId());
+		StartFlowParam startFlowParam = new StartFlowParam("syxyhzmdsq", "SCM", "approvalId");
+		startFlowParam.setFormType("frame");
+		CustomStartResult customStartResult = null;
+		try {
+			System.out.println("发起商业协议合作名单申请");
+			customStartResult = bpmRuntimeFeignService.customStart(startFlowParam);
+			String approvalId = customStartResult.getInstId();
+			scmXsAgreementListMaster.setApprovalId(approvalId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("启动工作流失败");
+		}
 		if (scmXsAgreementListMasterById == null) {	
 			create(scmXsAgreementListMaster);
 		}else{
@@ -160,6 +185,7 @@ public class ScmXsAgreementListMasterManagerImpl extends AbstractManagerImpl<Str
 				update(scmXsAgreementListMaster);
 			}
 		}
+
 		
 	}
 	

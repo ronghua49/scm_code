@@ -1,9 +1,12 @@
 package com.winway.scm.persistence.dao;
 import java.util.List;
+import java.util.Map;
 
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.query.QueryFilter;
+import com.winway.scm.model.ScmZsjCommerce;
 import com.winway.scm.model.ScmZsjCommerceMerge;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -20,5 +23,9 @@ public interface ScmZsjCommerceMergeDao extends MyBatisDao<String, ScmZsjCommerc
 
 	List<ScmZsjCommerceMerge> firstList(QueryFilter queryFilter);
 
-	ScmZsjCommerceMerge getCommerceFirstByApprovalId(String approvalId);
+	List<ScmZsjCommerceMerge> getCommerceFirstByApprovalId(String approvalId);
+
+    List<ScmZsjCommerce> listCommerceMerge(Map<String, Object> params);
+
+	ScmZsjCommerceMerge getApprovalDublicate(@Param(value = "hostCommerceId") String hostCommerceId, @Param(value = "viceCommerceId") String viceCommerceId);
 }

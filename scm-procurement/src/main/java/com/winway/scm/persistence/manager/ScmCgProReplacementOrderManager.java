@@ -2,7 +2,9 @@ package com.winway.scm.persistence.manager;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
+import com.winway.purchase.vo.ReturnWmsVo;
 import com.winway.scm.model.ScmCgProReplacementOrder;
+import com.winway.scm.vo.WmsCgbdReceiptVo;
 
 /**
  * 
@@ -22,5 +24,7 @@ public interface ScmCgProReplacementOrderManager extends Manager<String, ScmCgPr
 	ScmCgProReplacementOrder getProOrderFirstByApprovalId(String approvalId);
 
 	void endApply(JsonNode jsonNode);
+
+	ReturnWmsVo receipt(WmsCgbdReceiptVo wmsCgbdReceiptVo);
 	
 }

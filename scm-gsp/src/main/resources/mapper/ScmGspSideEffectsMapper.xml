@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspSideEffectsDao">
+	<resultMap id="ScmGspSideEffects" type="com.winway.scm.model.ScmGspSideEffects">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="patientName" column="patientName" jdbcType="VARCHAR"/>
+		<result property="gender" column="gender" jdbcType="VARCHAR"/>
+		<result property="birthDay" column="birthDay" jdbcType="TIMESTAMP"/>
+		<result property="weight" column="weight" jdbcType="NUMERIC"/>
+		<result property="natin" column="natin" jdbcType="VARCHAR"/>
+		<result property="familyMedicineSideEffects" column="familyMedicineSideEffects" jdbcType="VARCHAR"/>
+		<result property="caseNumber" column="caseNumber" jdbcType="VARCHAR"/>
+		<result property="phone" column="phone" jdbcType="VARCHAR"/>
+		<result property="pastDrugsSideEffects" column="pastDrugsSideEffects" jdbcType="VARCHAR"/>
+		<result property="address" column="address" jdbcType="VARCHAR"/>
+		<result property="allergy" column="allergy" jdbcType="VARCHAR"/>
+		<result property="originalDisease" column="originalDisease" jdbcType="VARCHAR"/>
+		<result property="sideEffectsName" column="sideEffectsName" jdbcType="VARCHAR"/>
+		<result property="sideEffectsDate" column="sideEffectsDate" jdbcType="TIMESTAMP"/>
+		<result property="sideEffectsClincalFeature" column="sideEffectsClincalFeature" jdbcType="VARCHAR"/>
+		<result property="sideEffectsHandInformation" column="sideEffectsHandInformation" jdbcType="VARCHAR"/>
+		<result property="sideEffectsResult" column="sideEffectsResult" jdbcType="VARCHAR"/>
+		<result property="originalDiseaseAffect" column="originalDiseaseAffect" jdbcType="VARCHAR"/>
+		<result property="dieDate" column="dieDate" jdbcType="TIMESTAMP"/>
+		<result property="directDie" column="directDie" jdbcType="VARCHAR"/>
+		<result property="provincialEvaluatioon" column="provincialEvaluatioon" jdbcType="VARCHAR"/>
+		<result property="nationalAssessment" column="nationalAssessment" jdbcType="VARCHAR"/>
+		<result property="domesticSideEffects" column="domesticSideEffects" jdbcType="VARCHAR"/>
+		<result property="abroadSideEffects" column="abroadSideEffects" jdbcType="VARCHAR"/>
+		<result property="other" column="other" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspSideEffects">
+		INSERT INTO Scm_Gsp_SideEffects
+		(id,patientName,gender,birthDay,weight,natin,familyMedicineSideEffects,caseNumber,phone,pastDrugsSideEffects,address,allergy,originalDisease,sideEffectsName,sideEffectsDate,sideEffectsClincalFeature,sideEffectsHandInformation,sideEffectsResult,originalDiseaseAffect,dieDate,directDie,provincialEvaluatioon,nationalAssessment,domesticSideEffects,abroadSideEffects,other,memo,ownerId,createDate,createPersion,approvalId,approvalState)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{patientName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{birthDay,jdbcType=TIMESTAMP}, #{weight,jdbcType=NUMERIC}, #{natin,jdbcType=VARCHAR}, #{familyMedicineSideEffects,jdbcType=VARCHAR}, #{caseNumber,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{pastDrugsSideEffects,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{allergy,jdbcType=VARCHAR}, #{originalDisease,jdbcType=VARCHAR}, #{sideEffectsName,jdbcType=VARCHAR}, #{sideEffectsDate,jdbcType=TIMESTAMP}, #{sideEffectsClincalFeature,jdbcType=VARCHAR}, #{sideEffectsHandInformation,jdbcType=VARCHAR}, #{sideEffectsResult,jdbcType=VARCHAR}, #{originalDiseaseAffect,jdbcType=VARCHAR}, #{dieDate,jdbcType=TIMESTAMP}, #{directDie,jdbcType=VARCHAR}, #{provincialEvaluatioon,jdbcType=VARCHAR}, #{nationalAssessment,jdbcType=VARCHAR}, #{domesticSideEffects,jdbcType=VARCHAR}, #{abroadSideEffects,jdbcType=VARCHAR}, #{other,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createPersion,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspSideEffects">
+		SELECT * FROM Scm_Gsp_SideEffects 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspSideEffects">
+		SELECT * FROM Scm_Gsp_SideEffects
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+    <select id="getByApprovalState" resultType="com.winway.scm.model.ScmGspSideEffects">
+		SELECT * FROM Scm_Gsp_SideEffects
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmGspSideEffects">
+		UPDATE Scm_Gsp_SideEffects SET
+		patientName=#{patientName,jdbcType=VARCHAR},
+		gender=#{gender,jdbcType=VARCHAR},
+		birthDay=#{birthDay,jdbcType=TIMESTAMP},
+		weight=#{weight,jdbcType=NUMERIC},
+		natin=#{natin,jdbcType=VARCHAR},
+		familyMedicineSideEffects=#{familyMedicineSideEffects,jdbcType=VARCHAR},
+		caseNumber=#{caseNumber,jdbcType=VARCHAR},
+		phone=#{phone,jdbcType=VARCHAR},
+		pastDrugsSideEffects=#{pastDrugsSideEffects,jdbcType=VARCHAR},
+		address=#{address,jdbcType=VARCHAR},
+		allergy=#{allergy,jdbcType=VARCHAR},
+		originalDisease=#{originalDisease,jdbcType=VARCHAR},
+		sideEffectsName=#{sideEffectsName,jdbcType=VARCHAR},
+		sideEffectsDate=#{sideEffectsDate,jdbcType=TIMESTAMP},
+		sideEffectsClincalFeature=#{sideEffectsClincalFeature,jdbcType=VARCHAR},
+		sideEffectsHandInformation=#{sideEffectsHandInformation,jdbcType=VARCHAR},
+		sideEffectsResult=#{sideEffectsResult,jdbcType=VARCHAR},
+		originalDiseaseAffect=#{originalDiseaseAffect,jdbcType=VARCHAR},
+		dieDate=#{dieDate,jdbcType=TIMESTAMP},
+		directDie=#{directDie,jdbcType=VARCHAR},
+		provincialEvaluatioon=#{provincialEvaluatioon,jdbcType=VARCHAR},
+		nationalAssessment=#{nationalAssessment,jdbcType=VARCHAR},
+		domesticSideEffects=#{domesticSideEffects,jdbcType=VARCHAR},
+		abroadSideEffects=#{abroadSideEffects,jdbcType=VARCHAR},
+		other=#{other,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_SideEffects 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

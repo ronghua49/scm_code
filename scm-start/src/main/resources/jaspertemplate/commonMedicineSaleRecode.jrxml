@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="commonMedicineSaleRecode" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc380878-5c29-4001-b388-70c67d05f0ba">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="270" splitType="Stretch">
+			<staticText>
+				<reportElement x="180" y="0" width="200" height="40" uuid="3f685ae9-d22b-4094-bcae-408c659e2494"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[普通药品销售退货记录]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="4" y="0" width="31" height="10" uuid="a2cfcbd0-7349-4728-9a52-5891ca5aa340"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="0" width="31" height="10" uuid="9786892a-aea2-4ade-a067-6df85ab34dd9"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="0" width="31" height="10" uuid="bd16ea8b-1b10-4291-be42-ce87355e98c5"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="0" width="31" height="10" uuid="4e44abcb-9751-4054-8592-87978718473a"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="158" y="0" width="31" height="10" uuid="c9cd12b7-e0b7-4025-ae06-ada941743bec"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="0" width="31" height="10" uuid="7c9f78cc-b2ed-41a7-bbfe-f3a24cb7b236"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="189" y="0" width="31" height="10" uuid="12a73333-3283-484c-9705-619909b916bc"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="31" height="10" uuid="741ac62a-dfee-4e51-8b3d-c90059e1a42c"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="0" width="31" height="10" uuid="b6272e84-fd7b-422d-bd2c-b74ed9a245ee"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="0" width="31" height="10" uuid="30a6aad4-abd2-43cf-a4a2-acc98c77ad9c"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="0" width="31" height="10" uuid="0e9a8d78-9f4a-4a78-a40e-21ea139ab6da"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="0" width="31" height="10" uuid="64bc246d-3eb2-4e0f-aea1-b4cc213e5315"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="319" y="0" width="31" height="10" uuid="6a5c864f-8dfc-463b-94aa-6c883c1df919"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="0" width="31" height="10" uuid="254342d0-296d-411c-a418-1661d5b920e7"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="484" y="0" width="31" height="10" uuid="1af99c6e-fb5e-4585-a346-93e7c4112414"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="0" width="31" height="10" uuid="dc4677c6-fb3b-4692-beef-5b4bb6751215"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="0" width="31" height="10" uuid="c65171be-4a4f-47d9-8f8b-e43b21d49076"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50"/>
+	</detail>
+</jasperReport>

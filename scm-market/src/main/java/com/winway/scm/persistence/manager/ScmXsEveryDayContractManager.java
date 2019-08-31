@@ -23,7 +23,7 @@ import java.util.List;
  */
 public interface ScmXsEveryDayContractManager extends Manager<String, ScmXsEveryDayContract>{
 
-    void sendApply(ScmXsEveryDayContract scmXsEveryDayContract);
+    void sendApply(ScmXsEveryDayContract scmXsEveryDayContract) throws Exception;
 
     String save(ScmXsEveryDayContract scmXsEveryDayContract);
 

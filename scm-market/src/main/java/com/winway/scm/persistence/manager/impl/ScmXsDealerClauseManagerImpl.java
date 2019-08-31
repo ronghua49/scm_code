@@ -1,6 +1,7 @@
 package com.winway.scm.persistence.manager.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -65,22 +66,22 @@ public class ScmXsDealerClauseManagerImpl extends AbstractManagerImpl<String, Sc
 	public void create(ScmXsDealerClause scmXsDealerClause){
 		//获取主表数据
 		ScmXsAgreementSummary ScmXsAgreementSummary = scmXsAgreementSummaryDao.get(scmXsDealerClause.getAgreementSummaryId());
-		ScmXsDealerClause scmXsDealerClauseByCode = scmXsDealerClauseDao.lastPaymentType(ScmXsAgreementSummary.getBusinessDivisionId(),ScmXsAgreementSummary.getProvinceId().equals("") ? null : ScmXsAgreementSummary.getProvinceId(),ScmXsAgreementSummary.getOwnerId(), scmXsDealerClause.getCommerceCode());
-		if (scmXsDealerClauseByCode == null) {			
+//		ScmXsDealerClause scmXsDealerClauseByCode = scmXsDealerClauseDao.lastPaymentType(ScmXsAgreementSummary.getBusinessDivisionId(),ScmXsAgreementSummary.getProvinceId().equals("") ? null : ScmXsAgreementSummary.getProvinceId(),ScmXsAgreementSummary.getOwnerId(), scmXsDealerClause.getCommerceCode());
+//		if (scmXsDealerClauseByCode == null) {			
 			//查询上次付款方式
-			scmXsDealerClause.setLastPaymentType("-");
+//			scmXsDealerClause.setLastPaymentType("-");
 			//查询上次回款天数
-			scmXsDealerClause.setLastReturnMoneyDay(0);
+//			scmXsDealerClause.setLastReturnMoneyDay(0);
 			//查询上次申请折扣
-			scmXsDealerClause.setLastTheApplication(0);
-		}else{
+//			scmXsDealerClause.setLastTheApplication(0);
+//		}else{
 			//查询上次付款方式
-			scmXsDealerClause.setLastPaymentType(scmXsDealerClauseByCode.getLastPaymentType());
+//			scmXsDealerClause.setLastPaymentType(scmXsDealerClauseByCode.getLastPaymentType());
 			//查询上次回款天数
-			scmXsDealerClause.setLastReturnMoneyDay(scmXsDealerClauseByCode.getLastReturnMoneyDay());
+//			scmXsDealerClause.setLastReturnMoneyDay(scmXsDealerClauseByCode.getLastReturnMoneyDay());
 			//查询上次申请折扣
-			scmXsDealerClause.setLastTheApplication(scmXsDealerClauseByCode.getLastTheApplication());
-		}
+//			scmXsDealerClause.setLastTheApplication(scmXsDealerClauseByCode.getLastTheApplication());
+//		}
 		//查询季度预付款占比
 		scmXsDealerClause.setQuarterPaymentPercent(0.25);
     	super.create(scmXsDealerClause);
@@ -174,9 +175,9 @@ public class ScmXsDealerClauseManagerImpl extends AbstractManagerImpl<String, Sc
 		return new PageList<ScmXsDealerClause>(scmXsDealerClause);
 	}
 	@Override
-	public List<ScmXsDealerClause> getYears(String ownerId) {
+	public List<Map<String, Object>> getYears(String ownerId) {
 		// TODO Auto-generated method stub
-		List<ScmXsDealerClause> scmXsDealerClause = scmXsDealerClauseDao.getYears(ownerId);
+		List<Map<String, Object>> scmXsDealerClause = scmXsDealerClauseDao.getYears(ownerId);
 		
 		return scmXsDealerClause;
 	}

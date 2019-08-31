@@ -1,12 +1,16 @@
 package com.winway.scm.persistence.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import com.hotent.base.manager.Manager;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.winway.scm.model.ScmCwInvoice;
 import com.winway.scm.vo.VInvoice;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -26,5 +30,18 @@ public interface ScmCwInvoiceManager extends Manager<String, ScmCwInvoice>{
 	PageList<ScmCwInvoice> affirmData(String[] ids);
 
 	PageList<VInvoice> history(QueryFilter queryFilter);
-	
+
+    void export(QueryFilter queryFilter, boolean b, HttpServletResponse response);
+
+    PageList<Map<String, Object>> sumList(QueryFilter queryFilter);
+
+	void export2(QueryFilter queryFilter, boolean b, HttpServletResponse response);
+
+    PageList<ScmCwInvoice> checklist(QueryFilter queryFilter);
+
+	void export3(QueryFilter queryFilter, boolean b, HttpServletResponse response);
+
+	boolean verifExceedTime(String commerceCode);
+
+    String readExcelFile(MultipartFile file, ScmCwInvoice invoice);
 }

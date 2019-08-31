@@ -5,6 +5,8 @@ import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.winway.scm.model.ScmZsjCommerceAcceptState;
 
+import java.util.Map;
+
 /**
  * 
  * <pre> 
@@ -19,5 +21,6 @@ import com.winway.scm.model.ScmZsjCommerceAcceptState;
 public interface ScmZsjCommerceAcceptStateManager extends Manager<String, ScmZsjCommerceAcceptState>{
 
 	PageList<ScmZsjCommerceAcceptState> firstList(QueryFilter queryFilter);
-	
+
+	Map<String, Object> getQuater();
 }

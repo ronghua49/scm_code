@@ -11,10 +11,10 @@ spring:
     name: scm-finance
   datasource:
     name: dev
-    url: jdbc:mysql://114.116.86.0:3306/ww_scm_dev?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/213_copy?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
-    password: 123456
-    #url: jdbc:oracle:thin:@127.0.0.1:1521:ORCL 
+    password: root
+    #url: jdbc:oracle:thin:@127.0.0.1:1521:ORCL
     #username: X7_PORTAL_INIT
     #password: X7_PORTAL_INIT
     # 使用druid数据源
@@ -28,13 +28,13 @@ spring:
     minIdle: 1
     timeBetweenEvictionRunsMillis: 60000
     minEvictableIdleTimeMillis: 300000
-    # validationQuery  hsqldb  select 1 from INFORMATION_SCHEMA.SYSTEM_USERS 
-    # Oracle select 1 from dual 
+    # validationQuery  hsqldb  select 1 from INFORMATION_SCHEMA.SYSTEM_USERS
+    # Oracle select 1 from dual
     # DB2 select 1 from sysibm.sysdummy1
     # MySql,Microsoft SqlServer,ingres,derby,H2 select 1
     # postgresql select version()
     #validationQuery: select 'x'
-    validationQuery: select 1 
+    validationQuery: select 1
     testWhileIdle: true
     testOnBorrow: false
     testOnReturn: false
@@ -46,28 +46,30 @@ spring:
     multipart:
       maxFileSize: 100MB
       maxRequestSize: 1024MB
-    
+
+  cache:
+    cache-names:
 # Server settings (ServerProperties)
 server:
-  port: 8997
+  port: 8995
   address: 0.0.0.0
   sessionTimeout: 30
   contextPath: /
   session:
     timeout: 30
-    
+
 system:
   mail:
     address: PortalDevTest@Winwayworld.com
-  id: 
+  id:
     machineName: portal
 
-eureka:
+  #eureka:
   client:
     healthcheck:
       enabled:  true
     service-url:
-      defaultZone: http://114.116.86.0:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
   instance:
     lease-expiration-duration-in-seconds: 30
     lease-renewal-interval-in-seconds: 10
@@ -85,21 +87,25 @@ feign:
 # 断路器配置
 hystrix:
   metrics:
-    enabled: true    
-  command:    
-    default:    
-      execution:    
+    enabled: true
+  command:
+    default:
+      execution:
         isolation:
-          strategy: SEMAPHORE    
-          semaphore: 
+          strategy: SEMAPHORE
+          semaphore:
             maxConcurrentRequests: 100
-          thread:    
-            timeoutInMilliseconds: 50000 #缺省为1000 
-      fallback: 
-        isolation: 
-          semaphore: 
+          thread:
+            timeoutInMilliseconds: 50000 #缺省为1000
+      fallback:
+        isolation:
+          semaphore:
             maxConcurrentRequests: 100
 # 负载均衡配置
 ribbon:
   eureka:
-    enabled: true  
+    enabled: true
+
+## 扫码前缀
+scan:
+  url: user/url/name?pic=

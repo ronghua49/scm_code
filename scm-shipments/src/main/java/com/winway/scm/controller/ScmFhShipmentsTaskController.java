@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -177,5 +178,31 @@ public class ScmFhShipmentsTaskController extends BaseController{
 		return scmFhShipmentsTaskManager.codeList(ownerId);
 	}
 
-   
+	/**
+	 * 全部导出
+	 * @param
+	 * @return
+	 * @throws Exception
+	 * ModelAndView
+	 */
+	@PostMapping(value="/exportAll")
+//	@ApiOperation(value="全部导出发货任务数据",httpMethod = "POST",notes = "全部导出发货任务数据")
+	public void exportAll(@RequestBody QueryFilter queryFilter, HttpServletResponse response) throws Exception{
+		 scmFhShipmentsTaskManager.export(queryFilter,false,response);
+	}
+
+
+	/**
+	 * 当页导出
+	 * @param
+	 * @return
+	 * @throws Exception
+	 * ModelAndView
+	 */
+	@PostMapping(value="/exportPage")
+//	@ApiOperation(value="发货任务数据当页导出",httpMethod = "POST",notes = "发货任务数据当页导出")
+	public void  exportPage(@RequestBody QueryFilter queryFilter,HttpServletResponse response) throws Exception{
+		 scmFhShipmentsTaskManager.export(queryFilter,true,response);
+	}
+
 }

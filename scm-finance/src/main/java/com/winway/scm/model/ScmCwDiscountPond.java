@@ -2,6 +2,8 @@ package com.winway.scm.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hotent.base.model.BaseModel;
 
 
@@ -28,6 +30,7 @@ public class ScmCwDiscountPond extends BaseModel<String>{
 	protected String discountCode; 
 	
 	@ApiModelProperty(value="票折日期")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date discountDate; 
 	
 	@ApiModelProperty(value="票折来源(0:经销商RB,1:分销商RB,2:OTCRB,3:医院RB,4:活动RB,5:补差RB)")
@@ -87,7 +90,66 @@ public class ScmCwDiscountPond extends BaseModel<String>{
 	@ApiModelProperty(value="货主ID")
 	protected String ownerId; 
 	
+	@ApiModelProperty(value="票折类型(字典中的票折类型)")
+	protected String discountGenre; 
 	
+	@ApiModelProperty(value="BU")
+	protected String bu; 
+	
+	@ApiModelProperty(value="产品名称")
+	protected String productName; 
+	
+	@ApiModelProperty(value="月份")
+	protected String month; 
+	
+	@ApiModelProperty(value="年度")
+	protected String year;
+	
+	
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getBu() {
+		return bu;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setBu(String bu) {
+		this.bu = bu;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getDiscountGenre() {
+		return discountGenre;
+	}
+
+	public void setDiscountGenre(String discountGenre) {
+		this.discountGenre = discountGenre;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public void setId(String id) {
 		this.id = id;
 	}

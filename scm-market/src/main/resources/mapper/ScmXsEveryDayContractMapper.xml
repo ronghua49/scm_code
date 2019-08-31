@@ -38,13 +38,38 @@
 		<result property="sendProductDate" column="sendProductDate" jdbcType="DATE"/>
 		<result property="entryPeople" column="entryPeople" jdbcType="VARCHAR"/>
 		<result property="entryDate" column="entryDate" jdbcType="DATE"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
      </resultMap>
 
     <insert id="create" parameterType="com.winway.scm.model.ScmXsEveryDayContract">
 		INSERT INTO SCM_XS_EveryDayContract
-		(id,ownerName,dealer,commerceFirstId,contractCode,consignee,phone,marketingWay,shipAddress,payType,signTheAddress,specialOpinion,YUnit,YAddress,YOpenBank,YDutyCode,YBankCode,YPhone,YPostcode,JUnit,JAddress,JOpenBank,JBankCode,JDutyCode,JPhone,JPostcode,ownerId,DealerClauseId,reduceContractTime,approvalId,approvalState,dateOfSigning,isDelete,agreementSummaryId,sendProductDate,entryPeople,entryDate)
+		(id,ownerName,dealer,
+		commerceFirstId,contractCode,consignee,
+		phone,marketingWay,shipAddress,
+		payType,signTheAddress,specialOpinion,
+		YUnit,YAddress,YOpenBank,
+		YDutyCode,YBankCode,YPhone,
+		YPostcode,JUnit,JAddress,
+		JOpenBank,JBankCode,JDutyCode,
+		JPhone,JPostcode,ownerId,
+		DealerClauseId,reduceContractTime,approvalId,
+		approvalState,dateOfSigning,isDelete,
+		agreementSummaryId,sendProductDate,
+		entryPeople,entryDate,medicineType)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR}, #{dealer,jdbcType=VARCHAR}, #{commerceFirstId,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, #{consignee,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{marketingWay,jdbcType=VARCHAR}, #{shipAddress,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, #{signTheAddress,jdbcType=VARCHAR}, #{specialOpinion,jdbcType=VARCHAR}, #{YUnit,jdbcType=VARCHAR}, #{YAddress,jdbcType=VARCHAR}, #{YOpenBank,jdbcType=VARCHAR}, #{YDutyCode,jdbcType=VARCHAR}, #{YBankCode,jdbcType=VARCHAR}, #{YPhone,jdbcType=VARCHAR}, #{YPostcode,jdbcType=VARCHAR}, #{JUnit,jdbcType=VARCHAR}, #{JAddress,jdbcType=VARCHAR}, #{JOpenBank,jdbcType=VARCHAR}, #{JBankCode,jdbcType=VARCHAR}, #{JDutyCode,jdbcType=VARCHAR}, #{JPhone,jdbcType=VARCHAR}, #{JPostcode,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{DealerClauseId,jdbcType=VARCHAR}, #{reduceContractTime,jdbcType=NUMERIC}, #{approvalId,jdbcType=VARCHAR}, #{approvalState ,jdbcType=VARCHAR},#{dateOfSigning,jdbcType=TIMESTAMP},#{isDelete,jdbcType=VARCHAR},#{agreementSummaryId,jdbcType=VARCHAR},#{sendProductDate,jdbcType=DATE},#{entryPeople,jdbcType=VARCHAR},#{entryDate,jdbcType=DATE} )
+		(#{id,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR}, #{dealer,jdbcType=VARCHAR}, 
+		#{commerceFirstId,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, #{consignee,jdbcType=VARCHAR}, 
+		#{phone,jdbcType=VARCHAR}, #{marketingWay,jdbcType=VARCHAR}, #{shipAddress,jdbcType=VARCHAR}, 
+		#{payType,jdbcType=VARCHAR}, #{signTheAddress,jdbcType=VARCHAR}, #{specialOpinion,jdbcType=VARCHAR}, 
+		#{YUnit,jdbcType=VARCHAR}, #{YAddress,jdbcType=VARCHAR}, #{YOpenBank,jdbcType=VARCHAR}, 
+		#{YDutyCode,jdbcType=VARCHAR}, #{YBankCode,jdbcType=VARCHAR}, #{YPhone,jdbcType=VARCHAR}, 
+		#{YPostcode,jdbcType=VARCHAR}, #{JUnit,jdbcType=VARCHAR}, #{JAddress,jdbcType=VARCHAR}, 
+		#{JOpenBank,jdbcType=VARCHAR}, #{JBankCode,jdbcType=VARCHAR}, #{JDutyCode,jdbcType=VARCHAR}, 
+		#{JPhone,jdbcType=VARCHAR}, #{JPostcode,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, 
+		#{DealerClauseId,jdbcType=VARCHAR}, #{reduceContractTime,jdbcType=NUMERIC}, #{approvalId,jdbcType=VARCHAR}, 
+		#{approvalState ,jdbcType=VARCHAR},#{dateOfSigning,jdbcType=TIMESTAMP},#{isDelete,jdbcType=VARCHAR},
+		#{agreementSummaryId,jdbcType=VARCHAR},#{sendProductDate,jdbcType=DATE},#{entryPeople,jdbcType=VARCHAR},
+		#{entryDate,jdbcType=DATE},#{medicineType,jdbcType=VARCHAR} )
 	</insert>
 
     <select id="get" parameterType="java.lang.String" resultMap="ScmXsEveryDayContract">
@@ -110,7 +135,8 @@
 		agreementSummaryId=#{agreementSummaryId,jdbcType=VARCHAR},
 		sendProductDate=#{sendProductDate,jdbcType=DATE},
 		entryPeople=#{entryPeople,jdbcType=DATE},
-		entryDate=#{entryDate,jdbcType=DATE}
+		entryDate=#{entryDate,jdbcType=DATE},
+		medicineType = #{medicineType,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -130,6 +156,33 @@
 		WHERE
 			approvalId = #{approvalId}
 	</select>
-
+    <select id="getScmXsEverydaycontractPrint" parameterType="java.lang.String" resultType="Map">
+		SELECT ownerName,
+				dealer,
+				phone,
+				contractCode,
+				shipAddress,
+				consignee,
+				(CASE marketingWay WHEN '0' THEN '预付款' WHEN '1' THEN '赊销' ELSE '无' END) AS marketingWay,
+				DATE_FORMAT(dateOfSigning,'%Y-%m-%d') AS dateOfSigning,
+				IFNULL(signTheAddress,'') AS signTheAddress,
+				IFNULL(payType,'') AS payType,
+				(CASE WHEN ownerId = '0102' THEN DATE_FORMAT(DATE_ADD(dateOfSigning, INTERVAL 89 DAY),'%Y-%m-%d')
+				ELSE DATE_FORMAT(DATE_ADD(dateOfSigning, INTERVAL 179 DAY),'%Y-%m-%d') END) AS dateOfSigningYXQ,-- = 0102时签订日期加89天
+				IFNULL(DATE_FORMAT(sendProductDate,'%Y-%m-%d'),'') AS sendProductDate,
+				ownerName AS JUnit,
+				JAddress,
+				JOpenBank,
+				JBankCode,
+				JDutyCode,
+				JPhone,
+				YUnit,
+				YAddress,
+				YOpenBank,
+				YBankCode,
+				YDutyCode,
+				YPhone FROM scm_xs_everydaycontract 
+		WHERE id=#{id}
+	</select>   
 
 </mapper>

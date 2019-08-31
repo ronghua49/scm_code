@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmProdScoreDao">
+	<resultMap id="ScmProdScore" type="com.winway.scm.model.ScmProdScore">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="year" column="year" jdbcType="NUMERIC"/>
+		<result property="month" column="month" jdbcType="NUMERIC"/>
+		<result property="ucOrgBuId" column="UC_ORG_BU_ID" jdbcType="VARCHAR"/>
+		<result property="ucOrgBuName" column="UC_ORG_BU_NAME" jdbcType="VARCHAR"/>
+		<result property="ucOrgSubareaId" column="UC_ORG_SUBAREA_ID" jdbcType="VARCHAR"/>
+		<result property="ucOrgSubareaName" column="UC_ORG_SUBAREA_NAME" jdbcType="VARCHAR"/>
+		<result property="ucOrgAgencyId" column="UC_ORG_AGENCY_ID" jdbcType="VARCHAR"/>
+		<result property="ucOrgAgencyName" column="UC_ORG_AGENCY_NAME" jdbcType="VARCHAR"/>
+		<result property="prodCatCode" column="prod_cat_code" jdbcType="VARCHAR"/>
+		<result property="prodCatName" column="prod_cat_name" jdbcType="VARCHAR"/>
+		<result property="prodCode" column="prod_code" jdbcType="VARCHAR"/>
+		<result property="prodName" column="prod_name" jdbcType="VARCHAR"/>
+		<result property="prodScore" column="prod_score" jdbcType="NUMERIC"/>
+		<result property="prodScoreChange" column="prod_score_change" jdbcType="NUMERIC"/>
+		<result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+		<result property="createBy" column="CREATE_BY" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="createName" column="CREATE_NAME" jdbcType="VARCHAR"/>
+		<result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+		<result property="updateName" column="UPDATE_NAME" jdbcType="VARCHAR"/>
+		<result property="createOrgId" column="CREATE_ORG_ID" jdbcType="VARCHAR"/>
+		<result property="createOrgName" column="CREATE_ORG_NAME" jdbcType="VARCHAR"/>
+		<result property="COMPANY" column="COMPANY" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmProdScore">
+		INSERT INTO scm_prod_score
+		(id,year,month,UC_ORG_BU_ID,UC_ORG_BU_NAME,UC_ORG_SUBAREA_ID,UC_ORG_SUBAREA_NAME,UC_ORG_AGENCY_ID,UC_ORG_AGENCY_NAME,prod_cat_code,prod_cat_name,prod_code,prod_name,prod_score,prod_score_change,remarks,CREATE_BY,CREATE_TIME,CREATE_NAME,UPDATE_BY,UPDATE_TIME,UPDATE_NAME,CREATE_ORG_ID,CREATE_ORG_NAME,COMPANY)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{year,jdbcType=NUMERIC}, #{month,jdbcType=NUMERIC}, #{ucOrgBuId,jdbcType=VARCHAR}, #{ucOrgBuName,jdbcType=VARCHAR}, #{ucOrgSubareaId,jdbcType=VARCHAR}, #{ucOrgSubareaName,jdbcType=VARCHAR}, #{ucOrgAgencyId,jdbcType=VARCHAR}, #{ucOrgAgencyName,jdbcType=VARCHAR}, #{prodCatCode,jdbcType=VARCHAR}, #{prodCatName,jdbcType=VARCHAR}, #{prodCode,jdbcType=VARCHAR}, #{prodName,jdbcType=VARCHAR}, #{prodScore,jdbcType=NUMERIC}, #{prodScoreChange,jdbcType=NUMERIC}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createName,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateName,jdbcType=VARCHAR}, #{createOrgId,jdbcType=VARCHAR}, #{createOrgName,jdbcType=VARCHAR}, #{COMPANY,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmProdScore">
+		SELECT * FROM scm_prod_score 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmProdScore">
+		SELECT * FROM scm_prod_score
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmProdScore">
+		UPDATE scm_prod_score SET
+		year=#{year,jdbcType=NUMERIC},
+		month=#{month,jdbcType=NUMERIC},
+		UC_ORG_BU_ID=#{ucOrgBuId,jdbcType=VARCHAR},
+		UC_ORG_BU_NAME=#{ucOrgBuName,jdbcType=VARCHAR},
+		UC_ORG_SUBAREA_ID=#{ucOrgSubareaId,jdbcType=VARCHAR},
+		UC_ORG_SUBAREA_NAME=#{ucOrgSubareaName,jdbcType=VARCHAR},
+		UC_ORG_AGENCY_ID=#{ucOrgAgencyId,jdbcType=VARCHAR},
+		UC_ORG_AGENCY_NAME=#{ucOrgAgencyName,jdbcType=VARCHAR},
+		prod_cat_code=#{prodCatCode,jdbcType=VARCHAR},
+		prod_cat_name=#{prodCatName,jdbcType=VARCHAR},
+		prod_code=#{prodCode,jdbcType=VARCHAR},
+		prod_name=#{prodName,jdbcType=VARCHAR},
+		prod_score=#{prodScore,jdbcType=NUMERIC},
+		prod_score_change=#{prodScoreChange,jdbcType=NUMERIC},
+		remarks=#{remarks,jdbcType=VARCHAR},
+		CREATE_BY=#{createBy,jdbcType=VARCHAR},
+		CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+		CREATE_NAME=#{createName,jdbcType=VARCHAR},
+		UPDATE_BY=#{updateBy,jdbcType=VARCHAR},
+		UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+		UPDATE_NAME=#{updateName,jdbcType=VARCHAR},
+		CREATE_ORG_ID=#{createOrgId,jdbcType=VARCHAR},
+		CREATE_ORG_NAME=#{createOrgName,jdbcType=VARCHAR},
+		COMPANY=#{COMPANY,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_prod_score 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspRejectionProductDao">
+	<resultMap id="ScmGspRejectionProduct" type="com.winway.scm.model.ScmGspRejectionProduct">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="purchaseSum" column="purchaseSum" jdbcType="NUMERIC"/>
+		<result property="rejectionSum" column="rejectionSum" jdbcType="NUMERIC"/>
+		<result property="price" column="price" jdbcType="NUMERIC"/>
+		<result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+		<result property="rejectionCause" column="rejectionCause" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspRejectionProduct">
+		INSERT INTO Scm_Gsp_RejectionProduct
+		(id,masterId,productCode,productName,commonName,medicineType,productState,unit,manufacturer,purchaseSum,rejectionSum,price,priceSum,rejectionCause,memo)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{commonName,jdbcType=VARCHAR}, #{medicineType,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{purchaseSum,jdbcType=NUMERIC}, #{rejectionSum,jdbcType=NUMERIC}, #{price,jdbcType=NUMERIC}, #{priceSum,jdbcType=NUMERIC}, #{rejectionCause,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspRejectionProduct">
+		SELECT * FROM Scm_Gsp_RejectionProduct 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspRejectionProduct">
+		SELECT * FROM Scm_Gsp_RejectionProduct
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmGspRejectionProduct">
+		UPDATE Scm_Gsp_RejectionProduct SET
+		masterId=#{masterId,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		commonName=#{commonName,jdbcType=VARCHAR},
+		medicineType=#{medicineType,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		unit=#{unit,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR},
+		purchaseSum=#{purchaseSum,jdbcType=NUMERIC},
+		rejectionSum=#{rejectionSum,jdbcType=NUMERIC},
+		price=#{price,jdbcType=NUMERIC},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		rejectionCause=#{rejectionCause,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_RejectionProduct 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM Scm_Gsp_RejectionProduct
+	    WHERE
+	    masterId=#{masterId}
+	</delete>    
+	
+	<select id="getByMainId" resultMap="ScmGspRejectionProduct">
+		select * from (
+		SELECT a.* ,b.AgentType,b.businessScope,b.medicineClassify,c.approvalCode FROM Scm_Gsp_RejectionProduct a  LEFT JOIN scm_zsj_product b on a.productCode = b.productCode LEFT JOIN scm_zsj_productfirst c on b.id = c.productId
+		) a
+
+	    WHERE masterId=#{masterId}
+	</select>
+	<select id="getProductByCode" resultType="com.winway.scm.model.ScmGspRejectionProduct">
+		SELECT *
+	    FROM Scm_Gsp_RejectionProduct
+	    WHERE productCode=#{productCode}
+	</select>
+
+</mapper>

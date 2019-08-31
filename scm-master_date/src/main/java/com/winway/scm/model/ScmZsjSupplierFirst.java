@@ -51,8 +51,35 @@ public class ScmZsjSupplierFirst extends BaseModel<String>{
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date operatorDate; 
 	
+	@ApiModelProperty(value="药品质量保证协议有效期")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date qualityValidity; 
 	
-	/**
+	@ApiModelProperty(value="联系人")
+	protected String contactPersion; 
+	
+	@ApiModelProperty(value="联系方式")
+	protected String phone; 
+	
+	@ApiModelProperty(value="印章样式")
+	protected String sealStyle; 
+	
+	@ApiModelProperty(value="随货单据样式")
+	protected String billsStyle;
+
+
+	 @ApiModelProperty(value="生产仓库地址拼接")
+	 protected String addressStr;
+
+	 public String getAddressStr() {
+		 return addressStr;
+	 }
+
+	 public void setAddressStr(String addressStr) {
+		 this.addressStr = addressStr;
+	 }
+
+	 /**
 	*供应商生产/仓库地址列表
 	*/
 	protected List<ScmZsjSupplierWarehouse> scmZsjSupplierWarehouseList=new ArrayList<ScmZsjSupplierWarehouse>(); 
@@ -81,6 +108,31 @@ public class ScmZsjSupplierFirst extends BaseModel<String>{
 	*承诺书列表
 	*/
 	protected List<ScmZsjSupplierPromiseBook> scmZsjSupplierPromiseBookList = new ArrayList<ScmZsjSupplierPromiseBook>();
+
+	/**
+	 * 附件
+	 */
+	protected List<ScmZsjAccessory> scmZsjAccessoryList = new ArrayList<ScmZsjAccessory>();
+
+	 @ApiModelProperty(value="是否首映通过过（0否1是）")
+	 protected String isPassed="0";
+
+	 public String getIsPassed() {
+		 return isPassed;
+	 }
+
+	 public void setIsPassed(String isPassed) {
+		 this.isPassed = isPassed;
+	 }
+
+
+	 public List<ScmZsjAccessory> getScmZsjAccessoryList() {
+		return scmZsjAccessoryList;
+	}
+
+	public void setScmZsjAccessoryList(List<ScmZsjAccessory> scmZsjAccessoryList) {
+		this.scmZsjAccessoryList = scmZsjAccessoryList;
+	}
 
 	public void setId(String id) {
 		this.id = id;
@@ -112,6 +164,50 @@ public class ScmZsjSupplierFirst extends BaseModel<String>{
 
 	public void setOperatorDate(Date operatorDate) {
 		this.operatorDate = operatorDate;
+	}
+
+	public Date getQualityValidity() {
+		return qualityValidity;
+	}
+
+	public void setQualityValidity(Date qualityValidity) {
+		this.qualityValidity = qualityValidity;
+	}
+
+	public String getContactPersion() {
+		return contactPersion;
+	}
+
+	public void setContactPersion(String contactPersion) {
+		this.contactPersion = contactPersion;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getSealStyle() {
+		return sealStyle;
+	}
+
+	public void setSealStyle(String sealStyle) {
+		this.sealStyle = sealStyle;
+	}
+
+	public String getBillsStyle() {
+		return billsStyle;
+	}
+
+	public void setBillsStyle(String billsStyle) {
+		this.billsStyle = billsStyle;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	/**

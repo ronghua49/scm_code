@@ -1,59 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmXsAgreementSummaryDao">
-	<resultMap id="ScmXsAgreementSummary" type="com.winway.scm.model.ScmXsAgreementSummary">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
-		<result property="province" column="province" jdbcType="VARCHAR"/>
-		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
-		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
-		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
-		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
-		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
-		<result property="agreementSummaryCode" column="agreementSummaryCode" jdbcType="VARCHAR"/>
-	</resultMap>
-	
-	<insert id="create" parameterType="com.winway.scm.model.ScmXsAgreementSummary">
+    <resultMap id="ScmXsAgreementSummary" type="com.winway.scm.model.ScmXsAgreementSummary">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+        <result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="agreementSummaryCode" column="agreementSummaryCode" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="createPerson" column="createPerson" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmXsAgreementSummary">
 		INSERT INTO SCM_XS_AgreementSummary
-		(id,businessDivision,province,businessDivisionId,provinceId,approvalId,approvalState,ownerId,agreementSummaryCode)
+		(id,businessDivision,province,businessDivisionId,provinceId,approvalId,approvalState,ownerId,agreementSummaryCode,createDate,createPerson)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{agreementSummaryCode,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{agreementSummaryCode,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP},#{createPerson,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsAgreementSummary">
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmXsAgreementSummary">
 		SELECT * FROM SCM_XS_AgreementSummary 
 		WHERE 
 		id=#{id}
 	</select>
-	
-	<select id="getByApprovalId"   parameterType="java.lang.String" resultMap="ScmXsAgreementSummary">
+
+    <select id="getByApprovalId" parameterType="java.lang.String" resultMap="ScmXsAgreementSummary">
 		SELECT * FROM SCM_XS_AgreementSummary 
 		WHERE 
 		approvalId=#{arg0}
 	</select>
-	
-	<select id="getSupplierFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmXsAgreementSummary">
+
+    <select id="getSupplierFirstByApprovalId" parameterType="java.lang.String" resultMap="ScmXsAgreementSummary">
 		SELECT * FROM SCM_XS_AgreementSummary 
 		WHERE 
 		approvalId=#{approvalId}
 	</select>
-	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmXsAgreementSummary">
-		SELECT * FROM SCM_XS_AgreementSummary
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmXsAgreementSummary">
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmXsAgreementSummary">
+        SELECT * FROM SCM_XS_AgreementSummary
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="printAgreementPart1" resultType="java.util.Map">
+        SELECT
+          clauseCode,
+          CAST(YEAR(AgreementStartDate) AS CHAR) AS year1,
+          CAST(MONTH(AgreementStartDate) AS CHAR) AS month1,
+          CAST(DAY(AgreementStartDate) AS CHAR) AS day1,
+          CAST(YEAR(NOW()) AS CHAR) AS year2,
+          CAST(MONTH(NOW()) AS CHAR) AS month2,
+          CAST(DAY(NOW()) AS CHAR) AS day2,
+          commerceName
+          FROM
+        `scm_xs_dealerclause`
+        WHERE AgreementSummaryId = #{AgreementSummaryId} and commerceCode = #{commerceCode}
+    </select>
+
+    <select id="printAgreementPart2" resultType="java.util.Map">
+          SELECT
+            productName AS b_productName,
+            commonName AS b_commonName,
+            AgentType AS b_AgentType,
+            commerceGauge AS b_commerceGauge,
+           CAST(supplyPrice AS CHAR)  AS b_supplyPrice,
+            CAST(wireTransferPrice AS CHAR)  AS b_wireTransferPrice,
+            CAST(purePinPrice AS CHAR)  AS b_purePinPrice,
+            CAST(acceptPrice AS CHAR)  AS b_acceptPrice
+          FROM
+            scm_xs_agreementproductdetaillast
+       WHERE AgreementSummaryId=#{AgreementSummaryId}
+    </select>
+
+    <select id="printAgreementPart3" resultType="java.util.Map">
+         SELECT
+          productName,
+          commonName,
+          AgentType,
+          commerceGauge,
+          CAST(supplyPrice AS CHAR) as  supplyPrice,
+         CAST(wireTransferPrice AS CHAR) as  wireTransferPrice,
+          CAST(purePinPrice AS CHAR) as purePinPrice,
+          CAST(acceptPrice AS CHAR) as acceptPrice
+          FROM SCM_XS_AgreementProductDetail
+       WHERE AgreementSummaryId=#{AgreementSummaryId}
+    </select>
+
+    <select id="printAgreementPart4" resultType="java.util.Map">
+        SELECT
+          (
+            CASE
+              b.paymentType
+              WHEN '0'
+              THEN '预付款'
+              WHEN '1'
+              THEN '赊销'
+            END
+          ) AS b_paymentType,
+          CONCAT(b.StardDay, '-', b.endDay) AS b_returnDays,
+          b.theApplication as b_theApplication ,
+          b.discountStandard as b_discountStandard
+        FROM
+          `scm_xs_dealerclause` a,
+          `scm_xs_dealerpaystylelast` b
+        WHERE a.id = b.masterId
+          AND a.AgreementSummaryId = #{AgreementSummaryId}
+          AND a.commerceCode =#{commerceCode}
+    </select>
+
+    <select id="printAgreementPart5" resultType="java.util.Map">
+        SELECT
+          (
+            CASE
+              b.paymentType
+              WHEN '0'
+              THEN '预付款'
+              WHEN '1'
+              THEN '赊销'
+            END
+          ) AS paymentType,
+          CONCAT(b.StardDay, '-', b.endDay) AS returnDays,
+         CAST(b.theApplication AS CHAR) as  theApplication,
+          CAST(b.discountStandard AS CHAR) as discountStandard
+        FROM
+          `scm_xs_dealerclause` a,
+          `scm_xs_dealerpaystyle` b
+        WHERE a.id = b.masterId
+          AND a.AgreementSummaryId = #{AgreementSummaryId}
+          AND a.commerceCode =#{commerceCode}
+    </select>
+
+
+    <update id="update" parameterType="com.winway.scm.model.ScmXsAgreementSummary">
 		UPDATE SCM_XS_AgreementSummary SET
 		businessDivision=#{businessDivision,jdbcType=VARCHAR},
 		province=#{province,jdbcType=VARCHAR},
@@ -62,16 +154,18 @@
 		approvalId=#{approvalId,jdbcType=VARCHAR},
 		approvalState=#{approvalState,jdbcType=VARCHAR},
 		ownerId=#{ownerId,jdbcType=VARCHAR},
-		agreementSummaryCode=#{agreementSummaryCode,jdbcType=VARCHAR}
+		agreementSummaryCode=#{agreementSummaryCode,jdbcType=VARCHAR},
+		  createDate = #{createDate,jdbcType=TIMESTAMP},
+		createPerson = #{createPerson,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_XS_AgreementSummary 
 		WHERE
 		id=#{id}
 	</delete>
-	
-	
+
+
 </mapper>

@@ -1,10 +1,12 @@
 package com.winway.scm.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.hotent.base.feign.UCFeignService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +55,8 @@ public class ScmXsFocusSendController extends BaseController {
 	@Resource
 	ScmXsFocusSendManager scmXsFocusSendManager;
 
+	@Resource
+	UCFeignService ucFeignService;
 	/**
 	 * 集中发货合同列表(分页条件查询)数据 @param request @return @throws Exception
 	 * PageJson @exception
@@ -102,6 +106,11 @@ public class ScmXsFocusSendController extends BaseController {
 			throws Exception {
 		String msg = "添加集中发货合同成功";
 		scmXsFocusSend.setApprovalState("0");
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsFocusSend.setEntryPeople(fullname);
+		scmXsFocusSend.setCreateDate(new Date());
+		scmXsFocusSend.setCreatePerson(fullname);
 		if(scmXsFocusSend.getFocusSendCode() == null || "".equals(scmXsFocusSend.getFocusSendCode()) || "null".equals(scmXsFocusSend.getFocusSendCode())) {
 			throw new RuntimeException("集中发货合同编号不能为空");
 		}
@@ -148,10 +157,15 @@ public class ScmXsFocusSendController extends BaseController {
 	 */
 	@PostMapping(value = "sendApply")
 	@ApiOperation(value = "集中发货申请", httpMethod = "POST", notes = "选择经销商后,展示选中合同,点击新增按钮添加集中发货商品,添加完成后,提交时需要封装至集中发货对象中一起提交")
-	@Workflow(flowKey = "jzfhlc", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//	@Workflow(flowKey = "jzfhlc", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {"totalPrice","creditPrice"})
 	public CommonResult<String> sendApply(
 			@ApiParam(name = "ScmXsFocusSend", value = "经销商协议合作名单总表对象", required = true) @RequestBody ScmXsFocusSend scmXsFocusSend,
 			HttpServletRequest request) throws Exception {
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsFocusSend.setEntryPeople(fullname);
+		scmXsFocusSend.setCreateDate(new Date());
+		scmXsFocusSend.setCreatePerson(fullname);
 		scmXsFocusSendManager.sendApply(scmXsFocusSend);
 		return new CommonResult<String>("申请成功");
 	}
@@ -187,20 +201,18 @@ public class ScmXsFocusSendController extends BaseController {
 	
 	/**
 	 * 集中发货合同明细页面
-	 * @param id
+	 * @param
 	 * @return
 	 * @throws Exception
 	 * ModelAndView
 	 */
-	@GetMapping(value = "/getProduct/{commerceCode}/{ownerId}/{agreementSummaryId}")
+	@GetMapping(value = "/getProduct/{commerceCode}/{ownerId}/{agreementSummaryId}/{medicineType}")
 	@ApiOperation(value = "获取集中发货可发货商品列表", httpMethod = "GET", notes = "获取集中发货可发货商品列表")
 	public CommonResult<List<ScmXsBigContractProductSum>> getProduct(@ApiParam(name = "commerceCode", value = "商业编号", required = true)@PathVariable String commerceCode,
 			@ApiParam(name = "ownerId", value = "货主ID", required = true)@PathVariable String ownerId,
-			@ApiParam(name = "agreementSummaryId", value = "协议ID", required = true)@PathVariable String agreementSummaryId)throws Exception {
-		List<ScmXsBigContractProductSum> product = scmXsFocusSendManager.getProduct(commerceCode,ownerId,agreementSummaryId);
+			@ApiParam(name = "agreementSummaryId", value = "协议ID", required = true)@PathVariable String agreementSummaryId,
+			@ApiParam(name = "medicineType", value = "协议ID", required = true)@PathVariable String medicineType)throws Exception {
+		List<ScmXsBigContractProductSum> product = scmXsFocusSendManager.getProduct(commerceCode,ownerId,agreementSummaryId,medicineType);
 		return new CommonResult<List<ScmXsBigContractProductSum>>(true,"获取成功",product) ;
 	}
-	
-	
-	
 }

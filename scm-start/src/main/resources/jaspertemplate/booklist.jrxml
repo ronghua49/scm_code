@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="booklist" pageWidth="557" pageHeight="842" columnWidth="557" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="87be4882-81d3-46af-93b6-51c7637e78aa">
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="j" class="java.lang.Long"/>
+	<field name="entrustCode" class="java.lang.String"/>
+	<field name="entrustName" class="java.lang.String"/>
+	<field name="entrustValidity" class="java.lang.String"/>
+	<field name="IDNumber" class="java.lang.String"/>
+	<field name="idValidity" class="java.lang.String"/>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement x="0" y="0" width="556" height="20" uuid="75efa745-ce90-4e52-ab2a-35b93b0ae94b"/>
+				<textElement textAlignment="Center">
+					<font fontName="黑体" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[委托书信息]]></text>
+			</staticText>
+			<line>
+				<reportElement x="555" y="0" width="1" height="21" uuid="b4e51100-9884-456f-b0b6-344e1fa69309"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement stretchType="ElementGroupHeight" x="30" y="-1" width="60" height="30" uuid="ee63be30-a45d-4d09-b675-f35670ea5c0b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[委托书编号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ElementGroupHeight" x="180" y="-1" width="100" height="30" uuid="d6a5731a-b52e-40ea-98ad-184c997cd6f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[委托书名称]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="90" y="-1" width="90" height="30" uuid="705a5c11-a936-48cd-a7bb-b9bf3b516fbc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrustCode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="280" y="-1" width="100" height="30" uuid="6e612244-563c-4a93-8cef-721f635d061c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrustName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="ElementGroupHeight" x="381" y="-1" width="104" height="30" uuid="2e5417b7-d27f-4f94-8b38-abce291aad6c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[委托书有效期至]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="485" y="-1" width="70" height="30" uuid="c13b3071-76ee-4d91-ae2e-2e44016bc59b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entrustValidity}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-1" width="555" height="1" uuid="79502043-fb20-48db-8561-95595172bb99"/>
+			</line>
+			<line>
+				<reportElement x="1" y="-21" width="554" height="1" uuid="0d6927a6-8611-45e1-91e3-09f73729648f"/>
+			</line>
+			<staticText>
+				<reportElement stretchType="ElementGroupHeight" x="30" y="29" width="60" height="30" uuid="59fa02cf-182d-44b3-9f5a-0c9b943952a9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[身份证号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ElementGroupHeight" x="180" y="29" width="100" height="30" uuid="07c6f370-dfbc-4504-b700-2262808c5036"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[身份证有效期]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="90" y="29" width="90" height="30" uuid="06f5ec74-ad9e-4150-b5a3-a4767e996114"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IDNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="281" y="29" width="274" height="30" uuid="636046e2-e405-4826-b024-92f22424c4ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idValidity}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="30" y="29" width="525" height="1" uuid="6c01bc6f-5a72-4c45-8616-1de571c6e6e3"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="30" y="0" width="1" height="59" uuid="1d2b4400-9005-445d-85cd-fc2395a10db4"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="89" y="0" width="1" height="59" uuid="3ca14a05-410d-4a18-94e4-a281d6509341"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="179" y="0" width="1" height="59" uuid="a116c966-12f2-46a1-98b1-6e5dd1d285a4"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="280" y="0" width="1" height="59" uuid="fa786087-3675-485d-81ba-cd014b6a77b3"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="555" y="0" width="1" height="59" uuid="fd81afb7-cb22-4c9a-8724-a2689eb8fb62"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="0" y="0" width="1" height="59" uuid="04760f46-b16c-4ce0-8c48-a60111a07953"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="380" y="0" width="1" height="29" uuid="92374f7a-bece-4c2b-9d9d-b671eb220784"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="485" y="0" width="1" height="29" uuid="cf299555-eccb-4460-aaf7-90ceadf4ca79"/>
+			</line>
+			<line>
+				<reportElement stretchType="ElementGroupHeight" x="0" y="59" width="556" height="1" uuid="d0fe379b-5065-43e3-bd29-8d07316b1c71"/>
+			</line>
+			<line>
+				<reportElement x="0" y="-21" width="1" height="20" uuid="c883ea53-1f10-4770-8289-4aa85c867456"/>
+			</line>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="0" y="-1" width="30" height="61" uuid="5089ba7f-6354-4e72-844d-10e4e1a28dc9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{j}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

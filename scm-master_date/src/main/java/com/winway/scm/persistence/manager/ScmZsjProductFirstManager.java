@@ -1,5 +1,7 @@
 package com.winway.scm.persistence.manager;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -29,5 +31,9 @@ public interface ScmZsjProductFirstManager extends Manager<String, ScmZsjProduct
 	ScmZsjProductFirst getProductFirstByApprovalId(String approvalId);
 
 	void updateSendApply(ScmZsjProductFirst scmZsjProductFirst);
+
+	String startOrStop(String id);
+
+	void productToWms(List<ScmZsjProductFirst> list);
 
 }

@@ -19,6 +19,8 @@
     	<module>scm-market</module>
     	<module>scm-start</module>
     	<module>scm-shipments</module>
-        <module>erueka</module>
-    </modules>
+		<module>scm-gsp</module>
+		<module>scm-inventory</module>
+		<module>scm-log_record</module>
+	</modules>
 </project>

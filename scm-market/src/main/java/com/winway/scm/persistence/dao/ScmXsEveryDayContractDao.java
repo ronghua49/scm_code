@@ -1,4 +1,6 @@
 package com.winway.scm.persistence.dao;
+import java.util.Map;
+
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmXsEveryDayContract;
 
@@ -18,4 +20,6 @@ public interface ScmXsEveryDayContractDao extends MyBatisDao<String, ScmXsEveryD
     ScmXsEveryDayContract getContractByApprovalId(String approvalId);
 
 	ScmXsEveryDayContract getByApplyId(String applyId);
+
+	Map getScmXsEverydaycontractPrint(String id);
 }

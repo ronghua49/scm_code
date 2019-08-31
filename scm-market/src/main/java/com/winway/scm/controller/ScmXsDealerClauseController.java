@@ -1,5 +1,6 @@
 package com.winway.scm.controller;
 
+import com.hotent.base.feign.UCFeignService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -7,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +48,7 @@ import com.hotent.base.util.StringUtil;
 public class ScmXsDealerClauseController extends BaseController{
 	@Resource
 	ScmXsDealerClauseManager scmXsDealerClauseManager;
-	
+
 	/**
 	 * 经销商协议合作条款表列表(分页条件查询)数据
 	 * @param request
@@ -141,9 +143,9 @@ public class ScmXsDealerClauseController extends BaseController{
 	 */
 	@GetMapping(value = "/getYears/{ownerId}")
 	@ApiOperation(value="根据货主ID分销商协议合作条款年度下拉框列表",httpMethod="GET",notes="")
-	public CommonResult<List<ScmXsDealerClause>> getYears(@ApiParam(name="ownerId",value="货主ID", required = true)@PathVariable String ownerId) {
-		List<ScmXsDealerClause> scmXsDealerClause = scmXsDealerClauseManager.getYears(ownerId);
-		return new CommonResult<List<ScmXsDealerClause>>(true, "year", scmXsDealerClause);
+	public CommonResult<List<Map<String, Object>>> getYears(@ApiParam(name="ownerId",value="货主ID", required = true)@PathVariable String ownerId) {
+		List<Map<String, Object>> scmXsDealerClause = scmXsDealerClauseManager.getYears(ownerId);
+		return new CommonResult<List<Map<String, Object>>>(true, "year", scmXsDealerClause);
 	}
 	
 	/**

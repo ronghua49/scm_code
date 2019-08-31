@@ -17,5 +17,7 @@ import com.winway.scm.model.ScmZsjProductLine;
 public interface ScmZsjProductLineManager extends Manager<String, ScmZsjProductLine>{
 
 	String changeState(String id);
+
+	void updateSyn(String id);
 	
 }

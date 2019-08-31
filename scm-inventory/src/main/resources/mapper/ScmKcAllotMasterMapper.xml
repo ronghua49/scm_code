@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmKcAllotMasterDao">
+    <resultMap id="ScmKcAllotMaster" type="com.winway.scm.model.ScmKcAllotMaster">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="allotCode" column="allotCode" jdbcType="VARCHAR"/>
+        <result property="outboundArea" column="outboundArea" jdbcType="VARCHAR"/>
+        <result property="outboundCode" column="outboundCode" jdbcType="VARCHAR"/>
+        <result property="outboundDate" column="outboundDate" jdbcType="TIMESTAMP"/>
+        <result property="varietySum" column="varietySum" jdbcType="NUMERIC"/>
+        <result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+        <result property="storageArea" column="storageArea" jdbcType="VARCHAR"/>
+        <result property="storageCode" column="storageCode" jdbcType="VARCHAR"/>
+        <result property="storageDate" column="storageDate" jdbcType="TIMESTAMP"/>
+        <result property="successDate" column="successDate" jdbcType="TIMESTAMP"/>
+        <result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="isToWms" column="isToWms"  jdbcType="VARCHAR"/>
+        <result property="isAffirmWms" column="isAffirmWms"  jdbcType="VARCHAR"/>
+        <result property="isManageSap" column="isManageSap"  jdbcType="VARCHAR"/>
+        <result property="sapManageType" column="sapManageType"  jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmKcAllotMaster">
+		INSERT INTO Scm_Kc_AllotMaster
+		(id,allotCode,outboundArea,
+		outboundCode,outboundDate,varietySum,
+		priceSum,storageArea,storageCode,
+		storageDate,successDate,createPersion,
+		createDate,approvalState,approvalId,
+		isToWms,ownerId,isAffirmWms,isManageSap,sapManageType)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{allotCode,jdbcType=VARCHAR}, #{outboundArea,jdbcType=VARCHAR}, 
+		#{outboundCode,jdbcType=VARCHAR}, #{outboundDate,jdbcType=TIMESTAMP}, #{varietySum,jdbcType=NUMERIC}, 
+		#{priceSum,jdbcType=NUMERIC}, #{storageArea,jdbcType=VARCHAR}, #{storageCode,jdbcType=VARCHAR}, 
+		#{storageDate,jdbcType=TIMESTAMP}, #{successDate,jdbcType=TIMESTAMP}, #{createPersion,jdbcType=VARCHAR}, 
+		#{createDate,jdbcType=TIMESTAMP},#{approvalState,jdbcType=TIMESTAMP},#{approvalId,jdbcType=TIMESTAMP},
+		#{isToWms,jdbcType=VARCHAR},#{ownerId,jdbcType=VARCHAR},#{isAffirmWms,jdbcType=VARCHAR},
+		#{isManageSap,jdbcType=VARCHAR},#{sapManageType,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmKcAllotMaster">
+		SELECT * FROM Scm_Kc_AllotMaster 
+		WHERE 
+		id=#{id}
+	</select>
+	
+    <select id="getByOrderCode" parameterType="java.lang.String" resultMap="ScmKcAllotMaster">
+		SELECT * FROM Scm_Kc_AllotMaster 
+		WHERE 
+		allotCode=#{arg0}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmKcAllotMaster">
+        SELECT * FROM Scm_Kc_AllotMaster
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="getByApprovalState" resultType="com.winway.scm.model.ScmKcAllotMaster">
+        SELECT * FROM Scm_Kc_AllotMaster
+		WHERE
+		approvalId=#{approvalId}
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmKcAllotMaster">
+		UPDATE Scm_Kc_AllotMaster SET
+		allotCode=#{allotCode,jdbcType=VARCHAR},
+		outboundArea=#{outboundArea,jdbcType=VARCHAR},
+		outboundCode=#{outboundCode,jdbcType=VARCHAR},
+		outboundDate=#{outboundDate,jdbcType=TIMESTAMP},
+		varietySum=#{varietySum,jdbcType=NUMERIC},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		storageArea=#{storageArea,jdbcType=VARCHAR},
+		storageCode=#{storageCode,jdbcType=VARCHAR},
+		storageDate=#{storageDate,jdbcType=TIMESTAMP},
+		successDate=#{successDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		approvalState=#{approvalState,jdbcType=TIMESTAMP},
+		approvalId=#{approvalId,jdbcType=TIMESTAMP},
+		isToWms = #{isToWms,jdbcType=VARCHAR},
+		isAffirmWms = #{isAffirmWms,jdbcType=VARCHAR},
+		ownerId= #{ownerId,jdbcType=VARCHAR},
+		sapManageType= #{sapManageType,jdbcType=VARCHAR},
+		isManageSap= #{isManageSap,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Kc_AllotMaster 
+		WHERE
+		id=#{id}
+	</delete>
+
+
+</mapper>

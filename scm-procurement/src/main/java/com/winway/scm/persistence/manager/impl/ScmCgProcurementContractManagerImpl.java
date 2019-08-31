@@ -1,22 +1,23 @@
 package com.winway.scm.persistence.manager.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Service;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
+import com.hotent.base.model.CommonResult;
+import com.winway.purchase.feign.ScmMasterDateFeignService;
 import com.winway.purchase.util.QuarterUtil;
 import com.winway.scm.model.ScmCgContractProduct;
 import com.winway.scm.model.ScmCgProcurementContract;
 import com.winway.scm.persistence.dao.ScmCgContractProductDao;
 import com.winway.scm.persistence.dao.ScmCgProcurementContractDao;
 import com.winway.scm.persistence.manager.ScmCgProcurementContractManager;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -35,6 +36,9 @@ public class ScmCgProcurementContractManagerImpl extends AbstractManagerImpl<Str
 	ScmCgProcurementContractDao scmCgProcurementContractDao;
 	@Resource
 	ScmCgContractProductDao scmCgContractProductDao;
+	@Resource
+	ScmMasterDateFeignService scmMasterDateFeignService;
+
 	@Override
 	protected MyBatisDao<String, ScmCgProcurementContract> getDao() {
 		return scmCgProcurementContractDao;
@@ -104,13 +108,38 @@ public class ScmCgProcurementContractManagerImpl extends AbstractManagerImpl<Str
 	@Override
 	public void endApply(JsonNode jsonNode) {
     	String approvalId = jsonNode.get("instId").asText();
+		String actionName = jsonNode.get("actionName").asText();
     	ScmCgProcurementContract scmCgProcurementContract = scmCgProcurementContractDao.getContractFirstByApprovalId(approvalId);
 		if(scmCgProcurementContract == null) {
 			throw new RuntimeException("未查询到业务数据,处理异常");
 		}
-		//审批状态调整为通过
-		scmCgProcurementContract.setApprovalState("2");
-		scmCgProcurementContractDao.update(scmCgProcurementContract);
+		String endEvent = jsonNode.get("eventType").asText();
+		if ("agree".equals(actionName) && "endEvent".equals(endEvent)) {
+			//审批状态调整为通过
+			scmCgProcurementContract.setApprovalState("2");
+			scmCgProcurementContractDao.update(scmCgProcurementContract);
+		} else if ("agree".equals(actionName)) {
+		} else if ("reject".equals(actionName)) {
+		} else if ("backToStart".equals(actionName)) {
+		} else if ("opposeTrans".equals(actionName)) {
+		} else if ("endProcess".equals(actionName)) {
+			scmCgProcurementContract.setApprovalState("3");
+			scmCgProcurementContractDao.update(scmCgProcurementContract);
+		}
 	}
-	
+
+	@Override
+	public void judgeSupplierValidity(String supplierId) {
+		String inForce = scmMasterDateFeignService.isInForce(supplierId);
+		//解析报文
+		CommonResult<String> stringCommonResult = JSON.parseObject(inForce, new TypeReference<CommonResult<String>>() {
+		});
+		if (stringCommonResult.getState()) {
+			if (stringCommonResult.getValue().equals("false")) {
+				throw new RuntimeException("该供应商证照存在过期，不得签订采购合同");
+			}
+		} else {
+			throw new RuntimeException(stringCommonResult.getMessage());
+		}
+	}
 }

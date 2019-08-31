@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmZsjSupplierFirstDao">
-	<resultMap id="ScmZsjSupplierFirst" type="com.winway.scm.model.ScmZsjSupplierFirst">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="supplierId" column="supplierId" jdbcType="VARCHAR"/>
-		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
-		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
-		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
-		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
-		<result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
-	</resultMap>
-	
-	<insert id="create" parameterType="com.winway.scm.model.ScmZsjSupplierFirst">
+    <resultMap id="ScmZsjSupplierFirst" type="com.winway.scm.model.ScmZsjSupplierFirst">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="supplierId" column="supplierId" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
+        <result property="operatorDate" column="operatorDate" jdbcType="TIMESTAMP"/>
+        <result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="sealStyle" column="sealStyle" jdbcType="VARCHAR"/>
+        <result property="billsStyle" column="billsStyle" jdbcType="VARCHAR"/>
+        <result property="qualityValidity" column="qualityValidity" jdbcType="TIMESTAMP"/>
+        <result property="isPassed" column="isPassed" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmZsjSupplierFirst">
 		INSERT INTO SCM_ZSJ_SupplierFirst
-		(id,supplierId,ownerId,approvalId,approvalState,operatorName,operatorDate)
+		(id,supplierId,ownerId,approvalId,approvalState,operatorName,operatorDate,
+		contactPersion,phone,sealStyle,billsStyle,qualityValidity,isPassed)
 		VALUES 
 		(#{id,jdbcType=VARCHAR}, 
 		#{supplierId,jdbcType=VARCHAR}, 
@@ -21,71 +28,281 @@
 		#{approvalId,jdbcType=VARCHAR}, 
 		#{approvalState,jdbcType=VARCHAR},
 		#{operatorName,jdbcType=VARCHAR},
-		now())
+		now(),
+		#{contactPersion,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{sealStyle,jdbcType=VARCHAR},
+		#{billsStyle,jdbcType=VARCHAR},
+		#{qualityValidity,jdbcType=TIMESTAMP},#{isPassed,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="isSave"   parameterType="java.lang.String" resultMap="ScmZsjSupplierFirst">
-		SELECT * FROM SCM_ZSJ_SupplierFirst 
-		WHERE 
-		<if test="supplierId!=null">
-			supplierId=#{supplierId} and 
-		</if>
-		ownerId=#{ownerId}
-	</select>
-	
-	<select id="getSupplierFirstByApprovalId"   parameterType="java.lang.String" resultMap="ScmZsjSupplierFirst">
+
+    <select id="isSave" parameterType="java.lang.String" resultMap="ScmZsjSupplierFirst">
+        SELECT * FROM SCM_ZSJ_SupplierFirst
+        WHERE
+        <if test="supplierId!=null">
+            supplierId=#{supplierId} and
+        </if>
+        ownerId=#{ownerId}
+    </select>
+
+    <select id="getSupplierFirstByApprovalId" parameterType="java.lang.String" resultMap="ScmZsjSupplierFirst">
 		SELECT * FROM SCM_ZSJ_SupplierFirst 
 		WHERE 
 		approvalId=#{approvalId}
 	</select>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjSupplierFirst">
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmZsjSupplierFirst">
 		SELECT * FROM SCM_ZSJ_SupplierFirst 
 		WHERE 
 		id=#{id}
 	</select>
-	
-	<select id="getSupplierFirstByOwnerIdAndCommerceId"   parameterType="java.lang.String" resultMap="ScmZsjSupplierFirst">
-		SELECT * FROM SCM_ZSJ_SupplierFirst 
-		WHERE 
-		<if test="supplierId!=null">
-			supplierId=#{supplierId} and 
-		</if>
-		ownerId=#{ownerId}
-	</select>
-	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjSupplierFirst">
-		SELECT * FROM SCM_ZSJ_SupplierFirst
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmZsjSupplierFirst">
+
+    <select id="getSupplierFirstByOwnerIdAndCommerceId" parameterType="java.lang.String"
+            resultMap="ScmZsjSupplierFirst">
+        SELECT * FROM SCM_ZSJ_SupplierFirst
+        WHERE
+        <if test="supplierId!=null">
+            supplierId=#{supplierId} and
+        </if>
+        ownerId=#{ownerId}
+    </select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmZsjSupplierFirst">
+        SELECT * FROM SCM_ZSJ_SupplierFirst
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="licenseWaring" resultType="com.winway.scm.model.ScmZsjCommerce">
+        SELECT * FROM v_licencewarning
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="gmplist" resultType="com.winway.scm.model.ScmZsjSupplier">
+        select * from ( SELECT
+        (
+        CASE (
+        DATEDIFF(d.validity, NOW()) > 0
+        )
+        WHEN TRUE THEN
+        "未到期"
+        ELSE
+        "已到期"
+        END
+        ) AS state,
+        b.id,
+        a.supplierName,
+        a.fileCode,
+        a.enterDate,
+        a.enterPersion,
+        a.conpanyPersion,
+        b.ownerId,
+        c.commerceType,
+        c.legalPersion,
+        c.registerCode,
+        c.registerPrice,
+        d.GMPCertificate AS gmp,
+        d.validity
+        FROM
+        scm_zsj_supplier a,
+        scm_zsj_supplierfirst b,
+        scm_zsj_supplierbusiness c,
+        scm_zsj_gmp d
+        where
+        a.id = b.supplierId
+        AND b.id = c.supplierFirstId
+        AND d.supplierFirstId = b.id) a
+        <where>
+            <if test="whereSql!=null">
+                and ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="creditlist" resultType="com.winway.scm.model.ScmZsjSupplier">
+        select * from ( SELECT
+        (
+        CASE (
+        DATEDIFF(d.entrustValidity, NOW()) > 0
+        )
+        WHEN TRUE THEN
+        "未到期"
+        ELSE
+        "已到期"
+        END
+        ) AS state,
+        b.id,
+        a.supplierName,
+        a.fileCode,
+        a.enterDate,
+        a.enterPersion,
+        a.conpanyPersion,
+        b.contactPersion,
+        b.ownerId,
+        c.legalPersion,
+        c.registerCode,
+        c.registerPrice,
+        c.commerceType,
+        d.entrustCode,
+        d.entrustName,
+        d.entrustValidity AS validity,
+        e.managementScope
+        FROM
+        scm_zsj_supplier a,
+        scm_zsj_supplierfirst b,
+        scm_zsj_supplierbusiness c,
+        scm_zsj_supplierentrusebook d,
+        scm_zsj_supplierlicence e
+        where
+        a.id = b.supplierId
+        AND b.id = c.supplierFirstId
+        AND d.supplierFirstId = b.id
+        AND e.supplierFirstId = b.id) a
+        <where>
+            <if test="whereSql!=null">
+                and ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="qlist" resultType="com.winway.scm.model.ScmZsjSupplier">
+        select * from ( SELECT
+        (
+        CASE (
+        DATEDIFF(b.qualityValidity, NOW()) > 0
+        )
+        WHEN TRUE THEN
+        "未到期"
+        ELSE
+        "已到期"
+        END
+        ) AS state,
+        b.id,
+        a.supplierName,
+        a.fileCode,
+        a.enterDate,
+        a.enterPersion,
+        a.conpanyPersion,
+        b.contactPersion,
+        b.ownerId,
+        c.commerceType,
+        c.legalPersion,
+        c.registerCode,
+        c.registerPrice
+        FROM
+        scm_zsj_supplier a,
+        scm_zsj_supplierfirst b,
+        scm_zsj_supplierbusiness c
+        where
+        a.id = b.supplierId
+        AND b.id = c.supplierFirstId) a
+        <where>
+            <if test="whereSql!=null">
+                and ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="getBySupplierId" resultType="com.winway.scm.model.ScmZsjSupplierFirst">
+         SELECT * FROM SCM_ZSJ_SupplierFirst where  supplierId = #{supplierId}
+    </select>
+
+    <select id="printByMainId" resultType="java.util.Map">
+        SELECT
+         a.sealStyle,
+          a.billsStyle, cast(DATE(a.qualityValidity) as char) as qualityValidity,
+         b.`fileCode`,b.supplierName,b.supplierCode,b.conpanyPersion,b.openBank,b.bankCode,b.dutyParagraph,b.registerAddress,
+        c.licenseKey,  DATE_FORMAT(c.validity, '%Y-%m-%d')as validity,c.managementScope,
+        d.registerCode,DATE_FORMAT(d.licenseValidity, '%Y-%m-%d')as licenseValidity,d.legalPersion,d.registerPrice,(CASE d.commerceType WHEN '1' THEN '药品经营企业' WHEN '0' THEN '医疗机构'  ELSE d.commerceType END) AS commerceType, DATE_FORMAT(d.yearReportValidity, '%Y-%m-%d')as  yearReportValidity,
+        e.GMPCertificate as gmpcertificate, DATE_FORMAT(e.validity, '%Y-%m-%d')as  gmpvalidity ,e.certificationScope
+        FROM
+        `scm_zsj_supplierfirst` a left join
+        `scm_zsj_supplier` b  on a.supplierId = b.id left join
+        `scm_zsj_supplierlicence` c on a.id = c.supplierFirstId left join
+        `scm_zsj_supplierbusiness` d on a.id = d.supplierFirstId left join
+        `scm_zsj_gmp` e on a.id = e.supplierFirstId
+        WHERE a.id =#{supplierFirstId}
+    </select>
+    <select id="printEntrustBookByMainId" resultType="java.util.Map">
+        SELECT
+        CAST((@i:=@i+1) AS signed) as j,
+          f.entrustCode,
+          f.entrustName,
+          DATE_FORMAT(f.entrustValidity, '%Y-%m-%d')as entrustValidity ,
+          f.IDNumber,
+          DATE_FORMAT(f.idValidity, '%Y-%m-%d')as idValidity
+        FROM
+          `scm_zsj_supplierfirst` a
+          LEFT JOIN `scm_zsj_supplierentrusebook` f
+            ON a.id = f.supplierFirstId,(SELECT @i:=0) AS j
+        WHERE a.id = #{supplierFirstId}
+    </select>
+    <select id="getAddressByMainId" resultType="java.lang.String">
+        SELECT
+          address
+        FROM
+          scm_zsj_supplierfirst a
+          LEFT JOIN scm_zsj_suppliershipaddress b
+            ON a.id = b.supplierFirstId
+        WHERE a.id = #{id}
+    </select>
+
+
+    <update id="update" parameterType="com.winway.scm.model.ScmZsjSupplierFirst">
 		UPDATE SCM_ZSJ_SupplierFirst SET
 		supplierId=#{supplierId,jdbcType=VARCHAR},
 		ownerId=#{ownerId,jdbcType=VARCHAR},
 		approvalId=#{approvalId,jdbcType=VARCHAR},
 		operatorDate=now(),
+	    operatorName=#{operatorName,jdbcType=VARCHAR},
 		approvalState=#{approvalState,jdbcType=VARCHAR},
-		operatorName=#{operatorName,jdbcType=VARCHAR}
+		contactPersion=#{contactPersion,jdbcType=VARCHAR},
+		phone=#{phone,jdbcType=VARCHAR},
+		sealStyle=#{sealStyle,jdbcType=VARCHAR},
+		billsStyle=#{billsStyle,jdbcType=VARCHAR},
+		qualityValidity=#{qualityValidity,jdbcType=TIMESTAMP},
+		isPassed = #{isPassed,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_ZSJ_SupplierFirst 
 		WHERE
 		id=#{id}
 	</delete>
-	
-	
+
+
 </mapper>

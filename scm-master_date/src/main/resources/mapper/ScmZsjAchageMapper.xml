@@ -4,13 +4,29 @@
 	<resultMap id="ScmZsjAchage" type="com.winway.scm.model.ScmZsjAchage">
 		<id property="id" column="id" jdbcType="VARCHAR"/>
 		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productNum" column="productNum" jdbcType="VARCHAR"/>
 		<result property="achage" column="achage" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="isDelete" column="isDelete" jdbcType="VARCHAR"/>
+		<result property="length" column="length" jdbcType="NUMERIC"/>
+		<result property="wide" column="wide" jdbcType="NUMERIC"/>
+		<result property="high" column="high" jdbcType="NUMERIC"/>
+		<result property="volume" column="volume" jdbcType="NUMERIC"/>
+		<result property="roughWeight" column="roughWeight" jdbcType="NUMERIC"/>
+		<result property="cartonBarcode" column="cartonBarcode" jdbcType="VARCHAR"/>
+		<result property="smallBarcode" column="smallBarcode" jdbcType="VARCHAR"/>
 	</resultMap>
 	<insert id="create" parameterType="com.winway.scm.model.ScmZsjAchage">
 		INSERT INTO Scm_Zsj_Achange
-		(id,productId,achage)
+		(id,productId,achage,productCode,code,isDelete,productNum,length,wide,
+		high,volume,roughWeight,
+		cartonBarcode,smallBarcode)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{achage,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{achage,jdbcType=VARCHAR},
+		#{productCode,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{isDelete,jdbcType=VARCHAR},#{productNum,jdbcType=VARCHAR},#{length,jdbcType=NUMERIC}, #{wide,jdbcType=NUMERIC},
+		#{high,jdbcType=NUMERIC}, #{volume,jdbcType=NUMERIC}, #{roughWeight,jdbcType=NUMERIC},
+		#{cartonBarcode,jdbcType=VARCHAR}, #{smallBarcode,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjAchage">
@@ -23,18 +39,26 @@
 		SELECT * FROM Scm_Zsj_Achange
 		WHERE 
 		productId=#{arg0}
+		and isDelete = 1
+	</select>
+	
+	<select id="getAllByMainId"   parameterType="java.lang.String" resultMap="ScmZsjAchage">
+		SELECT * FROM Scm_Zsj_Achange
+		WHERE 
+		productId=#{arg0}
 	</select>
 	
 	<select id="getByachage"   parameterType="java.lang.String" resultMap="ScmZsjAchage">
 		SELECT * FROM Scm_Zsj_Achange
 		WHERE 
-		productId=#{arg1} AND achage=#{arg0}
+		productId=#{arg1} AND achage=#{arg0} and isDelete = 1
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjAchage">
-		     SELECT a.* FROM (
-    			 SELECT a.id,a.productid,a.achage,b.productCode FROM scm_zsj_achange a
-     		 LEFT JOIN scm_zsj_product b ON a.productId = b.id) a
+		SELECT a.* FROM (			
+    		SELECT a.id,a.productid,a.achage,a.productCode,a.code,a.productNum,
+    		length,wide,high,volume,roughWeight,cartonBarcode,smallBarcode 
+    		FROM scm_zsj_achange a WHERE a.isDelete = 1) a
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}
@@ -47,11 +71,27 @@
 			ORDER BY id DESC
 		</if>
 	</select>
-	
+	<select id="getByCode" resultType="com.winway.scm.model.ScmZsjAchage">
+		SELECT * FROM Scm_Zsj_Achange
+		WHERE
+		code=#{arg0}
+	</select>
+
 	<update id="update" parameterType="com.winway.scm.model.ScmZsjAchage">
 		UPDATE Scm_Zsj_Achange SET
 		productId=#{productId,jdbcType=VARCHAR},
-		achage=#{achage,jdbcType=VARCHAR}
+		achage=#{achage,jdbcType=VARCHAR},
+		productCode = #{productCode,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR},
+		isDelete = #{isDelete,jdbcType=VARCHAR},
+		productNum = #{productNum,jdbcType=VARCHAR},
+		length=#{length,jdbcType=NUMERIC},
+		wide=#{wide,jdbcType=NUMERIC},
+		high=#{high,jdbcType=NUMERIC},
+		volume=#{volume,jdbcType=NUMERIC},
+		roughWeight=#{roughWeight,jdbcType=NUMERIC},
+		cartonBarcode=#{cartonBarcode,jdbcType=VARCHAR},
+		smallBarcode=#{smallBarcode,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

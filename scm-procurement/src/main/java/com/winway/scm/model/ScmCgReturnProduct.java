@@ -51,11 +51,11 @@ public class ScmCgReturnProduct extends BaseModel<String>{
 	protected String manufacturer; 
 	
 	@ApiModelProperty(value="生产日期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	protected java.util.Date producedDate; 
 	
 	@ApiModelProperty(value="有效期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	protected java.util.Date validity; 
 	
 	@ApiModelProperty(value="仓库ID")
@@ -65,14 +65,14 @@ public class ScmCgReturnProduct extends BaseModel<String>{
 	protected String getMoneyWarehouse; 
 	
 	@ApiModelProperty(value="入库日期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	protected java.util.Date inboundDate; 
 	
 	@ApiModelProperty(value="退货数量")
 	protected Integer returnNumber; 
 	
 	@ApiModelProperty(value="退货日期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	protected java.util.Date returnDate; 
 	
 	@ApiModelProperty(value="单价")
@@ -94,13 +94,138 @@ public class ScmCgReturnProduct extends BaseModel<String>{
 	protected String proReturnId; 
 	
 	@ApiModelProperty(value="退货单Id")
-	protected String returnId; 
-	
-	@ApiModelProperty(value="退货单号")
-	protected String returnCode; 
-	
-	
-	public void setId(String id) {
+	protected String returnId;
+
+	 @ApiModelProperty(value="主表Id")
+	 protected String masterId;
+
+	 @ApiModelProperty(value="退货单号")
+	protected String returnCode;
+
+	 @ApiModelProperty(value="当前库存数量")
+	 protected Integer currInventoryNum;
+
+	 @ApiModelProperty(value="通用名")
+	 protected String commonName;
+	 @ApiModelProperty(value="规格")
+	 protected String productState;
+	 @ApiModelProperty(value="商品编码")
+	 protected String productCode;
+	 @ApiModelProperty(value="剂型")
+	 protected String agentType;
+	 @ApiModelProperty(value="批准文号")
+	 protected String approvalCode;
+	 @ApiModelProperty(value="经营范围")
+	 protected String businessScope;
+	 @ApiModelProperty(value="药品类型")
+	 protected String medicineClassify;
+
+	 @ApiModelProperty(value="件装量")
+	 protected String achage;
+
+	 @ApiModelProperty(value="商品字码")
+	 protected String code;
+
+	 @ApiModelProperty(value="商品订单编号")
+	 protected String procurementCode;
+
+	 public String getProcurementCode() {
+		 return procurementCode;
+	 }
+
+	 public void setProcurementCode(String procurementCode) {
+		 this.procurementCode = procurementCode;
+	 }
+
+	 public String getMasterId() {
+		 return masterId;
+	 }
+
+	 public void setMasterId(String masterId) {
+		 this.masterId = masterId;
+	 }
+
+	 public String getCommonName() {
+		 return commonName;
+	 }
+
+	 public void setCommonName(String commonName) {
+		 this.commonName = commonName;
+	 }
+
+	 public String getAchage() {
+		 return achage;
+	 }
+
+	 public void setAchage(String achage) {
+		 this.achage = achage;
+	 }
+
+	 public String getCode() {
+		 return code;
+	 }
+
+	 public void setCode(String code) {
+		 this.code = code;
+	 }
+
+	 public String getProductState() {
+		 return productState;
+	 }
+
+	 public void setProductState(String productState) {
+		 this.productState = productState;
+	 }
+
+	 public String getProductCode() {
+		 return productCode;
+	 }
+
+	 public void setProductCode(String productCode) {
+		 this.productCode = productCode;
+	 }
+
+	 public String getAgentType() {
+		 return agentType;
+	 }
+
+	 public void setAgentType(String agentType) {
+		 this.agentType = agentType;
+	 }
+
+	 public String getApprovalCode() {
+		 return approvalCode;
+	 }
+
+	 public void setApprovalCode(String approvalCode) {
+		 this.approvalCode = approvalCode;
+	 }
+
+	 public String getBusinessScope() {
+		 return businessScope;
+	 }
+
+	 public void setBusinessScope(String businessScope) {
+		 this.businessScope = businessScope;
+	 }
+
+	 public String getMedicineClassify() {
+		 return medicineClassify;
+	 }
+
+	 public void setMedicineClassify(String medicineClassify) {
+		 this.medicineClassify = medicineClassify;
+	 }
+
+	 public Integer getCurrInventoryNum() {
+		 return currInventoryNum;
+	 }
+
+	 public void setCurrInventoryNum(Integer currInventoryNum) {
+		 this.currInventoryNum = currInventoryNum;
+	 }
+
+	 public void setId(String id) {
 		this.id = id;
 	}
 	

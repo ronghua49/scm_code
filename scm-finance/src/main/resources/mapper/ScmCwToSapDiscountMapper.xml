@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwToSapDiscountDao">
+	<resultMap id="ScmCwToSapDiscount" type="com.winway.scm.model.ScmCwToSapDiscount">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="shipmentsdatailmasterId" column="shipmentsdatailmasterId" jdbcType="VARCHAR"/>
+		<result property="shipmentsCode" column="shipmentsCode" jdbcType="VARCHAR"/>
+		<result property="discountJson" column="discountJson" jdbcType="VARCHAR"/>
+		<result property="isToSap" column="isToSap" jdbcType="VARCHAR"/>
+		<result property="isAffirmToSap" column="isAffirmToSap" jdbcType="VARCHAR"/>
+		<result property="sapCode" column="sapCode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwToSapDiscount">
+		INSERT INTO scm_cw_tosapdiscount
+		(id,shipmentsdatailmasterId,shipmentsCode,
+		discountJson,isToSap,isAffirmToSap,
+		sapCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{shipmentsdatailmasterId,jdbcType=VARCHAR}, #{shipmentsCode,jdbcType=VARCHAR}, 
+		#{discountJson,jdbcType=VARCHAR}, #{isToSap,jdbcType=VARCHAR}, #{isAffirmToSap,jdbcType=VARCHAR},
+		#{sapCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwToSapDiscount">
+		SELECT * FROM scm_cw_tosapdiscount 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByShipId"   parameterType="java.lang.String" resultMap="ScmCwToSapDiscount">
+		SELECT * FROM scm_cw_tosapdiscount 
+		WHERE 
+		shipmentsdatailmasterId=#{arg0} limit 1
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwToSapDiscount">
+		SELECT * FROM scm_cw_tosapdiscount
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwToSapDiscount">
+		UPDATE scm_cw_tosapdiscount SET
+		shipmentsdatailmasterId=#{shipmentsdatailmasterId,jdbcType=VARCHAR},
+		shipmentsCode=#{shipmentsCode,jdbcType=VARCHAR},
+		discountJson=#{discountJson,jdbcType=VARCHAR},
+		isToSap=#{isToSap,jdbcType=VARCHAR},
+		isAffirmToSap=#{isAffirmToSap,jdbcType=VARCHAR},
+		sapCode=#{sapCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_cw_tosapdiscount 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

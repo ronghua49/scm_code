@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fffff16d-682a-4016-819b-b66a569b21b4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="sublist" class="java.util.List"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="desc" class="java.lang.String"/>
+	<parameter name="tmpdir" class="java.lang.String">
+		<parameterDescription><![CDATA[TMP_DIR]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="osub1" class="java.lang.String"/>
+	<field name="osub2" class="java.lang.String"/>
+	<background>
+		<band height="328" splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="150" y="0" width="320" height="30" uuid="d8455ed5-78e4-4bc9-badf-93096f35c9f1"/>
+				<textElement>
+					<font fontName="宋体"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="222" y="40" width="254" height="30" uuid="fc124e0c-89a7-45df-afc8-40f79a1c0ee7"/>
+				<textElement>
+					<font fontName="宋体"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{desc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="40" width="100" height="30" uuid="869daadc-1e6c-4996-a53a-557947ad06bc"/>
+				<textElement>
+					<font fontName="宋体"/>
+				</textElement>
+				<text><![CDATA[描述]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="100" height="30" uuid="51c192cd-a271-4419-b174-20f751aac805"/>
+				<textElement>
+					<font fontName="宋体"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{osub1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="101" y="0" width="100" height="30" uuid="db44604f-fb58-4fb5-952d-68275f854b25"/>
+				<textElement>
+					<font fontName="宋体"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{osub2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="333">
+			<subreport>
+				<reportElement x="3" y="6" width="548" height="84" uuid="62559aff-653c-4eda-89c4-50bcd0395a69"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{sublist})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{tmpdir}+"sub.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="2" y="90" width="478" height="40" uuid="f0a10ec6-9333-4980-984b-40e57f0845b3"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["sub235.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

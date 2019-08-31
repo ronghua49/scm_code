@@ -16,19 +16,24 @@
 		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
 		<result property="marketingWay" column="marketingWay" jdbcType="VARCHAR"/>
 		<result property="dateOfSigning" column="dateOfSigning" jdbcType="TIMESTAMP"/>
-	</resultMap>
+		<result property="entryPeople" column="entryPeople" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPerson" column="createPerson" jdbcType="VARCHAR"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+ 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmXsFocusSend">
 		INSERT INTO SCM_XS_FocusSend
 		(id,FocusSendCode,specialOpinion,ownerId,dealerClauseId,reduceContractTime,approvalId,approvalState,
-		ownerName,commerceFirstId,commerceName,commerceCode,marketingWay,dateOfSigning)
+		ownerName,commerceFirstId,commerceName,commerceCode,marketingWay,dateOfSigning,entryPeople,createDate,createPerson,medicineType)
 		VALUES 
 		(#{id,jdbcType=VARCHAR}, #{focusSendCode,jdbcType=VARCHAR}, #{specialOpinion,jdbcType=VARCHAR},
 		 #{ownerId,jdbcType=VARCHAR}, #{dealerClauseId,jdbcType=VARCHAR}, #{reduceContractTime,jdbcType=VARCHAR},
 		 #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR},
 		 #{ownerName,jdbcType=VARCHAR}, #{commerceFirstId,jdbcType=VARCHAR},
 		 #{commerceName,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR},
-		 #{marketingWay,jdbcType=VARCHAR}, #{dateOfSigning,jdbcType=TIMESTAMP})
+		 #{marketingWay,jdbcType=VARCHAR}, #{dateOfSigning,jdbcType=TIMESTAMP},
+		 #{entryPeople,jdbcType=TIMESTAMP},#{createDate,jdbcType=TIMESTAMP},#{createPerson,jdbcType=VARCHAR},#{medicineType,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsFocusSend">
@@ -38,7 +43,7 @@
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmXsFocusSend">
-		SELECT * FROM SCM_XS_FocusSend
+		SELECT a.*,b.contactPersion from SCM_XS_FocusSend a  left join scm_zsj_commerceshipaddress b on a.commerceFirstId = b.commerceFirstId
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}
@@ -50,6 +55,7 @@
 		<if test="orderBySql==null">
 			ORDER BY id DESC
 		</if>
+
 	</select>
 	
 	<update id="update" parameterType="com.winway.scm.model.ScmXsFocusSend">
@@ -66,7 +72,11 @@
 		commerceName=#{commerceName,jdbcType=VARCHAR},
 		commerceCode=#{commerceCode,jdbcType=VARCHAR},
 		marketingWay=#{marketingWay,jdbcType=VARCHAR},
-		dateOfSigning=#{dateOfSigning,jdbcType=TIMESTAMP}
+		dateOfSigning=#{dateOfSigning,jdbcType=TIMESTAMP},
+		entryPeople = #{entryPeople,jdbcType=TIMESTAMP},
+		createDate = #{createDate,jdbcType=TIMESTAMP},
+		createPerson = #{createPerson,jdbcType=VARCHAR},
+		medicineType = #{medicineType,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

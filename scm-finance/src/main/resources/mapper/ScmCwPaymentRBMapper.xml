@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwPaymentRBDao">
+    <resultMap id="ScmCwPaymentRB" type="com.winway.scm.model.ScmCwPaymentRB">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+        <result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="VARCHAR"/>
+        <result property="section" column="section" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="createPsersion" column="createPsersion" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmCwPaymentRB">
+		INSERT INTO Scm_Cw_PaymentRB
+		(id,businessDivision,province,businessDivisionId,provinceId,`year`,`section`,ownerId,createPsersion,createDate,approvalState,approvalId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{section,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{createPsersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{approvalState,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmCwPaymentRB">
+		SELECT * FROM Scm_Cw_PaymentRB 
+		WHERE 
+		id=#{id}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmCwPaymentRB">
+        SELECT * FROM Scm_Cw_PaymentRB
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    <select id="getByParam" resultType="com.winway.scm.model.ScmCwPaymentRB">
+        SELECT * FROM Scm_Cw_PaymentRB
+        <where>
+            <if test="ownerId!=null and ownerId!=''">
+                and ownerId = #{ownerId}
+            </if>
+            <if test="businessDivisionId!=null and businessDivisionId!=''">
+                and businessDivisionId = #{businessDivisionId}
+            </if>
+            <if test="provinceId!=null and provinceId!=''">
+                and provinceId = #{provinceId}
+            </if>
+            <if test="year1!=null and year1!=''">
+                and `year` = #{year1}
+            </if>
+            <if test="section!=null and section!=''">
+                and `section` = #{section}
+            </if>
+        </where>
+    </select>
+    <select id="getByApprovalState" resultType="com.winway.scm.model.ScmCwPaymentRB">
+		SELECT * FROM Scm_Cw_PaymentRB
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmCwPaymentRB">
+		UPDATE Scm_Cw_PaymentRB SET
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		`year`=#{year,jdbcType=VARCHAR},
+		`section`=#{section,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		createPsersion=#{createPsersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Cw_PaymentRB 
+		WHERE
+		id=#{id}
+	</delete>
+
+
+</mapper>

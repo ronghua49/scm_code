@@ -1,5 +1,6 @@
 package com.winway.scm.model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
@@ -101,9 +102,70 @@ public class ScmXsDealerClause extends BaseModel<String>{
 	protected int lastTheApplication; 
 	
 	@ApiModelProperty(value="实际级别")
-	protected String actualLevel; 
-	
-	//主数据
+	protected String actualLevel;
+
+	 @ApiModelProperty(value="录入人")
+	 protected String  createPerson;
+
+	 @ApiModelProperty(value="年度")
+	 protected String  year;
+
+
+	 @ApiModelProperty(value="录入时间")
+	 @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+	 protected Date createDate;
+
+	 @ApiModelProperty(value="协议付款方式")
+	 List<ScmXsDealerPayStyle> scmXsDealerPayStyleList = new ArrayList<>();
+
+
+	 @ApiModelProperty(value="协议id")
+	 protected String  dealerclauseId;
+
+
+
+
+	 public String getYear() {
+		 return year;
+	 }
+
+	 public void setYear(String year) {
+		 this.year = year;
+	 }
+
+	 public String getDealerclauseId() {
+		 return dealerclauseId;
+	 }
+
+	 public void setDealerclauseId(String dealerclauseId) {
+		 this.dealerclauseId = dealerclauseId;
+	 }
+
+	 public List<ScmXsDealerPayStyle> getScmXsDealerPayStyleList() {
+		 return scmXsDealerPayStyleList;
+	 }
+
+	 public void setScmXsDealerPayStyleList(List<ScmXsDealerPayStyle> scmXsDealerPayStyleList) {
+		 this.scmXsDealerPayStyleList = scmXsDealerPayStyleList;
+	 }
+
+	 public String getCreatePerson() {
+		 return createPerson;
+	 }
+
+	 public void setCreatePerson(String createPerson) {
+		 this.createPerson = createPerson;
+	 }
+
+	 public Date getCreateDate() {
+		 return createDate;
+	 }
+
+	 public void setCreateDate(Date createDate) {
+		 this.createDate = createDate;
+	 }
+
+	 //主数据
 	@ApiModelProperty(value="主表数据Id")
 	protected String masterId; 
 	
@@ -258,7 +320,7 @@ public class ScmXsDealerClause extends BaseModel<String>{
 	
 	/**
 	 * 返回 协议生效日期
-	 * @return
+	 * @returnscm/scmFhShipmentsDatail/v1/firstList
 	 */
 	public java.util.Date getAgreementStartDate() {
 		return this.AgreementStartDate;

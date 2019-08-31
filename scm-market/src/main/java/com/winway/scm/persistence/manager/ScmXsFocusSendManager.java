@@ -22,9 +22,9 @@ import com.winway.scm.model.ScmXsFocusSend;
  */
 public interface ScmXsFocusSendManager extends Manager<String, ScmXsFocusSend>{
 
-	List<ScmXsBigContractProductSum> getProduct(String commerceCode, String ownerId, String agreementSummaryId) throws IOException;
+	List<ScmXsBigContractProductSum> getProduct(String commerceCode, String ownerId, String agreementSummaryId, String medicineType) throws IOException;
 
-	void sendApply(ScmXsFocusSend scmXsFocusSend);
+	void sendApply(ScmXsFocusSend scmXsFocusSend) throws Exception;
 
 	void endApply(JsonNode jsonNode);
 

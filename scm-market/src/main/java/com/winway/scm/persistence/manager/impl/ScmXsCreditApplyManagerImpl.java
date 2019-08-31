@@ -1,9 +1,13 @@
 package com.winway.scm.persistence.manager.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.winway.purchase.feign.ScmMasterDateFeignService;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -33,6 +37,9 @@ import com.winway.scm.persistence.manager.ScmXsCreditApplyManager;
 public class ScmXsCreditApplyManagerImpl extends AbstractManagerImpl<String, ScmXsCreditApply> implements ScmXsCreditApplyManager{
 	@Resource
 	ScmXsCreditApplyDao scmXsCreditApplyDao;
+	@Resource
+	ScmMasterDateFeignService  scmMasterDateFeignService;
+
 	@Override
 	protected MyBatisDao<String, ScmXsCreditApply> getDao() {
 		return scmXsCreditApplyDao;
@@ -51,15 +58,17 @@ public class ScmXsCreditApplyManagerImpl extends AbstractManagerImpl<String, Scm
 	}
 	@Override
 	public List<ScmXsCreditApply> getYears(String ownerId) {
-		// TODO Auto-generated method stub
 		List<ScmXsCreditApply> scmXsCreditApply = scmXsCreditApplyDao.getYears(ownerId);
 		return scmXsCreditApply;
 	}
 	@Override
 	public ScmXsCreditApply getStatisticalDate(String commerceId,String ownerId) {
 		ScmXsCreditApply sxca = new ScmXsCreditApply();
-		sxca.setBeforeYearPrice(0);
-		sxca.setLastYearPrice(0);
+		String history = scmMasterDateFeignService.getShipmentsHistory(commerceId,ownerId);
+		Map<String, Integer> map = JSON.parseObject(history, new TypeReference<Map<String, Integer>>() {
+		});
+		sxca.setBeforeYearPrice(map.get("beforeYearPrice"));
+		sxca.setLastYearPrice(map.get("lastYearPrice"));
 		ScmXsCreditApply selectLastTimePrice = scmXsCreditApplyDao.selectLastTimePrice(commerceId,ownerId);
 		if(selectLastTimePrice == null) {
 			sxca.setLastTimePrice(0);

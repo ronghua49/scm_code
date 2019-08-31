@@ -18,17 +18,25 @@
 		<result property="operatorId" column="operatorId" jdbcType="VARCHAR"/>
 		<result property="operatorName" column="operatorName" jdbcType="VARCHAR"/>
 		<result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
-	</resultMap>
-	
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
+		<result property="warehouseCode" column="warehouseCode" jdbcType="VARCHAR"/>
+		<result property="getMoneyWarehouse" column="getMoneyWarehouse" jdbcType="VARCHAR"/>
+        <result property="isManageSap" column="isManageSap" jdbcType="VARCHAR"/>
+    </resultMap>
+
 	<insert id="create" parameterType="com.winway.scm.model.ScmCgProReplacementOrder">
 		INSERT INTO SCM_CG_ProReplacementOrder
-		(id,contractId,orderId,ReplacementOrderCode,speciesSum,productSum,sumPrice,currency,orderDate,isToWMS,approvalId,approvalState,ownerId,operatorId,operatorName,contractCode)
+		(id,contractId,orderId,ReplacementOrderCode,speciesSum,productSum,sumPrice,currency,orderDate,isToWMS,approvalId,approvalState,ownerId,operatorId,operatorName,contractCode,memo,isAffirmWms,warehouseCode,getMoneyWarehouse,isManageSap)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{contractId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{ReplacementOrderCode,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, #{productSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{currency,jdbcType=VARCHAR}, #{orderDate,jdbcType=TIMESTAMP}, #{isToWMS,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{contractId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{ReplacementOrderCode,jdbcType=VARCHAR}, #{speciesSum,jdbcType=NUMERIC}, #{productSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, #{currency,jdbcType=VARCHAR}, #{orderDate,jdbcType=TIMESTAMP}, #{isToWMS,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR},#{memo,jdbcType=VARCHAR},#{isAffirmWms,jdbcType=VARCHAR},#{warehouseCode,jdbcType=VARCHAR},#{getMoneyWarehouse,jdbcType=VARCHAR},#{isManageSap,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgProReplacementOrder">
-		SELECT * FROM SCM_CG_ProReplacementOrder 
+		SELECT * FROM (
+			SELECT a.*,b.supplier,b.`deliveryDate`,b.getTicket FROM scm_cg_proreplacementorder a
+		LEFT JOIN scm_cg_procurementorder b ON a.orderId = b.id
+		)a
 		WHERE 
 		id=#{id}
 	</select>
@@ -40,7 +48,16 @@
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmCgProReplacementOrder">
-		SELECT * FROM SCM_CG_ProReplacementOrder
+		SELECT * FROM (
+		SELECT
+		a.*, b.supplier,
+		b.deliveryDate,
+
+		b.getTicket
+		FROM
+		scm_cg_proreplacementorder a
+		LEFT JOIN scm_cg_procurementorder b ON a.orderId = b.id
+		)a
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}
@@ -70,7 +87,12 @@
 		ownerId=#{ownerId,jdbcType=VARCHAR},
 		operatorId=#{operatorId,jdbcType=VARCHAR},
 		operatorName=#{operatorName,jdbcType=VARCHAR},
-		contractCode=#{contractCode,jdbcType=VARCHAR}
+		contractCode=#{contractCode,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		isAffirmWms=#{isAffirmWms,jdbcType=VARCHAR},
+		warehouseCode = #{warehouseCode,jdbcType=VARCHAR},
+		getMoneyWarehouse = #{getMoneyWarehouse,jdbcType=VARCHAR},
+		isManageSap=#{isManageSap,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -86,5 +108,27 @@
 		WHERE 
 		approvalId=#{approvalId}
 	</select>
-	
+	<select id="getProOrderFirstByCode"   parameterType="java.lang.String" resultMap="ScmCgProReplacementOrder">
+		SELECT * FROM SCM_CG_ProReplacementOrder 
+		WHERE 
+		replacementordercode=#{orderCode} LIMIT 1
+	</select>
+	<select id="getProReplacementOrderById"   parameterType="java.lang.String" resultType="Map">
+	  select * from
+		(
+		    SELECT  a.id,a.`ReplacementOrderCode` AS replacementOrderCode,a.speciesSum AS speciesSum,
+			        a.productSum AS productSum,a.sumPrice AS sumPrice,a.currency AS currency,a.ownerId AS ownerId,
+			        b.*
+			  FROM `scm_cg_proreplacementorder` a
+			        LEFT JOIN 
+			        (
+			          SELECT aa.id as orderId,aa.`procurementCode` AS procurementCode,bb.supplierCode AS supplierCode,aa.supplier AS supplier,aa.contractCode AS contractCode,
+			                 aa.orderDate AS orderDate,aa.getTicket AS getTicket,aa.deliveryDate AS deliveryDate,
+			                 aa.warehouseCode AS getMoneyWarehouse 
+			               FROM
+					    `scm_cg_procurementorder` aa
+					     LEFT JOIN `scm_zsj_supplier` bb ON aa.supplierId = bb.id
+			        ) b ON a.orderId = b.orderId
+		) t where id = #{id} LIMIT 1
+	</select>
 </mapper>

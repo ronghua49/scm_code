@@ -18,11 +18,11 @@ import com.winway.scm.model.ScmCwBlend;
  */
 public interface ScmCwBlendManager extends Manager<String, ScmCwBlend>{
 
-	String cancel(ScmCwBlend blend);
+	String cancel(String id);
 
 	String charge(List<ScmCwBlend> scmCwBlend, String fullname);
 
-	String giveCharge(String[] ids, String fullname);
+	String giveCharge(String id, String fullname);
 
 	
 	

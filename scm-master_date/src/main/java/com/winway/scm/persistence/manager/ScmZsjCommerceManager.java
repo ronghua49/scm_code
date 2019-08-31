@@ -2,6 +2,7 @@ package com.winway.scm.persistence.manager;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
@@ -36,7 +37,7 @@ public interface ScmZsjCommerceManager extends Manager<String, ScmZsjCommerce>{
 
 	PageList<ScmZsjCommerce> listCommerceAcceptTS(QueryFilter queryFilter);
 
-	List<ScmZsjCommerce> downBoxApplySuccess(String ownerId);
+	List<ScmZsjCommerce> downBoxApplySuccess(String ownerId,String businessDivisionId);
 
 	PageList<ScmZsjCommerce> agreementSendApplySuccessList(QueryFilter queryFilter);
 
@@ -44,5 +45,19 @@ public interface ScmZsjCommerceManager extends Manager<String, ScmZsjCommerce>{
 
 	String findByOwnerId(String ownerId);
 
-	
+	void sendApply(ScmZsjCommerce cmZsjCommerce);
+
+	void endApply(JsonNode jsonNode);
+
+	ScmZsjCommerce getByApprovalId(String approvalId);
+
+	List<ScmZsjCommerce> acceptCommerceList(String ownerId, String businessDivisionId, String provinceId);
+
+	ScmZsjCommerce getcommerceByCode(String commerceCode);
+
+	void updateSyn(String id);
+
+	ScmZsjCommerce getcommerceFirstByCode(String commerceCode, String ownerId);
+
+    ScmZsjCommerce getcommerceByName(String commerceName);
 }

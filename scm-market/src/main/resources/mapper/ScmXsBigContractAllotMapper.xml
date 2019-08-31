@@ -19,27 +19,24 @@
 		<result property="dateOfSigning" column="dateOfSigning" jdbcType="TIMESTAMP"/>
 		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
 		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmXsBigContractAllot">
 		INSERT INTO SCM_XS_BigContractAllot
-		(id,specialOpinion,
-		ownerId,BigContractId,
-		reduceContractTime,allocationCode,		
-		approvalId,approvalState,
-		sendProductDate,commerceFirstId,
-		commerceCode,commerceName,
+		(id,specialOpinion,ownerId,
+		BigContractId,reduceContractTime,allocationCode,		
+		approvalId,approvalState,sendProductDate,
+		commerceFirstId,commerceCode,commerceName,
 		marketingWay,ownerName,dateOfSigning,
-		createPersion,createDate)
+		createPersion,createDate,medicineType)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{specialOpinion,jdbcType=VARCHAR}, 
-		#{ownerId,jdbcType=VARCHAR}, #{bigContractId,jdbcType=VARCHAR}, 
-		#{reduceContractTime,jdbcType=VARCHAR}, #{allocationCode,jdbcType=VARCHAR}, 
-		#{approvalId,jdbcType=VARCHAR},#{approvalState,jdbcType=VARCHAR}, 
-		#{sendProductDate,jdbcType=TIMESTAMP}, #{commerceFirstId,jdbcType=VARCHAR},
-		#{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=TIMESTAMP}, 
+		(#{id,jdbcType=VARCHAR}, #{specialOpinion,jdbcType=VARCHAR},#{ownerId,jdbcType=VARCHAR},
+		 #{bigContractId,jdbcType=VARCHAR},#{reduceContractTime,jdbcType=VARCHAR}, #{allocationCode,jdbcType=VARCHAR}, 
+		#{approvalId,jdbcType=VARCHAR},#{approvalState,jdbcType=VARCHAR},#{sendProductDate,jdbcType=TIMESTAMP}, 
+		#{commerceFirstId,jdbcType=VARCHAR},#{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=TIMESTAMP}, 
 		#{marketingWay,jdbcType=VARCHAR},#{ownerName,jdbcType=VARCHAR},#{dateOfSigning,jdbcType=TIMESTAMP},
-		#{createPersion,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP})
+		#{createPersion,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP},#{medicineType,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="getByApplyId"   parameterType="java.lang.String" resultMap="ScmXsBigContractAllot">
@@ -91,7 +88,8 @@
 		ownerName=#{ownerName,jdbcType=VARCHAR},
 		dateOfSigning=#{dateOfSigning,jdbcType=TIMESTAMP},
 		createPersion=#{createPersion,jdbcType=VARCHAR},
-		createDate=#{createDate,jdbcType=TIMESTAMP}
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		medicineType = #{medicineType,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -101,6 +99,28 @@
 		WHERE
 		id=#{id}
 	</delete>
-	
+	<select id="getMain" resultType="Map">
+			SELECT * FROM (
+				SELECT  a.id,
+					a.ownerName,
+					a.commerceName,
+					(CASE a.marketingWay WHEN '0' THEN '预付款' WHEN '1' THEN '赊销' ELSE '无' END) AS marketingWay,
+					DATE_FORMAT(a.createDate,'%Y-%m-%d') AS createDate,
+					a.allocationCode,
+					c.name AS JUnit,
+					c.address AS JAddress,
+					c.openBank AS JOpenBank,
+					c.bankCode AS JBankCode,
+					c.dutyParagraph AS JDutyCode,
+					c.phone AS JPhone,
+					b.commerceName AS YUnit,b.registerAddress AS YAddress,
+					b.openBank AS YOpenBank,b.bankCode AS YBankCode,b.dutyParagraph AS YDutyCode,d.phone AS YPhone
+				FROM `scm_xs_bigcontractallot` a 
+				LEFT JOIN `scm_zsj_commerce` b ON a.commerceCode = b.commerceCode
+				LEFT JOIN `scm_zsj_commercefirst` d ON d.commerceId = b.id
+				LEFT JOIN `scm_zsj_txcompany` c ON a.ownerId = c.ownerId 
+				) aa 
+			WHERE aa.id = #{id}
+	</select>
 	
 </mapper>

@@ -1,23 +1,33 @@
 package com.winway.scm.persistence.manager.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.pagehelper.PageHelper;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.exception.BaseException;
 import com.hotent.base.exception.SystemException;
+import com.hotent.base.feign.BpmRuntimeFeignService;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
+import com.hotent.base.modelBpmVo.DefaultFmsBpmCheckTaskOpinion;
+import com.hotent.base.modelvo.AgreeFlowParam;
 import com.hotent.base.query.PageBean;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.BeanUtils;
 import com.hotent.base.util.StringUtil;
 import com.winway.purchase.feign.ScmMasterDateFeignService;
+import com.winway.purchase.persistence.manager.impl.WorkflowTemplate;
 import com.winway.purchase.util.QuarterUtil;
 import com.winway.scm.model.ScmXsDailyContractTask;
+import com.winway.scm.model.ScmXsDealerClause;
 import com.winway.scm.model.ScmXsEveryDayContract;
 import com.winway.scm.model.ScmXsEveryDayContractProduct;
+import com.winway.scm.persistence.dao.ScmXsCreditApplyRecordDao;
+import com.winway.scm.persistence.dao.ScmXsDealerClauseDao;
 import com.winway.scm.persistence.dao.ScmXsEveryDayContractDao;
 import com.winway.scm.persistence.dao.ScmXsEveryDayContractProductDao;
+import com.winway.scm.persistence.manager.ScmXsCreditApplyRecordManager;
 import com.winway.scm.persistence.manager.ScmXsEveryDayContractManager;
 import com.winway.scm.persistence.manager.ScmXsEveryDayContractProductManager;
 import com.winway.scm.vo.ScmXsBigContractProductByUpdateVo;
@@ -26,9 +36,11 @@ import org.codehaus.jettison.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -38,7 +50,7 @@ import java.util.*;
  * 邮箱:PRD-jun.he@winwayworld.com
  * 日期:2019-01-09 09:35:44
  * 版权：美达开发小组
- * </pre>
+ * </pre>elect
  */
 @Service("scmXsEveryDayContractManager")
 public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String, ScmXsEveryDayContract> implements ScmXsEveryDayContractManager {
@@ -50,7 +62,16 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
     ScmMasterDateFeignService scmMasterDateFeignService;
     @Resource
     ScmXsEveryDayContractProductDao scmXsEveryDayContractProductDao;
-
+    @Resource
+    ScmXsDealerClauseDao scmXsDealerClauseDao;
+    @Resource
+    ScmXsCreditApplyRecordManager scmXsCreditApplyRecordManager;
+    @Resource
+    ScmXsCreditApplyRecordDao scmXsCreditApplyRecordDao;
+    @Resource
+    WorkflowTemplate workflowTemplate;
+    @Resource
+    BpmRuntimeFeignService bpmRuntimeFeignService;
     @Override
     protected MyBatisDao<String, ScmXsEveryDayContract> getDao() {
         return scmXsEveryDayContractDao;
@@ -77,15 +98,19 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
      * 创建实体包含子表实体
      */
     public void create(ScmXsEveryDayContract scmXsEveryDayContract) {
-        scmXsEveryDayContract.setEntryDate(new Date());
         scmXsEveryDayContract.setIsDelete("0");
         super.create(scmXsEveryDayContract);
+        boolean b = true;
         List<ScmXsEveryDayContractProduct> scmXsEveryDayContractProductList = scmXsEveryDayContract.getScmXsEveryDayContractProductList();
         for (ScmXsEveryDayContractProduct scmXsEveryDayContractProduct : scmXsEveryDayContractProductList) {
             if (scmXsEveryDayContractProduct.getTheNumber() != null && scmXsEveryDayContractProduct.getTheNumber() > 0) {
+            	b = false;
                 scmXsEveryDayContractProduct.setEveryDayContractId(scmXsEveryDayContract.getId());
                 scmXsEveryDayContractProductManager.create(scmXsEveryDayContractProduct);
             }
+        }
+        if(b) {
+        	throw new RuntimeException("请至少填写一个商品数量");
         }
     }
 
@@ -129,25 +154,112 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
     public void update(ScmXsEveryDayContract scmXsEveryDayContract) {
         super.update(scmXsEveryDayContract);
         String id = scmXsEveryDayContract.getId();
+        boolean b = true;
         scmXsEveryDayContractProductDao.delByMainId(id);
         List<ScmXsEveryDayContractProduct> scmXsEveryDayContractProductList = scmXsEveryDayContract.getScmXsEveryDayContractProductList();
         for (ScmXsEveryDayContractProduct scmXsEveryDayContractProduct : scmXsEveryDayContractProductList) {
             if (scmXsEveryDayContractProduct.getTheNumber()!=null&&scmXsEveryDayContractProduct.getTheNumber() > 0) {
+            	b = false;
                 scmXsEveryDayContractProduct.setEveryDayContractId(id);
                 scmXsEveryDayContractProductManager.create(scmXsEveryDayContractProduct);
             }
         }
+        if(b) {
+        	throw new RuntimeException("请至少填写一个商品数量");
+        }
     }
 
     @Override
-    public void sendApply(ScmXsEveryDayContract scmXsEveryDayContract) {
+    public void sendApply(ScmXsEveryDayContract scmXsEveryDayContract) throws Exception {
+    	ScmXsEveryDayContract scmXsEveryDayContract2 = scmXsEveryDayContractDao.get(scmXsEveryDayContract.getId());
         scmXsEveryDayContract.setApprovalState(ScmXsEveryDayContract.APPROVALING_STATE);
         if (scmXsEveryDayContract.getId() == null || get(scmXsEveryDayContract.getId()) == null) {
             scmXsEveryDayContract.setContractCode(QuarterUtil.getCode("RCHT"));
+            String commerceFirstId = scmXsEveryDayContract.getCommerceFirstId();
+			boolean commerceStateByFirstId = scmMasterDateFeignService.getCommerceStateByFirstId(commerceFirstId);
+			if(!commerceStateByFirstId) {
+				throw new RuntimeException("当前商业有证照过期,请更新后发起日常合同审批");
+			}
             create(scmXsEveryDayContract);
         } else if (get(scmXsEveryDayContract.getId()) != null) {
-            update(scmXsEveryDayContract);
+        	String commerceFirstId = scmXsEveryDayContract.getCommerceFirstId();
+			boolean commerceStateByFirstId = scmMasterDateFeignService.getCommerceStateByFirstId(commerceFirstId);
+			if(!commerceStateByFirstId) {
+				throw new RuntimeException("当前商业有证照过期,请更新后发起日常合同审批");
+			}
         }
+		double price = 0.0d;
+		List<ScmXsEveryDayContractProduct> scmXsEveryDayContractProductList = scmXsEveryDayContract.getScmXsEveryDayContractProductList();
+		for (ScmXsEveryDayContractProduct scmXsEveryDayContractProduct : scmXsEveryDayContractProductList) {
+			if(scmXsEveryDayContractProduct.getSumPrice() == null) {
+				continue;
+			}
+			price += scmXsEveryDayContractProduct.getSumPrice();
+		}
+		ScmXsDealerClause scmXsDealerClause = scmXsDealerClauseDao.get(scmXsEveryDayContract.getDealerClauseId());
+		if(scmXsDealerClause == null) {
+			throw new RuntimeException("请选择商业及协议");
+		}
+		String isOverfulfil = scmXsDealerClause.getIsOverfulfil();
+		//判断付款方式		
+		if("1".equals(scmXsEveryDayContract.getMarketingWay())) {
+			if(!"1".equals(isOverfulfil)) {
+				//禁止超资信发货
+				//查询资信额度
+				String residueCreditByCommerceCode = scmXsCreditApplyRecordManager.getResidueCreditByCommerceCode(scmXsEveryDayContract.getCommerceFirstId(), scmXsEveryDayContract.getOwnerId());
+				//判断是否超资信
+				if(price > Double.parseDouble(residueCreditByCommerceCode)) {
+					throw new RuntimeException("当前商业超资信禁止发货");
+				}
+			}
+		}
+		//资信增加金额
+	    try{
+	    	String getcommerceFirstById = scmMasterDateFeignService.getcommerceFirstById(scmXsEveryDayContract.getCommerceFirstId());
+	    	JSONObject parseObject = JSON.parseObject(getcommerceFirstById);
+	    	scmXsCreditApplyRecordManager.saveByContractAndReturnMoney(scmXsEveryDayContract.getId(), price, parseObject.getString("commerceId"), scmXsEveryDayContract.getOwnerId(),"1");
+	    	//验证商业是否回款超期
+	    	boolean verifExceedTime = scmMasterDateFeignService.verifExceedTime(parseObject.getString("commerceCode"));
+	    	if(!verifExceedTime) {
+	    		throw new RuntimeException("商业回款超期,禁止发起合同分配");
+	    	}
+	    }catch (Exception e) {
+	    	throw new RuntimeException("商业信息异常,请验证商业首营与基础信息");
+	    }
+	    //验证是否超过近三个月平均值
+	    boolean verifyDeliveryAmount = scmMasterDateFeignService.verifyDeliveryAmount(scmXsEveryDayContract.getCommerceFirstId(),Double.parseDouble(scmXsEveryDayContract.getTotalPrice()));
+	    if(verifyDeliveryAmount) {
+	    	scmXsEveryDayContract.setIsoverfuifil("0");
+	    }else{
+	    	scmXsEveryDayContract.setIsoverfuifil("1");
+	    }
+	    
+	    if((scmXsEveryDayContract2 != null && "3".equals(scmXsEveryDayContract2.getApprovalState()))){
+//      {"formType":"frame","opinion":"驳回后发起","actionName":"agree","taskId":11108798,"jumpType":"","destination":"","nodeUsers":"[]"}
+            List<String> list = new ArrayList<String>();
+            list.add(scmXsEveryDayContract.getApprovalId());
+            List<DefaultFmsBpmCheckTaskOpinion> instanceFlowHistoryList = bpmRuntimeFeignService.instanceFlowHistoryList(list);
+            if(instanceFlowHistoryList.size() == 0){
+                //发起审批流isoverfuifil
+                String[] strs = {"totalPrice", "creditPrice", "businessDivisionId", "isoverfuifil"};
+                workflowTemplate.startWorkflow("rchtsp", "SCM", "approvalId",scmXsEveryDayContract, strs);
+                String replace = scmXsEveryDayContract.getApprovalId().replace("\"", "");
+                scmXsEveryDayContract.setApprovalId(replace);
+                update(scmXsEveryDayContract);
+            }else{
+                DefaultFmsBpmCheckTaskOpinion defaultFmsBpmCheckTaskOpinion = instanceFlowHistoryList.get(instanceFlowHistoryList.size() -1 );
+                bpmRuntimeFeignService.autoAgree(new AgreeFlowParam("驳回后发起", "agree", defaultFmsBpmCheckTaskOpinion.getTaskId(), "", "", "[]"));
+                update(scmXsEveryDayContract);
+            }
+        }else{
+		    //发起审批流
+            String[] strs = {"totalPrice", "creditPrice", "businessDivisionId", "isoverfuifil"};
+	    	workflowTemplate.startWorkflow("rchtsp", "SCM", "approvalId",scmXsEveryDayContract, strs);
+	        String replace = scmXsEveryDayContract.getApprovalId().replace("\"", "");
+	        scmXsEveryDayContract.setApprovalId(replace);
+	        update(scmXsEveryDayContract);
+	    }
+	    
     }
 
     @Override
@@ -172,8 +284,9 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
         if (contract == null) {
             throw new RuntimeException("未查询到审批过日常合同数据,处理异常");
         }
-        if ("agree".equals(actionName)) {
-            //审批状态调整为通过
+        String endEvent = jsonNode.get("eventType").asText();
+        if ("agree".equals(actionName) && "endEvent".equals(endEvent)) {
+        	//审批状态调整为通过
             contract.setApprovalState(ScmXsEveryDayContract.APPROVAL_DONE_STATE);
             scmXsEveryDayContractDao.update(contract);
             //获取合同发货商品列表明细
@@ -199,8 +312,19 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
                 map.put("packageNum",task.getPackageNum());
                 map.put("memo", contract.getSpecialOpinion());
                 map.put("planShipmentsSum", task.getTheNumber());
+                map.put("code", task.getCode());
+
+                map.put("commonName",task.getCommonName());
+                map.put("unit",task.getUnit());
+                map.put("AgentType",task.getAgentType());
+                map.put("manufacturer",task.getManufacturer());
+                map.put("approvalCode",task.getApprovalCode());
+                map.put("medicineClassify",task.getMedicineClassify());
+                map.put("businessScope",task.getBusinessScope());
+
+
                 //获取客户信息
-                map.put("commercetype", task.getCommerceState());
+                map.put("commercetype", "经销商");
                 map.put("marketType", task.getFunctionType());
                 map.put("contactPersion", task.getConsignee());
                 map.put("phone", task.getPhone());
@@ -213,7 +337,15 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
             }
             //调取远程处理发货任务
             scmMasterDateFeignService.theDeliveryTask(new JSONArray(tasks).toString());
-
+        } else if ("agree".equals(actionName)) {
+        } else if ("reject".equals(actionName)) {
+        } else if ("backToStart".equals(actionName)) {
+        	//审批状态调整为拒绝
+            contract.setApprovalState(ScmXsEveryDayContract.APPROVAL_OPPOSE_STATE);
+            scmXsCreditApplyRecordDao.removeByDataIdAndType(contract.getId(),"1");
+            scmXsEveryDayContractDao.update(contract);
+        } else if ("opposeTrans".equals(actionName)) {
+        } else if ("endProcess".equals(actionName)) {
         }
     }
 
@@ -222,7 +354,6 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
 
         //根据当前合同id查询该经销商合同商品和该协议下所有商品
         List<ScmXsBigContractProductByUpdateVo> query = scmXsEveryDayContractProductDao.getAllProList(id, agreementSummaryId);
-
         return query;
     }
 
@@ -236,5 +367,4 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
 		ScmXsEveryDayContract scmXsEveryDayContract2 = get(scmXsEveryDayContract.getId());
 		return scmXsEveryDayContract2;
 	}
-
 }

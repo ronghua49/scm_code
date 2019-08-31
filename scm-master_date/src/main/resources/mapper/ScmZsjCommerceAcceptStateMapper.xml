@@ -123,8 +123,7 @@
         FROM
             Scm_Zsj_CommerceAcceptState
         WHERE
-            commerceId = #{commerceId} order by startDate ORDER BY
-            startDate DESC
+            commerceId = #{commerceId} order by startDate DESC
             LIMIT 0,1
     </select>
 

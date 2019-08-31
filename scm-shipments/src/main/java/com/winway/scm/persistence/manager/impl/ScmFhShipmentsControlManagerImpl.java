@@ -94,14 +94,32 @@ public class ScmFhShipmentsControlManagerImpl extends AbstractManagerImpl<String
     @Override
     public Map<String, String> ListCommerceBanProduct(String commerceId) throws Exception {
         //commerceId 此刻为commerceFirstId   根据首营id 获取企业所在区域  businessDivisionId  provinceId
-        Map<String, String> areaMap = scmFhShipmentsControlDao.getCurrentArea(commerceId);
-        String businessDivisionId = "";
-        String provinceId = "";
-        for (Map.Entry<String, String> area : areaMap.entrySet()) {
-            businessDivisionId = area.getKey();
-            provinceId = area.getValue();
-            break;
+    	Map<String, String> areaMap = scmFhShipmentsControlDao.getCurrentArea(commerceId);
+        String businessDivisionId = "-1";
+        String provinceId ="-1";
+        Map<String, String> map = new HashMap<String, String>();
+        if(areaMap != null) {
+	        if(areaMap.get("businessDivisionId") == null) {
+	        	 businessDivisionId = "-1";
+	        }else{
+	        	 businessDivisionId = areaMap.get("businessDivisionId");
+	        }
+	        if(areaMap.get("provinceId") == null) {
+	        	 provinceId ="-1";
+	        }else{
+	        	 provinceId = areaMap.get("provinceId");
+	        }
+    		map.put("allBan", "0");
+        }else{
+        	map.put("allBan", "1");
+        	return map;
+
         }
+//        for (Map.Entry<String, String> area : areaMap.entrySet()) {
+//            businessDivisionId = area.getKey();
+//            provinceId = area.getValue();
+//            break;
+//        }
         //查询禁止发货的全部列表,商务分区,省区,经销商为空的
         List<ScmFhShipmentsControl> scmFhShipmentsControls = scmFhShipmentsControlDao.ListShipmentsByAll();
         //查询该商务大区下的禁止发货列表, 商务分区不为空,省区,经销商为空
@@ -110,7 +128,7 @@ public class ScmFhShipmentsControlManagerImpl extends AbstractManagerImpl<String
         List<ScmFhShipmentsControl> scmFhShipmentsControls2 = scmFhShipmentsControlDao.ListShipmentsByProvinceId(businessDivisionId, provinceId);
         //查询经销商禁止发货列表,商务分区,省区,经销商不为空
         List<ScmFhShipmentsControl> scmFhShipmentsControls3 = scmFhShipmentsControlDao.ListShipmentsByCommerceId(businessDivisionId, provinceId, commerceId);
-        Map<String, String> map = new HashMap<String, String>();
+
         for (ScmFhShipmentsControl scmFhShipmentsControl : scmFhShipmentsControls) {
             map.put(scmFhShipmentsControl.getProductNum(), "0");
         }

@@ -29,5 +29,9 @@ public interface ScmXsAgreementProductDetailManager extends Manager<String, ScmX
 	List<ScmXsBigContractProductByUpdateVo> listAgrProductByBigUpdate(String id,
 			String agreementSummaryId);
 
+	ScmXsAgreementProductDetail  getProductDetailBycode(String businessDivisionId, String provinceId,
+			String ownerId,String masterId,String productId);
+	
+	ScmXsAgreementProductDetail	getIsImplement(String id,String provinceId, String productId);
 	
 }

@@ -23,21 +23,34 @@ public interface ScmXsAgreementProductDetailDao extends MyBatisDao<String, ScmXs
 	 * @param AgreementSummaryId
 	 * @return
 	 */
-	public List<ScmXsAgreementProductDetail> getByMainId(String arg0);
+    List<ScmXsAgreementProductDetail> getByMainId(String arg0);
+
+
+	List<ScmXsAgreementProductDetail> getLastByMainId(String arg0);
 	
 	/**
 	 * 根据外键删除子表记录
 	 * @param AgreementSummaryId
 	 * @return
 	 */
-	public void delByMainId(String arg0);
+    void delByMainId(String arg0);
 
-	public List<ScmXsAgreementProductDetail> getProductDetailByOrovinceId(String arg0, String arg1,
-			String arg2);
-	
-	public List<ScmXsAgreementProductDetail> getProductDetailByOrovinceId1(String arg0, String arg1,
-			String arg2,String arg3);
 
-	public List<ScmXsBigContractProductByUpdateVo> listAgrProductByBigUpdate(String id, String agreementSummaryId);
+	void delLastByMainId(String arg0);
+
+	List<ScmXsAgreementProductDetail> getProductDetailByOrovinceId(String arg0, String arg1,
+                                                                   String arg2);
 	
+	List<ScmXsAgreementProductDetail> getProductDetailByOrovinceId1(String arg0, String arg1,
+                                                                    String arg2, String arg3);
+	
+	ScmXsAgreementProductDetail  getProductDetailBycode(String arg0, String arg1,
+                                                        String arg2, String arg3, String arg4);
+	
+	
+	List<ScmXsBigContractProductByUpdateVo> listAgrProductByBigUpdate(String id, String agreementSummaryId);
+
+	void createLast(ScmXsAgreementProductDetail scmXsAgreementProductDetail);
+
+
 }

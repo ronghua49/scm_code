@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.MediaType;
 import com.winway.scm.persistence.manager.ScmZsjSupplierAccreditManager;
+import com.winway.scm.model.ScmZsjCommerceAccredit;
 import com.winway.scm.model.ScmZsjSupplierAccredit;
 import com.hotent.base.controller.BaseController;
 import com.hotent.base.model.CommonResult;
@@ -86,6 +87,25 @@ public class ScmZsjSupplierAccreditController extends BaseController{
 		}
 		return new CommonResult<String>(msg);
 	}
+	
+    /**
+     * 新增商业授权销售品种
+     *
+     * @param scmZsjCommerceAccredit
+     * @return
+     * @throws Exception
+     * @throws
+     */
+    @PostMapping(value = "saveList")
+    @ApiOperation(value = "新增,更新商业授权销售品种数据", httpMethod = "POST", notes = "新增,更新商业授权销售品种数据")
+    public CommonResult<String> saveList(@ApiParam(name = "scmZsjSupplierAccredit", value = "商业授权销售品种业务对象数组", required = true) @RequestBody ScmZsjSupplierAccredit... scmZsjSupplierAccredit) throws Exception {
+    	String msg = "添加商业授权销售品种成功";
+    	if(scmZsjSupplierAccredit.length == 0) {
+    		return new CommonResult<String>(msg);
+    	}
+    	scmZsjSupplierAccreditManager.saveList(scmZsjSupplierAccredit);
+    	return new CommonResult<String>(msg);
+    }
 	
 	/**
 	 * 删除授权销售品种记录

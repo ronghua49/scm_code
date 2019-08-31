@@ -9,6 +9,8 @@ import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.winway.scm.model.ScmFhShipmentsTask;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 
  * <pre> 
@@ -31,4 +33,7 @@ public interface ScmFhShipmentsTaskManager extends Manager<String, ScmFhShipment
 	List<String> proList(String ownerId);
 
 	List<String> codeList(String ownerId);
+
+    void export(QueryFilter queryFilter, boolean isPage, HttpServletResponse response);
+
 }

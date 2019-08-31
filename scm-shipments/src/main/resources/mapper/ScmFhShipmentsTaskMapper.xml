@@ -32,15 +32,29 @@
         <result property="allocationCode" column="allocationCode" jdbcType="VARCHAR"/>
         <result property="sendProductDate" column="sendProductDate" jdbcType="TIMESTAMP"/>
         <result property="packageNum" column="packageNum" jdbcType="INTEGER"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+
+        <result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+        <result property="AgentType" column="AgentType" jdbcType="VARCHAR"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+        <result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+        <result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+        <result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+        <result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+
     </resultMap>
 
     <insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsTask">
 		INSERT INTO SCM_FH_ShipmentsTask
-		(id,`type`,taskType,dateCode,taskCreateDate,paymentType,
+		(id,type,taskType,
+		dateCode,taskCreateDate,paymentType,
 		focusShipmentsMonth,isSms,commerceName,commerceId,productName,
 		productNum,MedicineType,productState,aChange,commercetype,
 		marketType,price,memo,planShipmentsSum,contactPersion,
-		phone,ownerId,sumPrice,allocationCode,sendProductDate,packageNum)
+		phone,ownerId,sumPrice,allocationCode,
+		sendProductDate,packageNum,commonName,
+		unit,AgentType,businessScope,
+		medicineClassify,approvalCode,manufacturer,code)
 		VALUES 
 		(#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, #{dateCode,jdbcType=VARCHAR}, 
 		#{taskCreateDate,jdbcType=TIMESTAMP}, #{paymentType,jdbcType=VARCHAR}, #{focusShipmentsMonth,jdbcType=VARCHAR},
@@ -49,7 +63,10 @@
 		 #{aChange,jdbcType=VARCHAR}, #{commercetype,jdbcType=VARCHAR}, #{marketType,jdbcType=VARCHAR}, 
 		 #{price,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{planShipmentsSum,jdbcType=NUMERIC}, 
 		 #{contactPersion,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},#{ownerId,jdbcType=VARCHAR},
-		 #{sumPrice,jdbcType=NUMERIC},#{allocationCode,jdbcType=VARCHAR},#{sendProductDate,jdbcType=TIMESTAMP},#{packageNum,jdbcType=INTEGER})
+		 #{sumPrice,jdbcType=NUMERIC},#{allocationCode,jdbcType=VARCHAR},#{sendProductDate,jdbcType=TIMESTAMP},#{packageNum,jdbcType=INTEGER},
+		 #{commonName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{AgentType,jdbcType=VARCHAR}, 
+		 #{businessScope,jdbcType=VARCHAR}, #{medicineClassify,jdbcType=VARCHAR}, #{approvalCode,jdbcType=VARCHAR},
+		 #{manufacturer,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR} )
 	</insert>
 
     <select id="get" parameterType="java.lang.String" resultMap="ScmFhShipmentsTask">
@@ -59,17 +76,14 @@
 	</select>
 
     <select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsTask">
-        SELECT * FROM scm_fh_shipmentstask a
-        LEFT JOIN (
-        SELECT b.commerceFirstId,CONCAT(b.province,b.city,b.district,b.street,b.address) AS
-        address,c.businessDivisionId,c.provinceId
-        FROM scm_zsj_commercefirst a
-        LEFT JOIN scm_zsj_commerceshipaddress b
-        ON a.id =b.commerceFirstId
-        LEFT JOIN scm_zsj_commerce c
-        ON a.commerceId = c.id
-        WHERE b.isDufault = 1) b
-        ON a.commerceId =b.commerceFirstId
+		SELECT * FROM scm_fh_shipmentstask a
+		LEFT JOIN (
+		SELECT b.commerceFirstId,b.address AS address,c.businessDivisionId,c.businessDivision,c.province,c.provinceId FROM scm_zsj_commercefirst a
+		LEFT JOIN scm_zsj_commerceshipaddress b ON a.id =b.commerceFirstId 
+		LEFT JOIN scm_zsj_commerce c ON a.commerceId = c.id
+		WHERE b.id = (SELECT MIN(id) FROM scm_zsj_commerceshipaddress WHERE commerceFirstid = b.commerceFirstId) 
+		) b
+		ON a.commerceId = b.commerceFirstId
         <where>
             <if test="whereSql!=null">
                 ${whereSql}
@@ -84,9 +98,9 @@
     </select>
 
     <select id="commerceList" resultType="java.util.Map">
-        SELECT DISTINCT a.commerceId, a.commerceName FROM SCM_FH_ShipmentsTask a,v_CommerceFirstList b
+        SELECT DISTINCT a.commerceId,a.commerceName, c.businessDivisionId,c.provinceId FROM SCM_FH_ShipmentsTask a
+        INNER JOIN scm_zsj_commercefirst b ON  a.commerceId = b.id and b.approvalState='2' INNER JOIN scm_zsj_commerce c on c.id = b.commerceId
         <where>
-            a.`commerceId` = b.commerceFirstId
             <if test="whereSql!=null">
                 and ${whereSql}
             </if>
@@ -136,7 +150,15 @@
 		sumPrice=#{sumPrice,jdbcType=NUMERIC},
 		allocationCode=#{allocationCode,jdbcType=VARCHAR},
 		sendProductDate=#{sendProductDate,jdbcType=VARCHAR},
-		packageNum=#{packageNum,jdbcType=INTEGER}
+		packageNum=#{packageNum,jdbcType=INTEGER},
+		commonName = #{commonName,jdbcType=VARCHAR},
+		unit = #{unit,jdbcType=VARCHAR},
+		AgentType =#{AgentType,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR},
+		medicineClassify = #{medicineClassify,jdbcType=VARCHAR},
+		approvalCode = #{approvalCode,jdbcType=VARCHAR},
+		manufacturer = #{manufacturer,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

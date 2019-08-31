@@ -65,7 +65,32 @@ public class ScmZsjProductLine extends BaseModel<String>{
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected Date CreateDate; 
 	
+	@ApiModelProperty(value="等级医院产品线(0:疼痛、1:皮科、2:儿科)")
+	private String levelHospital;
 	
+	@ApiModelProperty(value="是否推送至主数据中心(0:否,1:是)")
+	private String isToMasterData;
+	
+	public String getIsToMasterData() {
+		return isToMasterData;
+	}
+
+	public void setIsToMasterData(String isToMasterData) {
+		this.isToMasterData = isToMasterData;
+	}
+
+	public String getLevelHospital() {
+		return levelHospital;
+	}
+
+	public void setLevelHospital(String levelHospital) {
+		this.levelHospital = levelHospital;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public void setId(String id) {
 		this.id = id;
 	}

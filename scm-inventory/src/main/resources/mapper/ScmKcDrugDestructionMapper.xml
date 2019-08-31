@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmKcDrugDestructionDao">
+	<resultMap id="ScmKcDrugDestruction" type="com.winway.scm.model.ScmKcDrugDestruction">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
+		<result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="batchNum" column="batchNum" jdbcType="VARCHAR"/>
+		<result property="expiryDate" column="expiryDate" jdbcType="TIMESTAMP"/>
+		<result property="aChage" column="aChage" jdbcType="VARCHAR"/>
+		<result property="number" column="number" jdbcType="VARCHAR"/>
+		<result property="unqualifiedReason" column="unqualifiedReason" jdbcType="VARCHAR"/>
+		<result property="agentType" column="agentType" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+		<result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+ 	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmKcDrugDestruction">
+		INSERT INTO Scm_Kc_DrugDestruction
+		(id,masterId,productName,productCode,productState,productSum,unitPrice,medicineType,manufacturer,batchNum,expiryDate,priceSum,aChage,number,unqualifiedReason,agentType,approvalCode,
+		businessScope,medicineClassify,commonName,unit)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+		#{productCode,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{productSum,jdbcType=NUMERIC}, 
+		#{unitPrice,jdbcType=NUMERIC}, #{medicineType,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, 
+		#{batchNum,jdbcType=VARCHAR}, #{expiryDate,jdbcType=TIMESTAMP},#{priceSum,jdbcType=NUMERIC},
+		#{aChage,jdbcType=VARCHAR},#{number,jdbcType=VARCHAR},#{unqualifiedReason,jdbcType=VARCHAR},#{agentType,jdbcType=VARCHAR},#{approvalCode,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},#{medicineClassify,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmKcDrugDestruction">
+		SELECT * FROM Scm_Kc_DrugDestruction 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmKcDrugDestruction">
+		SELECT * FROM Scm_Kc_DrugDestruction 
+		WHERE 
+		masterId=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmKcDrugDestruction">
+		SELECT * FROM Scm_Kc_DrugDestruction
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmKcDrugDestruction">
+		UPDATE Scm_Kc_DrugDestruction SET
+		masterId=#{masterId,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		unitPrice=#{unitPrice,jdbcType=NUMERIC},
+		medicineType=#{medicineType,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR},
+		batchNum=#{batchNum,jdbcType=VARCHAR},
+		expiryDate=#{expiryDate,jdbcType=TIMESTAMP},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		aChage = #{aChage,jdbcType=VARCHAR},
+		number = #{number,jdbcType=VARCHAR},
+		unqualifiedReason = #{unqualifiedReason,jdbcType=VARCHAR},
+		agentType = #{agentType,jdbcType=VARCHAR},
+		approvalCode= #{approvalCode,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR},
+		medicineClassify = #{medicineClassify,jdbcType=VARCHAR},
+		commonName = #{commonName,jdbcType=VARCHAR},
+		unit = #{unit,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Kc_DrugDestruction 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM Scm_Kc_DrugDestruction
+	    WHERE
+	    masterId=#{masterId}
+	</delete>    
+	
+	<select id="getScmKcDrugDestructionList" resultMap="ScmKcDrugDestruction">
+	    SELECT *
+	    FROM Scm_Kc_DrugDestruction 
+	    WHERE masterId=#{masterId}
+	</select>
+	
+</mapper>

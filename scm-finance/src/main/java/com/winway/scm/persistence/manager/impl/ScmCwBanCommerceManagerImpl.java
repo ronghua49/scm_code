@@ -28,4 +28,14 @@ public class ScmCwBanCommerceManagerImpl extends AbstractManagerImpl<String, Scm
 	protected MyBatisDao<String, ScmCwBanCommerce> getDao() {
 		return scmCwBanCommerceDao;
 	}
+	@Override
+	public void update(ScmCwBanCommerce arg0) {
+		ScmCwBanCommerce scmCwBanCommerce = scmCwBanCommerceDao.get(arg0.getId());
+		if(scmCwBanCommerce == null) {
+			throw new RuntimeException("未查询到历史数据");
+		}
+		arg0.setSetPersion(scmCwBanCommerce.getSetPersion());
+		arg0.setSetTime(scmCwBanCommerce.getSetTime());
+		super.update(arg0);
+	}
 }

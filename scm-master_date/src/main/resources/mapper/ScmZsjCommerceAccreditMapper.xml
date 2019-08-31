@@ -22,6 +22,12 @@
 		id=#{id}
 	</select>
 	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmZsjCommerceAccredit">
+		SELECT * FROM SCM_ZSJ_CommerceAccredit 
+		WHERE 
+		entrustId=#{arg0}
+	</select>
+	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjCommerceAccredit">
 		SELECT * FROM SCM_ZSJ_CommerceAccredit
 		<where>

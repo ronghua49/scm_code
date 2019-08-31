@@ -29,4 +29,11 @@ public interface ScmXsBigContractDao extends MyBatisDao<String, ScmXsBigContract
 
 	ScmXsBigContract getByApplyId(String applyid);
 
+	Map getScmXsBigcontractPrint(String id);
+
+	List<ScmXsBigContract> getByAgreementSummaryId(String arg0,String arg1);
+
+	List<ScmXsBigContract> getByOwnerIdAndClauseId(String arg0, String arg1,String arg2);
+
+	List<ScmXsBigContract> getAll();
 }

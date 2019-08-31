@@ -3,6 +3,7 @@ package com.winway.scm.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.JsonUtil;
 import com.hotent.base.util.StringUtil;
+import com.winway.scm.model.ScmZsjCommerce;
 import com.winway.scm.model.ScmZsjCommerceFirst;
 import com.winway.scm.persistence.dao.ScmZsjCommerceFirstDao;
 import com.winway.scm.persistence.manager.ScmZsjCommerceFirstManager;
@@ -30,6 +32,8 @@ import com.winway.scm.persistence.manager.ScmZsjCommerceManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import java.util.Set;
 
 /**
  * <pre>
@@ -57,7 +61,7 @@ public class ScmZsjCommerceFirstController extends BaseController {
     /**
      * 商业首营记录表列表(分页条件查询)数据
      *
-     * @param request
+     * @param
      * @return
      * @throws Exception PageJson
      * @throws
@@ -80,6 +84,21 @@ public class ScmZsjCommerceFirstController extends BaseController {
     @ApiOperation(value = "商业首营记录表数据详情", httpMethod = "GET", notes = "商业首营记录表数据详情")
     public ScmZsjCommerceFirst get(@ApiParam(name = "id", value = "业务对象主键", required = true) @PathVariable String id) throws Exception {
         return scmZsjCommerceFirstManager.get(id);
+    }
+    /**
+     * 商业首营记录表明细页面
+     * 在供应商实体类 与mapper文件中添加一对多与一对多关系,委托书未生成
+     *
+     * @param id
+     * @return
+     * @throws Exception ModelAndView
+     */
+    @GetMapping(value = "/getById/{id}")
+    @ApiOperation(value = "商业首营记录表数据详情", httpMethod = "GET", notes = "商业首营记录表数据详情")
+    public String getById(@ApiParam(name = "id", value = "业务对象主键", required = true) @PathVariable String id) throws Exception {
+    	ScmZsjCommerceFirst scmZsjCommerceFirst = scmZsjCommerceFirstManager.get(id);
+    	String jsonString = JSON.toJSONString(scmZsjCommerceFirst);
+    	return jsonString;
     }
 
     /**
@@ -142,7 +161,7 @@ public class ScmZsjCommerceFirstController extends BaseController {
     }
 
     /**
-     * @param 商业首营申请  需要调整保存方法,添加委托书数据保存
+     * @param scmZsjCommerceFirst  需要调整保存方法,添加委托书数据保存
      *                在首营类中添加商业数据对象,发起审批时先判断商业数据是否存在,不存在进行保存,存在不保存
      * @param request
      * @return
@@ -153,7 +172,7 @@ public class ScmZsjCommerceFirstController extends BaseController {
      */
     @PostMapping(value = "sendApply")
     @ApiOperation(value = "商业首营", httpMethod = "POST", notes = "需要调整保存方法,添加委托书数据保存,在首营类中添加商业数据对象,发起审批时先判断商业数据是否存在,不存在进行保存,存在不保存")
-    @Workflow(flowKey = "sysy", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "sysy", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public CommonResult<ScmZsjCommerceFirst> sendApply(
             @ApiParam(name = "scmZsjCommerceFirst", value = "商业首营对象", required = true) @RequestBody ScmZsjCommerceFirst scmZsjCommerceFirst,
             HttpServletRequest request) throws Exception {
@@ -167,6 +186,35 @@ public class ScmZsjCommerceFirstController extends BaseController {
         }
         return new CommonResult<ScmZsjCommerceFirst>(true, "审批发起成功");
     }
+
+    /**
+     * 商业首映编辑发起申请
+     * @param request
+     * @return
+     * @throws Exception flowKey:审批类型
+     *                   sysCode:系统别名
+     *                   instanceIdField:与实体类审批ID相同,controller层接到对象会有审批ID,处理业务逻辑后,保存对象即可
+     *                   varKeys:脚本使用参数
+     */
+    @PostMapping(value = "sendApplyEdit")
+    @ApiOperation(value = "商业首营", httpMethod = "POST", notes = "需要调整保存方法,添加委托书数据保存,在首营类中添加商业数据对象,发起审批时先判断商业数据是否存在,不存在进行保存,存在不保存")
+    @Workflow(flowKey = "sysyxgsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+    public CommonResult<ScmZsjCommerceFirst> sendApplyEdit(
+            @ApiParam(name = "scmZsjCommerceFirst", value = "商业首营对象", required = true) @RequestBody ScmZsjCommerceFirst scmZsjCommerceFirst,
+            HttpServletRequest request) throws Exception {
+        String operatorName = getOperatorName();
+        scmZsjCommerceFirst.setOperatorName(operatorName);
+        ScmZsjCommerceFirst scmZsjCommerceFirst2 = scmZsjCommerceFirstDao.get(scmZsjCommerceFirst.getId());
+        if (scmZsjCommerceFirst2 == null) {
+            scmZsjCommerceFirstManager.sendApply(scmZsjCommerceFirst);
+        } else {
+            scmZsjCommerceFirstManager.updateSendApply(scmZsjCommerceFirst);
+        }
+        return new CommonResult<ScmZsjCommerceFirst>(true, "审批发起成功");
+    }
+
+
+
 
 
     @PostMapping(value = "/endApply")
@@ -217,6 +265,119 @@ public class ScmZsjCommerceFirstController extends BaseController {
         JsonNode user = ucFeignService.getUser(current(), "");
         String fullname = user.get("fullname").asText();
         return fullname;
+    }
+
+    /**
+     * 商业许可证预警
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/licenceValidity")
+    @ApiOperation(value = "商业许可证预警", httpMethod = "POST", notes = "商业许可证信息列表")
+    public PageList<ScmZsjCommerce> licenseWaring(@ApiParam(name = "queryFilter", value = "查询对象") @RequestBody QueryFilter queryFilter) throws Exception {
+        return scmZsjCommerceFirstManager.licenseWaring(queryFilter);
+    }
+
+    /**
+     * 营业执照有效期预警
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/businessValidity")
+    @ApiOperation(value = "营业执照有效期预警", httpMethod = "POST", notes = "营业执照信息列表")
+    public PageList<ScmZsjCommerce> businessValidity(@ApiParam(name = "queryFilter", value = "查询对象") @RequestBody QueryFilter queryFilter) throws Exception {
+        return scmZsjCommerceFirstManager.licenseWaring(queryFilter);
+    }
+
+
+    /**
+     * 商业gsp证书列表
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/gspValidity")
+    @ApiOperation(value = "商业gsp证书", httpMethod = "POST", notes = "gsp 证书列表")
+    public PageList<ScmZsjCommerce> gsplist(@ApiParam(name = "queryFilter", value = "查询对象") @RequestBody QueryFilter queryFilter) throws Exception {
+        return scmZsjCommerceFirstManager.gsplist(queryFilter);
+    }
+
+
+    /**
+     * 商业委托书列表
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/commerceEntruseBookValidity")
+    @ApiOperation(value = "商业委托书列表", httpMethod = "POST", notes = "商业委托书列表")
+    public PageList<ScmZsjCommerce> creditlist(@ApiParam(name = "queryFilter", value = "查询对象") @RequestBody QueryFilter queryFilter) throws Exception {
+        return scmZsjCommerceFirstManager.creditlist(queryFilter);
+    }
+
+
+    /**
+     * 药品质量保证协议有效期列表     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/qlist")
+    @ApiOperation(value = "药品质量保证协议有效期列表", httpMethod = "POST", notes = "药品质量保证协议有效期列表")
+    public PageList<ScmZsjCommerce> qlist(@ApiParam(name = "queryFilter", value = "查询对象") @RequestBody QueryFilter queryFilter) throws Exception {
+        return scmZsjCommerceFirstManager.qlist(queryFilter);
+    }
+
+    /**
+     * 停用启用接口
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/startOrStop/{id}")
+    @ApiOperation(value = "停用启用接口", httpMethod = "POST", notes = "停用启用接口")
+    public CommonResult<String> startOrStop(@ApiParam(name = "id", value = "查询对象") @PathVariable String id) throws Exception {
+    	String type = scmZsjCommerceFirstManager.startOrStop(id);
+    	return new CommonResult<String>(true, "停用成功");
+    }
+
+    /**
+     * 根据首营ID查询商业信息,返回是否可以进行正常的业务
+     */
+    @GetMapping("/getCommerceStateByFirstId/{commerceFirstId}")
+    @ApiOperation(value = "停用启用接口", httpMethod = "POST", notes = "停用启用接口")
+    public boolean getCommerceStateByFirstId(@ApiParam(name = "commerceFirstId", value = "查询对象") @PathVariable String commerceFirstId){
+    	boolean b = scmZsjCommerceFirstManager.getCommerceStateByFirstId(commerceFirstId);
+    	return b;
+    }
+
+
+    /**
+     * 获取商业授权销售品种药品编码
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @GetMapping("/getAccreditProCodes/{commerceFirstId}")
+    @ApiOperation(value = "获取商业授权销售品种药品编码", httpMethod = "GET", notes = "获取商业授权销售品种商品编码")
+    public String getAccreditProCodes1(@ApiParam(name = "commerceFirstId", value = "商业首营id") @PathVariable(value = "commerceFirstId")  String commerceFirstId) {
+        Set<String> codes = scmZsjCommerceFirstManager.getAccreditProCodes(commerceFirstId);
+        String jsonString = JSON.toJSONString(codes);
+        return  jsonString;
     }
 
 }

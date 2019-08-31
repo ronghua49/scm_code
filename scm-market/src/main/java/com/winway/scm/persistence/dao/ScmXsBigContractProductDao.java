@@ -22,19 +22,24 @@ public interface ScmXsBigContractProductDao extends MyBatisDao<String, ScmXsBigC
 	 * @param bigContractId
 	 * @return
 	 */
-	public List<ScmXsBigContractProduct> getByMainId(String bigContractId);
+    List<ScmXsBigContractProduct> getByMainId(String bigContractId);
 	
 	/**
 	 * 根据外键删除子表记录
 	 * @param bigContractId
 	 * @return
 	 */
-	public void delByMainId(String bigContractId);
+    void delByMainId(String bigContractId);
 
-	public List<ScmXsBigContractProduct> groupByList(Map<String, Object> params);
+	List<ScmXsBigContractProduct> groupByList(Map<String, Object> params);
 
-	public List<ScmXsBigContractProduct> bigcontractProductList(Map<String, Object> params);
+	List<ScmXsBigContractProduct> bigcontractProductList(Map<String, Object> params);
 
-	public List<ScmXsBigContractProduct> groupList(Map<String, Object> params);
-	
+	List<ScmXsBigContractProduct> groupList(Map<String, Object> params);
+
+	List<ScmXsBigContractProduct> everyDayContractProductList(Map<String, Object> params);
+
+	Map getScmXsBigcontractPrintDetail(String id);
+
+	List<Map> getDetail(String id);
 }

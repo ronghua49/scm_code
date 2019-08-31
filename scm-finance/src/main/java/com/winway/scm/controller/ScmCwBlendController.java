@@ -29,7 +29,8 @@ import com.hotent.base.util.StringUtil;
 
 /**
  * 
- * <pre> 
+ * <pre>
+ *  
  * 描述：勾兑记录表 控制器类
  * 构建组：x7
  * 作者:原浩
@@ -39,111 +40,110 @@ import com.hotent.base.util.StringUtil;
  * </pre>
  */
 @RestController
-@RequestMapping(value="/scm/scmCwBlend/v1",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-@Api(tags="scmCwBlendController  勾兑记录表 控制器类")
-public class ScmCwBlendController extends BaseController{
+@RequestMapping(value = "/scm/scmCwBlend/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@Api(tags = "scmCwBlendController  勾兑记录表 控制器类")
+public class ScmCwBlendController extends BaseController {
 	@Resource
 	ScmCwBlendManager scmCwBlendManager;
 	@Resource
 	UCFeignService ucFeignService;
+
 	/**
-	 * 勾兑记录表列表(分页条件查询)数据
-	 * @param request
-	 * @return
-	 * @throws Exception 
-	 * PageJson
-	 * @exception 
+	 * 勾兑记录表列表(分页条件查询)数据 @param request @return @throws Exception
+	 * PageJson @exception
 	 */
 	@PostMapping("/list")
-	@ApiOperation(value="勾兑记录表数据列表", httpMethod = "POST", notes = "获取勾兑记录表列表")
-	public PageList<ScmCwBlend> list(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
+	@ApiOperation(value = "勾兑记录表数据列表", httpMethod = "POST", notes = "获取勾兑记录表列表")
+	public PageList<ScmCwBlend> list(
+			@ApiParam(name = "queryFilter", value = "查询对象") @RequestBody QueryFilter queryFilter) throws Exception {
 		return scmCwBlendManager.query(queryFilter);
 	}
-	
+
 	/**
 	 * 勾兑记录表明细页面
+	 * 
 	 * @param id
 	 * @return
-	 * @throws Exception 
-	 * ModelAndView
+	 * @throws Exception
+	 *             ModelAndView
 	 */
-	@GetMapping(value="/get/{id}")
-	@ApiOperation(value="勾兑记录表数据详情",httpMethod = "GET",notes = "勾兑记录表数据详情")
-	public ScmCwBlend get(@ApiParam(name="id",value="业务对象主键", required = true)@PathVariable String id) throws Exception{
+	@GetMapping(value = "/get/{id}")
+	@ApiOperation(value = "勾兑记录表数据详情", httpMethod = "GET", notes = "勾兑记录表数据详情")
+	public ScmCwBlend get(@ApiParam(name = "id", value = "业务对象主键", required = true) @PathVariable String id)
+			throws Exception {
 		return scmCwBlendManager.get(id);
 	}
-	
-    /**
-	 * 新增勾兑记录表
-	 * @param scmCwBlend
-	 * @throws Exception 
-	 * @return
-	 * @exception 
+
+	/**
+	 * 新增勾兑记录表 @param scmCwBlend @throws Exception @return @exception
 	 */
-	@PostMapping(value="save")
+	@PostMapping(value = "save")
 	@ApiOperation(value = "新增,更新勾兑记录表数据", httpMethod = "POST", notes = "新增,更新勾兑记录表数据")
-	public CommonResult<String> save(@ApiParam(name="scmCwBlend",value="勾兑记录表业务对象", required = true)@RequestBody ScmCwBlend scmCwBlend) throws Exception{
+	public CommonResult<String> save(
+			@ApiParam(name = "scmCwBlend", value = "勾兑记录表业务对象", required = true) @RequestBody ScmCwBlend scmCwBlend)
+			throws Exception {
 		String msg = "添加勾兑记录表成功";
-		if(StringUtil.isEmpty(scmCwBlend.getId())){
+		if (StringUtil.isEmpty(scmCwBlend.getId())) {
 			scmCwBlendManager.create(scmCwBlend);
-		}else{
+		} else {
 			scmCwBlendManager.update(scmCwBlend);
-			 msg = "更新勾兑记录表成功";
+			msg = "更新勾兑记录表成功";
 		}
 		return new CommonResult<String>(msg);
 	}
-	
+
 	/**
-	 * 删除勾兑记录表记录
-	 * @param id
-	 * @throws Exception 
-	 * @return
-	 * @exception 
+	 * 删除勾兑记录表记录 @param id @throws Exception @return @exception
 	 */
-	@DeleteMapping(value="remove/{id}")
+	@DeleteMapping(value = "remove/{id}")
 	@ApiOperation(value = "删除勾兑记录表记录", httpMethod = "DELETE", notes = "删除勾兑记录表记录")
-	public  CommonResult<String>  remove(@ApiParam(name="id",value="业务主键", required = true)@PathVariable String id) throws Exception{
+	public CommonResult<String> remove(@ApiParam(name = "id", value = "业务主键", required = true) @PathVariable String id)
+			throws Exception {
 		scmCwBlendManager.remove(id);
 		return new CommonResult<String>(true, "删除成功");
 	}
-	
+
 	/**
-	 * 批量删除勾兑记录表记录
-	 * @param ids
-	 * @throws Exception 
-	 * @return
-	 * @exception 
+	 * 批量删除勾兑记录表记录 @param ids @throws Exception @return @exception
 	 */
-	@DeleteMapping(value="/removes")
+	@DeleteMapping(value = "/removes")
 	@ApiOperation(value = "批量删除勾兑记录表记录", httpMethod = "DELETE", notes = "批量删除勾兑记录表记录")
-	public CommonResult<String> removes(@ApiParam(name="ids",value="业务主键数组,多个业务主键之间用逗号分隔", required = true)@RequestParam String...ids) throws Exception{
+	public CommonResult<String> removes(
+			@ApiParam(name = "ids", value = "业务主键数组,多个业务主键之间用逗号分隔", required = true) @RequestParam String... ids)
+			throws Exception {
 		scmCwBlendManager.removeByIds(ids);
 		return new CommonResult<String>(true, "批量删除成功");
 	}
-	@PostMapping(value="/cancel")
+
+	@PostMapping(value = "/cancel")
 	@ApiOperation(value = "勾兑取消", httpMethod = "POST", notes = "勾兑取消")
-	public CommonResult<String> cancel(@ApiParam(name="id",value="记录表主键", required = true)@RequestParam String id) throws Exception{
+	public CommonResult<String> cancel(@ApiParam(name = "id", value = "记录表主键", required = true) @RequestParam String id)
+			throws Exception {
 		String msg = "添加勾兑记录表成功";
-		ScmCwBlend blend = scmCwBlendManager.get(id);
-		String result=scmCwBlendManager.cancel(blend);
+		String result = scmCwBlendManager.cancel(id);
 		return new CommonResult<String>(result);
 	}
-	@PostMapping(value="/charge")
+
+	@PostMapping(value = "/charge")
 	@ApiOperation(value = "勾兑申请确认核销", httpMethod = "POST", notes = "勾兑申请确认核销")
-	public CommonResult<String> charge(@ApiParam(name="scmCwBlend",value="确认核销", required = true)@RequestBody List<ScmCwBlend> scmCwBlend) throws Exception{
+	public CommonResult<String> charge(
+			@ApiParam(name = "scmCwBlend", value = "确认核销", required = true) @RequestBody List<ScmCwBlend> scmCwBlend)
+			throws Exception {
 		String result = "核销未完成！";
 		JsonNode user = ucFeignService.getUser(current(), "");
 		String fullname = user.get("fullname").asText();
-		result=scmCwBlendManager.charge(scmCwBlend,fullname);
+		result = scmCwBlendManager.charge(scmCwBlend, fullname);
 		return new CommonResult<String>(result);
 	}
-	@PostMapping(value="/giveCharge")
+
+	@PostMapping(value = "/giveCharge")
 	@ApiOperation(value = "勾兑批准确认核销", httpMethod = "POST", notes = "勾兑批准确认核销")
-	public CommonResult<String> giveCharge(@ApiParam(name="ids",value="发票表主键", required = true)@RequestParam String...ids) throws Exception{
+	public CommonResult<String> giveCharge(
+			@ApiParam(name = "id", value = "发票表主键", required = true) @RequestParam String id) throws Exception {
 		String result = "未批准核销！";
 		JsonNode user = ucFeignService.getUser(current(), "");
 		String fullname = user.get("fullname").asText();
-		result=scmCwBlendManager.giveCharge(ids,fullname);
+		result = scmCwBlendManager.giveCharge(id, fullname);
 		return new CommonResult<String>(result);
 	}
 }

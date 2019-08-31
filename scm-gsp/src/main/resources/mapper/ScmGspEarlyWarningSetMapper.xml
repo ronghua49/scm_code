@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspEarlyWarningSetDao">
+	<resultMap id="ScmGspEarlyWarningSet" type="com.winway.scm.model.ScmGspEarlyWarningSet">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="licenceDay" column="licenceDay" jdbcType="NUMERIC"/>
+		<result property="businessDay" column="businessDay" jdbcType="NUMERIC"/>
+		<result property="gspDay" column="gspDay" jdbcType="NUMERIC"/>
+		<result property="gmpDay" column="gmpDay" jdbcType="NUMERIC"/>
+		<result property="entrustBookDay" column="entrustBookDay" jdbcType="NUMERIC"/>
+		<result property="dataGuaranteeDay" column="dataGuaranteeDay" jdbcType="NUMERIC"/>
+		<result property="commerceStockDay" column="commerceStockDay" jdbcType="NUMERIC"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspEarlyWarningSet">
+		INSERT INTO Scm_Gsp_EarlyWarningSet
+		(id,licenceDay,businessDay,gspDay,gmpDay,entrustBookDay,dataGuaranteeDay,commerceStockDay,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{licenceDay,jdbcType=NUMERIC}, #{businessDay,jdbcType=NUMERIC}, #{gspDay,jdbcType=NUMERIC}, #{gmpDay,jdbcType=NUMERIC}, #{entrustBookDay,jdbcType=NUMERIC}, #{dataGuaranteeDay,jdbcType=NUMERIC}, #{commerceStockDay,jdbcType=NUMERIC}, #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspEarlyWarningSet">
+		SELECT * FROM Scm_Gsp_EarlyWarningSet 
+		WHERE 
+		ownerId=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspEarlyWarningSet">
+		SELECT * FROM Scm_Gsp_EarlyWarningSet
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmGspEarlyWarningSet">
+		UPDATE Scm_Gsp_EarlyWarningSet SET
+		licenceDay=#{licenceDay,jdbcType=NUMERIC},
+		businessDay=#{businessDay,jdbcType=NUMERIC},
+		gspDay=#{gspDay,jdbcType=NUMERIC},
+		gmpDay=#{gmpDay,jdbcType=NUMERIC},
+		entrustBookDay=#{entrustBookDay,jdbcType=NUMERIC},
+		dataGuaranteeDay=#{dataGuaranteeDay,jdbcType=NUMERIC},
+		commerceStockDay=#{commerceStockDay,jdbcType=NUMERIC},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_EarlyWarningSet 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

@@ -18,4 +18,5 @@ import com.winway.scm.model.ScmFhShipmentsMessage;
 public interface ScmFhShipmentsMessageDao extends MyBatisDao<String, ScmFhShipmentsMessage> {
 
 	List<ScmFhShipmentsMessage> getByMainId(String id);
+
 }

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspProductExceptionTypeDao">
+	<resultMap id="ScmGspProductExceptionType" type="com.winway.scm.model.ScmGspProductExceptionType">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="state" column="state" jdbcType="VARCHAR"/>
+		<result property="year" column="year" jdbcType="VARCHAR"/>
+		<result property="provinces" column="provinces" jdbcType="VARCHAR"/>
+		<result property="exceptionType" column="exceptionType" jdbcType="VARCHAR"/>
+		<result property="productLineId" column="productLineId" jdbcType="VARCHAR"/>
+		<result property="productLine" column="productLine" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="startDate" column="startDate" jdbcType="TIMESTAMP"/>
+		<result property="stopDate" column="stopDate" jdbcType="TIMESTAMP"/>
+		<result property="businessStartDate" column="businessStartDate" jdbcType="VARCHAR"/>
+		<result property="businessStopDate" column="businessStopDate" jdbcType="VARCHAR"/>
+		<result property="createpersion" column="createpersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspProductExceptionType">
+		INSERT INTO Scm_Gsp_ProductExceptionType
+		(id,state,year,provinces,exceptionType,productLineId,productLine,productName,productCode,productId,startDate,stopDate,businessStartDate,businessStopDate,createpersion,createDate,ownerId,MedicineTypeId,MedicineType,commonName,AgentTypeId,AgentType,medicineClassifyId,medicineClassify,businessScope,productState,unit,manufacturer)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{provinces,jdbcType=VARCHAR}, #{exceptionType,jdbcType=VARCHAR}, #{productLineId,jdbcType=VARCHAR}, #{productLine,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{startDate,jdbcType=TIMESTAMP}, #{stopDate,jdbcType=TIMESTAMP}, #{businessStartDate,jdbcType=VARCHAR}, #{businessStopDate,jdbcType=VARCHAR}, #{createpersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR},#{MedicineTypeId,jdbcType=VARCHAR},#{MedicineType,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR},#{AgentTypeId,jdbcType=VARCHAR},#{AgentType,jdbcType=VARCHAR},#{medicineClassifyId,jdbcType=VARCHAR},#{medicineClassify,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},#{productState,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},#{manufacturer,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspProductExceptionType">
+		SELECT * FROM Scm_Gsp_ProductExceptionType 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspProductExceptionType">
+		SELECT * FROM Scm_Gsp_ProductExceptionType
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmGspProductExceptionType">
+		UPDATE Scm_Gsp_ProductExceptionType SET
+		state=#{state,jdbcType=VARCHAR},
+		year=#{year,jdbcType=VARCHAR},
+		provinces=#{provinces,jdbcType=VARCHAR},
+		exceptionType=#{exceptionType,jdbcType=VARCHAR},
+		productLineId=#{productLineId,jdbcType=VARCHAR},
+		productLine=#{productLine,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productId=#{productId,jdbcType=VARCHAR},
+		startDate=#{startDate,jdbcType=TIMESTAMP},
+		stopDate=#{stopDate,jdbcType=TIMESTAMP},
+		businessStartDate=#{businessStartDate,jdbcType=VARCHAR},
+		businessStopDate=#{businessStopDate,jdbcType=VARCHAR},
+		createpersion=#{createpersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		MedicineTypeId=#{MedicineTypeId,jdbcType=VARCHAR},
+		MedicineType=#{MedicineType,jdbcType=VARCHAR},
+		commonName=#{commonName,jdbcType=VARCHAR},
+		AgentTypeId=#{AgentTypeId,jdbcType=VARCHAR},
+		AgentType=#{AgentType,jdbcType=VARCHAR},
+		medicineClassifyId=#{medicineClassifyId,jdbcType=VARCHAR},
+		medicineClassify=#{medicineClassify,jdbcType=VARCHAR},
+		businessScope=#{businessScope,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		unit=#{unit,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_ProductExceptionType 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

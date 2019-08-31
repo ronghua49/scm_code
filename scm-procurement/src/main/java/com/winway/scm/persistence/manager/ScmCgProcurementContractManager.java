@@ -1,7 +1,5 @@
 package com.winway.scm.persistence.manager;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
 import com.winway.scm.model.ScmCgProcurementContract;
@@ -22,5 +20,7 @@ public interface ScmCgProcurementContractManager extends Manager<String, ScmCgPr
 	ScmCgProcurementContract getContractFirstByApprovalId(String approvalId);
 
 	void endApply(JsonNode jsonNode);
+
+	void judgeSupplierValidity(String supplierId);
 	
 }

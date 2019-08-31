@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmKcWeekInventoryDao">
+	<resultMap id="ScmKcWeekInventory" type="com.winway.scm.model.ScmKcWeekInventory">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="year" column="year" jdbcType="VARCHAR"/>
+		<result property="month" column="month" jdbcType="VARCHAR"/>
+		<result property="week" column="week" jdbcType="NUMERIC"/>
+		<result property="startDate" column="startDate" jdbcType="TIMESTAMP"/>
+		<result property="stopDate" column="stopDate" jdbcType="TIMESTAMP"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="inventoryDate" column="inventoryDate" jdbcType="TIMESTAMP"/>
+		<result property="batchNum" column="batchNum" jdbcType="VARCHAR"/>
+		<result property="upWeekInventory" column="upWeekInventory" jdbcType="NUMERIC"/>
+		<result property="thisWeekInventory" column="thisWeekInventory" jdbcType="NUMERIC"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="expiryDate" column="expiryDate" jdbcType="TIMESTAMP"/>
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="ScmKcMonthInventory" type="com.winway.scm.vo.ScmKcMonthInventory"/>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmKcWeekInventory">
+		INSERT INTO scm_kc_weekinventory
+		(id,year,month,
+		week,startDate,stopDate,
+		commerceCode,commerceName,productCode,
+		productName,inventoryDate,batchNum,
+		upWeekInventory,thisWeekInventory,createPersion,
+		createDate,memo,expiryDate,
+		ownerId,commonName,unit)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{month,jdbcType=VARCHAR}, 
+		#{week,jdbcType=NUMERIC}, #{startDate,jdbcType=TIMESTAMP}, #{stopDate,jdbcType=TIMESTAMP}, 
+		#{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, 
+		#{productName,jdbcType=VARCHAR}, #{inventoryDate,jdbcType=TIMESTAMP}, #{batchNum,jdbcType=VARCHAR}, 
+		#{upWeekInventory,jdbcType=NUMERIC}, #{thisWeekInventory,jdbcType=NUMERIC}, #{createPersion,jdbcType=VARCHAR}, 
+		#{createDate,jdbcType=TIMESTAMP},#{memo,jdbcType=VARCHAR},#{expiryDate,jdbcType=TIMESTAMP},
+		#{ownerId,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="createAll" parameterType="com.winway.scm.model.ScmKcWeekInventory">
+		INSERT INTO scm_kc_weekinventory
+		(id,year,month,
+		week,startDate,stopDate,
+		commerceCode,commerceName,productCode,
+		productName,inventoryDate,batchNum,
+		upWeekInventory,thisWeekInventory,createPersion,
+		createDate,memo,expiryDate,
+		ownerId,commonName,unit)
+		VALUES
+		<foreach collection="weekInventories" item="weekInventory" separator=",">
+		(#{weekInventory.id,jdbcType=VARCHAR}, #{weekInventory.year,jdbcType=VARCHAR}, #{weekInventory.month,jdbcType=VARCHAR},
+		#{weekInventory.week,jdbcType=NUMERIC}, #{weekInventory.startDate,jdbcType=TIMESTAMP}, #{weekInventory.stopDate,jdbcType=TIMESTAMP},
+		#{weekInventory.commerceCode,jdbcType=VARCHAR}, #{weekInventory.commerceName,jdbcType=VARCHAR}, #{weekInventory.productCode,jdbcType=VARCHAR},
+		#{weekInventory.productName,jdbcType=VARCHAR}, #{weekInventory.inventoryDate,jdbcType=TIMESTAMP}, #{weekInventory.batchNum,jdbcType=VARCHAR},
+		#{weekInventory.upWeekInventory,jdbcType=NUMERIC}, #{weekInventory.thisWeekInventory,jdbcType=NUMERIC}, #{weekInventory.createPersion,jdbcType=VARCHAR},
+		#{weekInventory.createDate,jdbcType=TIMESTAMP},#{weekInventory.memo,jdbcType=VARCHAR},#{weekInventory.expiryDate,jdbcType=TIMESTAMP},
+		#{weekInventory.ownerId,jdbcType=VARCHAR},#{weekInventory.commonName,jdbcType=VARCHAR},#{weekInventory.unit,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmKcWeekInventory">
+		SELECT * FROM scm_kc_weekinventory 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmKcWeekInventory">
+		select * from (SELECT a.*,b.businessDivision,b.province,b.businessDivisionId,b.provinceId,f.ProductLineId,f.ProductLineName
+		FROM scm_kc_weekinventory a
+		LEFT JOIN `scm_zsj_commerce` b ON a.commerceCode = b.commerceCode
+		LEFT JOIN  `scm_zd_businessdivision` c ON b.businessDivisionId = c.id
+		LEFT JOIN `scm_zd_province` d  ON b.provinceId = d.id
+		LEFT JOIN scm_zsj_product f ON f.productCode = a.productCode) a
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="monthList" parameterType="java.util.Map" resultMap="ScmKcMonthInventory">
+		SELECT a.*,b.id,b.businessDivision,b.province,b.businessDivisionId,b.provinceId,c.productLineId,c.productLineName FROM(
+		SELECT a.year,a.month,a.commerceCode,a.commerceName,a.productCode,a.productName,a.batchNum,a.createPersion,a.ownerid,SUM(thisWeekInventory) AS monthInventory FROM `scm_kc_weekinventory` a 
+		GROUP BY a.year,a.month,a.commerceCode,a.commerceName,a.productCode,a.productName,a.batchNum,a.createPersion,a.ownerid
+		) a
+		LEFT JOIN `scm_zsj_commerce` b ON a.commerceCode = b.commerceCode
+		LEFT JOIN `scm_zsj_product` c ON a.productCode = c.productCode
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<select id="getByInventoryAndBatch" resultType="com.winway.scm.model.ScmKcWeekInventory">
+		SELECT * FROM scm_kc_weekinventory where inventoryDate = #{inventoryDate} and batchNum = #{batchNum} and commerceCode = #{commerceCode} and productCode = #{productCode}
+	</select>
+    <select id="getLastWeekStock" resultType="com.winway.scm.model.ScmKcWeekInventory">
+		select * from  scm_kc_weekinventory where commerceCode = #{commerceCode} and productCode = #{productCode}  and batchNum = #{batchNum} and week =#{week}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmKcWeekInventory">
+		UPDATE scm_kc_weekinventory SET
+		year=#{year,jdbcType=VARCHAR},
+		month=#{month,jdbcType=VARCHAR},
+		week=#{week,jdbcType=NUMERIC},
+		startDate=#{startDate,jdbcType=TIMESTAMP},
+		stopDate=#{stopDate,jdbcType=TIMESTAMP},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		inventoryDate=#{inventoryDate,jdbcType=TIMESTAMP},
+		batchNum=#{batchNum,jdbcType=VARCHAR},
+		upWeekInventory=#{upWeekInventory,jdbcType=NUMERIC},
+		thisWeekInventory=#{thisWeekInventory,jdbcType=NUMERIC},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		expiryDate=#{expiryDate,jdbcType=TIMESTAMP},
+		commonName = #{commonName,jdbcType=VARCHAR},
+		unit = #{unit,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_kc_weekinventory 
+		WHERE
+		id=#{id}
+	</delete>
+
+	<delete id="deleteByWeekAndCommerce">
+		DELETE FROM scm_kc_weekinventory
+		WHERE week = #{week} and commerceCode in
+		<foreach item="item" index="index" collection="commerces" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

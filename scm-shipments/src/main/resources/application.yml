@@ -55,6 +55,9 @@ server:
   contextPath: /
   session:
     timeout: 30
+  tomcat:
+    max-http-post-size: -1
+    max-http-header-size: 1048576
     
 system:
   mail:
@@ -62,6 +65,15 @@ system:
   id: 
     machineName: portal
 
+eureka:
+  client:
+    healthcheck:
+      enabled:  true
+    service-url:
+      defaultZone: http://192.168.0.240:8761/eureka/
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
 #eureka:
 #  client:
 #    healthcheck:

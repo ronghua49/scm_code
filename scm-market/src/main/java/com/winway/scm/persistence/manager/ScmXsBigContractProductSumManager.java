@@ -22,6 +22,8 @@ public interface ScmXsBigContractProductSumManager extends Manager<String, ScmXs
 
 	PageList<ScmXsBigContractProductSum> listConProductSumBySummaryID(QueryFilter queryFilter);
 
-	List<ScmXsBigContractProductSum> listConProductSumByUpdate(String bigContractAllotId,String agreementSummaryId);
-	
+	List<ScmXsBigContractProductSum> listConProductSumByUpdate(String ownerId,String bigContractAllotId,String agreementSummaryId,String medicineType,String commerceFirstId);
+
+	 void bigContractProductInvalid();
+
 }

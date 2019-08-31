@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwDiscountPondPriceChangeDao">
+	<resultMap id="ScmCwDiscountPondPriceChange" type="com.winway.scm.model.ScmCwDiscountPondPriceChange">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="discountpondId" column="discountpondId" jdbcType="VARCHAR"/>
+		<result property="changeFrontPrice" column="changeFrontPrice" jdbcType="NUMERIC"/>
+		<result property="changePrice" column="changePrice" jdbcType="NUMERIC"/>
+		<result property="changeBackPrice" column="changeBackPrice" jdbcType="NUMERIC"/>
+		<result property="changeDate" column="changeDate" jdbcType="TIMESTAMP"/>
+		<result property="changePersion" column="changePersion" jdbcType="VARCHAR"/>
+		<result property="changeCause" column="changeCause" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwDiscountPondPriceChange">
+		INSERT INTO scm_cw_discountpondpricechange
+		(id,discountpondId,changeFrontPrice,changePrice,changeBackPrice,changeDate,changePersion,changeCause)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{discountpondId,jdbcType=VARCHAR}, #{changeFrontPrice,jdbcType=NUMERIC}, #{changePrice,jdbcType=NUMERIC}, #{changeBackPrice,jdbcType=NUMERIC}, #{changeDate,jdbcType=TIMESTAMP}, #{changePersion,jdbcType=VARCHAR}, #{changeCause,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDiscountPondPriceChange">
+		SELECT * FROM scm_cw_discountpondpricechange 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDiscountPondPriceChange">
+		SELECT * FROM scm_cw_discountpondpricechange
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwDiscountPondPriceChange">
+		UPDATE scm_cw_discountpondpricechange SET
+		discountpondId=#{discountpondId,jdbcType=VARCHAR},
+		changeFrontPrice=#{changeFrontPrice,jdbcType=NUMERIC},
+		changePrice=#{changePrice,jdbcType=NUMERIC},
+		changeBackPrice=#{changeBackPrice,jdbcType=NUMERIC},
+		changeDate=#{changeDate,jdbcType=TIMESTAMP},
+		changePersion=#{changePersion,jdbcType=VARCHAR},
+		changeCause=#{changeCause,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_cw_discountpondpricechange 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

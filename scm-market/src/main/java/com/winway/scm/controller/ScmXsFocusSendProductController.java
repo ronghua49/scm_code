@@ -100,7 +100,6 @@ public class ScmXsFocusSendProductController extends BaseController{
 		scmXsFocusSendProductManager.remove(id);
 		return new CommonResult<String>(true, "删除成功");
 	}
-	
 	/**
 	 * 批量删除集中发货商品表记录
 	 * @param ids

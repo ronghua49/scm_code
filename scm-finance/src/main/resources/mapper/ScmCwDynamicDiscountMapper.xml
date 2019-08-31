@@ -7,7 +7,7 @@
 		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
 		<result property="productName" column="productName" jdbcType="VARCHAR"/>
 		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
-		<result property="mayDeductionPercent" column="mayDeductionPercent" jdbcType="NUMERIC"/>
+		<result property="mayDeductionPercent" column="mayDeductionPercent" jdbcType="DOUBLE"/>
 		<result property="deductionDateStart" column="deductionDateStart" jdbcType="TIMESTAMP"/>
 		<result property="deductionDateStop" column="deductionDateStop" jdbcType="TIMESTAMP"/>
 		<result property="isLoseEfficacy" column="isLoseEfficacy" jdbcType="VARCHAR"/>
@@ -16,19 +16,44 @@
 		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
 		<result property="isDelete" column="isDelete" jdbcType="VARCHAR"/>
 		<result property="state" column="state" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="productLineId" column="productLineId" jdbcType="VARCHAR"/>
+		<result property="productLineName" column="productLineName" jdbcType="VARCHAR"/>
  	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmCwDynamicDiscount">
 		INSERT INTO SCM_CW_DynamicDiscount
-		(id,productId,productCode,productName,productSum,mayDeductionPercent,deductionDateStart,deductionDateStop,isLoseEfficacy,setPersion,setTime,ownerId,isDelete,state}
+		(id,productId,productCode,productName,productSum,mayDeductionPercent,
+		deductionDateStart,deductionDateStop,isLoseEfficacy,setPersion,setTime,
+		ownerId,isDelete,state,commerceId,commerceCode,commerceName,productLineId,productLineName)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productSum,jdbcType=NUMERIC}, #{mayDeductionPercent,jdbcType=NUMERIC}, #{deductionDateStart,jdbcType=TIMESTAMP}, #{deductionDateStop,jdbcType=TIMESTAMP}, #{isLoseEfficacy,jdbcType=VARCHAR}, #{setPersion,jdbcType=VARCHAR}, #{setTime,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR},#{isDelete,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, 
+		#{productName,jdbcType=VARCHAR}, #{productSum,jdbcType=NUMERIC}, #{mayDeductionPercent,jdbcType=DOUBLE},
+		#{deductionDateStart,jdbcType=TIMESTAMP}, #{deductionDateStop,jdbcType=TIMESTAMP}, 
+		#{isLoseEfficacy,jdbcType=VARCHAR}, #{setPersion,jdbcType=VARCHAR}, #{setTime,jdbcType=TIMESTAMP}, 
+		#{ownerId,jdbcType=VARCHAR},#{isDelete,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},
+		#{commerceId,jdbcType=VARCHAR},#{commerceCode,jdbcType=VARCHAR},#{commerceName,jdbcType=VARCHAR},
+		#{productLineId,jdbcType=VARCHAR},#{productLineName,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDynamicDiscount">
 		SELECT * FROM SCM_CW_DynamicDiscount 
 		WHERE 
 		id=#{id}
+	</select>
+	
+	<select id="getByProductCode"   parameterType="java.lang.String" resultMap="ScmCwDynamicDiscount">
+		SELECT * FROM SCM_CW_DynamicDiscount 
+		WHERE 
+		productCode=#{arg0} and commerceId = '' and ownerId = #{arg1}
+	</select>
+	
+	<select id="getByProductCodeAndCommerceId"   parameterType="java.lang.String" resultMap="ScmCwDynamicDiscount">
+		SELECT * FROM SCM_CW_DynamicDiscount 
+		WHERE 
+		productCode=#{arg0} and commerceCode = #{arg1} and ownerId = #{arg2}
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDynamicDiscount">
@@ -52,7 +77,7 @@
 		productCode=#{productCode,jdbcType=VARCHAR},
 		productName=#{productName,jdbcType=VARCHAR},
 		productSum=#{productSum,jdbcType=NUMERIC},
-		mayDeductionPercent=#{mayDeductionPercent,jdbcType=NUMERIC},
+		mayDeductionPercent=#{mayDeductionPercent,jdbcType=DOUBLE},
 		deductionDateStart=#{deductionDateStart,jdbcType=TIMESTAMP},
 		deductionDateStop=#{deductionDateStop,jdbcType=TIMESTAMP},
 		isLoseEfficacy=#{isLoseEfficacy,jdbcType=VARCHAR},
@@ -60,19 +85,23 @@
 		setTime=#{setTime,jdbcType=TIMESTAMP},
 		ownerId=#{ownerId,jdbcType=VARCHAR},
 		isDelete=#{isDelete,jdbcType=VARCHAR},
-		state=#{state,jdbcType=VARCHAR}
+		state=#{state,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		productLineId=#{productLineId,jdbcType=VARCHAR},
+		productLineName=#{productLineName,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
 	
-	<delete id="remove" parameterType="java.lang.String">
+	<update id="remove" parameterType="java.lang.String">
 		UPDATE SCM_CW_DynamicDiscount SET
 		isDelete= '1'
 		WHERE
 		id=#{id}
-	</delete>
-
-
+	</update>
+	
 	<select id="getByProductIdAndOwnerId"   parameterType="java.lang.String" resultMap="ScmCwDynamicDiscount">
 		SELECT * FROM SCM_CW_DynamicDiscount
 		WHERE

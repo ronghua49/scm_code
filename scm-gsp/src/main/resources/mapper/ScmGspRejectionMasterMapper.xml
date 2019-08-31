@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspRejectionMasterDao">
+	<resultMap id="ScmGspRejectionMaster" type="com.winway.scm.model.ScmGspRejectionMaster">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="supplierName" column="supplierName" jdbcType="VARCHAR"/>
+		<result property="supplierId" column="supplierId" jdbcType="VARCHAR"/>
+		<result property="supplierCode" column="supplierCode" jdbcType="VARCHAR"/>
+		<result property="getMoneyWarehouse" column="getMoneyWarehouse" jdbcType="VARCHAR"/>
+		<result property="getMoneyWarehouseCode" column="getMoneyWarehouseCode" jdbcType="VARCHAR"/>
+		<result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
+		<result property="procurementCode" column="procurementCode" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="rejectionCode" column="rejectionCode" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
+		<result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap id="ScmGspRejectionProduct" type="com.winway.scm.model.ScmGspRejectionProduct"/>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspRejectionMaster">
+		INSERT INTO Scm_Gsp_RejectionMaster
+		(id,supplierName,supplierId,supplierCode,
+		getMoneyWarehouse,getMoneyWarehouseCode,contractCode,
+		procurementCode,ownerId,approvalId,approvalState,
+		createPersion,createDate,rejectionCode,isSMS,isAffirmWms)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, 
+		#{supplierCode,jdbcType=VARCHAR}, #{getMoneyWarehouse,jdbcType=VARCHAR}, #{getMoneyWarehouseCode,jdbcType=VARCHAR}, 
+		#{contractCode,jdbcType=VARCHAR}, #{procurementCode,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, 
+		#{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR}, 
+		#{createDate,jdbcType=TIMESTAMP},#{rejectionCode,jdbcType=VARCHAR},#{isSMS,jdbcType=VARCHAR},#{isAffirmWms,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspRejectionMaster">
+		SELECT * FROM Scm_Gsp_RejectionMaster 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspRejectionProduct">
+		SELECT
+		a.id,
+		a.approvalId,
+		a.approvalState,
+		a.contractCode,
+		a.createDate,
+		a.createPersion,
+		a.getMoneyWarehouse,
+		a.getMoneyWarehouseCode,
+		a.ownerId,
+		a.procurementCode,
+		a.rejectionCode,
+		a.supplierCode,
+		a.supplierId,
+		a.supplierName,
+		b.masterId,
+		b.commonName,
+		b.manufacturer,
+		b.medicineType,
+		b.memo,
+		b.price,
+		b.priceSum,
+		b.productCode,
+		b.productName,
+		b.productState,
+		b.purchaseSum,
+		b.rejectionCause,
+		b.rejectionSum,
+		b.unit,
+		c.deliveryDate,
+		d.AgentType,
+		d.businessScope,
+		d.medicineClassify,
+		e.approvalCode
+		FROM
+		Scm_Gsp_RejectionMaster a
+		LEFT JOIN scm_gsp_rejectionproduct b ON a.id = b.masterId
+		LEFT JOIN scm_cg_procurementorder c ON a.procurementCode = c.procurementCode
+		LEFT JOIN scm_zsj_product d ON b.productCode = d.productCode
+		LEFT JOIN scm_zsj_productfirst e ON e.productId = d.id
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+    <select id="getByApprovalState" resultType="com.winway.scm.model.ScmGspRejectionMaster">
+		SELECT * FROM Scm_Gsp_RejectionMaster
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmGspRejectionMaster">
+		UPDATE Scm_Gsp_RejectionMaster SET
+		supplierName=#{supplierName,jdbcType=VARCHAR},
+		supplierId=#{supplierId,jdbcType=VARCHAR},
+		supplierCode=#{supplierCode,jdbcType=VARCHAR},
+		getMoneyWarehouse=#{getMoneyWarehouse,jdbcType=VARCHAR},
+		getMoneyWarehouseCode=#{getMoneyWarehouseCode,jdbcType=VARCHAR},
+		contractCode=#{contractCode,jdbcType=VARCHAR},
+		procurementCode=#{procurementCode,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		rejectionCode=#{rejectionCode,jdbcType=VARCHAR},
+		isSMS = #{isSMS,jdbcType=VARCHAR},
+		isAffirmWms = #{isAffirmWms,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_RejectionMaster 
+		WHERE
+		id=#{id}
+	</delete>
+	<select id="getByCode"   parameterType="java.lang.String" resultMap="ScmGspRejectionMaster">
+		SELECT * FROM Scm_Gsp_RejectionMaster 
+		WHERE 
+		rejectionCode=#{orderCode} LIMIT 1
+	</select>
+	
+</mapper>

@@ -6,7 +6,6 @@ import com.hotent.base.manager.Manager;
 import com.hotent.base.model.CommonResult;
 import com.winway.scm.model.ScmZsjCommerceDutyOfficer;
 import com.winway.scm.model.ScmZsjCommerceFirst;
-
 /**
  * 
  * <pre> 
@@ -20,12 +19,11 @@ import com.winway.scm.model.ScmZsjCommerceFirst;
  */
 public interface ScmZsjCommerceDutyOfficerManager extends Manager<String, ScmZsjCommerceDutyOfficer>{
 
-	ScmZsjCommerceDutyOfficer getByApprovalId(String approvalId);
-
 	void sendApply(ScmZsjCommerceDutyOfficer scmZsjCommerceDutyOfficer);
 
 	void endApply(String params) throws IOException;
 
 	void createCache(ScmZsjCommerceDutyOfficer scmZsjCommerceDutyOfficer);
-	
+
+	ScmZsjCommerceDutyOfficer getlastDutyOfficer(String commerceId);
 }

@@ -74,4 +74,24 @@
 		WHERE 
 		approvalId=#{approvalId}
 	</select>
+
+    <select id="listCommerceMerge" resultType="com.winway.scm.model.ScmZsjCommerce">
+		SELECT * FROM v_mergebaseinfo
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+    <select id="getApprovalDublicate" resultType="com.winway.scm.model.ScmZsjCommerceMerge">
+        SELECT * FROM Scm_Zsj_CommerceMerge
+		WHERE
+		hostCommerceId=#{hostCommerceId} and viceCommerceId=#{viceCommerceId} and approvalState='1'
+    </select>
 </mapper>

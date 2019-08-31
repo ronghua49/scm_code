@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspHaltSalesDao">
+	<resultMap id="ScmGspHaltSales" type="com.winway.scm.model.ScmGspHaltSales">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="inventorySum" column="inventorySum" jdbcType="NUMERIC"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="batchNumber" column="batchNumber" jdbcType="VARCHAR"/>
+		<result property="haltSalesDate" column="haltSalesDate" jdbcType="TIMESTAMP"/>
+		<result property="haltSalesState" column="haltSalesState" jdbcType="VARCHAR"/>
+		<result property="haltSalesMemo" column="haltSalesMemo" jdbcType="VARCHAR"/>
+		<result property="relieveHaltSalesDate" column="relieveHaltSalesDate" jdbcType="TIMESTAMP"/>
+		<result property="relieveHaltSalesState" column="relieveHaltSalesState" jdbcType="VARCHAR"/>
+		<result property="relieveHaltSalesMemo" column="relieveHaltSalesMemo" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="state" column="state" jdbcType="VARCHAR"/>
+		<result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
+		<result property="haltCode" column="haltCode" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspHaltSales">
+		INSERT INTO Scm_Gsp_HaltSales
+		(id,productName,productState,
+		unit,manufacturer,inventorySum,
+		medicineType,batchNumber,haltSalesDate,
+		haltSalesState,haltSalesMemo,relieveHaltSalesDate,
+		relieveHaltSalesState,relieveHaltSalesMemo,createPersion,
+		createDate,ownerId,approvalId,
+		approvalState,state,isSMS,
+		haltCode,code,isAffirmWms)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR},
+		 #{unit,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{inventorySum,jdbcType=NUMERIC}, 
+		 #{medicineType,jdbcType=VARCHAR}, #{batchNumber,jdbcType=VARCHAR}, #{haltSalesDate,jdbcType=TIMESTAMP}, 
+		 #{haltSalesState,jdbcType=VARCHAR}, #{haltSalesMemo,jdbcType=VARCHAR}, #{relieveHaltSalesDate,jdbcType=TIMESTAMP}, 
+		 #{relieveHaltSalesState,jdbcType=VARCHAR}, #{relieveHaltSalesMemo,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR},
+		 #{createDate,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR},#{approvalId,jdbcType=VARCHAR},
+		 #{approvalState,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{isSMS,jdbcType=VARCHAR},
+		 #{haltCode,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{isAffirmWms,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspHaltSales">
+		SELECT * FROM Scm_Gsp_HaltSales 
+		WHERE 
+		id=#{id}
+	</select>
+	<select id="getByOrderCode"   parameterType="java.lang.String" resultMap="ScmGspHaltSales">
+		SELECT * FROM Scm_Gsp_HaltSales 
+		WHERE 
+		haltCode=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspHaltSales">
+		select * from (
+		SELECT a.* ,b.AgentType,b.businessScope,b.commonName,b.productCode,b.medicineClassify,c.approvalCode FROM Scm_Gsp_HaltSales a  LEFT JOIN scm_zsj_product b on a.productName = b.productName LEFT JOIN scm_zsj_productfirst c on b.id = c.productId and a.ownerId = c.ownerId
+		) a
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	<select id="getByApprovalState" resultType="com.winway.scm.model.ScmGspHaltSales">
+		SELECT * FROM Scm_Gsp_HaltSales
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+	<update id="update" parameterType="com.winway.scm.model.ScmGspHaltSales">
+		UPDATE Scm_Gsp_HaltSales SET
+		productName=#{productName,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		unit=#{unit,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR},
+		inventorySum=#{inventorySum,jdbcType=NUMERIC},
+		medicineType=#{medicineType,jdbcType=VARCHAR},
+		batchNumber=#{batchNumber,jdbcType=VARCHAR},
+		haltSalesDate=#{haltSalesDate,jdbcType=TIMESTAMP},
+		haltSalesState=#{haltSalesState,jdbcType=VARCHAR},
+		haltSalesMemo=#{haltSalesMemo,jdbcType=VARCHAR},
+		relieveHaltSalesDate=#{relieveHaltSalesDate,jdbcType=TIMESTAMP},
+		relieveHaltSalesState=#{relieveHaltSalesState,jdbcType=VARCHAR},
+		relieveHaltSalesMemo=#{relieveHaltSalesMemo,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		state = #{state,jdbcType=VARCHAR},
+		isSMS = #{isSMS,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR},
+		isAffirmWms = #{isAffirmWms,jdbcType=VARCHAR},
+		haltCode = #{haltCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_HaltSales 
+		WHERE
+		id=#{id}
+	</delete>
+	<delete id="removeByProCode">
+		DELETE FROM Scm_Gsp_HaltSales
+		WHERE
+		productCode=#{productCode}
+	</delete>
+
+
+</mapper>

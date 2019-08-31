@@ -1,5 +1,6 @@
 package com.winway.scm.persistence.dao;
 import java.util.List;
+import java.util.Map;
 
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmCgProReplacementOrder;
@@ -20,4 +21,8 @@ public interface ScmCgProReplacementOrderDao extends MyBatisDao<String, ScmCgPro
 	List<ScmCgProReplacementOrder> getProReplacementOrderByOrderId(String orderId);
 
 	ScmCgProReplacementOrder getProOrderFirstByApprovalId(String approvalId);
+	
+	Map getProReplacementOrderById(String id);
+
+	ScmCgProReplacementOrder getProOrderFirstByCode(String orderCode);
 }

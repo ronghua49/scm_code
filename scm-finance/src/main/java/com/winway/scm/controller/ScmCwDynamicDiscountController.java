@@ -3,6 +3,9 @@ package com.winway.scm.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import java.util.Date;
+
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.MediaType;
 import com.winway.scm.persistence.manager.ScmCwDynamicDiscountManager;
 import com.winway.scm.model.ScmCwDynamicDiscount;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.controller.BaseController;
+import com.hotent.base.feign.UCFeignService;
 import com.hotent.base.model.CommonResult;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
@@ -39,6 +44,8 @@ import com.hotent.base.util.StringUtil;
 public class ScmCwDynamicDiscountController extends BaseController{
 	@Resource
 	ScmCwDynamicDiscountManager scmCwDynamicDiscountManager;
+	@Resource
+	UCFeignService ucFeignService;
 	
 	/**
 	 * 动态票折规则列表(分页条件查询)数据
@@ -77,8 +84,17 @@ public class ScmCwDynamicDiscountController extends BaseController{
 	@PostMapping(value="save")
 	@ApiOperation(value = "新增,更新动态票折规则数据", httpMethod = "POST", notes = "新增,更新动态票折规则数据")
 	public CommonResult<String> save(@ApiParam(name="scmCwDynamicDiscount",value="动态票折规则业务对象", required = true)@RequestBody ScmCwDynamicDiscount scmCwDynamicDiscount) throws Exception{
+		if(scmCwDynamicDiscount.getOwnerId() == null|| "".equals(scmCwDynamicDiscount.getOwnerId()) || "null".equals(scmCwDynamicDiscount.getOwnerId())) {
+			throw new RuntimeException("货主ID不能为空");
+		}
+		scmCwDynamicDiscount.setIsLoseEfficacy("0");
+		scmCwDynamicDiscount.setIsDelete("0");
 		String msg = "添加动态票折规则成功";
 		if(StringUtil.isEmpty(scmCwDynamicDiscount.getId())){
+			JsonNode user = ucFeignService.getUser(current(), "");
+		    String fullname = user.get("fullname").asText();
+		    scmCwDynamicDiscount.setSetPersion(fullname);
+		    scmCwDynamicDiscount.setSetTime(new Date());
 			scmCwDynamicDiscountManager.create(scmCwDynamicDiscount);
 		}else{
 			scmCwDynamicDiscountManager.update(scmCwDynamicDiscount);

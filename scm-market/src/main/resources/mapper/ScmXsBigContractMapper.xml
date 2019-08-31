@@ -37,31 +37,41 @@
 		<result property="AgreementSummaryId" column="AgreementSummaryId" jdbcType="VARCHAR"/>
 		<result property="entryDate" column="entryDate" jdbcType="TIMESTAMP"/>
 		<result property="confirmDate" column="confirmDate" jdbcType="TIMESTAMP"/>
+		<result property="sendProductDate" column="sendProductDate" jdbcType="TIMESTAMP"/>
 		<result property="entryPeople" column="entryPeople" jdbcType="VARCHAR"/>
 		<result property="agreementSummaryId" column="agreementSummaryId" jdbcType="VARCHAR"/>
+		<result property="medicineType" column="medicineType"  jdbcType="VARCHAR"/>
 	</resultMap>
-	
+
 	<insert id="create" parameterType="com.winway.scm.model.ScmXsBigContract">
 		INSERT INTO SCM_XS_BigContract
-		(id,ownerName,dealer,commerceFirstId,
-		contractCode,consignee,phone,
-		marketingWay,shipAddress,payType,signTheAddress,
-		specialOpinion,YUnit,YAddress,YOpenBank,
-		YDutyCode,YBankCode,YPhone,YPostcode,
-		JUnit,JAddress,JOpenBank,JBankCode,
-		JDutyCode,JPhone,JPostcode,DealerClauseId,
-		reduceContractTime,ownerId,approvalId,approvalState,
-		dateOfSigning,entryDate,confirmDate,entryPeople,agreementSummaryId)
+		(id,ownerName,dealer,
+		commerceFirstId,contractCode,consignee,
+		phone,marketingWay,shipAddress,
+		payType,signTheAddress,specialOpinion,
+		YUnit,YAddress,YOpenBank,
+		YDutyCode,YBankCode,YPhone,
+		YPostcode,JUnit,JAddress,
+		JOpenBank,JBankCode,JDutyCode,
+		JPhone,JPostcode,DealerClauseId,
+		reduceContractTime,ownerId,approvalId,
+		approvalState,dateOfSigning,entryDate,
+		confirmDate,entryPeople,agreementSummaryId,
+		sendProductDate,medicineType)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR}, #{dealer,jdbcType=VARCHAR}, #{commerceFirstId,jdbcType=VARCHAR},
-		 #{contractCode,jdbcType=VARCHAR}, #{consignee,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
-		 #{marketingWay,jdbcType=VARCHAR}, #{shipAddress,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, #{signTheAddress,jdbcType=VARCHAR},
-		 #{specialOpinion,jdbcType=VARCHAR}, #{YUnit,jdbcType=VARCHAR}, #{YAddress,jdbcType=VARCHAR}, #{YOpenBank,jdbcType=VARCHAR}, 
-		 #{YDutyCode,jdbcType=VARCHAR}, #{YBankCode,jdbcType=VARCHAR}, #{YPhone,jdbcType=VARCHAR}, #{YPostcode,jdbcType=VARCHAR}, 
-		 #{JUnit,jdbcType=VARCHAR}, #{JAddress,jdbcType=VARCHAR}, #{JOpenBank,jdbcType=VARCHAR}, #{JBankCode,jdbcType=VARCHAR}, 
-		 #{JDutyCode,jdbcType=VARCHAR}, #{JPhone,jdbcType=VARCHAR}, #{JPostcode,jdbcType=VARCHAR},#{dealerClauseId,jdbcType=VARCHAR}, 
-		 #{reduceContractTime,jdbcType=NUMERIC},#{ownerId,jdbcType=VARCHAR},#{approvalId,jdbcType=VARCHAR},#{approvalState,jdbcType=VARCHAR},
-		 #{dateOfSigning,jdbcType=TIMESTAMP},now(),#{confirmDate,jdbcType=TIMESTAMP},#{entryPeople,jdbcType=VARCHAR},#{agreementSummaryId,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR}, #{dealer,jdbcType=VARCHAR}, 
+		#{commerceFirstId,jdbcType=VARCHAR},#{contractCode,jdbcType=VARCHAR}, #{consignee,jdbcType=VARCHAR}, 
+		#{phone,jdbcType=VARCHAR},#{marketingWay,jdbcType=VARCHAR}, #{shipAddress,jdbcType=VARCHAR}, 
+		#{payType,jdbcType=VARCHAR}, #{signTheAddress,jdbcType=VARCHAR},#{specialOpinion,jdbcType=VARCHAR}, 
+		#{YUnit,jdbcType=VARCHAR}, #{YAddress,jdbcType=VARCHAR}, #{YOpenBank,jdbcType=VARCHAR}, 
+		#{YDutyCode,jdbcType=VARCHAR}, #{YBankCode,jdbcType=VARCHAR}, #{YPhone,jdbcType=VARCHAR}, 
+		#{YPostcode,jdbcType=VARCHAR},#{JUnit,jdbcType=VARCHAR}, #{JAddress,jdbcType=VARCHAR}, 
+		#{JOpenBank,jdbcType=VARCHAR}, #{JBankCode,jdbcType=VARCHAR},#{JDutyCode,jdbcType=VARCHAR}, 
+		#{JPhone,jdbcType=VARCHAR}, #{JPostcode,jdbcType=VARCHAR},#{dealerClauseId,jdbcType=VARCHAR}, 
+		#{reduceContractTime,jdbcType=NUMERIC},#{ownerId,jdbcType=VARCHAR},#{approvalId,jdbcType=VARCHAR},
+		#{approvalState,jdbcType=VARCHAR},#{dateOfSigning,jdbcType=TIMESTAMP},now(),
+		#{confirmDate,jdbcType=TIMESTAMP},#{entryPeople,jdbcType=VARCHAR},#{agreementSummaryId,jdbcType=VARCHAR},
+		#{sendProductDate,jdbcType=TIMESTAMP},#{medicineType,jdbcType=VARCHAR})
 	</insert>
 
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsBigContract">
@@ -111,7 +121,32 @@
 	</select>
 	
 	<select id="bigcontractGetYDetails" parameterType="java.util.Map" resultMap="ScmXsBigContract">
-		SELECT * FROM v_bigcontractGetYDetails
+		SELECT * FROM (
+		SELECT
+		`a`.`AgreementSummaryId` AS `AgreementSummaryId`,`a`.`id` AS `DealerClauseId`,`a`.`commerceName` AS `dealer`,
+		`a`.`paymentType` AS `payType`,`b`.`YPhone` AS `YPhone`,`b`.`YAddress` AS `YAddress`,`b`.`YOpenBank` AS `YOpenBank`,
+		`b`.`YBankCode` AS `YBankCode`,`b`.`YDutyCode` AS `YDutyCode`,`b`.`commerceFirstId` AS `commerceFirstId`,
+		`b`.`consignee` AS `consignee`,`b`.`phone` AS `phone`,`b`.`shipAddress` AS `shipAddress`,`b`.`YPostcode` AS `YPostcode`
+
+		FROM ((
+		(SELECT `a`.`AgreementSummaryId` AS `AgreementSummaryId`,`a`.`id` AS `id`,`a`.`commerceCode` AS `commerceCode`,`a`.`commerceName` AS `commerceName`,
+		(CASE `a`.`paymentType` WHEN '0' THEN '预付款' WHEN '1' THEN '赊销' ELSE '未选择' END) AS `paymentType`
+		FROM (`scm_xs_dealerclause` `a` LEFT JOIN
+		`scm_xs_agreementsummary` `b`
+		ON((`a`.`AgreementSummaryId` = `b`.`id`))) WHERE (`b`.`approvalState` = '2'))) `a`
+		LEFT JOIN
+		(SELECT `a`.`phone` AS `YPhone`,`a`.`registerAddress` AS `YAddress`,`a`.`openBank` AS `YOpenBank`,`a`.`bankCode` AS `YBankCode`,
+		`a`.`dutyParagraph` AS `YDutyCode`,`a`.`commerceFirstId` AS `commerceFirstId`,`c`.`contactPersion` AS `consignee`,`c`.`phone` AS `phone`,
+		`c`.`postcode` AS `YPostcode`,`c`.`address` AS `shipAddress`,
+		`a`.`commerceCode` AS `commerceCode`
+		FROM ((
+		(SELECT `b`.`contactPersion` AS `contactPersion`,`b`.`phone` AS `phone`,`a`.`registerAddress` AS `registerAddress`,`a`.`openBank` AS `openBank`,
+		`a`.`bankCode` AS `bankCode`,`a`.`dutyParagraph` AS `dutyParagraph`,`b`.`id` AS `commerceFirstId`,`a`.`commerceCode` AS `commerceCode`
+		FROM (`scm_zsj_commerce` `a`
+		LEFT JOIN `scm_zsj_commercefirst` `b` ON((`a`.`id` = `b`.`commerceId`)))
+		WHERE (`b`.`approvalState` = '2'))) `a`
+		LEFT JOIN `scm_zsj_commerceshipaddress` `c` ON((`a`.`commerceFirstId` = `c`.`commerceFirstId`)))) `b` ON((`a`.`commerceCode` = `b`.`commerceCode`)))
+		) a
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}
@@ -160,8 +195,10 @@
 		entryDate = #{entryDate,jdbcType=TIMESTAMP},
 		entryPeople = #{entryPeople,jdbcType=VARCHAR},
 		confirmDate = #{confirmDate,jdbcType=TIMESTAMP},
+		sendProductDate = #{sendProductDate,jdbcType=TIMESTAMP},
 		ownerId = #{ownerId,jdbcType=TIMESTAMP},
-		agreementSummaryId = #{agreementSummaryId,jdbcType=VARCHAR}
+		agreementSummaryId = #{agreementSummaryId,jdbcType=VARCHAR},
+		medicineType = #{medicineType,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -172,5 +209,46 @@
 		id=#{id}
 	</delete>
 	
-	
+	<select id="getScmXsBigcontractPrint" parameterType="java.lang.String" resultType="Map">
+		SELECT ownerName,
+				dealer,
+				phone,
+				contractCode,
+				shipAddress,
+				consignee,
+				(CASE marketingWay WHEN '0' THEN '预付款' WHEN '1' THEN '赊销' ELSE '无' END) AS marketingWay,
+				DATE_FORMAT(dateOfSigning,'%Y-%m-%d') AS dateOfSigning,
+				IFNULL(signTheAddress,'') AS signTheAddress,
+				IFNULL(payType,'') AS payType,
+				(CASE WHEN ownerId = '0102' THEN DATE_FORMAT(DATE_ADD(dateOfSigning, INTERVAL 89 DAY),'%Y-%m-%d')
+				ELSE DATE_FORMAT(DATE_ADD(dateOfSigning, INTERVAL 179 DAY),'%Y-%m-%d') END) AS dateOfSigningYXQ,-- = 0102时签订日期加89天
+				IFNULL(DATE_FORMAT(sendProductDate,'%Y-%m-%d'),'') AS sendProductDate,
+				ownerName AS Junit,
+				JAddress,
+				JOpenBank,
+				JBankCode,
+				JDutyCode,
+				JPhone,
+				YUnit,
+				YAddress,
+				YOpenBank,
+				YBankCode,
+				YDutyCode,
+				YPhone 
+				FROM scm_xs_bigcontract 
+				WHERE id=#{id}
+	</select>
+	<select id="getByAgreementSummaryId" resultType="com.winway.scm.model.ScmXsBigContract">
+		SELECT * FROM SCM_XS_BigContract
+		WHERE
+		agreementSummaryId=#{param2} and ownerId =#{param1}
+	</select>
+	<select id="getByOwnerIdAndClauseId" resultType="com.winway.scm.model.ScmXsBigContract">
+		SELECT * FROM SCM_XS_BigContract
+		WHERE
+		ownerId =#{param1} and DealerClauseId=#{param2} and commerceFirstId ={param3}
+	</select>
+	<select id="getAll" resultType="com.winway.scm.model.ScmXsBigContract">
+		select * from ScmXsBigContract
+	</select>
 </mapper>

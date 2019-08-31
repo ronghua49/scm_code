@@ -1,5 +1,6 @@
 package com.winway.scm.model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -21,7 +22,7 @@ import com.hotent.base.model.BaseModel;
  * 版权：美达开发小组
  * </pre>
  */
- @ApiModel(value = "ScmZsjSupplierEntruseBook",description = "供应商委托书") 
+@ApiModel(value = "ScmZsjSupplierEntruseBook",description = "供应商委托书") 
 public class ScmZsjSupplierEntruseBook extends BaseModel<String>{
 
 	private static final long serialVersionUID = 1L;
@@ -48,15 +49,23 @@ public class ScmZsjSupplierEntruseBook extends BaseModel<String>{
 	
 	@ApiModelProperty(value="身份证有效期")
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected java.util.Date IDValidity; 
+	protected java.util.Date idValidity;
 	
 	protected List<ScmZsjSupplierAccredit> scmZsjSupplierAccreditList = new ArrayList<ScmZsjSupplierAccredit>();
 	
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	/**
+
+	 public Date getIdValidity() {
+		 return idValidity;
+	 }
+
+	 public void setIdValidity(Date idValidity) {
+		 this.idValidity = idValidity;
+	 }
+
+	 /**
 	 * 返回 id
 	 * @return
 	 */
@@ -124,18 +133,7 @@ public class ScmZsjSupplierEntruseBook extends BaseModel<String>{
 		return this.idNumber;
 	}
 	
-	public void setIDValidity(java.util.Date IDValidity) {
-		this.IDValidity = IDValidity;
-	}
-	
-	/**
-	 * 返回 身份证有效期
-	 * @return
-	 */
-	public java.util.Date getIDValidity() {
-		return this.IDValidity;
-	}
-	
+
 	
 	public List<ScmZsjSupplierAccredit> getScmZsjSupplierAccreditList() {
 		return scmZsjSupplierAccreditList;
@@ -156,7 +154,7 @@ public class ScmZsjSupplierEntruseBook extends BaseModel<String>{
 		.append("entrustName", this.entrustName) 
 		.append("entrustValidity", this.entrustValidity) 
 		.append("idNumber", this.idNumber) 
-		.append("IDValidity", this.IDValidity) 
+		.append("idValidity", this.idValidity)
 		.toString();
 	}
 }

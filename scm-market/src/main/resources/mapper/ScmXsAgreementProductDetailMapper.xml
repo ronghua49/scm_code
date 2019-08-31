@@ -30,17 +30,36 @@
 		<result property="lastAllotGross" column="lastAllotGross" jdbcType="NUMERIC"/>
 		<result property="lastAcceptGross" column="lastAcceptGross" jdbcType="NUMERIC"/>
 		<result property="lastPurePinGross" column="lastPurePinGross" jdbcType="NUMERIC"/>
-	</resultMap>
+
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+		<result property="AgentType" column="AgentType" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+		<result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+ 	</resultMap>
 	
 	<resultMap id="ScmXsBigContractProductByUpdateVo" type="com.winway.scm.vo.ScmXsBigContractProductByUpdateVo"/>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmXsAgreementProductDetail">
 		INSERT INTO SCM_XS_AgreementProductDetail
-		(id,agreementSummaryId,commerceGauge,isSign,effectiveDate,gaugeType,isBidding,isImplement,biddingPrice,supplyPrice,allotGross,acceptGross,purePinGross,wireTransferPrice,acceptPrice,purePinPrice,memo,commerceCode,delivery,lastIsSign,lastSupplyPrice,lastAllotGross,lastAcceptGross,lastPurePinGross)
-		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{agreementSummaryId,jdbcType=VARCHAR}, #{commerceGauge,jdbcType=VARCHAR}, #{isSign,jdbcType=VARCHAR}, #{effectiveDate,jdbcType=TIMESTAMP}, #{gaugeType,jdbcType=VARCHAR}, #{isBidding,jdbcType=VARCHAR}, #{isImplement,jdbcType=VARCHAR}, #{biddingPrice,jdbcType=NUMERIC}, #{supplyPrice,jdbcType=NUMERIC}, #{allotGross,jdbcType=NUMERIC}, #{acceptGross,jdbcType=NUMERIC}, #{purePinGross,jdbcType=NUMERIC}, #{wireTransferPrice,jdbcType=NUMERIC}, #{acceptPrice,jdbcType=NUMERIC}, #{purePinPrice,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{delivery,jdbcType=NUMERIC},#{lastIsSign,jdbcType=VARCHAR},#{lastSupplyPrice,jdbcType=NUMERIC},#{lastAllotGross,jdbcType=NUMERIC},#{lastAcceptGross,jdbcType=NUMERIC},#{lastPurePinGross,jdbcType=NUMERIC})
+		(id,agreementSummaryId,commerceGauge,isSign,effectiveDate,gaugeType,isBidding,isImplement,biddingPrice,supplyPrice,allotGross,acceptGross,purePinGross,wireTransferPrice,acceptPrice,purePinPrice,memo,commerceCode,delivery,lastIsSign,lastSupplyPrice,lastAllotGross,lastAcceptGross,lastPurePinGross,commonName,productName,unit,AgentType,manufacturer,approvalCode,medicineClassify,businessScope)
+		VALUES
+		(#{id,jdbcType=VARCHAR}, #{agreementSummaryId,jdbcType=VARCHAR}, #{commerceGauge,jdbcType=VARCHAR}, #{isSign,jdbcType=VARCHAR}, #{effectiveDate,jdbcType=TIMESTAMP}, #{gaugeType,jdbcType=VARCHAR}, #{isBidding,jdbcType=VARCHAR}, #{isImplement,jdbcType=VARCHAR}, #{biddingPrice,jdbcType=NUMERIC}, #{supplyPrice,jdbcType=NUMERIC}, #{allotGross,jdbcType=NUMERIC}, #{acceptGross,jdbcType=NUMERIC}, #{purePinGross,jdbcType=NUMERIC}, #{wireTransferPrice,jdbcType=NUMERIC}, #{acceptPrice,jdbcType=NUMERIC}, #{purePinPrice,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{delivery,jdbcType=NUMERIC},#{lastIsSign,jdbcType=VARCHAR},#{lastSupplyPrice,jdbcType=NUMERIC},#{lastAllotGross,jdbcType=NUMERIC},#{lastAcceptGross,jdbcType=NUMERIC},#{lastPurePinGross,jdbcType=NUMERIC},#{commonName,jdbcType=VARCHAR},#{productName,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},#{AgentType,jdbcType=VARCHAR},#{manufacturer,jdbcType=VARCHAR},#{approvalCode,jdbcType=VARCHAR},#{medicineClassify,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR})
 	</insert>
-	
+
+
+	<insert id="createLast" parameterType="com.winway.scm.model.ScmXsAgreementProductDetail">
+		INSERT INTO scm_xs_agreementproductdetaillast
+		(id,agreementSummaryId,commerceGauge,isSign,effectiveDate,gaugeType,isBidding,isImplement,biddingPrice,supplyPrice,allotGross,acceptGross,purePinGross,wireTransferPrice,acceptPrice,purePinPrice,memo,commerceCode,delivery,lastIsSign,lastSupplyPrice,lastAllotGross,lastAcceptGross,lastPurePinGross,commonName,productName,unit,AgentType,manufacturer,approvalCode,medicineClassify,businessScope)
+		VALUES
+		(#{id,jdbcType=VARCHAR}, #{agreementSummaryId,jdbcType=VARCHAR}, #{commerceGauge,jdbcType=VARCHAR}, #{isSign,jdbcType=VARCHAR}, #{effectiveDate,jdbcType=TIMESTAMP}, #{gaugeType,jdbcType=VARCHAR}, #{isBidding,jdbcType=VARCHAR}, #{isImplement,jdbcType=VARCHAR}, #{biddingPrice,jdbcType=NUMERIC}, #{supplyPrice,jdbcType=NUMERIC}, #{allotGross,jdbcType=NUMERIC}, #{acceptGross,jdbcType=NUMERIC}, #{purePinGross,jdbcType=NUMERIC}, #{wireTransferPrice,jdbcType=NUMERIC}, #{acceptPrice,jdbcType=NUMERIC}, #{purePinPrice,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{delivery,jdbcType=NUMERIC},#{lastIsSign,jdbcType=VARCHAR},#{lastSupplyPrice,jdbcType=NUMERIC},#{lastAllotGross,jdbcType=NUMERIC},#{lastAcceptGross,jdbcType=NUMERIC},#{lastPurePinGross,jdbcType=NUMERIC},#{commonName,jdbcType=VARCHAR},#{productName,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},#{AgentType,jdbcType=VARCHAR},#{manufacturer,jdbcType=VARCHAR},#{approvalCode,jdbcType=VARCHAR},#{medicineClassify,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR})
+	</insert>
+
+
+
 	<select id="getProductDetailByOrovinceId"   parameterType="java.lang.String" resultMap="ScmXsAgreementProductDetail">
 		SELECT 
 			a.*,b.id,b.agreementSummaryId,
@@ -73,17 +92,17 @@
 	</select>
 	<select id="getProductDetailByOrovinceId1"   parameterType="java.lang.String" resultMap="ScmXsAgreementProductDetail">
 		SELECT 
-			a.productName AS commerceGauge,a.id AS productId,a.productCode as commerceCode,b.id AS productFirstId,
+			a.productName ,a.productState as commerceGauge,a.id AS productId,a.productCode as commerceCode,b.id AS productFirstId,
 			IFNULL(c.isSign,'0') AS lastIsSign,d.isSign,
 			IFNULL(d.effectiveDate,DATE_SUB(CURDATE(),INTERVAL DAYOFYEAR(NOW())-1 DAY)) AS effectiveDate,
-			0 AS delivery,
-			a.OTC,1 AS isBidding,1 AS isImplement, 30 AS biddingPrice,d.agreementSummaryId,
+			a.OTC,d.agreementSummaryId,
+        a.AgentType,b.approvalCode,a.commonName,a.manufacturer,a.medicineClassify,a.businessScope,a.unit,
 			<!--IFNULL(c.supplyPrice,30) AS lastSupplyPrice,d.supplyPrice,-->
-			IFNULL(c.supplyPrice,30) AS lastSupplyPrice,IFNULL(c.supplyPrice,30) AS supplyPrice,
+			<!-- IFNULL(c.supplyPrice,30) AS lastSupplyPrice,IFNULL(c.supplyPrice,30) AS supplyPrice, -->
 			IFNULL(c.allotGross,0) AS lastAllotGross,D.allotGross,
 			IFNULL(c.acceptGross,0) AS lastAcceptGross,d.acceptGross,
-			IFNULL(c.purePinGross,0) AS lastPurePinGross,d.purePinGross,
-			d.wireTransferPrice,d.acceptPrice,d.purePinPrice,
+			IFNULL(c.purePinGross,0) AS lastPurePinGross,
+			d.wireTransferPrice,d.acceptPrice,
 			d.memo
 		FROM scm_zsj_product a 
 		INNER JOIN scm_zsj_productfirst b
@@ -106,6 +125,43 @@
 			ON a.productCode = d.commerceCode AND d.agreementSummaryId = #{arg3}
 	</select>
 	
+	<select  id="getProductDetailBycode" resultMap="ScmXsAgreementProductDetail">
+	    SELECT 
+			a.productName ,a.productState as commerceGauge,a.id AS productId,a.productCode as commerceCode,b.id AS productFirstId,
+			IFNULL(c.isSign,'0') AS lastIsSign,d.isSign,
+			IFNULL(d.effectiveDate,DATE_SUB(CURDATE(),INTERVAL DAYOFYEAR(NOW())-1 DAY)) AS effectiveDate,
+			0 AS delivery,
+			a.OTC,d.agreementSummaryId,
+        a.AgentType,b.approvalCode,a.commonName,a.manufacturer,a.medicineClassify,a.businessScope,a.unit,
+			<!--IFNULL(c.supplyPrice,30) AS lastSupplyPrice,d.supplyPrice,-->
+			<!-- IFNULL(c.supplyPrice,30) AS lastSupplyPrice,IFNULL(c.supplyPrice,30) AS supplyPrice, -->
+			IFNULL(c.allotGross,0) AS lastAllotGross,D.allotGross,
+			IFNULL(c.acceptGross,0) AS lastAcceptGross,d.acceptGross,
+			IFNULL(c.purePinGross,0) AS lastPurePinGross,
+			d.wireTransferPrice,d.acceptPrice,d.purePinPrice,
+			d.memo
+		FROM scm_zsj_product a 
+		INNER JOIN scm_zsj_productfirst b
+			ON a.id = b.productId AND b.ownerId = #{arg2} AND b.approvalState = 2
+		LEFT JOIN 
+			(SELECT * FROM scm_xs_agreementproductdetail 
+			WHERE agreementSummaryId = 
+			IFNULL(
+				(SELECT MAX(id) AS masterId FROM scm_xs_agreementsummary 
+				WHERE approvalState = 2 AND ownerid = #{arg2}
+				AND businessDivisionId = #{arg0} 
+				<if test="arg1!=null">
+				AND provinceId = #{arg1} 
+				</if>
+				GROUP BY ownerId)
+			,-1)
+			) c
+			ON a.productCode = c.commerceCode
+		LEFT JOIN scm_xs_agreementproductdetail d
+			ON a.productCode = d.commerceCode AND d.agreementSummaryId = #{arg3}  WHERE  productId=#{arg4}
+	</select>
+	
+	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsAgreementProductDetail">
 		SELECT * FROM SCM_XS_AgreementProductDetail 
 		WHERE 
@@ -115,6 +171,13 @@
 	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmXsAgreementProductDetail">
 		SELECT * FROM SCM_XS_AgreementProductDetail 
 		WHERE 
+		agreementSummaryId=#{arg0}
+	</select>
+
+
+	<select id="getLastByMainId"   parameterType="java.lang.String" resultMap="ScmXsAgreementProductDetail">
+		SELECT * FROM scm_xs_agreementproductdetaillast
+		WHERE
 		agreementSummaryId=#{arg0}
 	</select>
 	
@@ -135,11 +198,11 @@
 	
 	<select id="listAgrProductByBigUpdate" parameterType="java.util.Map" resultMap="ScmXsBigContractProductByUpdateVo">
 		SELECT
-		c.id AS productId,c.productName AS productName,c.MedicineType AS MedicineType,
+		c.id AS productId,c.productName AS productName,c.MedicineType AS MedicineType,c.productCode,c.AgentType,c.manufacturer,c.medicineClassify,
 		c.commonName AS commonName,c.productState AS productState,c.unit AS unit,
 		a.id AS agreementproductdetailId,a.agreementSummaryId AS agreementSummaryId,
 		a.commerceGauge AS productGauge,a.commerceCode AS productCode,a.supplyPrice AS unitPrice,
-		b.Achange,b.theNumber,b.packageNum,b.sumPrice,b.isSMS,
+		b.Achange,b.theNumber,b.packageNum,b.sumPrice,b.isSMS,a.businessScope,a.approvalCode,
 		'正常供应' AS suppyType 
 		FROM (SELECT * FROM scm_xs_agreementproductdetail WHERE agreementSummaryId = #{arg1} ) a
 		LEFT JOIN 
@@ -170,7 +233,15 @@
 		purePinPrice=#{purePinPrice,jdbcType=NUMERIC},
 		memo=#{memo,jdbcType=VARCHAR},
 		commerceCode=#{commerceCode,jdbcType=VARCHAR},
-		delivery=#{delivery,jdbcType=NUMERIC}
+		delivery=#{delivery,jdbcType=NUMERIC},
+		commonName = #{commonName,jdbcType=VARCHAR},
+		productName = #{productName,jdbcType=VARCHAR},
+		unit = #{unit,jdbcType=VARCHAR},
+		AgentType = #{AgentType,jdbcType=VARCHAR},
+		manufacturer = #{manufacturer,jdbcType=VARCHAR},
+		approvalCode = #{approvalCode,jdbcType=VARCHAR},
+		medicineClassify = #{medicineClassify,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -185,8 +256,14 @@
 	    DELETE FROM SCM_XS_AgreementProductDetail
 	    WHERE
 	    agreementSummaryId=#{arg0}
-	</delete>    
-	
+	</delete>
+
+	<delete id="delLastByMainId">
+	    DELETE FROM scm_xs_agreementproductdetaillast
+	    WHERE
+	    agreementSummaryId=#{arg0}
+	</delete>
+
 	<select id="getScmXsAgreementProductDetailList" resultMap="ScmXsAgreementProductDetail">
 	    SELECT *
 	    FROM SCM_XS_AgreementProductDetail 

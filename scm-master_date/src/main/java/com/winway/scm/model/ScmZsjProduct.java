@@ -2,6 +2,7 @@ package com.winway.scm.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -58,11 +59,8 @@ public class ScmZsjProduct extends BaseModel<String>{
 	@ApiModelProperty(value="单位")
 	protected String unit; 
 	
-	/*@ApiModelProperty(value="件装量")
-	protected String Achange; */
-	
 	@ApiModelProperty(value="OTC")
-	protected String OTC; 
+	protected String otc;
 	
 	@ApiModelProperty(value="追溯码")
 	protected String traceCode; 
@@ -90,6 +88,9 @@ public class ScmZsjProduct extends BaseModel<String>{
 	
 	@ApiModelProperty(value="供应商名称")
 	protected String supplierName; 
+	
+	@ApiModelProperty(value="供应商编号")
+	protected String supplierCode; 
 	
 	@ApiModelProperty(value="生产厂商")
 	protected String manufacturer; 
@@ -134,16 +135,101 @@ public class ScmZsjProduct extends BaseModel<String>{
 	@ApiModelProperty(value="供应商")
 	private String supplier;
 	
-	@ApiModelProperty(value="GMP证书有效期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected Date GMPValidity; 
+	@ApiModelProperty(value="外用")
+	private String externalUse;
 	
+	@ApiModelProperty(value="产地")
+	private String placeOfOrigin;
+	
+	@ApiModelProperty(value="是否推送至主数据中心(0:否,1:是)")
+	private String isToMasterData;
+
+	 @ApiModelProperty(value="有效期")
+	 private String validityMonth;
+	 @ApiModelProperty(value="GMP证书有效期")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	protected Date GMPValidity;
+	 //件装量字段
+	 private String achage;
+	 private String code;
+	 //件装量字段列表
+	 List<Map<String,String>> achageList = new ArrayList<>();
+
+	 public List<Map<String, String>> getAchageList() {
+		 return achageList;
+	 }
+
+	 public void setAchageList(List<Map<String, String>> achageList) {
+		 this.achageList = achageList;
+	 }
+
+	 public String getIsToMasterData() {
+		return isToMasterData;
+	}
+
+	public void setIsToMasterData(String isToMasterData) {
+		this.isToMasterData = isToMasterData;
+	}
+
+
+	public String getAchage() {
+		 return achage;
+	 }
+
+	 public void setAchage(String achage) {
+		 this.achage = achage;
+	 }
+
+	 public String getCode() {
+		 return code;
+	 }
+
+	 public void setCode(String code) {
+		 this.code = code;
+	 }
+
+	 public String getValidityMonth() {
+		 return validityMonth;
+	 }
+
+	 public void setValidityMonth(String validityMonth) {
+		 this.validityMonth = validityMonth;
+	 }
+
+	 public String getSupplierCode() {
+		return supplierCode;
+	}
+
+	public void setSupplierCode(String supplierCode) {
+		this.supplierCode = supplierCode;
+	}
 	/**
 	*件装量列表
 	*/
 	protected List<ScmZsjAchage> scmZsjAchageList=new ArrayList<ScmZsjAchage>(); 
 	
 	
+	
+	public String getExternalUse() {
+		return externalUse;
+	}
+
+	public void setExternalUse(String externalUse) {
+		this.externalUse = externalUse;
+	}
+
+	public String getPlaceOfOrigin() {
+		return placeOfOrigin;
+	}
+
+	public void setPlaceOfOrigin(String placeOfOrigin) {
+		this.placeOfOrigin = placeOfOrigin;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public List<ScmZsjAchage> getScmZsjAchageList() {
 		return scmZsjAchageList;
 	}
@@ -364,7 +450,17 @@ public class ScmZsjProduct extends BaseModel<String>{
 		this.Achange = Achange;
 	}
 	
-	*//**
+	*/
+
+	 public String getOtc() {
+		 return otc;
+	 }
+
+	 public void setOtc(String otc) {
+		 this.otc = otc;
+	 }
+
+	 /**
 	 * 返回 件装量
 	 * @return
 	 *//*
@@ -372,17 +468,7 @@ public class ScmZsjProduct extends BaseModel<String>{
 		return this.Achange;
 	}*/
 	
-	public void setOTC(String OTC) {
-		this.OTC = OTC;
-	}
-	
-	/**
-	 * 返回 OTC
-	 * @return
-	 */
-	public String getOTC() {
-		return this.OTC;
-	}
+
 	
 	public void setTraceCode(String traceCode) {
 		this.traceCode = traceCode;
@@ -554,7 +640,7 @@ public class ScmZsjProduct extends BaseModel<String>{
 		.append("AgentTypeId", this.AgentTypeId) 
 		.append("AgentType", this.AgentType) 
 		.append("unit", this.unit) 
-		.append("OTC", this.OTC) 
+		.append("OTC", this.otc)
 		.append("traceCode", this.traceCode) 
 		.append("MedicineTypeId", this.MedicineTypeId) 
 		.append("MedicineType", this.MedicineType) 

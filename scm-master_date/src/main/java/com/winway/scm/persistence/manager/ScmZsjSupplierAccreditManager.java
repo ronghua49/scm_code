@@ -15,5 +15,7 @@ import com.winway.scm.model.ScmZsjSupplierAccredit;
  * </pre>
  */
 public interface ScmZsjSupplierAccreditManager extends Manager<String, ScmZsjSupplierAccredit>{
+
+	void saveList(ScmZsjSupplierAccredit[] scmZsjSupplierAccredit);
 	
 }

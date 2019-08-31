@@ -1,9 +1,11 @@
 package com.winway.scm.persistence.manager.impl;
 
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.winway.purchase.util.DateFormatter;
+import com.winway.purchase.util.QuarterUtil;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -48,5 +50,28 @@ public class ScmZsjCommerceAcceptStateManagerImpl extends AbstractManagerImpl<St
     	}
     	List<ScmZsjCommerceAcceptState> query = scmZsjCommerceAcceptStateDao.firstList(queryFilter.getParams());
         return new PageList<ScmZsjCommerceAcceptState>(query);
+	}
+
+	@Override
+	public Map<String, Object> getQuater() {
+		int i = Calendar.getInstance().get(Calendar.MONTH);
+		int i1 = Calendar.getInstance().get(Calendar.YEAR);
+		String quarter = QuarterUtil.getQuarter(String.valueOf(i+1));
+		String year = String.valueOf(i1);
+		String nextQuarterMonth = QuarterUtil.quarterSlew(quarter);
+        List<Map<String,Object>> nextQuarterMonthArray = new ArrayList<>();
+        Map<String,Object> map = new HashMap<>();
+        String[] split = nextQuarterMonth.split(",");
+        for(String s:split){
+            Map<String,Object> map1 = new HashMap<>();
+            String beginDay = i1+"-"+s+"-"+"01";
+            map1.put("month",s);
+            map1.put("date",beginDay);
+            nextQuarterMonthArray.add(map1);
+        }
+		map.put("year",year);
+		map.put("quarter",quarter);
+		map.put("nextQuarterMonth",nextQuarterMonthArray);
+		return map;
 	}
 }

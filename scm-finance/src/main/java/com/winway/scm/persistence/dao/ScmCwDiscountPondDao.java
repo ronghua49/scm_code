@@ -1,4 +1,6 @@
 package com.winway.scm.persistence.dao;
+import java.util.List;
+
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmCwDiscountPond;
 
@@ -14,4 +16,8 @@ import com.winway.scm.model.ScmCwDiscountPond;
  * </pre>
  */
 public interface ScmCwDiscountPondDao extends MyBatisDao<String, ScmCwDiscountPond> {
+
+	List<ScmCwDiscountPond> listCommerceIdByAnddiscountTypeId(String commerceId, String discountTypeId, String ownerId);
+	
+	List<ScmCwDiscountPond> listCommerceIdByAnddiscountTypeId1(String commerceId, String discountTypeId, String ownerId);
 }

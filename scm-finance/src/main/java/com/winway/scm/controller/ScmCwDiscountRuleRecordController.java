@@ -25,7 +25,7 @@ import com.hotent.base.util.StringUtil;
 /**
  * 
  * <pre> 
- * 描述：scm_cw_discountrulerecord 控制器类
+ * 描述：票折记录 控制器类
  * 构建组：x7
  * 作者:原浩
  * 邮箱:PRD-jun.he@winwayworld.com
@@ -35,7 +35,7 @@ import com.hotent.base.util.StringUtil;
  */
 @RestController
 @RequestMapping(value="/scm/scmCwDiscountRuleRecord/v1",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-@Api(tags="scmCwDiscountRuleRecordController")
+@Api(tags="scmCwDiscountRuleRecordController 票折记录")
 public class ScmCwDiscountRuleRecordController extends BaseController{
 	@Resource
 	ScmCwDiscountRuleRecordManager scmCwDiscountRuleRecordManager;
@@ -49,7 +49,7 @@ public class ScmCwDiscountRuleRecordController extends BaseController{
 	 * @exception 
 	 */
 	@PostMapping("/list")
-	@ApiOperation(value="scm_cw_discountrulerecord数据列表", httpMethod = "POST", notes = "获取scm_cw_discountrulerecord列表")
+	@ApiOperation(value="票折记录数据列表", httpMethod = "POST", notes = "获取scm_cw_discountrulerecord列表")
 	public PageList<ScmCwDiscountRuleRecord> list(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
 		return scmCwDiscountRuleRecordManager.query(queryFilter);
 	}
@@ -62,7 +62,7 @@ public class ScmCwDiscountRuleRecordController extends BaseController{
 	 * ModelAndView
 	 */
 	@GetMapping(value="/get/{id}")
-	@ApiOperation(value="scm_cw_discountrulerecord数据详情",httpMethod = "GET",notes = "scm_cw_discountrulerecord数据详情")
+	@ApiOperation(value="票折记录数据详情",httpMethod = "GET",notes = "scm_cw_discountrulerecord数据详情")
 	public ScmCwDiscountRuleRecord get(@ApiParam(name="id",value="业务对象主键", required = true)@PathVariable String id) throws Exception{
 		return scmCwDiscountRuleRecordManager.get(id);
 	}
@@ -75,7 +75,7 @@ public class ScmCwDiscountRuleRecordController extends BaseController{
 	 * @exception 
 	 */
 	@PostMapping(value="save")
-	@ApiOperation(value = "新增,更新scm_cw_discountrulerecord数据", httpMethod = "POST", notes = "新增,更新scm_cw_discountrulerecord数据")
+	@ApiOperation(value = "新增,更新票折记录数据", httpMethod = "POST", notes = "新增,更新scm_cw_discountrulerecord数据")
 	public CommonResult<String> save(@ApiParam(name="scmCwDiscountRuleRecord",value="scm_cw_discountrulerecord业务对象", required = true)@RequestBody ScmCwDiscountRuleRecord scmCwDiscountRuleRecord) throws Exception{
 		String msg = "添加scm_cw_discountrulerecord成功";
 		if(StringUtil.isEmpty(scmCwDiscountRuleRecord.getId())){
@@ -95,7 +95,7 @@ public class ScmCwDiscountRuleRecordController extends BaseController{
 	 * @exception 
 	 */
 	@DeleteMapping(value="remove/{id}")
-	@ApiOperation(value = "删除scm_cw_discountrulerecord记录", httpMethod = "DELETE", notes = "删除scm_cw_discountrulerecord记录")
+	@ApiOperation(value = "删除票折记录记录", httpMethod = "DELETE", notes = "删除scm_cw_discountrulerecord记录")
 	public  CommonResult<String>  remove(@ApiParam(name="id",value="业务主键", required = true)@PathVariable String id) throws Exception{
 		scmCwDiscountRuleRecordManager.remove(id);
 		return new CommonResult<String>(true, "删除成功");
@@ -109,7 +109,7 @@ public class ScmCwDiscountRuleRecordController extends BaseController{
 	 * @exception 
 	 */
 	@DeleteMapping(value="/removes")
-	@ApiOperation(value = "批量删除scm_cw_discountrulerecord记录", httpMethod = "DELETE", notes = "批量删除scm_cw_discountrulerecord记录")
+	@ApiOperation(value = "批量删除票折记录记录", httpMethod = "DELETE", notes = "批量删除scm_cw_discountrulerecord记录")
 	public CommonResult<String> removes(@ApiParam(name="ids",value="业务主键数组,多个业务主键之间用逗号分隔", required = true)@RequestParam String...ids) throws Exception{
 		scmCwDiscountRuleRecordManager.removeByIds(ids);
 		return new CommonResult<String>(true, "批量删除成功");

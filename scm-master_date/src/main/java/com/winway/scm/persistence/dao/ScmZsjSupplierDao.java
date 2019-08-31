@@ -6,6 +6,7 @@ import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmZdDutyAffirm;
 import com.winway.scm.model.ScmZsjCommerce;
 import com.winway.scm.model.ScmZsjSupplier;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -28,5 +29,11 @@ public interface ScmZsjSupplierDao extends MyBatisDao<String, ScmZsjSupplier> {
 
 	List<ScmZsjSupplier> downBox(String ownerId);
 
-	List<ScmZsjSupplier> downBoxApplySuccess(String ownerId);
+	List<ScmZsjSupplier> downBoxApplySuccess(@Param(value = "ownerId") String ownerId,@Param(value = "managementScope") String managementScope);
+
+	List<ScmZsjSupplier> getByMainId(String id);
+
+	ScmZsjSupplier getByApprovalId(String approvalId);
+
+	String getSupplierCode();
 }

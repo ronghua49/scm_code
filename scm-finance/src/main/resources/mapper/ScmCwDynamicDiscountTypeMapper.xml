@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwDynamicDiscountTypeDao">
+	<resultMap id="ScmCwDynamicDiscountType" type="com.winway.scm.model.ScmCwDynamicDiscountType">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="dynamicDiscountId" column="dynamicDiscountId" jdbcType="VARCHAR"/>
+		<result property="discountTypeId" column="discountTypeId" jdbcType="VARCHAR"/>
+		<result property="discountType" column="discountType" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwDynamicDiscountType">
+		INSERT INTO scm_cw_dynamicdiscounttype
+		(id,dynamicDiscountId,discountTypeId,
+		discountType,code)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{dynamicDiscountId,jdbcType=VARCHAR}, #{discountTypeId,jdbcType=VARCHAR}, 
+		#{discountType,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDynamicDiscountType">
+		SELECT * FROM scm_cw_dynamicdiscounttype 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmCwDynamicDiscountType">
+		SELECT * FROM scm_cw_dynamicdiscounttype 
+		WHERE 
+		dynamicDiscountId=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDynamicDiscountType">
+		SELECT * FROM scm_cw_dynamicdiscounttype
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwDynamicDiscountType">
+		UPDATE scm_cw_dynamicdiscounttype SET
+		dynamicDiscountId=#{dynamicDiscountId,jdbcType=VARCHAR},
+		discountTypeId=#{discountTypeId,jdbcType=VARCHAR},
+		code=#{code,jdbcType=VARCHAR},
+		discountType=#{discountType,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_cw_dynamicdiscounttype 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId" parameterType="java.lang.String">
+		DELETE FROM scm_cw_dynamicdiscounttype 
+		WHERE
+		dynamicDiscountId=#{arg0}
+	</delete>
+	
+</mapper>

@@ -2,6 +2,8 @@ package com.winway.scm.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hotent.base.model.BaseModel;
 
 
@@ -16,7 +18,11 @@ import com.hotent.base.model.BaseModel;
  * 版权：美达开发小组
  * </pre>
  */
- @ApiModel(value = "ScmCwDiscountRecord",description = "票折记录表") 
+ /**
+ * @author Administrator
+ *
+ */
+@ApiModel(value = "ScmCwDiscountRecord",description = "票折记录表") 
 public class ScmCwDiscountRecord extends BaseModel<String>{
 
 	private static final long serialVersionUID = 1L;
@@ -36,13 +42,28 @@ public class ScmCwDiscountRecord extends BaseModel<String>{
 	@ApiModelProperty(value="发票iD")
 	protected String invoiceId; 
 	
+	@ApiModelProperty(value="票折商业")
+	protected String commerceName; 
+	
 	@ApiModelProperty(value="折扣金额")
 	protected Double discountPrice; 
 	
 	@ApiModelProperty(value="票折时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date discountDate; 
 	
-	
+	public String getCommerceName() {
+		return commerceName;
+	}
+
+	public void setCommerceName(String commerceName) {
+		this.commerceName = commerceName;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public void setId(String id) {
 		this.id = id;
 	}

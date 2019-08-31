@@ -26,16 +26,16 @@ public class ScmZsjCommerceAccredit extends BaseModel<String>{
 	@ApiModelProperty(value="id")
 	protected String id; 
 	
-	@ApiModelProperty(value="委托书ID")
+	@ApiModelProperty(value="委托书ID",required = true)
 	protected String entrustId; 
 	
-	@ApiModelProperty(value="产品编号")
+	@ApiModelProperty(value="产品编号",required = true)
 	protected String productCode; 
 	
-	@ApiModelProperty(value="产品名称")
+	@ApiModelProperty(value="产品名称",required = true)
 	protected String productName; 
 	
-	@ApiModelProperty(value="通用名称")
+	@ApiModelProperty(value="通用名称",required = true)
 	protected String commonName; 
 	
 	

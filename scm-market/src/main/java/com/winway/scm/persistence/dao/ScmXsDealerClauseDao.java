@@ -22,7 +22,7 @@ public interface ScmXsDealerClauseDao extends MyBatisDao<String, ScmXsDealerClau
 
 	List<ScmXsDealerClause> firstQuery(Map<String, Object> params);
 
-	List<ScmXsDealerClause> getYears(String org0);
+	List<Map<String,Object>> getYears(String org0);
 	
 	void delByMainId(String arg0);
 

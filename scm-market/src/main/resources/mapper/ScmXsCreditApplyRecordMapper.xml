@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmXsCreditApplyRecordDao">
+	<resultMap id="ScmXsCreditApplyRecord" type="com.winway.scm.model.ScmXsCreditApplyRecord">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="recordType" column="recordType" jdbcType="VARCHAR"/>
+		<result property="dataId" column="dataId" jdbcType="VARCHAR"/>
+		<result property="price" column="price" jdbcType="NUMERIC"/>
+		<result property="recordDate" column="recordDate" jdbcType="TIMESTAMP"/>
+		<result property="focusSendDate" column="focusSendDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmXsCreditApplyRecord">
+		INSERT INTO Scm_Xs_CreditApplyRecord
+		(id,commerceCode,commerceId,recordType,dataId,price,recordDate,focusSendDate,ownerId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{recordType,jdbcType=VARCHAR}, #{dataId,jdbcType=VARCHAR}, #{price,jdbcType=NUMERIC}, #{recordDate,jdbcType=TIMESTAMP}, #{focusSendDate,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsCreditApplyRecord">
+		SELECT * FROM Scm_Xs_CreditApplyRecord 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByDataId"   parameterType="java.lang.String" resultMap="ScmXsCreditApplyRecord">
+		SELECT * FROM Scm_Xs_CreditApplyRecord 
+		WHERE 
+		dataId = #{arg0} and ownerId = #{arg1} and recordType = #{arg2}
+	</select>
+	
+	<select id="getResidueCreditByCommerceCode"   parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT IFNULL(SUM(price),0) AS price FROM scm_xs_creditapplyrecord WHERE commerceCode = #{arg0} AND ownerid = #{arg1}
+		AND (focusSendDate &lt; #{arg2} OR focusSendDate IS NULL)
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmXsCreditApplyRecord">
+		SELECT * FROM Scm_Xs_CreditApplyRecord
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmXsCreditApplyRecord">
+		UPDATE Scm_Xs_CreditApplyRecord SET
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		recordType=#{recordType,jdbcType=VARCHAR},
+		dataId=#{dataId,jdbcType=VARCHAR},
+		price=#{price,jdbcType=NUMERIC},
+		recordDate=#{recordDate,jdbcType=TIMESTAMP},
+		focusSendDate=#{focusSendDate,jdbcType=TIMESTAMP},
+		ownerId=#{ownerId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Xs_CreditApplyRecord 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="removeByDataIdAndType" parameterType="java.lang.String">
+		DELETE FROM Scm_Xs_CreditApplyRecord 
+		WHERE
+		dataId=#{arg0} and recordType = #{arg1}
+	</delete>
+	
+	
+</mapper>

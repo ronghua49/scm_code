@@ -3,6 +3,8 @@ package com.winway.scm.persistence.manager;
 import com.hotent.base.manager.Manager;
 import com.winway.scm.model.ScmZsjSupplierEntruseBook;
 
+import java.util.List;
+
 /**
  * 
  * <pre> 
@@ -17,4 +19,6 @@ import com.winway.scm.model.ScmZsjSupplierEntruseBook;
 public interface ScmZsjSupplierEntruseBookManager extends Manager<String, ScmZsjSupplierEntruseBook>{
 	
 	void create(ScmZsjSupplierEntruseBook scmZsjSupplierEntruseBook);
+
+	List<ScmZsjSupplierEntruseBook> getBySupplierId(String supplierId);
 }

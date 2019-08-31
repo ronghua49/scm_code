@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhMarketSelesReturnDao">
+	<resultMap id="ScmFhMarketSelesReturn" type="com.winway.scm.model.ScmFhMarketSelesReturn">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="batchNumber" column="batchNumber" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="aChange" column="aChange" jdbcType="NUMERIC"/>
+	<result property="expiryDate" column="expiryDate" jdbcType="TIMESTAMP"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="price" column="price" jdbcType="NUMERIC"/>
+		<result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+		<result property="actualDeliveryDate" column="actualDeliveryDate" jdbcType="TIMESTAMP"/>
+		<result property="returnMessage" column="returnMessage" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="dutyAffirm" column="dutyAffirm" jdbcType="VARCHAR"/>
+		<result property="entityDisposeMethod" column="entityDisposeMethod" jdbcType="VARCHAR"/>
+		<result property="financeDisposeMethod" column="financeDisposeMethod" jdbcType="VARCHAR"/>
+		<result property="dutyOffice" column="dutyOffice" jdbcType="VARCHAR"/>
+		<result property="dutyPrivate" column="dutyPrivate" jdbcType="VARCHAR"/>
+		<result property="shipmentsId" column="shipmentsId" jdbcType="VARCHAR"/>
+
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+		<result property="AgentType" column="AgentType" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+		<result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmFhMarketSelesReturn">
+		INSERT INTO Scm_Fh_MarketSelesReturn
+		(id,masterId,batchNumber,productName,productCode,medicineType,aChange,expiryDate,productSum,price,priceSum,actualDeliveryDate,returnMessage,memo,dutyAffirm,entityDisposeMethod,financeDisposeMethod,dutyOffice,dutyPrivate,shipmentsId,unit,AgentType,productState,manufacturer,approvalCode,medicineClassify,businessScope,commonName,code)
+		VALUES
+		(#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{batchNumber,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{medicineType,jdbcType=VARCHAR}, #{aChange,jdbcType=NUMERIC}, #{expiryDate,jdbcType=TIMESTAMP}, #{productSum,jdbcType=NUMERIC}, #{price,jdbcType=NUMERIC}, #{priceSum,jdbcType=NUMERIC}, #{actualDeliveryDate,jdbcType=TIMESTAMP}, #{returnMessage,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{dutyAffirm,jdbcType=VARCHAR}, #{entityDisposeMethod,jdbcType=VARCHAR}, #{financeDisposeMethod,jdbcType=VARCHAR}, #{dutyOffice,jdbcType=VARCHAR}, #{dutyPrivate,jdbcType=VARCHAR}, #{shipmentsId,jdbcType=VARCHAR},
+		 #{unit,jdbcType=VARCHAR}, #{AgentType,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{approvalCode,jdbcType=VARCHAR}, #{medicineClassify,jdbcType=VARCHAR}, #{businessScope,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhMarketSelesReturn">
+		SELECT * FROM Scm_Fh_MarketSelesReturn 
+		WHERE 
+		id=#{idselect>}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmFhMarketSelesReturn">
+		SELECT * FROM Scm_Fh_MarketSelesReturn
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmFhMarketSelesReturn">
+		UPDATE Scm_Fh_MarketSelesReturn SET
+		masterId=#{masterId,jdbcType=VARCHAR},
+		batchNumber=#{batchNumber,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		medicineType=#{medicineType,jdbcType=VARCHAR},
+		aChange=#{aChange,jdbcType=NUMERIC},
+		expiryDate=#{expiryDate,jdbcType=TIMESTAMP},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		price=#{price,jdbcType=NUMERIC},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		actualDeliveryDate=#{actualDeliveryDate,jdbcType=TIMESTAMP},
+		returnMessage=#{returnMessage,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		dutyAffirm=#{dutyAffirm,jdbcType=VARCHAR},
+		entityDisposeMethod=#{entityDisposeMethod,jdbcType=VARCHAR},
+		financeDisposeMethod=#{financeDisposeMethod,jdbcType=VARCHAR},
+		dutyOffice=#{dutyOffice,jdbcType=VARCHAR},
+		dutyPrivate=#{dutyPrivate,jdbcType=VARCHAR},
+		shipmentsId=#{shipmentsId,jdbcType=VARCHAR},
+		unit = #{unit,jdbcType=VARCHAR},
+		AgentType = #{AgentType,jdbcType=VARCHAR},
+		productState = #{productState,jdbcType=VARCHAR},
+		manufacturer= #{manufacturer,jdbcType=VARCHAR},
+		approvalCode = #{approvalCode,jdbcType=VARCHAR},
+		medicineClassify = #{medicineClassify,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR},
+		commonName = #{commonName,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Fh_MarketSelesReturn 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM Scm_Fh_MarketSelesReturn
+	    WHERE
+	    masterId=#{masterId}
+	</delete>    
+
+    <select id="getByMainId" resultType="com.winway.scm.model.ScmFhMarketSelesReturn">
+		SELECT
+		  a.*,TIMESTAMPDIFF(MONTH, DATE_FORMAT(NOW(),'%Y-%m-%d'),b.`expiryDate`) AS monthLeft,b.`returnSum`
+		FROM
+		  Scm_Fh_MarketSelesReturn a
+		  INNER JOIN `scm_fh_shipmentsdatail` b
+			ON a.`shipmentsId` = b.id
+	    WHERE a.masterId=#{masterId}
+	</select>
+
+</mapper>

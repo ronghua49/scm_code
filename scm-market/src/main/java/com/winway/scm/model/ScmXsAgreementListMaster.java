@@ -1,6 +1,9 @@
 package com.winway.scm.model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -45,9 +48,32 @@ public class ScmXsAgreementListMaster extends BaseModel<String>{
 	protected String MasterCode; 
 	
 	@ApiModelProperty(value="是否生效")
-	protected String isEffect; 
-	
-	public String getIsEffect() {
+	protected String isEffect;
+
+	 @ApiModelProperty(value="录入人")
+	 protected String createPerson;
+
+	 @ApiModelProperty(value="录入时间")
+	 @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+	 protected Date createDate;
+
+	 public String getCreatePerson() {
+		 return createPerson;
+	 }
+
+	 public void setCreatePerson(String createPerson) {
+		 this.createPerson = createPerson;
+	 }
+
+	 public Date getCreateDate() {
+		 return createDate;
+	 }
+
+	 public void setCreateDate(Date createDate) {
+		 this.createDate = createDate;
+	 }
+
+	 public String getIsEffect() {
 		return isEffect;
 	}
 

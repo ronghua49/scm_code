@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
+import com.winway.scm.model.ScmZsjCommerce;
 import com.winway.scm.model.ScmZsjCommerceMerge;
 
 /**
@@ -20,5 +21,9 @@ import com.winway.scm.model.ScmZsjCommerceMerge;
 public interface ScmZsjCommerceMergeManager extends Manager<String, ScmZsjCommerceMerge>{
 
 	void endApply(JsonNode jsonNode);
+
+    PageList<ScmZsjCommerce> listCommerceMerge(QueryFilter queryFilter);
+
+    void changeMergeState(String viceCommerceId,String mergeState);
 
 }

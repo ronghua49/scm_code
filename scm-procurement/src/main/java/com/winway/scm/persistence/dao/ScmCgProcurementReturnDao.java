@@ -1,6 +1,10 @@
 package com.winway.scm.persistence.dao;
+import java.util.List;
+import java.util.Map;
+
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmCgProcurementReturn;
+import com.winway.scm.vo.ScmZsjDrogPuchaseReturn;
 
 /**
  * 
@@ -14,4 +18,11 @@ import com.winway.scm.model.ScmCgProcurementReturn;
  * </pre>
  */
 public interface ScmCgProcurementReturnDao extends MyBatisDao<String, ScmCgProcurementReturn> {
+    ScmCgProcurementReturn getByApprovalState(String approvalId);
+
+	List<ScmZsjDrogPuchaseReturn> drugPuchaseReturn(Map<String, Object> params);
+	
+	Map getById(String id);
+
+	ScmCgProcurementReturn getByCode(String orderCode);
 }

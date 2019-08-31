@@ -1,6 +1,8 @@
 package com.winway.scm.controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -25,18 +27,27 @@ import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.JsonUtil;
 import com.hotent.base.util.StringUtil;
+import com.winway.purchase.vo.ReturnWmsVo;
+import com.winway.purchase.vo.ScmWmsReceipt;
+import com.winway.purchase.vo.WmsPageList;
 import com.winway.scm.model.ScmCgProOrderProduct;
 import com.winway.scm.model.ScmCgProcurementOrder;
 import com.winway.scm.persistence.manager.ScmCgProOrderProductManager;
 import com.winway.scm.persistence.manager.ScmCgProcurementContractManager;
 import com.winway.scm.persistence.manager.ScmCgProcurementOrderManager;
+import com.winway.scm.vo.ScmZsjDrogPuchaseRecords;
+import com.winway.scm.vo.WmsfindcgrkDetailVo;
+import com.winway.scm.vo.WmsfindcgrkInVo;
+import com.winway.scm.vo.WmsfindcgrkVo;
+import com.winway.scm.vo.WmsfindcgysInVo;
+import com.winway.scm.vo.WmsfindcgysVo;
+import com.winway.scm.vo.WmsfindcgysbybillnoVo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
- * 
  * <pre> 
  * 描述：采购订单表 控制器类
  * 构建组：x7
@@ -104,6 +115,8 @@ public class ScmCgProcurementOrderController extends BaseController{
 		String id = user.get("id").asText();
 		scmCgProcurementOrder.setOperatorName(fullname);
 		scmCgProcurementOrder.setOperatorId(id);
+		scmCgProcurementOrder.setOrderDate(new Date());
+		scmCgProcurementContractManager.judgeSupplierValidity(scmCgProcurementOrder.getSupplierId());
 		if(StringUtil.isEmpty(scmCgProcurementOrder.getId())){
 			scmCgProcurementOrderManager.create(scmCgProcurementOrder);
 		}else{
@@ -153,7 +166,7 @@ public class ScmCgProcurementOrderController extends BaseController{
 	 */
 	@PostMapping(value = "sendApply")
     @ApiOperation(value = "采购订单申请", httpMethod = "POST", notes = "采购订单流程提交")
-    @Workflow(flowKey = "cgdd", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "cgdd", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public WinwayResult<String> sendApply(
             @ApiParam(name = "scmCgProcurementOrder", value = "采购合同对象", required = true) @RequestBody ScmCgProcurementOrder scmCgProcurementOrder,
             HttpServletRequest request) throws Exception {
@@ -198,5 +211,104 @@ public class ScmCgProcurementOrderController extends BaseController{
 		ScmCgProcurementOrder scmCgProcurementOrder = scmCgProcurementOrderManager.getOrderFirstByApprovalId(approvalId);
 		return new CommonResult<ScmCgProcurementOrder>(true,"获取成功",scmCgProcurementOrder);
 	}
+	/**
+	 * 药品采购记录
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 * PageJson
+	 * @exception 
+	 */
+	@PostMapping("/drogPuchaseRecords")
+	@ApiOperation(value="药品采购记录", httpMethod = "POST", notes = "药品采购记录")
+	public PageList<ScmZsjDrogPuchaseRecords> drogPuchaseRecords(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
+		return scmCgProcurementOrderManager.drogPuchaseRecords(queryFilter);
+	}
+	
+	/**
+	 * 采购订单回执
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 * PageJson
+	 * @exception 
+	 */
+	@PostMapping("/receipt")
+	@ApiOperation(value="采购订单回执", httpMethod = "POST", notes = "采购订单回执")
+	public ReturnWmsVo receipt(@ApiParam(name="ScmWmsReceipt",value="查询对象")@RequestBody ScmWmsReceipt scmWmsReceipt) throws Exception{
+		if(scmWmsReceipt == null) {
+			return new ReturnWmsVo("500","回执参数不能为空");
+		}
+		if(scmWmsReceipt.getOrderCode() == null || "".equals(scmWmsReceipt.getOrderCode())) {
+			return new ReturnWmsVo("500","调拨单号不能为空");
+		}
+		if(scmWmsReceipt.getTypt() == null || "".equals(scmWmsReceipt.getTypt())) {
+			return new ReturnWmsVo("500","状态码不能为空");
+		}
+		try{
+			scmCgProcurementOrderManager.receipt(scmWmsReceipt);
+		}catch (Exception e) {
+			return new ReturnWmsVo("500",e.getMessage());
+		}
+		return new ReturnWmsVo("200","处理成功");
+	}
+	
+	/**
+	 * WMS采购验收查询
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 * PageJson
+	 * @exception 
+	 */
+	@PostMapping("/wmsfindcgys")
+	@ApiOperation(value="WMS采购验收查询", httpMethod = "POST", notes = "WMS采购验收查询")
+	public WmsPageList<WmsfindcgysVo> wmsfindcgys(@ApiParam(name="queryFilter",value="查询对象")@RequestBody WmsfindcgysInVo queryFilter) throws Exception{
+		return scmCgProcurementOrderManager.wmsfindcgys(queryFilter);
+	}
     
+	/**
+	 *   采购验收单详情查询
+	 * @param billno
+	 * @return
+	 */
+	@GetMapping("/wmsfindcgysbybillno/{billno}")
+	@ApiOperation(value="WMS采购验收单详情查询", httpMethod = "GET", notes = "WMS采购验收单详情查询")
+	public List<WmsfindcgysbybillnoVo> wmsfindcgysbybillno(@ApiParam(name="billno",value="验收单号", required = true)@PathVariable String billno){
+		return scmCgProcurementOrderManager.wmsfindcgysbybillno(billno);
+	}
+	
+	/**
+	 * WMS采购入库单查询
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 * PageJson
+	 * @exception 
+	 */
+	@PostMapping("/wmsfindcgrk")
+	@ApiOperation(value="WMS采购入库单查询", httpMethod = "POST", notes = "WMS采购入库单查询")
+	public WmsPageList<WmsfindcgrkVo> wmsfindcgrk(@ApiParam(name="queryFilter",value="查询对象")@RequestBody WmsfindcgrkInVo queryFilter) throws Exception{
+		return scmCgProcurementOrderManager.wmsfindcgrk(queryFilter);
+	}
+    
+	/**
+	 *   采购入库单详情查询
+	 * @param billno
+	 * @return
+	 */
+	@GetMapping("/wmsfindcgrkbybillno/{billno}")
+	@ApiOperation(value="WMS采购入库单详情查询", httpMethod = "GET", notes = "WMS采购入库单详情查询")
+	public List<WmsfindcgrkDetailVo> wmsfindcgrkbybillno(@ApiParam(name="billno",value="入库单单号", required = true)@PathVariable String billno){
+		return scmCgProcurementOrderManager.wmsfindcgrkbybillno(billno);
+	}
+	
+	/**
+	 * SAP采购单号查询采购入库信息
+	 * */
+	@PostMapping("/sapfindcgrkbyordercode")
+	@ApiOperation(value="SAP采购单号查询采购入库信息", httpMethod = "POST", notes = "SAP采购单号查询采购入库信息")
+	public WmsPageList<WmsfindcgrkDetailVo> sapfindcgrkbyordercode(@ApiParam(name="queryFilter",value="查询对象")@RequestBody WmsfindcgrkInVo queryFilter){
+		return scmCgProcurementOrderManager.sapfindcgrkbyordercode(queryFilter);
+	}
 }

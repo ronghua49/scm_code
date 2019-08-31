@@ -1,89 +1,358 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmFhShipmentsDatailMasterDao">
-	<resultMap id="ScmFhShipmentsDatailMaster" type="com.winway.scm.model.ScmFhShipmentsDatailMaster">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
-		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
-		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
-		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
-		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
-		<result property="province" column="province" jdbcType="VARCHAR"/>
-		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
-		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
-		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
-		<result property="shipmentsCode" column="shipmentsCode" jdbcType="VARCHAR"/>
-		<result property="successDate" column="successDate" jdbcType="TIMESTAMP"/>
-		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
-		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
-	</resultMap>
+    <resultMap id="ScmFhShipmentsDatailMaster" type="com.winway.scm.model.ScmFhShipmentsDatailMaster">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+        <result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+        <result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+        <result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+        <result property="shipmentsCode" column="shipmentsCode" jdbcType="VARCHAR"/>
+        <result property="successDate" column="successDate" jdbcType="TIMESTAMP"/>
+        <result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="isToSap" column="isToSap" jdbcType="VARCHAR"/>
+        <result property="isToWms" column="isToWms" jdbcType="VARCHAR"/>
+        <result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
+        <result property="canInvoice" column="canInvoice" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="SalesRecordVo" type="com.winway.scm.vo.SalesRecordVo"/>
+    <resultMap id="ScmFhShipmentsDataiAndMessageVo" type="com.winway.scm.vo.ScmFhShipmentsDataiAndMessageVo"></resultMap>
+    <resultMap id="ScmFhInventoryPreempted" type="com.winway.scm.vo.ScmFhInventoryPreempted"></resultMap>
 
-	<resultMap id="ScmFhShipmentsDataiAndMessageVo" type="com.winway.scm.vo.ScmFhShipmentsDataiAndMessageVo"></resultMap>
 
-
-	<insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsDatailMaster">
+    <insert id="create" parameterType="com.winway.scm.model.ScmFhShipmentsDatailMaster">
 		INSERT INTO SCM_FH_ShipmentsDatailMaster
-		(id,approvalId,approvalState,ownerId,businessDivision,businessDivisionId,province,provinceId,commerceName,commerceId,shipmentsCode,successDate,createPersion,createDate)
+		(id,approvalId,approvalState,ownerId,
+		businessDivision,businessDivisionId,province,
+		provinceId,commerceName,commerceId,
+		shipmentsCode,successDate,createPersion,
+		createDate,isToSap,isToWms,
+		isAffirmWms,canInvoice)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{shipmentsCode,jdbcType=VARCHAR}, #{successDate,jdbcType=TIMESTAMP}, #{createPersion,jdbcType=VARCHAR}, now())
+		(#{id,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, 
+		#{ownerId,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, 
+		#{province,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, 
+		#{commerceId,jdbcType=VARCHAR}, #{shipmentsCode,jdbcType=VARCHAR}, #{successDate,jdbcType=TIMESTAMP}, 
+		#{createPersion,jdbcType=VARCHAR}, now(),#{isToSap,jdbcType=VARCHAR},#{isToWms,jdbcType=VARCHAR},
+		#{isAffirmWms,jdbcType=VARCHAR},#{canInvoice,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="getByApprovalState"   parameterType="java.lang.String" resultMap="ScmFhShipmentsDatailMaster">
+
+    <select id="getByApprovalState" parameterType="java.lang.String" resultMap="ScmFhShipmentsDatailMaster">
 		SELECT * FROM SCM_FH_ShipmentsDatailMaster 
 		WHERE 
 		approvalId=#{arg0}
 	</select>
+    <select id="getByOrderCode" parameterType="java.lang.String" resultMap="ScmFhShipmentsDatailMaster">
+		SELECT * FROM SCM_FH_ShipmentsDatailMaster 
+		WHERE 
+		shipmentsCode=#{arg0}
+	</select>
 	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmFhShipmentsDatailMaster">
+    <select id="get" parameterType="java.lang.String" resultMap="ScmFhShipmentsDatailMaster">
 		SELECT * FROM SCM_FH_ShipmentsDatailMaster 
 		WHERE 
 		id=#{id}
 	</select>
 	
-	<select id="allShipmentMessage"   parameterType="java.lang.String" resultMap="ScmFhShipmentsDataiAndMessageVo">
-		SELECT * FROM (
-		SELECT a.id,a.shipmentsTaskId,a.type,taskType,a.dateCode,a.shipmentsAffirmDate,a.paymentType,a.focusShipmentsMonth,a.isSms,a.commerceName,
-		a.commerceId,a.productName,a.productNum,a.MedicineType,a.productState,a.aChange,a.commercetype,a.marketType,a.batchNumber,a.price,a.memo,a.planShipmentsSum,
-		a.deliveringAmount,a.warehouse,a.stock,a.contactPersion,a.phone,a.shippingAddress,a.dateOfManufacture,a.masterId,a.directiveCode,a.houstWareCode,
-		b.shipmentsDatailId,b.logisticsName,b.logisticsCode,b.actualDeliveryDate,b.expectedArrivalDate,b.actualDateOfArrival,b.confirmArrivalDate,
-		b.confirmMemo,b.officialReceiptsSum,b.exceptionCase,b.explain,b.agreementDays,b.dalayDays,b.transportationMethod,b.entrustPersion,b.driver,b.licencePlate,b.toWmsDate,
-		DATE_FORMAT(a.shipmentsAffirmDate, '%Y') AS YEAR,a.packageSum,DATE_FORMAT(a.shipmentsAffirmDate, '%Y-%m') AS MONTH,d.approvalCode,c.InventoryCode,e.ownerId,
-		c.id AS productId,c.ProductLineId,c.ProductLineName,b.id AS shipmentsmessageId,e.businessDivisionId,e.provinceId,e.businessDivision,e.province
-		FROM SCM_FH_ShipmentsDatail a
-		LEFT JOIN scm_fh_shipmentsdatailmaster e ON a.masterId = e.id
-		LEFT JOIN scm_fh_shipmentsmessage b ON a.id = b.shipmentsDatailId
-		LEFT JOIN scm_zsj_product c ON a.productNum = c.productCode
-		LEFT JOIN scm_zsj_productfirst d ON c.id = d.productId AND e.ownerId = d.ownerId
-		)a
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
+    <select id="inventoryPreempted" parameterType="java.lang.String" resultMap="ScmFhInventoryPreempted">
+		SELECT a.ownerid,b.houstwarecode AS wareHouseCode,b.xtlx,b.warehouseType,SUM(b.deliveringAmount) AS productNumber,b.code ,b.batchNumber
+		FROM `scm_fh_shipmentsdatailmaster` a 
+		INNER JOIN `scm_fh_shipmentsdatail` b ON a.id = b.masterId 
+		WHERE a.isAffirmWms = 0
+		AND b.houstWareCode = #{arg0}
+		AND a.ownerid = #{arg1} 
+		AND b.xtlx = #{arg2}
+		AND b.warehouseType = #{arg3}
+		AND b.code = #{arg4}
+		AND b.batchNumber = #{arg5}
+		GROUP BY a.ownerid,wareHouseCode,b.xtlx,b.warehouseType,b.code ,b.batchNumber LIMIT 1
 	</select>
 	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsDatailMaster">
-		SELECT * FROM SCM_FH_ShipmentsDatailMaster
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
+    <select id="getShipmentsDatailMasterById" parameterType="java.lang.String" resultMap="ScmFhShipmentsDatailMaster">
+		SELECT a.id,a.approvalId,a.approvalState,a.ownerId,a.businessDivision,a.businessDivisionId,a.province,a.provinceId,a.commerceName,b.id AS commerceId,
+		a.shipmentsCode,a.successDate,a.createPersion,a.createDate,a.canInvoice
+		FROM SCM_FH_ShipmentsDatailMaster a
+		LEFT JOIN scm_zsj_commercefirst b ON a.commerceId = b.id
+		WHERE 
+		a.id=#{id}
 	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmFhShipmentsDatailMaster">
+
+    <select id="allShipmentMessage" parameterType="java.lang.String" resultMap="ScmFhShipmentsDataiAndMessageVo">
+        SELECT
+        IFNULL(`a`.`logisticsName`,`b`.`commonCarrierName`) AS `commonCarrierName`,
+        IFNULL(`a`.`logisticsCode`,`b`.`commonCarrierCode`) AS `commonCarrierCode`,
+        `b`.`id`                  AS `id`,
+        `b`.`shipmentsTaskId`      AS `shipmentsTaskId`,
+        `b`.`type`                 AS `type`,
+        `b`.`taskType`             AS `taskType`,
+        `b`.`dateCode`             AS `dateCode`,
+        `b`.`shipmentsAffirmDate`  AS `shipmentsAffirmDate`,
+        `b`.`paymentType`          AS `paymentType`,
+        `b`.`focusShipmentsMonth`  AS `focusShipmentsMonth`,
+        `b`.`isSms`                AS `isSms`,
+        `b`.`commerceName`         AS `commerceName`,
+        `b`.`warehouseType`        AS `warehouseType`,
+        `b`.`loseDate`             AS `loseDate`,
+        `b`.`commerceId`           AS `commerceId`,
+        `b`.`productName`          AS `productName`,
+        `b`.`productNum`           AS `productNum`,
+        `b`.`MedicineType`         AS `MedicineType`,
+        `b`.`productState`         AS `productState`,
+        `b`.`aChange`              AS `aChange`,
+        `b`.`commercetype`         AS `commercetype`,
+        `b`.`marketType`           AS `marketType`,
+        `b`.`batchNumber`          AS `batchNumber`,
+        `b`.`price`                AS `price`,
+        `b`.`priceSum`             AS `priceSum`,
+        `b`.`memo`                 AS `memo`,
+        `b`.`planShipmentsSum`     AS `planShipmentsSum`,
+        `b`.`deliveringAmount`     AS `deliveringAmount`,
+        `b`.`warehouse`            AS `warehouse`,
+        `b`.`stock`                AS `stock`,
+        `b`.`contactPersion`       AS `contactPersion`,
+        `b`.`phone`                AS `phone`,
+        `b`.`shippingAddress`      AS `shippingAddress`,
+        `b`.`dateOfManufacture`    AS `dateOfManufacture`,
+        `b`.`masterId`             AS `masterId`,
+        `b`.`directiveCode`        AS `directiveCode`,
+        `b`.`houstWareCode`        AS `houstWareCode`,
+        `b`.`YEAR`                 AS `YEAR`,
+        `b`.`packageSum`           AS `packageSum`,
+        `b`.`MONTH`                AS `MONTH`,
+        `b`.`approvalCode`         AS `approvalCode`,
+        `b`.`shipmentsCode`        AS `shipmentsCode`,
+        `b`.`createPersion`        AS `createPersion`,
+        `b`.`createDate`           AS `createDate`,
+        `b`.`businessDivisionId`   AS `businessDivisionId`,
+        `b`.`provinceId`           AS `provinceId`,
+        `b`.`businessDivision`     AS `businessDivision`,
+        `b`.`province`             AS `province`,
+        `b`.`approvalState`        AS `approvalState`,
+        `b`.`productId`            AS `productId`,
+        `b`.`ProductLineId`        AS `ProductLineId`,
+        `b`.`ProductLineName`      AS `ProductLineName`,
+        `b`.`InventoryCode`        AS `InventoryCode`,
+        `a`.`shipmentsDatailId`    AS `shipmentsDatailId`,
+        `a`.`actualDeliveryDate`   AS `actualDeliveryDate`,
+        `a`.`expectedArrivalDate`  AS `expectedArrivalDate`,
+        `a`.`actualDateOfArrival`  AS `actualDateOfArrival`,
+        `a`.`confirmArrivalDate`   AS `confirmArrivalDate`,
+        `a`.`confirmMemo`          AS `confirmMemo`,
+        `a`.`officialReceiptsSum`  AS `officialReceiptsSum`,
+        `a`.`exceptionCase`        AS `exceptionCase`,
+        `a`.`explain`              AS `explain`,
+        `a`.`agreementDays`        AS `agreementDays`,
+        `a`.`dalayDays`            AS `dalayDays`,
+        `a`.`transportationMethod` AS `transportationMethod`,
+        `a`.`entrustPersion`       AS `entrustPersion`,
+        `a`.`driver`               AS `driver`,
+        `a`.`licencePlate`         AS `licencePlate`,
+        `a`.`isToWms`              AS `isToWms`,
+        `a`.`toWmsDate`            AS `toWmsDate`,
+        b.ownerId,xtlx
+        FROM ((SELECT
+        `a`.`commonCarrierName`     AS `commonCarrierName`,
+        `a`.`commonCarrierCode`     AS `commonCarrierCode`,
+        `a`.`id`                    AS `id`,
+        `a`.`shipmentsTaskId`       AS `shipmentsTaskId`,
+        `a`.`type`                  AS `type`,
+        `a`.`taskType`              AS `taskType`,
+        `a`.`dateCode`              AS `dateCode`,
+        `a`.`shipmentsAffirmDate`   AS `shipmentsAffirmDate`,
+        `a`.`paymentType`           AS `paymentType`,
+        `a`.`focusShipmentsMonth`   AS `focusShipmentsMonth`,
+        `a`.`isSms`                 AS `isSms`,
+        `a`.`commerceName`          AS `commerceName`,
+        `a`.`warehouseType`         AS `warehouseType`,
+        `a`.`loseDate`              AS `loseDate`,
+        `a`.`commerceId`            AS `commerceId`,
+        `a`.`productName`           AS `productName`,
+        `a`.`productNum`            AS `productNum`,
+        `a`.`MedicineType`          AS `MedicineType`,
+        `a`.`productState`          AS `productState`,
+        `a`.`aChange`               AS `aChange`,
+        `a`.`commercetype`          AS `commercetype`,
+        `a`.`marketType`            AS `marketType`,
+        `a`.`batchNumber`           AS `batchNumber`,
+        `a`.`price`                 AS `price`,
+        (`a`.`price` * `a`.`deliveringAmount`) AS `priceSum`,
+        `a`.`memo`                  AS `memo`,
+        `a`.`planShipmentsSum`      AS `planShipmentsSum`,
+        `a`.`deliveringAmount`      AS `deliveringAmount`,
+        `a`.`warehouse`             AS `warehouse`,
+        `a`.`stock`                 AS `stock`,
+        `a`.`contactPersion`        AS `contactPersion`,
+        `a`.`phone`                 AS `phone`,
+        `a`.`shippingAddress`       AS `shippingAddress`,
+        `a`.`dateOfManufacture`     AS `dateOfManufacture`,
+        `a`.`masterId`              AS `masterId`,
+        `a`.`directiveCode`         AS `directiveCode`,
+        `a`.`houstWareCode`         AS `houstWareCode`,
+        DATE_FORMAT(`a`.`shipmentsAffirmDate`,'%Y') AS `YEAR`,
+        `a`.`packageSum`            AS `packageSum`,
+        DATE_FORMAT(`a`.`shipmentsAffirmDate`,'%Y-%m') AS `MONTH`,
+        `a`.`approvalCode`          AS `approvalCode`,
+        `b`.`shipmentsCode`         AS `shipmentsCode`,
+        `b`.`createPersion`         AS `createPersion`,
+        `b`.`createDate`            AS `createDate`,
+        `b`.`businessDivisionId`    AS `businessDivisionId`,
+        `b`.`provinceId`            AS `provinceId`,
+        `b`.`businessDivision`      AS `businessDivision`,
+        `b`.`province`              AS `province`,
+        `b`.`approvalState`         AS `approvalState`,
+        `c`.`id`                    AS `productId`,
+        `c`.`ProductLineId`         AS `ProductLineId`,
+        `c`.`ProductLineName`       AS `ProductLineName`,
+        `c`.`InventoryCode`         AS `InventoryCode`,
+        b.ownerId,a.xtlx
+        FROM ((`scm_fh_shipmentsdatail` `a`
+        LEFT JOIN `scm_fh_shipmentsdatailmaster` `b`
+        ON ((`a`.`masterId` = `b`.`id`)))
+        JOIN `scm_zsj_product` `c`
+        ON ((`a`.`productNum` = `c`.`productCode`)))) `b`
+        LEFT JOIN `scm_fh_shipmentsmessage` `a`
+        ON ((`a`.`shipmentsDatailId` = `b`.`id`)))
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY createDate desc
+        </if>
+    </select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmFhShipmentsDatailMaster">
+        SELECT * FROM v_shipmentdetailmaster
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    
+    <select id="salesRecord" parameterType="java.util.Map" resultMap="SalesRecordVo">
+        SELECT a.* FROM (
+        SELECT a.code,a.id,b.ownerId,b.shipmentsCode,a.dateCode,a.shipmentsAffirmDate,a.MedicineType,c.ProductLineName,c.ProductLineId,a.productNum,c.commonName,a.productState,c.validityMonth,
+        c.AgentType,c.manufacturer,a.approvalCode,a.medicineClassify,a.businessScope,f.commerceCode,a.commerceName,a.deliveringAmount,c.productName,c.unit,a.batchNumber,a.dateOfManufacture,a.price,a.priceSum,b.createPersion,a.memo
+        FROM scm_fh_shipmentsdatail a
+        LEFT JOIN scm_fh_shipmentsdatailmaster b ON a.masterId = b.id
+        INNER JOIN scm_zsj_product c ON a.productNum = c.productCode
+        INNER JOIN scm_zsj_productfirst d ON c.id = d.productId
+        INNER JOIN scm_zsj_commercefirst e ON a.commerceId = e.id
+        INNER JOIN scm_zsj_commerce f ON e.commerceId = f.id
+        WHERE b.approvalState = 2
+        ) a
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+    
+    <select id="queryReturnVo" resultType="com.winway.scm.vo.ShipmentsDatailVo">
+        select * from v_shipmentdetail
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+    </select>
+    <select id="getByIds" resultType="com.winway.scm.model.ScmFhShipmentsDatailMaster" parameterType="java.util.Set">
+        select * from v_shipmentdetailmaster where id in
+        <foreach collection="set" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getByShipmentCodes" resultType="com.winway.scm.model.ScmFhShipmentsDatailMaster"
+            parameterType="java.util.List">
+        select * from v_shipmentdetailmaster where shipmentsCode in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getByCode" resultType="com.winway.scm.model.ScmFhShipmentsDatailMaster">
+        SELECT * FROM SCM_FH_ShipmentsDatailMaster
+		WHERE
+		shipmentsCode=#{shipmentsCode}
+    </select>
+    <select id="getShipmentDatailByCommerceIdAndOwnerId"
+            resultType="com.winway.scm.model.ScmFhShipmentsDatail">
+       SELECT b.* FROM SCM_FH_ShipmentsDatailMaster a ,`scm_fh_shipmentsdatail` b WHERE a.id= b.masterId AND a.ownerId = #{arg1} AND a.commerceId =#{arg0}
+    </select>
+    <select id="salesRecordMap" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT a.* FROM (
+        SELECT CAST((@i:=@i+1) AS signed) as j,a.code,a.id,b.ownerId,b.shipmentsCode,a.dateCode,cast(date(a.shipmentsAffirmDate) as char) as shipmentsAffirmDate,a.MedicineType as medicineType ,c.ProductLineName,c.ProductLineId,a.productNum,c.commonName,a.productState,c.validityMonth,
+        c.AgentType as agentType ,c.manufacturer,a.approvalCode,a.medicineClassify,a.businessScope,f.commerceCode,a.commerceName,cast(a.deliveringAmount as char) as deliveringAmount,c.productName,c.unit,a.batchNumber,cast(date(a.dateOfManufacture) as char) as dateOfManufacture,cast(a.price as char) as price,cast(a.priceSum as char) as priceSum,b.createPersion,a.memo
+        FROM scm_fh_shipmentsdatail a
+        LEFT JOIN scm_fh_shipmentsdatailmaster b ON a.masterId = b.id
+        INNER JOIN scm_zsj_product c ON a.productNum = c.productCode
+        INNER JOIN scm_zsj_productfirst d ON c.id = d.productId
+        INNER JOIN scm_zsj_commercefirst e ON a.commerceId = e.id
+        INNER JOIN scm_zsj_commerce f ON e.commerceId = f.id,(SELECT @i:=0) AS j
+        WHERE b.approvalState = 2
+        ) a where 1=1
+        <if test='params!=null'>
+            <if test="params.medicineType!=null and params.medicineType !='' and params.medicineType eq 0">
+                and  a.medicineType != "特殊管理药品"
+            </if>
+            <if test="params.medicineType!=null and params.medicineType !='' and params.medicineType neq 0">
+                and a.medicineType = "特殊管理药品"
+            </if>
+            <if test="params.returnCode!=null and params.returnCode !=''">
+                and a.dateCode = #{params.dateCode,jdbcType=VARCHAR}
+            </if>
+            <if test="params.startDate!=null and params.startDate !=''">
+                and a.shipmentsAffirmDate between #{params.startDate,jdbcType=TIMESTAMP} and #{params.endDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="params.startDate==null or params.startDate=='' ">
+                and MONTH(a.shipmentsAffirmDate) = MONTH(NOW())
+            </if>
+            <if test="params.productCode!=null and params.productCode !=''">
+                a.productNum = #{params.productNum,jdbcType=VARCHAR}
+            </if>
+            <if test="params.commonName!=null and params.commonName !=''">
+                a.commonName = #{params.commonName,jdbcType=VARCHAR}
+            </if>
+            <if test="params.shipmentsCode!=null and params.shipmentsCode !=''">
+                a.shipmentsCode = #{params.shipmentsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="params.commerceCode!=null and params.commerceCode !=''">
+                a.commerceCode = #{params.commerceCode,jdbcType=VARCHAR}
+            </if>
+            <if test="params.batchNumber!=null and params.batchNumber !=''">
+                a.batchNumber = #{params.batchNumber,jdbcType=VARCHAR}
+            </if>
+        </if>
+
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmFhShipmentsDatailMaster">
 		UPDATE SCM_FH_ShipmentsDatailMaster SET
 		approvalId=#{approvalId,jdbcType=VARCHAR},
 		approvalState=#{approvalState,jdbcType=VARCHAR},
@@ -97,18 +366,19 @@
 		shipmentsCode=#{shipmentsCode,jdbcType=VARCHAR},
 		successDate=#{successDate,jdbcType=TIMESTAMP},
 		createPersion=#{createPersion,jdbcType=VARCHAR},
-		createDate=#{createDate,jdbcType=TIMESTAMP}
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		isAffirmWms = #{isAffirmWms,jdbcType=VARCHAR},
+		isToSap = #{isToSap,jdbcType=VARCHAR},
+		isToWms = #{isToWms,jdbcType=VARCHAR},
+		canInvoice = #{canInvoice,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_FH_ShipmentsDatailMaster 
 		WHERE
 		id=#{id}
 	</delete>
-	
-	
-	
-	
+
 </mapper>

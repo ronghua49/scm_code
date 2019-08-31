@@ -51,6 +51,14 @@
 		id=#{id}
 	</select>
 	
+	<select id="getByCommerceCode"   parameterType="java.lang.String" resultMap="ScmXsCreditApply">
+		SELECT * FROM SCM_XS_CreditApply a
+		LEFT JOIN `scm_xs_creditcollect` b ON a.CreditCollectId = b.id
+		WHERE 
+		a.commerceCode=#{arg0} AND b.ownerid = #{arg1} AND b.approvalState = 2
+		ORDER BY createDate DESC LIMIT 1
+	</select>
+	
 	<select id="getYears"   parameterType="java.lang.String" resultMap="ScmXsCreditApply">
 		SELECT YEAR FROM v_creditapply 
 		WHERE 
@@ -72,7 +80,30 @@
 		</if>
 	</select>
 	<select id="firstList" parameterType="java.util.Map" resultMap="ScmXsCreditApply">
-		SELECT * FROM v_creditapplyfirstlist
+		SELECT * FROM (
+		  SELECT
+		  `a`.`id`                 AS `masterId`,
+		  `a`.`approvalId`         AS `approvalId`,
+		  `a`.`approvalState`      AS `approvalState`,
+		  a.createDate,
+		  a.createPerson,
+		  (CASE `a`.`approvalState` WHEN '0' THEN '未提交' WHEN '1' THEN '审批中' WHEN '2' THEN '已通过'when '3' then '已驳回'ELSE '未提交' END) AS `approvalStateStr`,
+		  `b`.`id`                 AS `id`,
+		  `b`.`year`               AS `year`,
+		  `b`.`quarter`            AS `quarter`,
+		  `b`.`businessDivision`   AS `businessDivision`,
+		  `b`.`businessDivisionId` AS `businessDivisionId`,
+		  `b`.`Province`           AS `Province`,
+		  `b`.`provinceId`         AS `provinceId`,
+		  `b`.`commerceCode`       AS `commerceCode`,
+		  `b`.`commerceName`       AS `commerceName`,
+		  `b`.`marketWay`          AS `marketWay`,
+		  `b`.`price`              AS `price`,
+		  `a`.`ownerId`            AS `ownerId`
+		FROM (`scm_xs_creditcollect` `a`
+		   LEFT JOIN `scm_xs_creditapply` `b`
+		     ON `a`.`id` = `b`.`CreditCollectId`)
+		) a
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}

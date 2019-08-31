@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwBanDiscountDao">
+	<resultMap id="ScmCwBanDiscount" type="com.winway.scm.model.ScmCwBanDiscount">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="setPersion" column="setPersion" jdbcType="VARCHAR"/>
+		<result property="productLineId" column="productLineId" jdbcType="VARCHAR"/>
+		<result property="productLineName" column="productLineName" jdbcType="VARCHAR"/>
+		<result property="setTime" column="setTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwBanDiscount">
+		INSERT INTO SCM_CW_BanDiscount
+		(id,province,businessDivisionId,provinceId,ownerId,commerceId,commerceCode,
+		commerceName,businessDivision,productId,productCode,productName,setPersion,productLineId,productLineName,setTime)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, 
+		#{provinceId,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, 
+		#{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, 
+		#{productId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+		#{setPersion,jdbcType=VARCHAR},#{productLineId,jdbcType=VARCHAR},#{productLineName,jdbcType=VARCHAR}, 
+		#{setTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwBanDiscount">
+		UPDATE SCM_CW_BanDiscount SET
+		province=#{province,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		productId=#{productId,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		setPersion=#{setPersion,jdbcType=VARCHAR},
+		productLineId=#{productLineId,jdbcType=VARCHAR},
+		productLineName=#{productLineName,jdbcType=VARCHAR},
+		setTime=#{setTime,jdbcType=TIMESTAMP}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM SCM_CW_BanDiscount 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<select id="getByBusinessDivisionId"   parameterType="java.lang.String" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount 
+		WHERE 
+		businessDivisionId=#{arg0} and provinceId = '' and commerceId = '' and productCode = '' and ownerId = #{arg1}
+	</select>
+	
+	<select id="getByProvinceId"   parameterType="java.lang.String" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount 
+		WHERE 
+		provinceId=#{arg0} and commerceId = '' and productCode = '' and ownerId = #{arg1}
+	</select>
+	
+	<select id="getByCommerceId"   parameterType="java.lang.String" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount 
+		WHERE 
+		commerceCode=#{arg0} and productCode = '' and ownerId = #{arg1}
+	</select>
+	
+	<select id="getByProductCode"   parameterType="java.lang.String" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount 
+		WHERE 
+		productCode=#{arg0} and businessDivisionId='' and provinceId = '' and commerceId = '' and ownerId = #{arg1}
+	</select>
+	
+	<select id="getByProductCodeAndBusinessDivisionId" parameterType="java.lang.String" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount 
+		WHERE 
+		productCode=#{arg0} and businessDivisionId=#{arg1} and provinceId = '' and commerceId = ''  and ownerId = #{arg2}
+	</select>
+	
+	<select id="getByProductCodeAndProvinceId" parameterType="java.lang.String" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount 
+		WHERE 
+		productCode=#{arg0} and provinceId = #{arg1} and commerceId = ''  and ownerId = #{arg2}
+	</select>
+	
+	<select id="getByProductCodeAndCommerceId" parameterType="java.lang.String" resultMap="ScmCwBanDiscount">
+		SELECT * FROM SCM_CW_BanDiscount 
+		WHERE 
+		productCode=#{arg0} and commerceCode = #{arg1}  and ownerId = #{arg2}
+	</select>
+	
+	
+</mapper>

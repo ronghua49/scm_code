@@ -1,6 +1,7 @@
 package com.winway.scm.persistence.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import com.hotent.base.manager.Manager;
 import com.hotent.base.query.PageList;
@@ -25,6 +26,6 @@ public interface ScmXsDealerClauseManager extends Manager<String, ScmXsDealerCla
 
 	PageList<ScmXsDealerClause> firstQuery(QueryFilter queryFilter);
 
-	List<ScmXsDealerClause> getYears(String ownerId);
+	List<Map<String, Object>> getYears(String ownerId);
 	
 }

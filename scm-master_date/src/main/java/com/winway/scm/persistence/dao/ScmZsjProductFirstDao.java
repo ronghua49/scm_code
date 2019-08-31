@@ -1,5 +1,6 @@
 package com.winway.scm.persistence.dao;
 import java.util.List;
+import java.util.Map;
 
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmZsjProductFirst;
@@ -23,4 +24,9 @@ public interface ScmZsjProductFirstDao extends MyBatisDao<String, ScmZsjProductF
 	ScmZsjProductFirst getProductFirstByApprovalId(String approvalId);
 
 	List<ScmZsjProductFirst> getByMainId(String id);
+
+    List<ScmZsjProductFirst> getByProId(String productId);
+
+    Map printByMainId(String productFirstId);
+
 }

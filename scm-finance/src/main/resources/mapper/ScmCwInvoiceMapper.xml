@@ -1,84 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winway.scm.persistence.dao.ScmCwInvoiceDao">
-	<resultMap id="ScmCwInvoice" type="com.winway.scm.model.ScmCwInvoice">
-		<id property="id" column="id" jdbcType="VARCHAR"/>
-		<result property="verifyType" column="verifyType" jdbcType="VARCHAR"/>
-		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
-		<result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
-		<result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
-		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
-		<result property="province" column="province" jdbcType="VARCHAR"/>
-		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
-		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
-		<result property="invoiceType" column="invoiceType" jdbcType="VARCHAR"/>
-		<result property="invoiceDate" column="invoiceDate" jdbcType="TIMESTAMP"/>
-		<result property="updateInvoiceDate" column="updateInvoiceDate" jdbcType="TIMESTAMP"/>
-		<result property="invoiceCode" column="invoiceCode" jdbcType="VARCHAR"/>
-		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
-		<result property="productState" column="productState" jdbcType="VARCHAR"/>
-		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
-		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
-		<result property="priceTaxSum" column="priceTaxSum" jdbcType="NUMERIC"/>
-		<result property="shipmentDate" column="shipmentDate" jdbcType="TIMESTAMP"/>
-		<result property="shipmentCode" column="shipmentCode" jdbcType="VARCHAR"/>
-		<result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
-		<result property="remittanceType" column="remittanceType" jdbcType="VARCHAR"/>
-		<result property="memo" column="memo" jdbcType="VARCHAR"/>
-		<result property="gatherPersion" column="gatherPersion" jdbcType="VARCHAR"/>
-		<result property="gathererDate" column="gathererDate" jdbcType="TIMESTAMP"/>
-		<result property="setUpPersion" column="setUpPersion" jdbcType="VARCHAR"/>
-		<result property="setUpDate" column="setUpDate" jdbcType="TIMESTAMP"/>
-		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
-		<result property="isAffirm" column="isAffirm" jdbcType="VARCHAR"/>
-		<result property="balancePrice" column="balancePrice" jdbcType="NUMERIC"/>
-	</resultMap>
-	<resultMap id="VInvoice" type="com.winway.scm.vo.VInvoice"/>
-	
-	<insert id="create" parameterType="com.winway.scm.model.ScmCwInvoice">
+    <resultMap id="ScmCwInvoice" type="com.winway.scm.model.ScmCwInvoice">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="verifyType" column="verifyType" jdbcType="VARCHAR"/>
+        <result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+        <result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+        <result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+        <result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+        <result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+        <result property="invoiceType" column="invoiceType" jdbcType="VARCHAR"/>
+        <result property="invoiceDate" column="invoiceDate" jdbcType="TIMESTAMP"/>
+        <result property="updateInvoiceDate" column="updateInvoiceDate" jdbcType="TIMESTAMP"/>
+        <result property="invoiceCode" column="invoiceCode" jdbcType="VARCHAR"/>
+        <result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+        <result property="productState" column="productState" jdbcType="VARCHAR"/>
+        <result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+        <result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
+        <result property="priceTaxSum" column="priceTaxSum" jdbcType="NUMERIC"/>
+        <result property="shipmentDate" column="shipmentDate" jdbcType="TIMESTAMP"/>
+        <result property="shipmentCode" column="shipmentCode" jdbcType="VARCHAR"/>
+        <result property="contractCode" column="contractCode" jdbcType="VARCHAR"/>
+        <result property="remittanceType" column="remittanceType" jdbcType="VARCHAR"/>
+        <result property="memo" column="memo" jdbcType="VARCHAR"/>
+        <result property="gatherPersion" column="gatherPersion" jdbcType="VARCHAR"/>
+        <result property="gathererDate" column="gathererDate" jdbcType="TIMESTAMP"/>
+        <result property="setUpPersion" column="setUpPersion" jdbcType="VARCHAR"/>
+        <result property="setUpDate" column="setUpDate" jdbcType="TIMESTAMP"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="isAffirm" column="isAffirm" jdbcType="VARCHAR"/>
+        <result property="balancePrice" column="balancePrice" jdbcType="NUMERIC"/>
+        <result property="batchNumber" column="batchNumber" jdbcType="VARCHAR"/>
+        <result property="directiveCode" column="directiveCode" jdbcType="VARCHAR"/>
+        <result property="loseDate" column="loseDate" jdbcType="VARCHAR"/>
+        <result property="productName" column="productName" jdbcType="VARCHAR"/>
+        <result property="matchResult" column="matchResult" jdbcType="VARCHAR"/>
+        <result property="affirmDate" column="affirmDate" jdbcType="TIMESTAMP"/>
+        <result property="affirmPerson" column="affirmPerson" jdbcType="VARCHAR"/>
+        <result property="firstClassCommerce" column="firstClassCommerce" jdbcType="VARCHAR"/>
+        <result property="remittanceDate" column="remittanceDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="VInvoice" type="com.winway.scm.vo.VInvoice"/>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmCwInvoice">
 		INSERT INTO SCM_CW_Invoice
-		(id,verifyType,commerceId,commerceCode,commerceName,businessDivision,province,businessDivisionId,provinceId,invoiceType,invoiceDate,updateInvoiceDate,invoiceCode,commonName,productState,productSum,unitPrice,priceTaxSum,shipmentDate,shipmentCode,contractCode,remittanceType,memo,gatherPersion,gathererDate,setUpPersion,setUpDate,ownerId,isAffirm,balancePrice)
+		(id,verifyType,commerceId,commerceCode,commerceName,businessDivision,province,businessDivisionId,provinceId,invoiceType,invoiceDate,updateInvoiceDate,invoiceCode,commonName,productState,productSum,unitPrice,priceTaxSum,shipmentDate,shipmentCode,contractCode,remittanceType,memo,gatherPersion,gathererDate,setUpPersion,setUpDate,ownerId,isAffirm,balancePrice,batchNumber,directiveCode,loseDate,productName,matchResult,affirmDate,affirmPerson,firstClassCommerce,remittanceDate)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{verifyType,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{invoiceType,jdbcType=VARCHAR}, #{invoiceDate,jdbcType=TIMESTAMP}, #{updateInvoiceDate,jdbcType=TIMESTAMP}, #{invoiceCode,jdbcType=VARCHAR}, #{commonName,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{productSum,jdbcType=NUMERIC}, #{unitPrice,jdbcType=NUMERIC}, #{priceTaxSum,jdbcType=NUMERIC}, #{shipmentDate,jdbcType=TIMESTAMP}, #{shipmentCode,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, #{remittanceType,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{gatherPersion,jdbcType=VARCHAR}, #{gathererDate,jdbcType=TIMESTAMP}, #{setUpPersion,jdbcType=VARCHAR}, #{setUpDate,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR}, #{isAffirm,jdbcType=VARCHAR}, #{balancePrice,jdbcType=NUMERIC})
+		(#{id,jdbcType=VARCHAR}, #{verifyType,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{invoiceType,jdbcType=VARCHAR}, #{invoiceDate,jdbcType=TIMESTAMP}, #{updateInvoiceDate,jdbcType=TIMESTAMP}, #{invoiceCode,jdbcType=VARCHAR}, #{commonName,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{productSum,jdbcType=NUMERIC}, #{unitPrice,jdbcType=NUMERIC}, #{priceTaxSum,jdbcType=NUMERIC}, #{shipmentDate,jdbcType=TIMESTAMP}, #{shipmentCode,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, #{remittanceType,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{gatherPersion,jdbcType=VARCHAR}, #{gathererDate,jdbcType=TIMESTAMP}, #{setUpPersion,jdbcType=VARCHAR}, #{setUpDate,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR}, #{isAffirm,jdbcType=VARCHAR}, #{balancePrice,jdbcType=NUMERIC},#{batchNumber,jdbcType=VARCHAR},#{directiveCode,jdbcType=VARCHAR},#{loseDate,jdbcType=TIMESTAMP},#{productName,jdbcType=VARCHAR},#{matchResult,jdbcType=VARCHAR}, #{affirmDate,jdbcType=TIMESTAMP}, #{affirmPerson,jdbcType=VARCHAR},#{firstClassCommerce,jdbcType=VARCHAR},#{remittanceDate,jdbcType=TIMESTAMP})
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwInvoice">
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmCwInvoice">
 		SELECT * FROM SCM_CW_Invoice 
 		WHERE 
 		id=#{id}
 	</select>
 	
-	<select id="query" parameterType="java.util.Map" resultMap="ScmCwInvoice">
-		SELECT * FROM SCM_CW_Invoice
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
+    <select id="listByCommerceCode" parameterType="java.lang.String" resultMap="ScmCwInvoice">
+		SELECT * FROM SCM_CW_Invoice 
+		WHERE 
+		commerceCode=#{arg0}
 	</select>
-	
-	<select id="history" parameterType="java.util.Map" resultMap="VInvoice">
-		SELECT * FROM v_invoice
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY id DESC
-		</if>
-	</select>
-	
-	<update id="update" parameterType="com.winway.scm.model.ScmCwInvoice">
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmCwInvoice">
+       select * from( SELECT a.*,b.`commerceLevel` FROM SCM_CW_Invoice a LEFT JOIN scm_zsj_commerce b ON a.`commerceCode` = b.`commerceCode`) a
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="history" parameterType="java.util.Map" resultMap="VInvoice">
+        SELECT * FROM v_invoice
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmCwInvoice">
 		UPDATE SCM_CW_Invoice SET
 		verifyType=#{verifyType,jdbcType=VARCHAR},
 		commerceId=#{commerceId,jdbcType=VARCHAR},
@@ -107,40 +122,98 @@
 		setUpDate=#{setUpDate,jdbcType=TIMESTAMP},
 		ownerId=#{ownerId,jdbcType=VARCHAR},
 		isAffirm=#{isAffirm,jdbcType=VARCHAR},
-		balancePrice=#{balancePrice,jdbcType=NUMERIC}
+		balancePrice=#{balancePrice,jdbcType=NUMERIC},
+		batchNumber = #{batchNumber,jdbcType=VARCHAR},
+		directiveCode = #{directiveCode,jdbcType=VARCHAR},
+		loseDate = #{loseDate,jdbcType=TIMESTAMP},
+		productName = #{productName,jdbcType=VARCHAR},
+		matchResult = #{matchResult,jdbcType=VARCHAR},
+		affirmDate = #{affirmDate,jdbcType=TIMESTAMP},
+		affirmPerson = #{affirmPerson,jdbcType=VARCHAR},
+		firstClassCommerce = #{firstClassCommerce,jdbcType=VARCHAR},
+		remittanceDate = #{remittanceDate,jdbcType=TIMESTAMP}
 		WHERE
 		id=#{id}
 	</update>
-	
-	<delete id="remove" parameterType="java.lang.String">
+
+    <delete id="remove" parameterType="java.lang.String">
 		DELETE FROM SCM_CW_Invoice 
 		WHERE
 		id=#{id}
 	</delete>
-	
-<!-- 	<select id="selAll"   parameterType="java.lang.String" resultMap="ScmCwInvoice">
-		SELECT
-			* 
-		FROM
-			scm_cw_invoice a 
-		WHERE
-			a.id IN ( SELECT b.invoiceId FROM scm_cw_blend b WHERE b.returnMoneyId =#{id} )
-	</select> -->
-	
-		<select id="selAll" parameterType="java.util.Map" resultMap="ScmCwInvoice">
-			SELECT * FROM scm_cw_invoice a
-			LEFT JOIN scm_cw_blend b ON a.id = b.invoiceId
-		<where>
-			<if test="whereSql!=null">
-				${whereSql}
-			</if>
-		</where>
-		<if test="orderBySql!=null">
-			ORDER BY ${orderBySql}
-		</if>
-		<if test="orderBySql==null">
-			ORDER BY a.id DESC
-		</if>
-	</select>
-	
+
+    <!-- 	<select id="selAll"   parameterType="java.lang.String" resultMap="ScmCwInvoice">
+            SELECT
+                *
+            FROM
+                scm_cw_invoice a
+            WHERE
+                a.id IN ( SELECT b.invoiceId FROM scm_cw_blend b WHERE b.returnMoneyId =#{id} )
+        </select> -->
+
+    <select id="selAll" parameterType="java.util.Map" resultMap="ScmCwInvoice">
+        SELECT * FROM scm_cw_invoice a
+        LEFT JOIN scm_cw_blend b ON a.id = b.invoiceId
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY a.id DESC
+        </if>
+    </select>
+    <select id="sumList" resultType="java.util.Map">
+        SELECT count(*) as 'count',sum(priceTaxSum) as priceTaxSum ,commerceName FROM scm_cw_invoice
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        group by commerceName
+    </select>
+    <select id="checklist" resultType="com.winway.scm.model.ScmCwInvoice">
+        select * from (SELECT
+        c.`verifyType`,
+        c.`invoiceDate`,
+        a.`remittanceDate`,
+        a.`businessDivision`,
+        a.`province`,
+        e.`supplier`,
+        a.`commerceName`,
+        d.`ProductLineName`,
+        c.`productName`,
+        c.`contractCode`,
+        c.`invoiceCode`,
+        a.`remittanceType`,
+        c.`productSum`,
+        c.`unitPrice`,
+        c.`priceTaxSum`,
+        b.`blendprice`,
+        c.`balancePrice`
+        FROM
+        `scm_cw_returnmoney` a
+        LEFT JOIN `scm_cw_blend` b
+        ON a.`id` = b.`returnMoneyId`
+        LEFT JOIN `scm_cw_invoice` c
+        ON b.`invoiceId` = c.`id`
+        LEFT JOIN scm_zsj_product d
+        ON d.`productName` = c.`productName`
+        LEFT JOIN scm_zsj_productfirst e
+        ON e.`productId` = d.id) a
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY invoiceDate DESC
+        </if>
+    </select>
 </mapper>

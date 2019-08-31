@@ -36,6 +36,9 @@ public class ScmZsjAccessory extends BaseModel<String>{
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date updateDate; 
 	
+	@ApiModelProperty(value="文件ID")
+	protected String fileId; 
+	
 	@ApiModelProperty(value="数据ID")
 	protected String dateId; 
 	
@@ -43,6 +46,18 @@ public class ScmZsjAccessory extends BaseModel<String>{
 	protected String fileName; 
 	
 	
+	public String getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public void setId(String id) {
 		this.id = id;
 	}

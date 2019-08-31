@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspReviewConditionDao">
+	<resultMap id="ScmGspReviewCondition" type="com.winway.scm.model.ScmGspReviewCondition">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+		<result property="batchNumber" column="batchNumber" jdbcType="VARCHAR"/>
+		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="supplierName" column="supplierName" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="parturitionDate" column="parturitionDate" jdbcType="TIMESTAMP"/>
+		<result property="validity" column="validity" jdbcType="TIMESTAMP"/>
+		<result property="qualityCondition" column="qualityCondition" jdbcType="VARCHAR"/>
+		<result property="reviewCondition" column="reviewCondition" jdbcType="VARCHAR"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="reviewCode" column="reviewCode" jdbcType="VARCHAR"/>
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspReviewCondition">
+		INSERT INTO Scm_Gsp_ReviewCondition
+		(id,productName,productState,unit,batchNumber,productSum,medicineType,supplierName,manufacturer,parturitionDate,validity,qualityCondition,reviewCondition,createPersion,createDate,ownerId,approvalId,approvalState,reviewCode,commonName)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{batchNumber,jdbcType=VARCHAR}, #{productSum,jdbcType=NUMERIC}, #{medicineType,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{parturitionDate,jdbcType=TIMESTAMP}, #{validity,jdbcType=TIMESTAMP}, #{qualityCondition,jdbcType=VARCHAR}, #{reviewCondition,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{ownerId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR},#{reviewCode,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspReviewCondition">
+		SELECT * FROM Scm_Gsp_ReviewCondition 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspReviewCondition">
+		select * from (
+		SELECT a.* ,b.AgentType,b.businessScope,b.medicineClassify ,b.productCode,c.approvalCode FROM Scm_Gsp_ReviewCondition a  LEFT JOIN scm_zsj_product b on a.productName = b.productName INNER JOIN scm_zsj_productfirst c on b.id = c.productId
+		) a
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+    <select id="getByApprovalState" parameterType="java.lang.String" resultMap="ScmGspReviewCondition">
+		SELECT * FROM Scm_Gsp_ReviewCondition
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmGspReviewCondition">
+		UPDATE Scm_Gsp_ReviewCondition SET
+		productName=#{productName,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		unit=#{unit,jdbcType=VARCHAR},
+		batchNumber=#{batchNumber,jdbcType=VARCHAR},
+		productSum=#{productSum,jdbcType=NUMERIC},
+		medicineType=#{medicineType,jdbcType=VARCHAR},
+		supplierName=#{supplierName,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR},
+		parturitionDate=#{parturitionDate,jdbcType=TIMESTAMP},
+		validity=#{validity,jdbcType=TIMESTAMP},
+		qualityCondition=#{qualityCondition,jdbcType=VARCHAR},
+		reviewCondition=#{reviewCondition,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		reviewCode = #{reviewCode,jdbcType=VARCHAR},
+		commonName = #{commonName,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_ReviewCondition 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

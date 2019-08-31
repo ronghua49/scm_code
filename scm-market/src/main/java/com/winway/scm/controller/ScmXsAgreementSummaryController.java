@@ -3,15 +3,10 @@ package com.winway.scm.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSON;
+import com.hotent.base.feign.UCFeignService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.annotation.Workflow;
@@ -28,6 +23,10 @@ import com.winway.scm.persistence.manager.ScmXsAgreementSummaryManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -46,7 +45,11 @@ import io.swagger.annotations.ApiParam;
 public class ScmXsAgreementSummaryController extends BaseController{
 	@Resource
 	ScmXsAgreementSummaryManager scmXsAgreementSummaryManager;
-	
+
+
+	@Resource
+	UCFeignService ucFeignService;
+
 	/**
 	 * 省区协议汇总表列表(分页条件查询)数据
 	 * @param request
@@ -87,6 +90,10 @@ public class ScmXsAgreementSummaryController extends BaseController{
 		String msg = "添加经销商协议汇总表成功";
 		//申请状态
 		scmXsAgreementSummary.setApprovalState("0");
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsAgreementSummary.setCreateDate(new Date());
+		scmXsAgreementSummary.setCreatePerson(fullname);
 		if(StringUtil.isEmpty(scmXsAgreementSummary.getId())){
 			//申请编码
 			scmXsAgreementSummary.setAgreementSummaryCode(QuarterUtil.getCode("JXTK"));
@@ -165,10 +172,14 @@ public class ScmXsAgreementSummaryController extends BaseController{
 	 */
 	@PostMapping(value = "sendApply")
     @ApiOperation(value = "经销商协议合作条款申请", httpMethod = "POST", notes = "提交时需要在ScmXsAgreementSummary对象中封装好详细数据以及列表数据")
-    @Workflow(flowKey = "jxsxyhztksq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "jxsxyhztksq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public CommonResult<ScmXsAgreementSummary> sendApply(
             @ApiParam(name = "ScmXsAgreementSummary", value = "经销商协议合作名单总表对象", required = true) @RequestBody ScmXsAgreementSummary scmXsAgreementSummary,
             HttpServletRequest request) throws Exception {
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsAgreementSummary.setCreateDate(new Date());
+		scmXsAgreementSummary.setCreatePerson(fullname);
 		scmXsAgreementSummaryManager.sendApply(scmXsAgreementSummary);
 	   return new CommonResult<ScmXsAgreementSummary>(true, "审批发起成功");
 	}
@@ -193,5 +204,21 @@ public class ScmXsAgreementSummaryController extends BaseController{
 	public ScmXsAgreementSummary getDealerClauseAndProductDetail(@ApiParam(name="id",value="业务对象主键", required = true)@PathVariable String id) throws Exception{
 		return scmXsAgreementSummaryManager.getDealerClauseAndProductDetail(id);
 	}
+
+	/**
+	 *获取经销商和分销商
+	 * @param
+	 * @return
+	 * @throws Exception
+	 * ModelAndView
+	 */
+	@PostMapping(value="/aunualFee")
+	@ApiOperation(value="根据商务分区和省区查经销商协议对应年费",httpMethod = "GET",notes = "根据上午分区和省区查经销商协议对应年费")
+	public String getPAnnualFee(@ApiParam(name = "businessDivisionId", value = "商务分区id",required = true) @RequestParam String businessDivisionId,  @ApiParam(name = "provinceId", value = "商务省区id",required = true) @RequestParam  String provinceId,@ApiParam(name = "year", value = "当前年份",required = true) @RequestParam String year){
+		List<Map<String,Object>> mapList = scmXsAgreementSummaryManager.aunualFee(businessDivisionId,provinceId,year);
+		return JSON.toJSONString(mapList);
+	}
+
     
 }
+

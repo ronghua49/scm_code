@@ -1,5 +1,6 @@
 package com.winway.scm.controller;
 
+import com.hotent.base.feign.UCFeignService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,6 +31,8 @@ import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.JsonUtil;
 import com.hotent.base.util.StringUtil;
 
+import java.util.Date;
+
 /**
  * 
  * <pre> 
@@ -47,6 +50,9 @@ import com.hotent.base.util.StringUtil;
 public class ScmXsDistributorAgreementSummaryController extends BaseController{
 	@Resource
 	ScmXsDistributorAgreementSummaryManager scmXsDistributorAgreementSummaryManager;
+
+	@Resource
+	UCFeignService ucFeignService;
 	
 	/**
 	 * 省区协议汇总表列表(分页条件查询)数据
@@ -87,6 +93,11 @@ public class ScmXsDistributorAgreementSummaryController extends BaseController{
 	public CommonResult<ScmXsDistributorAgreementSummary> save(@ApiParam(name="scmXsDistributorAgreementSummary",value="省区协议汇总表业务对象", required = true)@RequestBody ScmXsDistributorAgreementSummary scmXsDistributorAgreementSummary) throws Exception{
 		String msg = "添加省区协议汇总表成功";
 		scmXsDistributorAgreementSummary.setApprovalState("0");
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsDistributorAgreementSummary.setCreateDate(new Date());
+		scmXsDistributorAgreementSummary.setCreatePerson(fullname);
+
 		if(StringUtil.isEmpty(scmXsDistributorAgreementSummary.getId())){
 			String code = QuarterUtil.getCode("FXXY");
 			scmXsDistributorAgreementSummary.setAgreementSummaryCode(code);
@@ -139,10 +150,15 @@ public class ScmXsDistributorAgreementSummaryController extends BaseController{
 	@PostMapping(value = "sendApply")
     @ApiOperation(value = "分销商协议汇总记录申请", httpMethod = "POST", notes = "条款列表需要展示选定省区下的分销商,"
     		+ "设置信息后需要把合作条款列表封装至汇总总表提交")
-    @Workflow(flowKey = "fxsxyhztk", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "fxsxyhztk", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public CommonResult<ScmXsDistributorAgreementSummary> sendApply(
             @ApiParam(name = "scmXsDistributorAgreementSummary", value = "经销商协议合作名单总表对象", required = true) @RequestBody ScmXsDistributorAgreementSummary scmXsDistributorAgreementSummary,
             HttpServletRequest request) throws Exception {
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsDistributorAgreementSummary.setCreateDate(new Date());
+		scmXsDistributorAgreementSummary.setCreatePerson(fullname);
+
 		scmXsDistributorAgreementSummaryManager.sendApply(scmXsDistributorAgreementSummary);
 	   return new CommonResult<ScmXsDistributorAgreementSummary>(true, "审批发起成功", scmXsDistributorAgreementSummary);
 	}

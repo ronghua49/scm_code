@@ -11,13 +11,15 @@
 		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
 		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
 		<result property="agreementSummaryCode" column="agreementSummaryCode" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPerson" column="createPerson" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmXsDistributorAgreementSummary">
 		INSERT INTO SCM_XS_DistributorAgreementSummary
-		(id,businessDivision,Province,businessDivisionId,provinceId,approvalId,approvalState,ownerId,agreementSummaryCode)
+		(id,businessDivision,Province,businessDivisionId,provinceId,approvalId,approvalState,ownerId,agreementSummaryCode,createDate,createPerson)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{Province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{agreementSummaryCode,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{Province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{agreementSummaryCode,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP},#{createPerson,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmXsDistributorAgreementSummary">
@@ -56,7 +58,9 @@
 		approvalId=#{approvalId,jdbcType=VARCHAR},
 		approvalState=#{approvalState,jdbcType=VARCHAR},
 		ownerId=#{ownerId,jdbcType=VARCHAR},
-		agreementSummaryCode=#{agreementSummaryCode,jdbcType=VARCHAR}
+		agreementSummaryCode=#{agreementSummaryCode,jdbcType=VARCHAR},
+		createDate = #{createDate,jdbcType=TIMESTAMP},
+		createPerson = #{createPerson,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

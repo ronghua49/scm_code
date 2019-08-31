@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmKcAllotDao">
+	<resultMap id="ScmKcAllot" type="com.winway.scm.model.ScmKcAllot">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="batchNum" column="batchNum" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="unit" column="unit" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="manufactureDate" column="manufactureDate" jdbcType="TIMESTAMP"/>
+		<result property="expiryDate" column="expiryDate" jdbcType="TIMESTAMP"/>
+		<result property="inboundDate" column="inboundDate" jdbcType="TIMESTAMP"/>
+		<result property="quantityInStock" column="quantityInStock" jdbcType="NUMERIC"/>
+		<result property="allotSum" column="allotSum" jdbcType="NUMERIC"/>
+		<result property="price" column="price" jdbcType="NUMERIC"/>
+		<result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="productCode" column="productCode" jdbcType="VARCHAR"/>
+		<result property="productId" column="productId" jdbcType="VARCHAR"/>
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="agentType" column="agentType" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
+		<result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="achage" column="achage" jdbcType="VARCHAR"/>
+
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmKcAllot">
+		INSERT INTO Scm_Kc_Allot
+		(id,batchNum,productName,medicineType,productState,unit,manufacturer,manufactureDate,expiryDate,inboundDate,quantityInStock,allotSum,price,priceSum,memo,masterId,productCode,productId,commonName,agentType,approvalCode,businessScope,medicineClassify,code,achage)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{batchNum,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{medicineType,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{manufactureDate,jdbcType=TIMESTAMP}, #{expiryDate,jdbcType=TIMESTAMP}, #{inboundDate,jdbcType=TIMESTAMP}, #{quantityInStock,jdbcType=NUMERIC}, #{allotSum,jdbcType=NUMERIC}, #{price,jdbcType=NUMERIC}, #{priceSum,jdbcType=NUMERIC}, #{memo,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{productId,jdbcType=VARCHAR},
+		#{commonName,jdbcType=VARCHAR},#{agentType,jdbcType=VARCHAR},#{approvalCode,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},#{medicineClassify,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{achage,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmKcAllot">
+		SELECT * FROM Scm_Kc_Allot 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmKcAllot">
+		SELECT * FROM Scm_Kc_Allot
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+/		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmKcAllot">
+		UPDATE Scm_Kc_Allot SET
+		batchNum=#{batchNum,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		medicineType=#{medicineType,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		unit=#{unit,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR},
+		manufactureDate=#{manufactureDate,jdbcType=TIMESTAMP},
+		expiryDate=#{expiryDate,jdbcType=TIMESTAMP},
+		inboundDate=#{inboundDate,jdbcType=TIMESTAMP},
+		quantityInStock=#{quantityInStock,jdbcType=NUMERIC},
+		allotSum=#{allotSum,jdbcType=NUMERIC},
+		price=#{price,jdbcType=NUMERIC},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		memo=#{memo,jdbcType=VARCHAR},
+		masterId=#{masterId,jdbcType=VARCHAR},
+		productCode=#{productCode,jdbcType=VARCHAR},
+		productId=#{productId,jdbcType=VARCHAR},
+		commonName = #{commonName,jdbcType=VARCHAR},
+		agentType = #{agentType,jdbcType=VARCHAR},
+		approvalCode = #{approvalCode,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR},
+		medicineClassify = #{medicineClassify,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR},
+		achage = #{achage,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Kc_Allot 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM Scm_Kc_Allot
+	    WHERE
+	    masterId=#{masterId}
+	</delete>    
+	
+	<select id="getByMainId" resultMap="ScmKcAllot">
+	    SELECT *
+	    FROM Scm_Kc_Allot 
+	    WHERE masterId=#{masterId}
+	</select>
+	
+</mapper>

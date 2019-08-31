@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmKcInTransitProductDao">
+	<resultMap id="ScmKcInTransitProduct" type="com.winway.scm.model.ScmKcInTransitProduct">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="taskId" column="taskId" jdbcType="VARCHAR"/>
+		<result property="etd" column="etd" jdbcType="TIMESTAMP"/>
+		<result property="eta" column="eta" jdbcType="TIMESTAMP"/>
+		<result property="customsLiquidationCompany" column="customsLiquidationCompany" jdbcType="VARCHAR"/>
+		<result property="productNum" column="productNum" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="productState" column="productState" jdbcType="VARCHAR"/>
+		<result property="batchNumber" column="batchNumber" jdbcType="VARCHAR"/>
+		<result property="packageSum" column="packageSum" jdbcType="NUMERIC"/>
+		<result property="finishedSum" column="finishedSum" jdbcType="NUMERIC"/>
+		<result property="arkNumber" column="arkNumber" jdbcType="NUMERIC"/>
+		<result property="productLicence" column="productLicence" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+		<result property="isDelete" column="isDelete" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmKcInTransitProduct">
+		INSERT INTO scm_kc_intransitproduct
+		(id,taskId,etd,eta,customsLiquidationCompany,productNum,productName,productState,batchNumber,packageSum,finishedSum,arkNumber,productLicence,createDate,createPersion,isDelete)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}, #{etd,jdbcType=TIMESTAMP}, #{eta,jdbcType=TIMESTAMP}, #{customsLiquidationCompany,jdbcType=VARCHAR}, #{productNum,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productState,jdbcType=VARCHAR}, #{batchNumber,jdbcType=VARCHAR}, #{packageSum,jdbcType=NUMERIC}, #{finishedSum,jdbcType=NUMERIC}, #{arkNumber,jdbcType=NUMERIC}, #{productLicence,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createPersion,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmKcInTransitProduct">
+		SELECT * FROM scm_kc_intransitproduct 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmKcInTransitProduct">
+		SELECT * FROM scm_kc_intransitproduct
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmKcInTransitProduct">
+		UPDATE scm_kc_intransitproduct SET
+		taskId=#{taskId,jdbcType=VARCHAR},
+		etd=#{etd,jdbcType=TIMESTAMP},
+		eta=#{eta,jdbcType=TIMESTAMP},
+		customsLiquidationCompany=#{customsLiquidationCompany,jdbcType=VARCHAR},
+		productNum=#{productNum,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		productState=#{productState,jdbcType=VARCHAR},
+		batchNumber=#{batchNumber,jdbcType=VARCHAR},
+		packageSum=#{packageSum,jdbcType=NUMERIC},
+		finishedSum=#{finishedSum,jdbcType=NUMERIC},
+		arkNumber=#{arkNumber,jdbcType=NUMERIC},
+		productLicence=#{productLicence,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		isDelete=#{isDelete,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_kc_intransitproduct 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

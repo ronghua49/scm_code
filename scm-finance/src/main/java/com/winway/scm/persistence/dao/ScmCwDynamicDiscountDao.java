@@ -15,4 +15,8 @@ import com.winway.scm.model.ScmCwDynamicDiscount;
  */
 public interface ScmCwDynamicDiscountDao extends MyBatisDao<String, ScmCwDynamicDiscount> {
     ScmCwDynamicDiscount getByProductIdAndOwnerId(String productId, String ownerId);
+
+	ScmCwDynamicDiscount getByProductCode(String productCode, String ownerId);
+
+	ScmCwDynamicDiscount getByProductCodeAndCommerceId(String productCode, String commerceId, String ownerId);
 }

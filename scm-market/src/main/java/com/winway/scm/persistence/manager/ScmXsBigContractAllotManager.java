@@ -19,7 +19,7 @@ import com.winway.scm.model.ScmXsBigContractAllot;
  */
 public interface ScmXsBigContractAllotManager extends Manager<String, ScmXsBigContractAllot>{
 
-	String sendApply(ScmXsBigContractAllot scmXsBigContractAllot);
+	String sendApply(ScmXsBigContractAllot scmXsBigContractAllot) throws Exception;
 
 	void endApply(JsonNode jsonNode) throws JsonProcessingException;
 

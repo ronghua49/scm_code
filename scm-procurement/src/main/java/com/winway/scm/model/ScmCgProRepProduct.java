@@ -61,7 +61,7 @@ public class ScmCgProRepProduct extends BaseModel<String>{
 	protected String currency; 
 	
 	@ApiModelProperty(value="件装量")
-	protected String achange; 
+	protected String achage; 
 	
 	@ApiModelProperty(value="采购数量")
 	protected Integer productSum; 
@@ -71,8 +71,66 @@ public class ScmCgProRepProduct extends BaseModel<String>{
 	
 	@ApiModelProperty(value="大合同剩余数量")
 	protected int surplusAmount;
-	
-	public int getSurplusAmount() {
+
+
+	 @ApiModelProperty(value = "生产厂商")
+	 protected  String manufacturer;
+	 @ApiModelProperty(value = "经营范围")
+	 protected  String businessScope;
+
+	 @ApiModelProperty(value = "药品分类")
+	 protected  String medicineClassify;
+
+	 @ApiModelProperty(value = "批准文号")
+	 protected  String approvalCode;
+
+	 @ApiModelProperty(value = " 剂型")
+	 protected  String AgentType;
+	 
+	 @ApiModelProperty(value = "产品子码")
+	 protected  String code;
+
+	 public String getManufacturer() {
+		 return manufacturer;
+	 }
+
+	 public void setManufacturer(String manufacturer) {
+		 this.manufacturer = manufacturer;
+	 }
+
+	 public String getBusinessScope() {
+		 return businessScope;
+	 }
+
+	 public void setBusinessScope(String businessScope) {
+		 this.businessScope = businessScope;
+	 }
+
+	 public String getMedicineClassify() {
+		 return medicineClassify;
+	 }
+
+	 public void setMedicineClassify(String medicineClassify) {
+		 this.medicineClassify = medicineClassify;
+	 }
+
+	 public String getApprovalCode() {
+		 return approvalCode;
+	 }
+
+	 public void setApprovalCode(String approvalCode) {
+		 this.approvalCode = approvalCode;
+	 }
+
+	 public String getAgentType() {
+		 return AgentType;
+	 }
+
+	 public void setAgentType(String agentType) {
+		 AgentType = agentType;
+	 }
+
+	 public int getSurplusAmount() {
 		return surplusAmount;
 	}
 
@@ -248,18 +306,23 @@ public class ScmCgProRepProduct extends BaseModel<String>{
 		return this.currency;
 	}
 	
-	public void setAchange(String achange) {
-		this.achange = achange;
+
+	public String getAchage() {
+		return achage;
 	}
-	
-	/**
-	 * 返回 件装量
-	 * @return
-	 */
-	public String getAchange() {
-		return this.achange;
+
+	public void setAchage(String achage) {
+		this.achage = achage;
 	}
-	
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public void setProductSum(Integer productSum) {
 		this.productSum = productSum;
 	}
@@ -289,7 +352,7 @@ public class ScmCgProRepProduct extends BaseModel<String>{
 		.append("unitPrice", this.unitPrice) 
 		.append("sumPrice", this.sumPrice) 
 		.append("currency", this.currency) 
-		.append("achange", this.achange) 
+		.append("achange", this.achage) 
 		.append("productSum", this.productSum) 
 		.toString();
 	}

@@ -3,12 +3,11 @@ package com.winway.scm.persistence.manager.impl;
 import com.github.pagehelper.PageHelper;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
-import com.hotent.base.model.CommonResult;
 import com.hotent.base.query.PageBean;
 import com.hotent.base.query.PageList;
+import com.hotent.base.query.QueryField;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.BeanUtils;
-import com.winway.purchase.util.QuarterUtil;
 import com.winway.scm.model.ScmFhShipmentsDatail;
 import com.winway.scm.model.ScmFhShipmentsMessage;
 import com.winway.scm.model.ScmFhShipmentsTask;
@@ -16,15 +15,16 @@ import com.winway.scm.persistence.dao.ScmFhShipmentsDatailDao;
 import com.winway.scm.persistence.dao.ScmFhShipmentsMessageDao;
 import com.winway.scm.persistence.dao.ScmFhShipmentsTaskDao;
 import com.winway.scm.persistence.manager.ScmFhShipmentsDatailManager;
+import com.winway.scm.vo.ScmFhFmsListShipmentVo;
+import com.winway.scm.vo.ScmFhShipMentsCountVo;
 import com.winway.scm.vo.ScmFhShipmentsDataiAndMessageVo;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * <pre>
@@ -60,8 +60,8 @@ public class ScmFhShipmentsDatailManagerImpl extends AbstractManagerImpl<String,
     public void create(ScmFhShipmentsDatail datail) {
         //根据任务id  和 主表id 查询发货详情
 //		ScmFhShipmentsDatail sfsd = scmFhShipmentsDatailDao.getBymainIdAndShipmentsTaskId(datail.getShipmentsTaskId(),datail.getMasterId());
-        if(datail==null|| StringUtils.isEmpty(datail.getShipmentsTaskId())||datail.getDeliveringAmount()==null||datail.getPlanShipmentsSum()==null){
-            throw  new RuntimeException("必传字段不得为空");
+        if (datail == null || StringUtils.isEmpty(datail.getShipmentsTaskId()) || datail.getDeliveringAmount() == null || datail.getPlanShipmentsSum() == null) {
+            throw new RuntimeException("必传字段不得为空");
         }
         ScmFhShipmentsTask scmFhShipmentsTask = scmFhShipmentsTaskDao.get(datail.getShipmentsTaskId());
         if (scmFhShipmentsTask == null) {
@@ -86,8 +86,9 @@ public class ScmFhShipmentsDatailManagerImpl extends AbstractManagerImpl<String,
         datail.setPlanShipmentsSum(scmFhShipmentsTask.getPlanShipmentsSum());
         datail.setPhone(scmFhShipmentsTask.getPhone());
         datail.setContactPersion(scmFhShipmentsTask.getContactPersion());
-        datail.setPackageSum(scmFhShipmentsTask.getPackageNum());
         datail.setShipmentsAffirmDate(new Date());
+
+
         if (datail.getDeliveringAmount() != null && datail.getDeliveringAmount() > 0) {
             //实际量不得大于计划发货量
             if (datail.getDeliveringAmount() > scmFhShipmentsTask.getPlanShipmentsSum()) {
@@ -113,7 +114,7 @@ public class ScmFhShipmentsDatailManagerImpl extends AbstractManagerImpl<String,
         ScmFhShipmentsDatail scmFhShipmentsDatail = get(datail.getId());
         ScmFhShipmentsTask scmFhShipmentsTask;
         if (scmFhShipmentsDatail != null && (scmFhShipmentsTask = scmFhShipmentsTaskDao.get(scmFhShipmentsDatail.getShipmentsTaskId())) != null) {
-            if (datail.getDeliveringAmount() != null && datail.getDeliveringAmount()> 0) {
+            if (datail.getDeliveringAmount() != null && datail.getDeliveringAmount() > 0) {
                 //实际量不得大于计划发货量
                 if (datail.getDeliveringAmount() > scmFhShipmentsTask.getPlanShipmentsSum()) {
                     throw new RuntimeException("实际量不得大于计划量");
@@ -162,6 +163,91 @@ public class ScmFhShipmentsDatailManagerImpl extends AbstractManagerImpl<String,
         }
         List<ScmFhShipmentsDataiAndMessageVo> firstList = scmFhShipmentsDatailDao.firstList(queryFilter.getParams());
         return new PageList<ScmFhShipmentsDataiAndMessageVo>(firstList);
+    }
+
+    @Override
+    public List<ScmFhFmsListShipmentVo> fmsListShipments(String startMonth, String endMonth, String ownerId,
+                                                         String[] businessCodeList) {
+        List<ScmFhFmsListShipmentVo> list = scmFhShipmentsDatailDao.fmsListShipments(startMonth, endMonth, ownerId, businessCodeList);
+        return list;
+    }
+
+    @Override
+    public PageList<ScmFhShipMentsCountVo> shipMentsCountlist(QueryFilter queryFilter) {
+        String commerceId = "-1";
+        String year = "-1";
+        List<QueryField> querys = queryFilter.getQuerys();
+        for (QueryField queryField : querys) {
+            if ("year".equals(queryField.getProperty())) {
+                year = queryField.getValue().toString();
+            }
+            if ("commerceId".equals(queryField.getProperty())) {
+                commerceId = queryField.getValue().toString();
+            }
+        }
+        PageBean pageBean = queryFilter.getPageBean();
+        if (BeanUtils.isEmpty(pageBean)) {
+            PageHelper.startPage(1, Integer.MAX_VALUE, false);
+        } else {
+            PageHelper.startPage(pageBean.getPage(), pageBean.getPageSize(), pageBean.showTotal());
+        }
+        List<ScmFhShipMentsCountVo> firstList = scmFhShipmentsDatailDao.shipMentsCountlist(year, commerceId);
+        return new PageList<ScmFhShipMentsCountVo>(firstList);
+    }
+
+
+    @Override
+    public Map<String, Object> dataDownBox() {
+        Map<String, Object> map = new HashMap<>();
+        List<ScmFhShipmentsDatail> query = scmFhShipmentsDatailDao.queryAll();
+        Set<String> batchNumber = new HashSet<>();
+        Set<String> productState = new HashSet<>();
+        for (ScmFhShipmentsDatail datail : query) {
+            if (datail.getBatchNumber() != null) {
+                batchNumber.add(datail.getBatchNumber());
+            }
+            if (datail.getProductState() != null) {
+                productState.add(datail.getProductState());
+            }
+        }
+        map.put("batchNumber", batchNumber);
+        map.put("productState", productState);
+        return map;
+    }
+
+	@Override
+	public boolean verifyDeliveryAmount(String commerceFirstId, Double priceSum) {
+		LocalDate today = LocalDate.now();
+		LocalDate one = today.minusMonths(1);
+		LocalDate two = today.minusMonths(2);
+		LocalDate three = today.minusMonths(3);
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("yyyy-MM");
+		String oneStr = formatters.format(one);
+		String twoStr = formatters.format(two);
+		String threeStr = formatters.format(three);
+		//查询数据库
+		Double onePrice = scmFhShipmentsDatailDao.verifyDeliveryAmount(commerceFirstId,oneStr);
+		Double twoPrice = scmFhShipmentsDatailDao.verifyDeliveryAmount(commerceFirstId,twoStr);
+		Double threePrice = scmFhShipmentsDatailDao.verifyDeliveryAmount(commerceFirstId,threeStr);
+		int avg = 0;
+		double price = 0.0d;
+		if(onePrice > 0) {
+			avg++;
+			price += onePrice;
+		}
+		if(twoPrice > 0) {
+			avg++;
+			price += twoPrice;
+		}
+		if(threePrice > 0) {
+			avg++;
+			price += threePrice;
+		}
+		if(avg == 0 || price == 0.0) {
+			return true;
+		}
+		double avgPrice = price / avg;
+        return avgPrice < priceSum * 2;
     }
 
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.purchase.persistence.dao.ScmSysLogDao">
+	<resultMap id="ScmSysLog" type="com.winway.purchase.model.ScmSysLog">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="loginUser" column="loginUser" jdbcType="VARCHAR"/>
+		<result property="exceptionMes" column="exceptionMes" jdbcType="VARCHAR"/>
+		<result property="operation" column="operation" jdbcType="VARCHAR"/>
+		<result property="method" column="method" jdbcType="VARCHAR"/>
+		<result property="params" column="params" jdbcType="CLOB"/>
+		<result property="ip" column="ip" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="totalTime" column="totalTime" jdbcType="NUMERIC"/>
+		<result property="responseState" column="responseState" jdbcType="VARCHAR"/>
+		<result property="result" column="result" jdbcType="CLOB"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.purchase.model.ScmSysLog">
+		INSERT INTO scm_sys_log
+		(id,loginUser,exceptionMes,operation,method,params,ip,createDate,totalTime,responseState,result)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{loginUser,jdbcType=VARCHAR}, #{exceptionMes,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{params,jdbcType=CLOB}, #{ip,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{totalTime,jdbcType=NUMERIC}, #{responseState,jdbcType=VARCHAR}, #{result,jdbcType=CLOB})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmSysLog">
+		SELECT * FROM scm_sys_log 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmSysLog">
+		SELECT * FROM scm_sys_log
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY createDate  DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.purchase.model.ScmSysLog">
+		UPDATE scm_sys_log SET
+		loginUser=#{loginUser,jdbcType=VARCHAR},
+		exceptionMes=#{exceptionMes,jdbcType=VARCHAR},
+		operation=#{operation,jdbcType=VARCHAR},
+		method=#{method,jdbcType=VARCHAR},
+		params=#{params,jdbcType=CLOB},
+		ip=#{ip,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		totalTime=#{totalTime,jdbcType=NUMERIC},
+		responseState=#{responseState,jdbcType=VARCHAR},
+		result=#{result,jdbcType=CLOB}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_sys_log 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

@@ -51,7 +51,7 @@ public class ScmZdDutyOfficeController extends BaseController{
 	
 	/**
 	 * 责任办事处列表(分页条件查询)数据
-	 * @param request
+	 * @param
 	 * @return
 	 * @throws Exception 
 	 * PageJson

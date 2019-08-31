@@ -29,8 +29,10 @@
         <result property="approvalStateStr" column="approvalStateStr" jdbcType="VARCHAR"/>
         <result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
         <result property="scm_zsj_commerceState" column="scm_zsj_commerceState" jdbcType="VARCHAR"/>
-        <result property="integral" column="integral" jdbcType="VARCHAR"/>
+        <result property="integral" column="integral" jdbcType="NUMERIC"/>
         <result property="year" column="year" jdbcType="VARCHAR"/>
+        <result property="startYear" column="startYear" jdbcType="VARCHAR"/>
+        <result property="endYear" column="endYear" jdbcType="VARCHAR"/>
         <!--<result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>-->
     </resultMap>
 
@@ -43,7 +45,7 @@
 		messageCost,isPromotional,
 		startDate,endDate,
 		provincePlatformId,upCommerceId,
-		memo,distributorAgreementId)
+		memo,distributorAgreementId,startYear,endYear,integral)
 		VALUES 
 		(#{id,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR},
 		 #{clauseCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, 
@@ -52,7 +54,8 @@
 		 #{messageCost,jdbcType=NUMERIC}, #{isPromotional,jdbcType=VARCHAR}, 
 		 #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
 		 #{provincePlatformId,jdbcType=VARCHAR}, #{upCommerceId,jdbcType=VARCHAR}, 
-		 #{memo,jdbcType=VARCHAR}, #{distributorAgreementId,jdbcType=VARCHAR})
+		 #{memo,jdbcType=VARCHAR}, #{distributorAgreementId,jdbcType=VARCHAR},
+		 #{startYear,jdbcType=VARCHAR},#{endYear,jdbcType=VARCHAR},#{integral,jdbcType=NUMERIC})
 	</insert>
 
     <select id="get" parameterType="java.lang.String" resultMap="ScmXsDistributorClause">
@@ -61,8 +64,17 @@
 		id=#{id}
 	</select>
 
-    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmXsDistributorClause">
+    <select id="findByStartYearAndEndYear" parameterType="java.lang.String" resultMap="ScmXsDistributorClause">
 		SELECT * FROM SCM_XS_DistributorClause 
+		WHERE 
+		(startYear &lt;= #{arg0} AND startYear &gt;= #{arg1}) 
+		OR
+		(endYear &gt;= #{arg0} AND endYear &lt;= #{arg1})
+		and commerceId = #{arg2}
+	</select>
+
+    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmXsDistributorClause">
+		SELECT * FROM v_distributorFirstList
 		WHERE 
 		DistributorAgreementId=#{arg0}
 	</select>
@@ -107,14 +119,16 @@
 		isSubsidiary=#{isSubsidiary,jdbcType=VARCHAR},
 		starLevel=#{starLevel,jdbcType=VARCHAR},
 		messageCost=#{messageCost,jdbcType=NUMERIC},
+		integral=#{integral,jdbcType=NUMERIC},
 		isPromotional=#{isPromotional,jdbcType=VARCHAR},
 		startDate=#{startDate,jdbcType=TIMESTAMP},
 		endDate=#{endDate,jdbcType=TIMESTAMP},
 		provincePlatformId=#{provincePlatformId,jdbcType=VARCHAR},
 		upCommerceId=#{upCommerceId,jdbcType=VARCHAR},
 		memo=#{memo,jdbcType=VARCHAR},
-		distributorAgreementId=#{distributorAgreementId,jdbcType=VARCHAR}
-
+		distributorAgreementId=#{distributorAgreementId,jdbcType=VARCHAR},
+		startYear=#{startYear,jdbcType=VARCHAR},
+		endYear=#{endYear,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -131,7 +145,7 @@
 			(SELECT DATE_FORMAT(startDate, '%Y') AS YEAR,b.ownerid FROM scm_xs_distributorclause a
 				LEFT JOIN scm_xs_distributoragreementsummary b
 				ON a.DistributorAgreementId = b.id) c
-		WHERE c.ownerid = #{arg0} GROUP BY c.year
+		WHERE c.ownerid = #{arg0} AND c.YEAR IS NOT NULL GROUP BY c.year
 	</select>
     <delete id="delByMainId">
 	    DELETE FROM SCM_XS_DistributorClause
@@ -157,5 +171,72 @@
         <if test="orderBySql==null">
             ORDER BY id DESC
         </if>
+    </select>
+    <select id="list1" resultType="com.winway.scm.model.ScmXsDistributorClause">
+        select * from ( SELECT
+        a.commerceCode,a.commerceName,a.businessDivision,a.businessDivisionId, p.`code` as provinceCode, u.`code` as
+        businessCode ,a.province,a.provinceId,a.registerAddress,DATE_FORMAT(b.startDate, '%Y') as startYear,
+        (
+        CASE
+        WHEN isnull(b.distributorclauseId) THEN
+        '未签约'
+        ELSE
+        '签约'
+        END
+        ) AS `isSign`,
+        c.acceptState,
+        (
+        CASE c.acceptState
+        WHEN '0' THEN
+        '认可'
+        WHEN '1' THEN
+        '考察中'
+        WHEN '2' THEN
+        '终止'
+        ELSE
+        '未处理'
+        END
+        ) AS `acceptStateStr`
+        FROM
+        scm_zsj_commerce a LEFT JOIN scm_zd_province p on a.provinceId = p.id LEFT JOIN scm_zd_businessdivision u on
+        u.id = a.businessDivisionId
+        LEFT JOIN (
+        SELECT
+        MAX(DATE(startDate)) AS startDate,
+        f.id AS distributorclauseId,
+        f.commerceId,
+        e.approvalState
+        FROM
+        scm_xs_distributoragreementsummary e
+        INNER JOIN scm_xs_distributorclause f ON f.DistributorAgreementId = e.id
+        GROUP BY
+        distributorclauseId,f.commerceId,e.approvalState
+        having approvalState='2'
+        ) b on a.id = b.commerceId LEFT JOIN (SELECT
+        b.acceptState,
+        b.commerceId
+        FROM
+        scm_zsj_commerceacceptstate b
+        INNER JOIN scm_zsj_commerceacceptstateagther c ON b.agtherId = c.id and c.approvalState='2') c on a.id =
+        c.commerceId where a.commerceLevel = '分销商' and a.approvalState='2') a
+        <where>
+
+            <if test="businessCode !='' and  businessCode!=null">
+                and businessCode =#{businessCode}
+            </if>
+
+            <if test="acceptState !='' and  acceptState!=null">
+                and acceptState =#{acceptState}
+            </if>
+            <if test="provinceCode !='' and  provinceCode!=null">
+                and provinceCode =#{provinceCode}
+            </if>
+            <if test="commerceCode!='' and  commerceCode!=null">
+                and commerceCode =#{commerceCode}
+            </if>
+            <if test="commerceName !='' and  commerceName!=null">
+                and commerceName like CONCAT('%',CONCAT(#{commerceName},'%'))
+            </if>
+        </where>
     </select>
 </mapper>

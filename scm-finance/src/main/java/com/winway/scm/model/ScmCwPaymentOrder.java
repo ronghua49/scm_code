@@ -2,6 +2,8 @@ package com.winway.scm.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hotent.base.model.BaseModel;
 
 
@@ -43,6 +45,7 @@ public class ScmCwPaymentOrder extends BaseModel<String>{
 	protected Double price; 
 	
 	@ApiModelProperty(value="下单日期")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	protected java.util.Date orderDate; 
 	
 	@ApiModelProperty(value="采购合同单号")

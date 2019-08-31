@@ -8,14 +8,14 @@
 		<result property="entrustName" column="entrustName" jdbcType="VARCHAR"/>
 		<result property="entrustValidity" column="entrustValidity" jdbcType="TIMESTAMP"/>
 		<result property="idNumber" column="idNumber" jdbcType="VARCHAR"/>
-		<result property="IDValidity" column="IDValidity" jdbcType="TIMESTAMP"/>
+		<result property="idValidity" column="IDValidity" jdbcType="TIMESTAMP"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmZsjSupplierEntruseBook">
 		INSERT INTO SCM_ZSJ_SupplierEntruseBook
-		(id,supplierFirstId,entrustCode,entrustName,entrustValidity,idNumber,IDValidity)
+		(id,supplierFirstId,entrustCode,entrustName,entrustValidity,idNumber,idValidity)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{supplierFirstId,jdbcType=VARCHAR}, #{entrustCode,jdbcType=VARCHAR}, #{entrustName,jdbcType=VARCHAR}, #{entrustValidity,jdbcType=TIMESTAMP}, #{idNumber,jdbcType=VARCHAR}, #{IDValidity,jdbcType=TIMESTAMP})
+		(#{id,jdbcType=VARCHAR}, #{supplierFirstId,jdbcType=VARCHAR}, #{entrustCode,jdbcType=VARCHAR}, #{entrustName,jdbcType=VARCHAR}, #{entrustValidity,jdbcType=TIMESTAMP}, #{idNumber,jdbcType=VARCHAR}, #{idValidity,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjSupplierEntruseBook">
@@ -46,7 +46,7 @@
 		entrustName=#{entrustName,jdbcType=VARCHAR},
 		entrustValidity=#{entrustValidity,jdbcType=TIMESTAMP},
 		idNumber=#{idNumber,jdbcType=VARCHAR},
-		IDValidity=#{IDValidity,jdbcType=TIMESTAMP}
+		idValidity=#{idValidity,jdbcType=TIMESTAMP}
 		WHERE
 		id=#{id}
 	</update>

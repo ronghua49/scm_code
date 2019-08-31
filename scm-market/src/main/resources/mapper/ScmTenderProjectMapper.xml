@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmTenderProjectDao">
+    <resultMap id="ScmTenderProject" type="com.winway.scm.model.ScmTenderProject">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="tenderProperty" column="tender_property" jdbcType="VARCHAR"/>
+        <result property="provinceCode" column="province_code" jdbcType="VARCHAR"/>
+        <result property="provinceName" column="province_name" jdbcType="VARCHAR"/>
+        <result property="cityCode" column="city_code" jdbcType="VARCHAR"/>
+        <result property="cityName" column="city_name" jdbcType="VARCHAR"/>
+        <result property="areaCode" column="area_code" jdbcType="VARCHAR"/>
+        <result property="areaName" column="area_name" jdbcType="VARCHAR"/>
+        <result property="tenderProjectCode" column="tender_project_code" jdbcType="VARCHAR"/>
+        <result property="startDate" column="start_date" jdbcType="DATE"/>
+        <result property="endDate" column="end_date" jdbcType="DATE"/>
+        <result property="tenderProjectName" column="tender_project_name" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="NUMERIC"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+        <result property="fileUrl" column="file_url" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="flowId" column="flow_id" jdbcType="VARCHAR"/>
+        <result property="flowStatus" column="flow_status" jdbcType="INTEGER"/>
+        <result property="isDelete" column="is_delete" jdbcType="INTEGER"/>
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR"/>
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="INTEGER"/>
+        <result property="updateTime" column="UPDATE_TIME" jdbcType="INTEGER"/>
+        <result property="createOrgId" column="CREATE_ORG_ID" jdbcType="VARCHAR"/>
+        <result property="createOrgName" column="CREATE_ORG_NAME" jdbcType="VARCHAR"/>
+        <result property="createName" column="CREATE_NAME" jdbcType="VARCHAR"/>
+        <result property="updateName" column="UPDATE_NAME" jdbcType="VARCHAR"/>
+        <result property="company" column="COMPANY" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmTenderProject">
+		INSERT INTO scm_tender_project
+		(id,tender_property,province_code,province_name,city_code,city_name,area_code,area_name,tender_project_code,start_date,end_date,tender_project_name,year,remarks,file_url, status, flow_id, flow_status,CREATE_BY,CREATE_TIME,CREATE_NAME,UPDATE_BY,UPDATE_TIME,UPDATE_NAME,CREATE_ORG_ID,CREATE_ORG_NAME,COMPANY)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{tenderProperty,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, #{provinceName,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, #{tenderProjectCode,jdbcType=VARCHAR}, #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{tenderProjectName,jdbcType=VARCHAR}, #{year,jdbcType=NUMERIC}, #{remarks,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},  #{flowId,jdbcType=VARCHAR},  #{flowStatus,jdbcType=INTEGER},  #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createName,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateName,jdbcType=VARCHAR}, #{createOrgId,jdbcType=VARCHAR}, #{createOrgName,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmTenderProject">
+		SELECT * FROM scm_tender_project 
+		WHERE 
+		id=#{id}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmTenderProject">
+        SELECT * FROM scm_tender_project
+        WHERE is_delete = 0
+        <trim prefix="AND">
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </trim>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmTenderProject">
+        UPDATE scm_tender_project
+        <set>
+            <if test="tenderProperty != null">
+                tender_property=#{tenderProperty,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceCode != null">
+                province_code=#{provinceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceName != null">
+                province_name=#{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityCode != null">
+                city_code=#{cityCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cityName != null">
+                city_name=#{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaCode != null">
+                area_code=#{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="areaName != null">
+                area_name=#{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="tenderProjectCode != null">
+                tender_project_code=#{tenderProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="startDate != null">
+                start_date=#{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null">
+                end_date=#{endDate,jdbcType=DATE},
+            </if>
+            <if test="tenderProjectName != null">
+                tender_project_name=#{tenderProjectName,jdbcType=VARCHAR},
+            </if>
+            <if test="year != null">
+                `year`=#{year,jdbcType=NUMERIC},
+            </if>
+            <if test="remarks != null">
+                remarks=#{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="fileUrl != null">
+                file_url=#{fileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status=#{status,jdbcType=INTEGER},
+            </if>
+            <if test="flowId != null">
+                flow_id=#{flowId,jdbcType=VARCHAR},
+            </if>
+            <if test="flowStatus != null">
+                flow_status=#{flowStatus,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                is_delete=#{isDelete,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                CREATE_BY=#{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createName != null">
+                CREATE_NAME=#{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                UPDATE_BY=#{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateName != null">
+                UPDATE_NAME=#{updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="createOrgId != null">
+                CREATE_ORG_ID=#{createOrgId,jdbcType=VARCHAR},
+            </if>
+            <if test="createOrgName != null">
+                CREATE_ORG_NAME=#{createOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                COMPANY=#{company,jdbcType=VARCHAR}
+            </if>
+        </set>
+        WHERE
+        id=#{id}
+    </update>
+
+    <update id="remove" parameterType="java.lang.String">
+        UPDATE scm_tender_project
+        SET is_delete = 1
+		WHERE
+		id=#{id}
+	</update>
+
+    <select id="getByFlowId" parameterType="java.lang.String" resultMap="ScmTenderProject">
+        SELECT * FROM scm_tender_project
+        WHERE flow_id = #{flowId}
+    </select>
+
+
+</mapper>

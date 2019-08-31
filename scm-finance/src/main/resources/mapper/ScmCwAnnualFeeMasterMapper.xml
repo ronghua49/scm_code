@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwAnnualFeeMasterDao">
+	<resultMap id="ScmCwAnnualFeeMaster" type="com.winway.scm.model.ScmCwAnnualFeeMaster">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="applyYear" column="applyYear" jdbcType="VARCHAR"/>
+		<result property="createpersion" column="createpersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwAnnualFeeMaster">
+		INSERT INTO Scm_Cw_AnnualFeeMaster
+		(id,businessDivision,businessDivisionId,province,provinceId,ownerId,applyYear,createpersion,createDate,approvalId,approvalState)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{applyYear,jdbcType=VARCHAR}, #{createpersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwAnnualFeeMaster">
+		SELECT * FROM Scm_Cw_AnnualFeeMaster 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwAnnualFeeMaster">
+		SELECT * FROM Scm_Cw_AnnualFeeMaster
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+    <select id="getByApprovalState" resultType="com.winway.scm.model.ScmCwAnnualFeeMaster">
+		SELECT * FROM Scm_Cw_AnnualFeeMaster
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmCwAnnualFeeMaster">
+		UPDATE Scm_Cw_AnnualFeeMaster SET
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		applyYear=#{applyYear,jdbcType=VARCHAR},
+		createpersion=#{createpersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Cw_AnnualFeeMaster 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

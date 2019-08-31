@@ -22,6 +22,11 @@
 		id=#{id}
 	</select>
 	
+	<select id="getProductCountByDiscountId"   parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT COUNT(discountNum) AS discountNum FROM scm_cw_discountrulerecord 
+		WHERE discountid = #{arg0} and commerceId = #{arg1} and productId = #{arg2} 
+	</select>
+	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDiscountRuleRecord">
 		SELECT * FROM scm_cw_discountrulerecord
 		<where>

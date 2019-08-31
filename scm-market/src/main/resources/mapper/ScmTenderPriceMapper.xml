@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmTenderPriceDao">
+    <resultMap id="ScmTenderPrice" type="com.winway.scm.model.ScmTenderPrice">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="NUMERIC"/>
+        <result property="collectId" column="collect_id" jdbcType="VARCHAR"/>
+        <result property="tenderProjectCode" column="tender_project_code" jdbcType="VARCHAR"/>
+        <result property="provinceCode" column="province_code" jdbcType="VARCHAR"/>
+        <result property="provinceName" column="province_name" jdbcType="VARCHAR"/>
+        <result property="cityCode" column="city_code" jdbcType="VARCHAR"/>
+        <result property="cityName" column="city_name" jdbcType="VARCHAR"/>
+        <result property="areaCode" column="area_code" jdbcType="VARCHAR"/>
+        <result property="areaName" column="area_name" jdbcType="VARCHAR"/>
+        <result property="terminalCode" column="terminal_code" jdbcType="VARCHAR"/>
+        <result property="terminalName" column="terminal_name" jdbcType="VARCHAR"/>
+        <result property="execStatus" column="exec_status" jdbcType="NUMERIC"/>
+        <result property="prodCode" column="prod_code" jdbcType="VARCHAR"/>
+        <result property="acceptedName" column="accepted_name" jdbcType="VARCHAR"/>
+        <result property="acceptedEffectDate" column="accepted_effect_date" jdbcType="DATE"/>
+        <result property="acceptedEndDate" column="accepted_end_date" jdbcType="DATE"/>
+        <result property="conversionFactor" column="conversion_factor" jdbcType="NUMERIC"/>
+        <result property="biddingPrice" column="bidding_price" jdbcType="VARCHAR"/>
+        <result property="tenderPrice" column="tender_price" jdbcType="VARCHAR"/>
+        <result property="tenderType" column="tender_type" jdbcType="VARCHAR"/>
+        <result property="quality" column="quality" jdbcType="VARCHAR"/>
+        <result property="producer" column="producer" jdbcType="VARCHAR"/>
+        <result property="biddingCompany" column="bidding_company" jdbcType="VARCHAR"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+        <result property="flowId" column="flow_id" jdbcType="VARCHAR"/>
+        <result property="flowStatus" column="flow_status" jdbcType="NUMERIC"/>
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="createName" column="CREATE_NAME" jdbcType="VARCHAR"/>
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="updateName" column="UPDATE_NAME" jdbcType="VARCHAR"/>
+        <result property="createOrgId" column="CREATE_ORG_ID" jdbcType="VARCHAR"/>
+        <result property="createOrgName" column="CREATE_ORG_NAME" jdbcType="VARCHAR"/>
+        <result property="company" column="COMPANY" jdbcType="VARCHAR"/>
+
+
+    </resultMap>
+
+    <resultMap id="ScmTenderPriceVo" type="com.winway.scm.vo.ScmTenderPriceVo">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="NUMERIC"/>
+        <result property="collectId" column="collect_id" jdbcType="VARCHAR"/>
+        <result property="tenderProjectCode" column="tender_project_code" jdbcType="VARCHAR"/>
+        <result property="provinceCode" column="province_code" jdbcType="VARCHAR"/>
+        <result property="provinceName" column="province_name" jdbcType="VARCHAR"/>
+        <result property="cityCode" column="city_code" jdbcType="VARCHAR"/>
+        <result property="cityName" column="city_name" jdbcType="VARCHAR"/>
+        <result property="areaCode" column="area_code" jdbcType="VARCHAR"/>
+        <result property="areaName" column="area_name" jdbcType="VARCHAR"/>
+        <result property="terminalCode" column="terminal_code" jdbcType="VARCHAR"/>
+        <result property="terminalName" column="terminal_name" jdbcType="VARCHAR"/>
+        <result property="execStatus" column="exec_status" jdbcType="NUMERIC"/>
+        <result property="prodCode" column="prod_code" jdbcType="VARCHAR"/>
+        <result property="acceptedName" column="accepted_name" jdbcType="VARCHAR"/>
+        <result property="acceptedEffectDate" column="accepted_effect_date" jdbcType="DATE"/>
+        <result property="acceptedEndDate" column="accepted_end_date" jdbcType="DATE"/>
+        <result property="conversionFactor" column="conversion_factor" jdbcType="NUMERIC"/>
+        <result property="biddingPrice" column="bidding_price" jdbcType="VARCHAR"/>
+        <result property="tenderPrice" column="tender_price" jdbcType="VARCHAR"/>
+        <result property="tenderType" column="tender_type" jdbcType="VARCHAR"/>
+        <result property="quality" column="quality" jdbcType="VARCHAR"/>
+        <result property="producer" column="producer" jdbcType="VARCHAR"/>
+        <result property="biddingCompany" column="bidding_company" jdbcType="VARCHAR"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+        <result property="flowId" column="flow_id" jdbcType="VARCHAR"/>
+        <result property="flowStatus" column="flow_status" jdbcType="NUMERIC"/>
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="createName" column="CREATE_NAME" jdbcType="VARCHAR"/>
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="updateName" column="UPDATE_NAME" jdbcType="VARCHAR"/>
+        <result property="createOrgId" column="CREATE_ORG_ID" jdbcType="VARCHAR"/>
+        <result property="createOrgName" column="CREATE_ORG_NAME" jdbcType="VARCHAR"/>
+        <result property="company" column="COMPANY" jdbcType="VARCHAR"/>
+
+        <result property="tenderName" column="tender_project_name" jdbcType="VARCHAR"/>
+        <result property="tenderYear" column="year" jdbcType="INTEGER"/>
+        <result property="tenderStartDate" column="start_date" jdbcType="DATE"/>
+        <result property="tenderEndDate" column="end_date" jdbcType="DATE"/>
+        <result property="tenderProperty" column="tender_property" jdbcType="VARCHAR"/>
+        <result property="productName" column="productName" jdbcType="VARCHAR"/>
+        <result property="productLineId" column="ProductLineId" jdbcType="VARCHAR"/>
+        <result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+        <result property="agentType" column="AgentType" jdbcType="VARCHAR"/>
+        <result property="productState" column="productState" jdbcType="VARCHAR"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.winway.scm.model.ScmTenderPrice">
+		INSERT INTO scm_tender_price
+		(id, collect_id,status,tender_project_code,province_code,province_name,city_code,city_name,area_code,area_name,terminal_code,terminal_name,exec_status,prod_code,accepted_name,accepted_effect_date,accepted_end_date,conversion_factor,bidding_price,tender_price,tender_type,quality,producer,bidding_company,remarks,flow_id,flow_status,CREATE_BY,CREATE_TIME,CREATE_NAME,UPDATE_BY,UPDATE_TIME,UPDATE_NAME,CREATE_ORG_ID,CREATE_ORG_NAME,COMPANY)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{collectId, jdbcType=VARCHAR}, #{status,jdbcType=NUMERIC}, #{tenderProjectCode,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, #{provinceName,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, #{terminalCode,jdbcType=VARCHAR}, #{terminalName,jdbcType=VARCHAR}, #{execStatus,jdbcType=NUMERIC}, #{prodCode,jdbcType=VARCHAR}, #{acceptedName,jdbcType=VARCHAR}, #{acceptedEffectDate,jdbcType=DATE}, #{acceptedEndDate,jdbcType=DATE}, #{conversionFactor,jdbcType=NUMERIC}, #{biddingPrice,jdbcType=VARCHAR}, #{tenderPrice,jdbcType=VARCHAR}, #{tenderType,jdbcType=VARCHAR}, #{quality,jdbcType=VARCHAR}, #{producer,jdbcType=VARCHAR}, #{biddingCompany,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{flowId,jdbcType=VARCHAR}, #{flowStatus,jdbcType=NUMERIC}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createName,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateName,jdbcType=VARCHAR}, #{createOrgId,jdbcType=VARCHAR}, #{createOrgName,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmTenderPrice">
+		SELECT * FROM scm_tender_price 
+		WHERE 
+		id=#{id} AND is_delete = 0
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmTenderPrice">
+        SELECT * FROM scm_tender_price
+        WHERE is_delete = 0
+        <trim prefix="AND">
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </trim>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmTenderPrice">
+		UPDATE scm_tender_price SET
+		status=#{status,jdbcType=NUMERIC},
+		tender_project_code=#{tenderProjectCode,jdbcType=VARCHAR},
+		province_code=#{provinceCode,jdbcType=VARCHAR},
+		province_name=#{provinceName,jdbcType=VARCHAR},
+		city_code=#{cityCode,jdbcType=VARCHAR},
+		city_name=#{cityName,jdbcType=VARCHAR},
+		area_code=#{areaCode,jdbcType=VARCHAR},
+		area_name=#{areaName,jdbcType=VARCHAR},
+		terminal_code=#{terminalCode,jdbcType=VARCHAR},
+		terminal_name=#{terminalName,jdbcType=VARCHAR},
+		exec_status=#{execStatus,jdbcType=NUMERIC},
+		prod_code=#{prodCode,jdbcType=VARCHAR},
+		accepted_name=#{acceptedName,jdbcType=VARCHAR},
+		accepted_effect_date=#{acceptedEffectDate,jdbcType=DATE},
+		accepted_end_date=#{acceptedEndDate,jdbcType=DATE},
+		conversion_factor=#{conversionFactor,jdbcType=NUMERIC},
+		bidding_price=#{biddingPrice,jdbcType=VARCHAR},
+		tender_price=#{tenderPrice,jdbcType=VARCHAR},
+		tender_type=#{tenderType,jdbcType=VARCHAR},
+		quality=#{quality,jdbcType=VARCHAR},
+		producer=#{producer,jdbcType=VARCHAR},
+		bidding_company=#{biddingCompany,jdbcType=VARCHAR},
+		remarks=#{remarks,jdbcType=VARCHAR},
+		flow_id=#{flowId,jdbcType=VARCHAR},
+		flow_status=#{flowStatus,jdbcType=NUMERIC},
+		CREATE_BY=#{createBy,jdbcType=VARCHAR},
+		CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+		CREATE_NAME=#{createName,jdbcType=VARCHAR},
+		UPDATE_BY=#{updateBy,jdbcType=VARCHAR},
+		UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+		UPDATE_NAME=#{updateName,jdbcType=VARCHAR},
+		CREATE_ORG_ID=#{createOrgId,jdbcType=VARCHAR},
+		CREATE_ORG_NAME=#{createOrgName,jdbcType=VARCHAR},
+		COMPANY=#{company,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+
+    <update id="remove" parameterType="java.lang.String">
+		UPDATE scm_tender_price
+		WHERE
+		id=#{id}
+	</update>
+
+    <delete id="delByMainId">
+	    DELETE FROM scm_tender_price
+	    WHERE
+	    tender_project_code=#{tenderProjectCode}
+	</delete>
+
+    <select id="getScmTenderPriceByCode" resultMap="ScmTenderPrice">
+	    select  *  FROM   scm_tender_price
+	    where   province_code=#{provinceCode}  AND   prod_code=#{prodCode}   AND STATUS = 1 AND exec_status =20 AND is_delete = 0
+	</select>
+
+    <select id="getByMainId" parameterType="java.lang.String" resultMap="ScmTenderPrice">
+		SELECT * FROM scm_tender_price
+		WHERE tender_project_code=#{tenderProjectCode} AND is_delete = 0
+	</select>
+
+    <select id="getScmTenderPriceList" resultMap="ScmTenderPrice">
+	    SELECT *
+	    FROM scm_tender_price 
+	    WHERE tender_project_code=#{tenderProjectCode} AND is_delete = 0
+	</select>
+
+    <select id="getByFlowId" resultMap="ScmTenderPrice">
+		SELECT *
+	    FROM scm_tender_price
+	    WHERE flow_id=#{flowId} AND is_delete = 0
+	</select>
+
+    <select id="queryByCollectId" parameterType="java.lang.String" resultMap="ScmTenderPriceVo">
+		SELECT
+			a.*,
+			b.tender_project_name,b.`year`,b.start_date,b.end_date,b.tender_property,
+			c.productName,commonName,c.AgentType,c.productState
+		FROM
+			scm_tender_price a
+		LEFT JOIN scm_tender_project b ON a.tender_project_code = b.tender_project_code
+		LEFT JOIN scm_zsj_product c ON a.prod_code = c.productCode
+		WHERE
+			a.collect_id = #{collectId} AND a.is_delete = 0
+	</select>
+
+    <select id="queryByFlowId" parameterType="java.lang.String" resultMap="ScmTenderPriceVo">
+        SELECT
+			a.*,
+			b.tender_project_name,b.`year`,b.start_date,b.end_date,b.tender_property,
+			c.productName,commonName,c.AgentType,c.productState
+		FROM
+			scm_tender_price a
+		LEFT JOIN scm_tender_project b ON a.tender_project_code = b.tender_project_code
+		LEFT JOIN scm_zsj_product c ON a.prod_code = c.productCode
+		WHERE
+			a.flow_id = #{flowId} AND a.is_delete = 0
+    </select>
+
+    <select id="queryAllInfo" resultMap="ScmTenderPriceVo">
+        SELECT
+			a.*,
+			b.tender_project_name,b.`year`,b.start_date,b.end_date,b.tender_property,
+			c.productName,commonName,c.AgentType,c.productState,c.ProductLineId
+		FROM
+			scm_tender_price a
+		LEFT JOIN scm_tender_project b ON a.tender_project_code = b.tender_project_code
+		LEFT JOIN scm_zsj_product c ON a.prod_code = c.productCode
+        WHERE a.is_delete = 0
+        <trim prefix="AND">
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </trim>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+
+</mapper>

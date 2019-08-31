@@ -1,26 +1,24 @@
 package com.winway.scm.persistence.manager.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.hotent.base.feign.BpmRuntimeFeignService;
+import com.hotent.base.modelvo.CustomStartResult;
+import com.hotent.base.modelvo.StartFlowParam;
+import com.hotent.base.util.BeanUtils;
+import com.hotent.base.util.UniqueIdUtil;
+import com.winway.purchase.util.DateFormatter;
+import com.winway.scm.model.*;
+import com.winway.scm.persistence.dao.*;
+import com.winway.scm.persistence.manager.*;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
-import com.winway.scm.model.ScmXsAgreementProductDetail;
-import com.winway.scm.model.ScmXsAgreementSummary;
-import com.winway.scm.model.ScmXsDealerClause;
-import com.winway.scm.persistence.dao.ScmXsAgreementProductDetailDao;
-import com.winway.scm.persistence.dao.ScmXsAgreementSummaryDao;
-import com.winway.scm.persistence.dao.ScmXsDealerClauseDao;
-import com.winway.scm.persistence.manager.ScmXsAgreementProductDetailManager;
-import com.winway.scm.persistence.manager.ScmXsAgreementSummaryManager;
-import com.winway.scm.persistence.manager.ScmXsDealerClauseManager;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <pre>
@@ -44,6 +42,18 @@ public class ScmXsAgreementSummaryManagerImpl extends AbstractManagerImpl<String
     ScmXsDealerClauseManager scmXsDealerClauseManager;
     @Resource
     ScmXsDealerClauseDao scmXsDealerClauseDao;
+    @Resource
+    ScmXsDealerPayStyleManager scmXsDealerPayStyleManager;
+    @Resource
+    ScmXsDealerPayStyleDao scmXsDealerPayStyleDao;
+
+    @Resource
+    ScmXsBigContractDao scmXsBigContractDao;
+    @Resource
+    ScmXsBigContractProductSumDao productSumDao;
+    @Resource
+    BpmRuntimeFeignService bpmRuntimeFeignService;
+
 
     @Override
     protected MyBatisDao<String, ScmXsAgreementSummary> getDao() {
@@ -95,6 +105,9 @@ public class ScmXsAgreementSummaryManagerImpl extends AbstractManagerImpl<String
         List<ScmXsDealerClause> scmXsDealerClauseList = scmXsDealerClauseDao.getByMasterId(entityId);
         for (ScmXsDealerClause scmXsDealerClause : scmXsDealerClauseList) {
             ScmXsDealerClause scmXsDealerClause1 = scmXsDealerClauseManager.get(scmXsDealerClause.getId());
+            scmXsDealerClause1.setDealerclauseId(scmXsDealerClause1.getId());
+            List<ScmXsDealerPayStyle> scmXsDealerPayStyleList = scmXsDealerPayStyleManager.getByMainId(scmXsDealerClause1.getId());
+            scmXsDealerClause1.setScmXsDealerPayStyleList(scmXsDealerPayStyleList);
             list.add(scmXsDealerClause1);
         }
         scmXsAgreementSummary.setScmXsDealerClauseList(list);
@@ -107,14 +120,80 @@ public class ScmXsAgreementSummaryManagerImpl extends AbstractManagerImpl<String
     public void update(ScmXsAgreementSummary scmXsAgreementSummary) {
         super.update(scmXsAgreementSummary);
         String id = scmXsAgreementSummary.getId();
-        scmXsAgreementProductDetailDao.delByMainId(id);
+        List<ScmXsDealerClause> byMasterId = scmXsDealerClauseDao.getByMasterId(id);
+        List<String> dealerClauseIds = new ArrayList<>();
+        for (ScmXsDealerClause dealerClause : byMasterId) {
+            dealerClauseIds.add(dealerClause.getId());
+        }
+        // 删除前保存上次品规数据到历史表
+        saveAgreementLast(id);
+        //获取原品规数据
+        List<ScmXsAgreementProductDetail> byMainId = scmXsAgreementProductDetailDao.getByMainId(id);
+        // 对品规数据进行修改
         List<ScmXsAgreementProductDetail> scmXsAgreementProductDetailList = scmXsAgreementSummary.getScmXsAgreementProductDetailList();
         for (ScmXsAgreementProductDetail scmXsAgreementProductDetail : scmXsAgreementProductDetailList) {
-            scmXsAgreementProductDetail.setAgreementSummaryId(id);
-            scmXsAgreementProductDetailManager.create(scmXsAgreementProductDetail);
+            String agreementSummaryId = scmXsAgreementProductDetail.getAgreementSummaryId();
+
+            for (ScmXsAgreementProductDetail originalPro : byMainId) {
+                // 原品规相同的 未修改的数据 直接跳过
+                if (scmXsAgreementProductDetail.getCommerceCode().equals(originalPro.getCommerceCode())) {
+                    if (scmXsAgreementProductDetail.getIsImplement().equals(originalPro.getIsImplement()) && "1".equals(scmXsAgreementProductDetail.getIsImplement())) {
+                        break;
+                    }
+                    if (scmXsAgreementProductDetail.getBiddingPrice() != originalPro.getBiddingPrice() || scmXsAgreementProductDetail.getSupplyPrice() != originalPro.getSupplyPrice() ||
+                            scmXsAgreementProductDetail.getAcceptGross() != originalPro.getAcceptGross() || scmXsAgreementProductDetail.getAllotGross() != originalPro.getAllotGross() ||
+                            scmXsAgreementProductDetail.getPurePinGross() != originalPro.getPurePinGross() || scmXsAgreementProductDetail.getWireTransferPrice() != originalPro.getWireTransferPrice() ||
+                            scmXsAgreementProductDetail.getAcceptPrice() != originalPro.getAcceptPrice() || scmXsAgreementProductDetail.getPurePinPrice() != originalPro.getPurePinPrice()) {
+
+                        // 失效大合同商品
+                        List<ScmXsBigContract> bigContracts = scmXsBigContractDao.getByAgreementSummaryId(scmXsAgreementSummary.getOwnerId(), agreementSummaryId);
+                        for (ScmXsBigContract bigContract : bigContracts) {
+                            List<ScmXsBigContractProduct> scmXsBigContractProductList = bigContract.getScmXsBigContractProductList();
+                            // 如果当前协议下的大合同 商品是这些修改的品规 则失效大合同商品
+                            for (ScmXsBigContractProduct product : scmXsBigContractProductList) {
+                                if (product.getProductCode().equals(scmXsAgreementProductDetail.getCommerceCode())) {
+                                    product.setInvalid("1");
+                                }
+                                // 大合同汇总失效变更协议下的  汇总商品
+                                List<ScmXsBigContractProductSum> bigcontractproductsum = productSumDao.getByOwnerIdAndProCodeAndSummaryId(scmXsAgreementSummary.getOwnerId(), product.getProductCode(), dealerClauseIds);
+                                for (ScmXsBigContractProductSum productSum : bigcontractproductsum) {
+                                    productSum.setInvalid("1");
+                                    productSumDao.update(productSum);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if ("1".equals(scmXsAgreementProductDetail.getIsSign())) {
+                if (agreementSummaryId != null) {
+                    scmXsAgreementProductDetailManager.update(scmXsAgreementProductDetail);
+                } else {
+                    scmXsAgreementProductDetail.setAgreementSummaryId(id);
+                    scmXsAgreementProductDetailManager.create(scmXsAgreementProductDetail);
+                }
+            }
         }
     }
 
+    private void saveAgreementLast(String id) {
+        // 只保留上一次数据
+        List<ScmXsAgreementProductDetail> lastProductDetails = scmXsAgreementProductDetailDao.getLastByMainId(id);
+        if (lastProductDetails != null && !lastProductDetails.isEmpty()) {
+            scmXsAgreementProductDetailDao.delLastByMainId(id);
+        }
+        List<ScmXsAgreementProductDetail> byMainId = scmXsAgreementProductDetailDao.getByMainId(id);
+        for (ScmXsAgreementProductDetail scmXsAgreementProductDetail : byMainId) {
+            if ("1".equals(scmXsAgreementProductDetail.getIsSign())) {
+                scmXsAgreementProductDetail.setAgreementSummaryId(id);
+                scmXsAgreementProductDetail.setId(UniqueIdUtil.getSuid());
+                scmXsAgreementProductDetailDao.createLast(scmXsAgreementProductDetail);
+            }
+
+        }
+    }
+
+    @Transactional
     @Override
     public void sendApply(ScmXsAgreementSummary scmXsAgreementSummary) {
         // TODO Auto-generated method stub
@@ -142,65 +221,94 @@ public class ScmXsAgreementSummaryManagerImpl extends AbstractManagerImpl<String
 			scmXsAgreementSummary2.setApprovalState("1");
 			scmXsAgreementSummaryDao.update(scmXsAgreementSummary2);*/
             //保存第三步数据
-            saveByAgreement(scmXsAgreementSummary);
+//            saveByAgreement(scmXsAgreementSummary);
+
+
+        }
+        StartFlowParam startFlowParam = new StartFlowParam("jxsxyhztksq", "SCM", "approvalId");
+        startFlowParam.setFormType("frame");
+        CustomStartResult customStartResult = null;
+        try {
+            System.out.println("发起经销商协议合作条款申请");
+            customStartResult = bpmRuntimeFeignService.customStart(startFlowParam);
+            String approvalId = customStartResult.getInstId();
+            scmXsAgreementSummary.setApprovalId(approvalId);
+            super.update(scmXsAgreementSummary);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("启动工作流失败");
         }
     }
 
     @Override
     public void endApply(JsonNode jsonNode) {
-        // TODO Auto-generated method stub
         String approvalId = jsonNode.get("instId").asText();
         String actionName = jsonNode.get("actionName").asText();
         ScmXsAgreementSummary scmXsAgreementSummaryId = scmXsAgreementSummaryDao.getSupplierFirstByApprovalId(approvalId);
         if (scmXsAgreementSummaryId == null) {
             throw new RuntimeException("未查询到业务数据,处理异常");
         }
-        if ("agree".equals(actionName)) {
+        String endEvent = jsonNode.get("eventType").asText();
+        if ("agree".equals(actionName) && "endEvent".equals(endEvent)) {
             //审批状态调整为通过
             scmXsAgreementSummaryId.setApprovalState("2");
-        } else if ("oppose".equals(actionName)) {
+            scmXsAgreementSummaryDao.update(scmXsAgreementSummaryId);
+        } else if ("agree".equals(actionName)) {
+        } else if ("reject".equals(actionName)) {
+        } else if ("backToStart".equals(actionName)) {
+        } else if ("opposeTrans".equals(actionName)) {
+        } else if ("endProcess".equals(actionName)) {
             scmXsAgreementSummaryId.setApprovalState("3");
+            scmXsAgreementSummaryDao.update(scmXsAgreementSummaryId);
         }
-        scmXsAgreementSummaryDao.update(scmXsAgreementSummaryId);
-
+        //推送数据至WMS
     }
 
     @Override
     public void saveByDealerClause(ScmXsAgreementSummary scmXsAgreementSummary) {
         String pk = scmXsAgreementSummary.getId();
         ScmXsAgreementSummary scmXsAgreementSummary2 = scmXsAgreementSummaryDao.get(pk);
-        //获取该表中已经保存的数据
-        List<ScmXsDealerClause> sxdc = scmXsDealerClauseDao.getByMasterId(pk);
-        Map<String, ScmXsDealerClause> map = new HashMap<String, ScmXsDealerClause>();
-        for (ScmXsDealerClause scmXsDealerClause1 : sxdc) {
-            map.put(scmXsDealerClause1.getCommerceCode(), scmXsDealerClause1);
+        // 删除原付款方式前保存
+        savePayStyleLast(pk);
+        List<ScmXsDealerClause> byMasterId = scmXsDealerClauseDao.getByMasterId(pk);
+        for (ScmXsDealerClause dealerClause : byMasterId) {
+            scmXsDealerPayStyleDao.delByMainId(dealerClause.getId());
         }
-//    	scmXsDealerClauseDao.delByMainId(pk);
+        scmXsDealerClauseDao.delByMainId(pk);
         //获取前端要保存的从表数据
         List<ScmXsDealerClause> scmXsDealerClauseList = scmXsAgreementSummary.getScmXsDealerClauseList();
         //遍历，使用前端传入的商业编码，获取已经保存到数据库中的商业数据，如果无法获取，说明没有保存，
         for (ScmXsDealerClause scmXsDealerClause : scmXsDealerClauseList) {
-            ScmXsDealerClause scmXsDealerClause2 = map.get(scmXsDealerClause.getCommerceCode());
-            //数据库和前端传过来的匹配成功
-            if (scmXsDealerClause2 != null) {
-                if (scmXsDealerClause.getId() == null || "".equals(scmXsDealerClause.getId())) {
-                    //没值说明是新增的方法，这个商业已经添加过了，所以跳过本次循环
-                    continue;
-                } else {
-                    //如果id有值，说明是下一步或者申请暂存，
-                    scmXsDealerClauseDao.remove(scmXsDealerClause.getId());
-                }
-            }
+            // 获取协议的付款方式
+            List<ScmXsDealerPayStyle> scmXsDealerPayStyleList = scmXsDealerClause.getScmXsDealerPayStyleList();
             scmXsDealerClause.setAgreementSummaryId(pk);
+            scmXsDealerClause.setId(null);
             scmXsDealerClause.setClauseCode(scmXsAgreementSummary2.getAgreementSummaryCode());
             scmXsDealerClauseManager.create(scmXsDealerClause);
+            for (ScmXsDealerPayStyle payStyle : scmXsDealerPayStyleList) {
+                payStyle.setMasterId(scmXsDealerClause.getId());
+                scmXsDealerPayStyleManager.create(payStyle);
+            }
         }
+    }
+
+    private void savePayStyleLast(String pk) {
+        List<ScmXsDealerClause> byMasterId = scmXsDealerClauseDao.getByMasterId(pk);
+        for (ScmXsDealerClause dealerClause : byMasterId) {
+            // 只保留上次协议变更付款方式
+            scmXsDealerPayStyleDao.delLastByMainId(dealerClause.getId());
+            List<ScmXsDealerPayStyle> scmXsDealerPayStyleList = dealerClause.getScmXsDealerPayStyleList();
+            for (ScmXsDealerPayStyle payStyle : scmXsDealerPayStyleList) {
+                payStyle.setId(UniqueIdUtil.getSuid());
+                scmXsDealerPayStyleDao.createLast(payStyle);
+            }
+        }
+
     }
 
     @Override
     public void saveByAgreement(ScmXsAgreementSummary scmXsAgreementSummary) {
         String pk = scmXsAgreementSummary.getId();
-        ScmXsAgreementSummary scmXsAgreementSummary2 = scmXsAgreementSummaryDao.get(pk);
         scmXsAgreementProductDetailDao.delByMainId(pk);
         List<ScmXsAgreementProductDetail> scmXsAgreementProductDetailList = scmXsAgreementSummary.getScmXsAgreementProductDetailList();
         for (ScmXsAgreementProductDetail scmXsAgreementProductDetail : scmXsAgreementProductDetailList) {
@@ -232,6 +340,15 @@ public class ScmXsAgreementSummaryManagerImpl extends AbstractManagerImpl<String
         List<ScmXsAgreementProductDetail> scmXsAgreementProductDetailList = scmXsAgreementProductDetailDao.getByMainId(masterId);
         scmXsAgreementSummaryByApprovalId.setScmXsAgreementProductDetailList(scmXsAgreementProductDetailList);
         return scmXsAgreementSummaryByApprovalId;
+    }
+
+
+    @Override
+    public List<Map<String, Object>> aunualFee(String businessDivisionId, String provinceId, String year) {
+        //获取本年度 商务分区和省区下 所有签订协议经销商的年费
+        List<Map<String, Object>> mapList = new ArrayList<>();
+//        scmXsAgreementSummaryDao.aunualFee(businessDivisionId,provinceId,year);
+        return null;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.winway.scm.model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
@@ -39,16 +40,16 @@ public class ScmZsjCommerceEntruseBook extends BaseModel<String>{
 	
 	@ApiModelProperty(value="委托书有效期至")
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected java.util.Date entrustValidity; 
+	protected Date entrustValidity;
 	
 	@ApiModelProperty(value="身份证号")
-	protected String idNumber; 
-	
-	@ApiModelProperty(value="身份证有效期")
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected java.util.Date IDValidity; 
-	
-	/**
+	protected String idNumber;
+
+	 @ApiModelProperty(value="身份证有效期")
+	 @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	 protected Date idValidity;
+
+	 /**
 	*商业授权销售品种列表
 	*/
 	protected List<ScmZsjCommerceAccredit> scmZsjCommerceAccreditList=new ArrayList<ScmZsjCommerceAccredit>(); 
@@ -112,32 +113,24 @@ public class ScmZsjCommerceEntruseBook extends BaseModel<String>{
 	public java.util.Date getEntrustValidity() {
 		return this.entrustValidity;
 	}
-	
-	public void setIDNumber(String idNumber) {
-		this.idNumber = idNumber;
-	}
-	
-	/**
-	 * 返回 身份证号
-	 * @return
-	 */
-	public String getIdNumber() {
-		return this.idNumber;
-	}
-	
-	public void setIDValidity(java.util.Date IDValidity) {
-		this.IDValidity = IDValidity;
-	}
-	
-	/**
-	 * 返回 身份证有效期
-	 * @return
-	 */
-	public java.util.Date getIDValidity() {
-		return this.IDValidity;
-	}
 
-	public void setScmZsjCommerceAccreditList(List<ScmZsjCommerceAccredit> scmZsjCommerceAccreditList) {
+	 public String getIdNumber() {
+		 return idNumber;
+	 }
+
+	 public void setIdNumber(String idNumber) {
+		 this.idNumber = idNumber;
+	 }
+
+	 public Date getIdValidity() {
+		 return idValidity;
+	 }
+
+	 public void setIdValidity(Date idValidity) {
+		 this.idValidity = idValidity;
+	 }
+
+	 public void setScmZsjCommerceAccreditList(List<ScmZsjCommerceAccredit> scmZsjCommerceAccreditList) {
 		this.scmZsjCommerceAccreditList = scmZsjCommerceAccreditList;
 	}
 	
@@ -159,7 +152,7 @@ public class ScmZsjCommerceEntruseBook extends BaseModel<String>{
 		.append("entrustName", this.entrustName) 
 		.append("entrustValidity", this.entrustValidity) 
 		.append("idNumber", this.idNumber) 
-		.append("IDValidity", this.IDValidity) 
+		.append("idValidity", this.idValidity)
 		.toString();
 	}
 }

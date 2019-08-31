@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmKcDrugDestructionMasterDao">
+	<resultMap id="ScmKcDrugDestructionMaster" type="com.winway.scm.model.ScmKcDrugDestructionMaster">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="destructionCode" column="destructionCode" jdbcType="VARCHAR"/>
+		<result property="varietySum" column="varietySum" jdbcType="NUMERIC"/>
+		<result property="priceSum" column="priceSum" jdbcType="NUMERIC"/>
+		<result property="productNum" column="productNum" jdbcType="NUMERIC"/>
+		<result property="destructionMethod" column="destructionMethod" jdbcType="VARCHAR"/>
+		<result property="destructionDate" column="destructionDate" jdbcType="TIMESTAMP"/>
+		<result property="destructionAddress" column="destructionAddress" jdbcType="VARCHAR"/>
+		<result property="conveyance" column="conveyance" jdbcType="VARCHAR"/>
+		<result property="qualityIdea" column="qualityIdea" jdbcType="VARCHAR"/>
+		<result property="companyPrincipalIdea" column="companyPrincipalIdea" jdbcType="VARCHAR"/>
+		<result property="superintendent" column="superintendent" jdbcType="VARCHAR"/>
+		<result property="destructionPersion" column="destructionPersion" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
+		<result property="createpersion" column="createpersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
+		<result property="isManageSap" column="isManageSap" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmKcDrugDestructionMaster">
+		INSERT INTO Scm_Kc_DrugDestructionMaster
+		(id,destructionCode,varietySum,
+		priceSum,productNum,destructionMethod,
+		destructionDate,destructionAddress,conveyance,
+		qualityIdea,companyPrincipalIdea,superintendent,
+		destructionPersion,memo,createpersion,
+		createDate,approvalState,approvalId,
+		ownerId,isSMS,isManageSap)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{destructionCode,jdbcType=VARCHAR}, #{varietySum,jdbcType=NUMERIC}, 
+		#{priceSum,jdbcType=NUMERIC}, #{productNum,jdbcType=NUMERIC}, #{destructionMethod,jdbcType=VARCHAR}, 
+		#{destructionDate,jdbcType=TIMESTAMP}, #{destructionAddress,jdbcType=VARCHAR}, #{conveyance,jdbcType=VARCHAR}, 
+		#{qualityIdea,jdbcType=VARCHAR}, #{companyPrincipalIdea,jdbcType=VARCHAR}, #{superintendent,jdbcType=VARCHAR}, 
+		#{destructionPersion,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{createpersion,jdbcType=VARCHAR}, 
+		#{createDate,jdbcType=TIMESTAMP}, #{approvalState,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR},
+		#{ownerId,jdbcType=VARCHAR},#{isSMS,jdbcType=VARCHAR},#{isManageSap,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmKcDrugDestructionMaster">
+		SELECT * FROM Scm_Kc_DrugDestructionMaster 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByApprovalId"   parameterType="java.lang.String" resultMap="ScmKcDrugDestructionMaster">
+		SELECT * FROM Scm_Kc_DrugDestructionMaster 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmKcDrugDestructionMaster">
+		SELECT
+		a.*, b.productName,
+		b.productCode,
+		b.productState,
+		b.unit,
+		b.agentType,
+		b.productSum,
+		b.unitPrice,
+		b.medicineType,
+		b.medicineClassify,
+		b.manufacturer,
+		b.approvalCode,
+		b.businessScope,
+		b.batchNum,
+		b.expiryDate
+		FROM
+		scm_kc_drugdestructionmaster a
+		INNER JOIN scm_kc_drugdestruction b ON b.masterId = a.id
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmKcDrugDestructionMaster">
+		UPDATE Scm_Kc_DrugDestructionMaster SET
+		destructionCode=#{destructionCode,jdbcType=VARCHAR},
+		varietySum=#{varietySum,jdbcType=NUMERIC},
+		priceSum=#{priceSum,jdbcType=NUMERIC},
+		productNum=#{productNum,jdbcType=NUMERIC},
+		destructionMethod=#{destructionMethod,jdbcType=VARCHAR},
+		destructionDate=#{destructionDate,jdbcType=TIMESTAMP},
+		destructionAddress=#{destructionAddress,jdbcType=VARCHAR},
+		conveyance=#{conveyance,jdbcType=VARCHAR},
+		qualityIdea=#{qualityIdea,jdbcType=VARCHAR},
+		companyPrincipalIdea=#{companyPrincipalIdea,jdbcType=VARCHAR},
+		superintendent=#{superintendent,jdbcType=VARCHAR},
+		destructionPersion=#{destructionPersion,jdbcType=VARCHAR},
+		memo=#{memo,jdbcType=VARCHAR},
+		createpersion=#{createpersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		isSMS = #{isSMS,jdbcType=VARCHAR},
+		isManageSap = #{isManageSap,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Kc_DrugDestructionMaster 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

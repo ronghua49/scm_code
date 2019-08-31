@@ -27,7 +27,7 @@ import com.hotent.base.util.StringUtil;
 /**
  * 
  * <pre> 
- * 描述：scm_xs_bigcontractproductsum 控制器类
+ * 描述：大合同商品汇总表 控制器类
  * 构建组：x7
  * 作者:原浩
  * 邮箱:PRD-jun.he@winwayworld.com
@@ -37,7 +37,7 @@ import com.hotent.base.util.StringUtil;
  */
 @RestController
 @RequestMapping(value="/scm/scmXsBigContractProductSum/v1",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-@Api(tags="scmXsBigContractProductSumController")
+@Api(tags="scmXsBigContractProductSumController 大合同商品汇总表")
 public class ScmXsBigContractProductSumController extends BaseController{
 	@Resource
 	ScmXsBigContractProductSumManager scmXsBigContractProductSumManager;
@@ -51,7 +51,7 @@ public class ScmXsBigContractProductSumController extends BaseController{
 	 * @exception 
 	 */
 	@PostMapping("/listConProductSumBySummaryID")
-	@ApiOperation(value="scm_xs_bigcontractproductsum数据列表", httpMethod = "POST", notes = "获取scm_xs_bigcontractproductsum列表")
+	@ApiOperation(value="大合同商品汇总表数据列表", httpMethod = "POST", notes = "获取scm_xs_bigcontractproductsum列表")
 	public PageList<ScmXsBigContractProductSum> listConProductSumBySummaryID(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
 		return scmXsBigContractProductSumManager.listConProductSumBySummaryID(queryFilter);
 	}
@@ -65,10 +65,10 @@ public class ScmXsBigContractProductSumController extends BaseController{
 	 * @exception 
 	 */
 	@PostMapping("/listConProductSumByUpdate")
-	@ApiOperation(value="scm_xs_bigcontractproductsum数据列表", httpMethod = "POST", notes = "获取scm_xs_bigcontractproductsum列表")
-	public List<ScmXsBigContractProductSum> listConProductSumByUpdate(@ApiParam(name="bigContractAllotId",value="大合同分配ID")@RequestParam String bigContractAllotId,
-			@ApiParam(name="agreementSummaryId",value="协议ID")@RequestParam String agreementSummaryId) throws Exception{
-		return scmXsBigContractProductSumManager.listConProductSumByUpdate(bigContractAllotId,agreementSummaryId);
+	@ApiOperation(value="大合同商品汇总表数据列表", httpMethod = "POST", notes = "获取scm_xs_bigcontractproductsum列表")
+	public List<ScmXsBigContractProductSum> listConProductSumByUpdate(@ApiParam(name="ownerId",value="货主id")@RequestParam String ownerId,@ApiParam(name="bigContractAllotId",value="大合同分配ID")@RequestParam String bigContractAllotId,
+			@ApiParam(name="agreementSummaryId",value="协议ID")@RequestParam String agreementSummaryId,@ApiParam(name="medicineType",value="协议ID")@RequestParam String medicineType,@ApiParam(name="commerceFirstId",value="商业首营id")@RequestParam String commerceFirstId) throws Exception{
+		return scmXsBigContractProductSumManager.listConProductSumByUpdate(ownerId,bigContractAllotId,agreementSummaryId,medicineType,commerceFirstId);
 		
 	}
 	
@@ -81,7 +81,7 @@ public class ScmXsBigContractProductSumController extends BaseController{
 	 * @exception 
 	 */
 	@PostMapping("/list")
-	@ApiOperation(value="scm_xs_bigcontractproductsum数据列表", httpMethod = "POST", notes = "获取scm_xs_bigcontractproductsum列表")
+	@ApiOperation(value="大合同商品汇总表数据列表", httpMethod = "POST", notes = "获取scm_xs_bigcontractproductsum列表")
 	public PageList<ScmXsBigContractProductSum> list(@ApiParam(name="queryFilter",value="查询对象")@RequestBody QueryFilter queryFilter) throws Exception{
 		return scmXsBigContractProductSumManager.query(queryFilter);
 	}
@@ -94,7 +94,7 @@ public class ScmXsBigContractProductSumController extends BaseController{
 	 * ModelAndView
 	 */
 	@GetMapping(value="/get/{id}")
-	@ApiOperation(value="scm_xs_bigcontractproductsum数据详情",httpMethod = "GET",notes = "scm_xs_bigcontractproductsum数据详情")
+	@ApiOperation(value="大合同商品汇总表数据详情",httpMethod = "GET",notes = "scm_xs_bigcontractproductsum数据详情")
 	public ScmXsBigContractProductSum get(@ApiParam(name="id",value="业务对象主键", required = true)@PathVariable String id) throws Exception{
 		return scmXsBigContractProductSumManager.get(id);
 	}
@@ -107,7 +107,7 @@ public class ScmXsBigContractProductSumController extends BaseController{
 	 * @exception 
 	 */
 	@PostMapping(value="save")
-	@ApiOperation(value = "新增,更新scm_xs_bigcontractproductsum数据", httpMethod = "POST", notes = "新增,更新scm_xs_bigcontractproductsum数据")
+	@ApiOperation(value = "新增,更新大合同商品汇总表数据", httpMethod = "POST", notes = "新增,更新scm_xs_bigcontractproductsum数据")
 	public CommonResult<String> save(@ApiParam(name="scmXsBigContractProductSum",value="scm_xs_bigcontractproductsum业务对象", required = true)@RequestBody ScmXsBigContractProductSum scmXsBigContractProductSum) throws Exception{
 		String msg = "添加scm_xs_bigcontractproductsum成功";
 		if(StringUtil.isEmpty(scmXsBigContractProductSum.getId())){
@@ -127,7 +127,7 @@ public class ScmXsBigContractProductSumController extends BaseController{
 	 * @exception 
 	 */
 	@DeleteMapping(value="remove/{id}")
-	@ApiOperation(value = "删除scm_xs_bigcontractproductsum记录", httpMethod = "DELETE", notes = "删除scm_xs_bigcontractproductsum记录")
+	@ApiOperation(value = "删除大合同商品汇总表记录", httpMethod = "DELETE", notes = "删除scm_xs_bigcontractproductsum记录")
 	public  CommonResult<String>  remove(@ApiParam(name="id",value="业务主键", required = true)@PathVariable String id) throws Exception{
 		scmXsBigContractProductSumManager.remove(id);
 		return new CommonResult<String>(true, "删除成功");
@@ -141,7 +141,7 @@ public class ScmXsBigContractProductSumController extends BaseController{
 	 * @exception 
 	 */
 	@DeleteMapping(value="/removes")
-	@ApiOperation(value = "批量删除scm_xs_bigcontractproductsum记录", httpMethod = "DELETE", notes = "批量删除scm_xs_bigcontractproductsum记录")
+	@ApiOperation(value = "批量删除大合同商品汇总表记录", httpMethod = "DELETE", notes = "批量删除scm_xs_bigcontractproductsum记录")
 	public CommonResult<String> removes(@ApiParam(name="ids",value="业务主键数组,多个业务主键之间用逗号分隔", required = true)@RequestParam String...ids) throws Exception{
 		scmXsBigContractProductSumManager.removeByIds(ids);
 		return new CommonResult<String>(true, "批量删除成功");

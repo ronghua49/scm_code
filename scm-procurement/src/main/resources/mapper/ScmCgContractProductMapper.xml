@@ -16,15 +16,18 @@
 		<result property="unitPrice" column="unitPrice" jdbcType="NUMERIC"/>
 		<result property="productSum" column="productSum" jdbcType="NUMERIC"/>
 		<result property="sumPrice" column="sumPrice" jdbcType="NUMERIC"/>
-		<result property="achange" column="achange" jdbcType="NUMERIC"/>
 		<result property="surplusAmount" column="surplusAmount" jdbcType="NUMERIC"/>
 		<result property="currency" column="currency" jdbcType="VARCHAR"/>
 		<result property="approvalNumber" column="approvalNumber" jdbcType="VARCHAR"/>
+		<result property="AgentType" column="AgentType" jdbcType="VARCHAR" />
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="medicineClassify" column="medicineClassify" jdbcType="VARCHAR"/>
+		<result property="businessScope" column="businessScope" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmCgContractProduct">
 		INSERT INTO SCM_CG_ContractProduct
-		(id,contractCode,contractId,productId,ProductName,ProductCode,productCname,productGauge,medicineTypeId,medicineType,unit,unitPrice,productSum,sumPrice,currency,approvalNumber,achange,surplusAmount)
+		(id,contractCode,contractId,productId,ProductName,ProductCode,productCname,productGauge,medicineTypeId,medicineType,unit,unitPrice,productSum,sumPrice,currency,approvalNumber,surplusAmount,AgentType,manufacturer,medicineClassify,businessScope)
 		VALUES 
 		(#{id,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, 
 		#{contractId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
@@ -34,7 +37,8 @@
 		#{unit,jdbcType=VARCHAR}, #{unitPrice,jdbcType=NUMERIC}, 
 		#{productSum,jdbcType=NUMERIC}, #{sumPrice,jdbcType=NUMERIC}, 
 		#{currency,jdbcType=VARCHAR}, #{approvalNumber,jdbcType=VARCHAR}, 
-		#{achange,jdbcType=NUMERIC},#{surplusAmount,jdbcType=NUMERIC})
+		#{surplusAmount,jdbcType=NUMERIC},#{AgentType,jdbcType=VARCHAR},#{manufacturer,jdbcType=VARCHAR},
+		#{medicineClassify,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmCgContractProduct">
@@ -60,7 +64,10 @@
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="ScmCgContractProduct">
-		SELECT * FROM SCM_CG_ContractProduct
+		SELECT * FROM (
+		SELECT a.*,b.code,b.achage FROM SCM_CG_ContractProduct a
+		LEFT JOIN (SELECT * FROM scm_zsj_achange WHERE isdelete = 1) b ON a.productId = b.productId
+		) a
 		<where>
 			<if test="whereSql!=null">
 				${whereSql}
@@ -90,9 +97,12 @@
 		productSum=#{productSum,jdbcType=NUMERIC},
 		sumPrice=#{sumPrice,jdbcType=NUMERIC},
 		currency=#{currency,jdbcType=VARCHAR},
-		achange=#{achange,jdbcType=NUMERIC},
 		surplusAmount=#{surplusAmount,jdbcType=NUMERIC},
-		approvalNumber=#{approvalNumber,jdbcType=VARCHAR}
+		approvalNumber=#{approvalNumber,jdbcType=VARCHAR},
+		AgentType = #{AgentType,jdbcType=VARCHAR},
+		manufacturer = #{manufacturer,jdbcType=VARCHAR},
+		medicineClassify = #{medicineClassify,jdbcType=VARCHAR},
+		businessScope = #{businessScope,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>

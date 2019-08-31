@@ -52,13 +52,26 @@
 		<result property="type" column="type" jdbcType="VARCHAR"/>	
 		<result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
 		<result property="actualLevel" column="actualLevel" jdbcType="VARCHAR"/>		
+		<result property="isToMasterData" column="isToMasterData" jdbcType="VARCHAR"/>		
 	</resultMap>
 	
 	<insert id="create" parameterType="com.winway.scm.model.ScmZsjCommerce">
 		INSERT INTO SCM_ZSJ_Commerce
-		(id,commerceName,fileCode,commerceState,commerceCode,conpanyPersion,contactPersion,phone,openBank,bankCode,dutyParagraph,businessDivisionId,businessDivision,provinceId,province,qualityValidity,registerAddress,sealStyle,billsStyle,enterPersion,enterDate,commerceLevel,functionType)
+		(id,commerceName,fileCode,
+		commerceState,commerceCode,conpanyPersion,
+		openBank,bankCode,dutyParagraph,
+		businessDivisionId,businessDivision,provinceId,
+		province,registerAddress,enterPersion,
+		enterDate,commerceLevel,functionType,
+		approvalId,approvalState,isToMasterData)
 		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{fileCode,jdbcType=VARCHAR}, #{commerceState,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{conpanyPersion,jdbcType=VARCHAR}, #{contactPersion,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, #{dutyParagraph,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{qualityValidity,jdbcType=TIMESTAMP}, #{registerAddress,jdbcType=VARCHAR}, #{sealStyle,jdbcType=VARCHAR}, #{billsStyle,jdbcType=VARCHAR}, #{enterPersion,jdbcType=VARCHAR}, now(),#{commerceLevel,jdbcType=VARCHAR},#{functionType,jdbcType=VARCHAR})
+		(#{id,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{fileCode,jdbcType=VARCHAR},
+		#{commerceState,jdbcType=VARCHAR},#{commerceCode,jdbcType=VARCHAR}, #{conpanyPersion,jdbcType=VARCHAR}, 
+		#{openBank,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, #{dutyParagraph,jdbcType=VARCHAR}, 
+		#{businessDivisionId,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, 
+		#{province,jdbcType=VARCHAR}, #{registerAddress,jdbcType=VARCHAR},#{enterPersion,jdbcType=VARCHAR}, 
+		now(),#{commerceLevel,jdbcType=VARCHAR},#{functionType,jdbcType=VARCHAR},
+		#{approvalId,jdbcType=VARCHAR},#{approvalState,jdbcType=VARCHAR},#{isToMasterData,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjCommerce">
@@ -66,7 +79,28 @@
 		WHERE 
 		id=#{id}
 	</select>
-
+	
+	<select id="getCommerceCode"   parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT NEXTVAL('commerceCode') AS productCode
+	</select>
+	
+	<select id="getcommerceByCode"   parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT * FROM SCM_ZSJ_Commerce 
+		WHERE 
+		commerceCode=#{arg0}
+	</select>
+	
+	<select id="getByApprovalId" parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT * FROM SCM_ZSJ_Commerce 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="getByMainId"   parameterType="java.lang.String" resultMap="ScmZsjCommerce">
+		SELECT * FROM SCM_ZSJ_Commerce 
+		WHERE 
+		id=#{id}
+	</select>
 	<select id="getCommerceName">
 		SELECT commerceName FROM SCM_ZSJ_Commerce
 	</select>
@@ -116,6 +150,35 @@
 		</if>
 	</select>
 	
+	<select id="acceptCommerceList" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
+		SELECT * FROM(
+			SELECT 
+				a.id AS commerceId,a.commerceName,a.fileCode,
+				a.commerceState,a.commerceCode,a.conpanyPersion,
+				a.openBank,a.bankCode,a.dutyParagraph,
+				a.businessDivisionId,a.businessDivision,a.provinceId,
+				a.province,a.registerAddress,a.enterPersion,
+				a.enterDate,a.commerceLevel,a.functionType,
+				a.approvalId,a.approvalState,b.ownerId,
+				(CASE `c`.`acceptState` WHEN '0' THEN '认可' WHEN '1' THEN '考察中' WHEN '2' THEN '终止' ELSE '未处理' END) AS `acceptStateStr`
+			FROM scm_zsj_commerce a
+			LEFT JOIN scm_zsj_commercefirst b ON a.id = b.commerceId
+			LEFT JOIN scm_zsj_commerceacceptstate c ON a.id = c.commerceId AND c.isEffect = 1
+			LEFT JOIN scm_zsj_commerceacceptstateagther d ON c.agtherId = d.id AND d.approvalState = 2
+			WHERE a.approvalState = 2 AND (b.approvalState = 2 OR a.commerceLevel = '分销商')
+			) a
+		<where>
+			(ownerId = #{arg0} or commerceLevel = '分销商')
+			<if test="arg1!=null">
+			 	and businessDivisionId = #{arg1}
+			</if>
+			<if test="arg2!=null">
+				and provinceId = #{arg2}
+			</if>
+		</where>
+	</select>
+	
+	
 	<select id="agreementSendApplySuccessList" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
 		SELECT * FROM v_agreementSendApplySuccess
 		<where>
@@ -138,8 +201,6 @@
 		commerceState=#{commerceState,jdbcType=VARCHAR},
 		commerceCode=#{commerceCode,jdbcType=VARCHAR},
 		conpanyPersion=#{conpanyPersion,jdbcType=VARCHAR},
-		contactPersion=#{contactPersion,jdbcType=VARCHAR},
-		phone=#{phone,jdbcType=VARCHAR},
 		openBank=#{openBank,jdbcType=VARCHAR},
 		bankCode=#{bankCode,jdbcType=VARCHAR},
 		dutyParagraph=#{dutyParagraph,jdbcType=VARCHAR},
@@ -147,14 +208,14 @@
 		businessDivision=#{businessDivision,jdbcType=VARCHAR},
 		provinceId=#{provinceId,jdbcType=VARCHAR},
 		province=#{province,jdbcType=VARCHAR},
-		qualityValidity=#{qualityValidity,jdbcType=TIMESTAMP},
 		registerAddress=#{registerAddress,jdbcType=VARCHAR},
-		sealStyle=#{sealStyle,jdbcType=VARCHAR},
-		billsStyle=#{billsStyle,jdbcType=VARCHAR},
 		enterPersion=#{enterPersion,jdbcType=VARCHAR},
 		enterDate=#{enterDate,jdbcType=TIMESTAMP},
 		commerceLevel=#{commerceLevel,jdbcType=VARCHAR},
-		functionType=#{functionType,jdbcType=VARCHAR}
+		functionType=#{functionType,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		isToMasterData=#{isToMasterData,jdbcType=VARCHAR}
 		WHERE
 		id=#{id}
 	</update>
@@ -167,26 +228,105 @@
 	
 	<select id="downBox" parameterType="java.lang.String" resultMap="ScmZsjCommerce">
 		SELECT a.*,
-		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.commerceName) 
-		AS commerceNameStr 
+		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.commerceName)
+		AS commerceNameStr ,(CASE WHEN b.id  IS NULL THEN 0 ELSE 1 END) AS orderBy
 		FROM scm_zsj_commerce a
-		LEFT JOIN (SELECT * FROM scm_zsj_commercefirst WHERE ownerId = #{ownerId}) b ON a.id = b.commerceId
+		LEFT JOIN scm_zsj_commercefirst b  ON b.ownerId = '0102' AND  a.id = b.commerceId
+		WHERE a.approvalState = 2 AND commerceLevel = "经销商" ORDER BY orderBy ASC
 	</select>
 
 	<select id="downBoxApplySuccess" parameterType="java.lang.String" resultMap="ScmZsjCommerce">
-		SELECT a.*,
-		b.approvalId as approvalId,b.approvalState as approvalState,
-		CONCAT((CASE WHEN b.id IS NULL THEN '未申请' ELSE '已申请' END),' | ',a.commerceName) 
-		AS commerceNameStr 
-		FROM scm_zsj_commerce a
-		LEFT JOIN (SELECT * FROM scm_zsj_commercefirst WHERE ownerId = #{ownerId}) b ON a.id = b.commerceId
-		where approvalState = 2
+		SELECT
+		a.*, b.approvalId AS approvalId,
+		b.approvalState AS approvalState,
+		CONCAT(
+		(
+		CASE
+		WHEN b.id IS NULL THEN
+		'未申请'
+		ELSE
+		'已申请'
+		END
+		),
+		' | ',
+		a.commerceName
+		) AS commerceNameStr,
+		d.lastTimePrice,
+		e.lastYearPrice,
+		f.beforeYearPrice,
+		'0' as sysPrice
+		FROM
+		scm_zsj_commerce a
+		LEFT JOIN (
+		SELECT
+		*
+		FROM
+		scm_zsj_commercefirst
+		WHERE
+		ownerId = "0102"
+		) b ON a.id = b.commerceId
+		LEFT JOIN (
+		SELECT
+		MAX(c.id) AS id,
+		max(c. YEAR) AS YEAR,
+		c.commerceCode,
+		max(c.price) AS lastTimePrice,
+		e.ownerId
+		FROM
+		scm_xs_creditapply c
+		INNER JOIN scm_zsj_commerce d ON c.commerceCode = d.`commerceCode`
+		LEFT JOIN scm_xs_creditcollect e ON c.CreditCollectId = e.id
+		GROUP BY
+		c.commerceCode,
+		e.ownerId
+		HAVING
+		YEAR = CONCAT(DATE_FORMAT(NOW(), '%Y') - 1)
+		) d ON a.commerceCode = d.commerceCode
+		AND d.ownerId = b.ownerId
+		LEFT JOIN (
+		SELECT
+		a.ownerId,
+		ROUND(sum(b.priceSum) / 120000)AS "lastYearPrice",
+		b.commerceId,
+		DATE_FORMAT(b.shipmentsAffirmDate, '%Y') as shipYear
+
+		FROM
+		scm_fh_shipmentsdatailmaster a
+		INNER JOIN scm_fh_shipmentsdatail b ON b.masterId = a.id
+		GROUP BY
+		b.commerceId,
+		ownerId,
+		DATE_FORMAT(b.shipmentsAffirmDate, '%Y')
+		HAVING
+		shipYear = DATE_FORMAT(NOW(), '%Y') - 1
+		) e on e.ownerId = b.ownerId and a.id = e.commerceId
+
+		LEFT JOIN (
+		SELECT
+		a.ownerId,
+		ROUND(sum(b.priceSum) / 120000)AS "beforeYearPrice",
+		b.commerceId,
+		DATE_FORMAT(b.shipmentsAffirmDate, '%Y') as shipYear
+
+		FROM
+		scm_fh_shipmentsdatailmaster a
+		INNER JOIN scm_fh_shipmentsdatail b ON b.masterId = a.id
+		GROUP BY
+		b.commerceId,
+		ownerId,
+		DATE_FORMAT(b.shipmentsAffirmDate, '%Y')
+		HAVING
+		shipYear = DATE_FORMAT(NOW(), '%Y') - 2
+		) f on f.ownerId = b.ownerId and a.id = f.commerceId
+
+		WHERE
+		b.approvalState = 2 and a.commerceLevel = '经销商'
+		<if test="businessDivisionId != null and businessDivisionId !=''">
+			and businessDivisionId = #{businessDivisionId}
+		</if>
 	</select>
 
 
-	<select id="" parameterType="java.lang.String" resultMap="ScmZsjCommerce">
-
-	</select>
 
 	<select id="listCommerceAcceptState" parameterType="java.util.Map" resultMap="ScmZsjCommerce">
 		SELECT * FROM V_CommerceAcceptState
@@ -239,5 +379,14 @@
 			scm_zsj_commerce a 
 		WHERE
 		 a.id IN ( SELECT b.commerceId FROM scm_zsj_commercefirst b WHERE b.ownerId = #{arg0} )
+	</select>
+	<select id="getcommerceFirstByCode" resultType="com.winway.scm.model.ScmZsjCommerce">
+			SELECT * FROM v_CommerceFirstList
+			where commerceCode = #{arg0} and ownerID = #{arg1}
+	</select>
+    <select id="getcommerceByName" resultType="com.winway.scm.model.ScmZsjCommerce">
+		select *  FROM SCM_ZSJ_Commerce
+		WHERE
+		commerceName=#{commerceName}
 	</select>
 </mapper>

@@ -1,8 +1,22 @@
 package com.winway.scm.persistence.manager;
 
+import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
+import com.hotent.base.query.PageList;
+import com.hotent.base.query.QueryFilter;
+import com.winway.purchase.vo.ScmWmsReceipt;
+import com.winway.purchase.vo.WmsPageList;
 import com.winway.scm.model.ScmCgProcurementOrder;
+import com.winway.scm.vo.ScmZsjDrogPuchaseRecords;
+import com.winway.scm.vo.WmsfindcgrkDetailVo;
+import com.winway.scm.vo.WmsfindcgrkInVo;
+import com.winway.scm.vo.WmsfindcgrkVo;
+import com.winway.scm.vo.WmsfindcgysInVo;
+import com.winway.scm.vo.WmsfindcgysVo;
+import com.winway.scm.vo.WmsfindcgysbybillnoVo;
 
 /**
  * 
@@ -24,5 +38,19 @@ public interface ScmCgProcurementOrderManager extends Manager<String, ScmCgProcu
 	ScmCgProcurementOrder getOrderFirstByApprovalId(String approvalId);
 
 	void endApply(JsonNode jsonNode);
+
+	PageList<ScmZsjDrogPuchaseRecords> drogPuchaseRecords(QueryFilter queryFilter);
+
+	WmsPageList<WmsfindcgysVo> wmsfindcgys(WmsfindcgysInVo queryFilter);
+
+	List<WmsfindcgysbybillnoVo> wmsfindcgysbybillno(String billno);
+
+	WmsPageList<WmsfindcgrkVo> wmsfindcgrk(WmsfindcgrkInVo queryFilter);
+
+	List<WmsfindcgrkDetailVo> wmsfindcgrkbybillno(String billno);
+
+	WmsPageList<WmsfindcgrkDetailVo> sapfindcgrkbyordercode(WmsfindcgrkInVo queryFilter);
+
+	void receipt(ScmWmsReceipt scmWmsReceipt);
 	
 }

@@ -70,14 +70,67 @@ public class ScmCgContractProduct extends BaseModel<String>{
 	protected String approvalNumber; 
 	
 	@ApiModelProperty(value="件装量")
-	protected int achange; 
+	protected int achage; 
 	
 	@ApiModelProperty(value="剩余数量")
-	protected int surplusAmount; 
-	
-	
-	
-	public void setId(String id) {
+	protected int surplusAmount;
+	@ApiModelProperty(value="剂型")
+	protected String  AgentType;
+	@ApiModelProperty(value="生产厂家")
+	protected String manufacturer;
+	@ApiModelProperty(value="药品分类")
+	protected String medicineClassify;
+	@ApiModelProperty(value="经营范围")
+	protected String businessScope;
+	@ApiModelProperty(value="商品子码")
+	protected String code;
+
+
+	 public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getAgentType() {
+		 return AgentType;
+	 }
+
+	 public void setAgentType(String agentType) {
+		 AgentType = agentType;
+	 }
+
+	 public String getManufacturer() {
+		 return manufacturer;
+	 }
+
+	 public void setManufacturer(String manufacturer) {
+		 this.manufacturer = manufacturer;
+	 }
+
+	 public String getMedicineClassify() {
+		 return medicineClassify;
+	 }
+
+	 public void setMedicineClassify(String medicineClassify) {
+		 this.medicineClassify = medicineClassify;
+	 }
+
+	 public String getBusinessScope() {
+		 return businessScope;
+	 }
+
+	 public void setBusinessScope(String businessScope) {
+		 this.businessScope = businessScope;
+	 }
+
+	 public void setId(String id) {
 		this.id = id;
 	}
 	
@@ -259,13 +312,13 @@ public class ScmCgContractProduct extends BaseModel<String>{
 	public void setApprovalNumber(String approvalNumber) {
 		this.approvalNumber = approvalNumber;
 	}
-	
-	public int getAchange() {
-		return achange;
+
+	public int getAchage() {
+		return achage;
 	}
 
-	public void setAchange(int achange) {
-		this.achange = achange;
+	public void setAchage(int achage) {
+		this.achage = achage;
 	}
 
 	public int getSurplusAmount() {

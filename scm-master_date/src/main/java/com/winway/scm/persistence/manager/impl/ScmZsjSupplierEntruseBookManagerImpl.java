@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
+import com.hotent.base.util.UniqueIdUtil;
 import com.winway.scm.persistence.dao.ScmZsjSupplierAccreditDao;
 import com.winway.scm.persistence.dao.ScmZsjSupplierEntruseBookDao;
 import com.winway.scm.model.ScmZsjCommerceAccredit;
@@ -39,12 +40,22 @@ public class ScmZsjSupplierEntruseBookManagerImpl extends AbstractManagerImpl<St
 	public void create(ScmZsjSupplierEntruseBook scmZsjSupplierEntruseBook){
 		super.create(scmZsjSupplierEntruseBook);
 		String entruseId=scmZsjSupplierEntruseBook.getId();
-    	
+		scmZsjSupplierAccreditDao.delByMainId(entruseId);
     	List<ScmZsjSupplierAccredit> scmZsjSupplierAccreditList=scmZsjSupplierEntruseBook.getScmZsjSupplierAccreditList();
-    	
     	for(ScmZsjSupplierAccredit scmZsjSupplierAccredit:scmZsjSupplierAccreditList){
     		scmZsjSupplierAccredit.setEntrustId(entruseId);
+    		scmZsjSupplierAccredit.setId(UniqueIdUtil.getSuid());
     		scmZsjSupplierAccreditDao.create(scmZsjSupplierAccredit);
     	}
+	}
+
+	@Override
+	public List<ScmZsjSupplierEntruseBook> getBySupplierId(String supplierId) {
+		List<ScmZsjSupplierEntruseBook> byMainId = scmZsjSupplierEntruseBookDao.getByMainId(supplierId);
+		for(ScmZsjSupplierEntruseBook book:byMainId){
+			List<ScmZsjSupplierAccredit> byMainId1 = scmZsjSupplierAccreditDao.getByMainId(book.getId());
+			book.setScmZsjSupplierAccreditList(byMainId1);
+		}
+		return byMainId;
 	}
 }

@@ -121,9 +121,92 @@ public class ScmZsjSupplier extends BaseModel<String>{
 
 	@ApiModelProperty(value="申请时间")
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	protected Date operatorDate; 
-	
-	public void setId(String id) {
+	protected Date operatorDate;
+
+	 @ApiModelProperty(value="有效期状态")
+	 protected String state;
+
+	 @ApiModelProperty(value="GMP证书编号")
+	 protected String gmp;
+
+	 @ApiModelProperty(value="货主id")
+	 protected String ownerId;
+
+	 @ApiModelProperty(value="委托书编号")
+	 protected String entrustCode;
+
+	 @ApiModelProperty(value="委托书姓名")
+	 protected String entrustName;
+
+	 @ApiModelProperty(value="企业类型")
+	 protected String commerceType;
+
+	 @ApiModelProperty(value="是否推送至主数据中心(0:否,1:是)")
+	 private String isToMasterData;
+
+
+
+	 public String getIsToMasterData() {
+		return isToMasterData;
+	}
+
+	public void setIsToMasterData(String isToMasterData) {
+		this.isToMasterData = isToMasterData;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getCommerceType() {
+		 return commerceType;
+	 }
+
+	 public void setCommerceType(String commerceType) {
+		 this.commerceType = commerceType;
+	 }
+
+	 public String getGmp() {
+		 return gmp;
+	 }
+
+	 public void setGmp(String gmp) {
+		 this.gmp = gmp;
+	 }
+
+	 public String getOwnerId() {
+		 return ownerId;
+	 }
+
+	 public void setOwnerId(String ownerId) {
+		 this.ownerId = ownerId;
+	 }
+
+	 public String getEntrustCode() {
+		 return entrustCode;
+	 }
+
+	 public void setEntrustCode(String entrustCode) {
+		 this.entrustCode = entrustCode;
+	 }
+
+	 public String getEntrustName() {
+		 return entrustName;
+	 }
+
+	 public void setEntrustName(String entrustName) {
+		 this.entrustName = entrustName;
+	 }
+
+	 public String getState() {
+		 return state;
+	 }
+
+	 public void setState(String state) {
+		 this.state = state;
+	 }
+
+	 public void setId(String id) {
 		this.id = id;
 	}
 	

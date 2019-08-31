@@ -2,8 +2,16 @@ package com.winway.scm.persistence.manager;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.manager.Manager;
+import com.hotent.base.query.PageList;
+import com.hotent.base.query.QueryFilter;
+import com.winway.scm.model.ScmZsjCommerce;
 import com.winway.scm.model.ScmZsjCommerceFirst;
+import com.winway.scm.model.ScmZsjSupplier;
 import com.winway.scm.model.ScmZsjSupplierFirst;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -28,5 +36,20 @@ public interface ScmZsjSupplierFirstManager extends Manager<String, ScmZsjSuppli
 
 	void updateSendApply(ScmZsjSupplierFirst scmZsjSupplierFirst);
 
-	
+    PageList<ScmZsjCommerce> licenseWaring(QueryFilter queryFilter);
+
+	PageList<ScmZsjSupplier> gmplist(QueryFilter queryFilter);
+
+    PageList<ScmZsjSupplier> creditlist(QueryFilter queryFilter);
+
+	PageList<ScmZsjSupplier> qlist(QueryFilter queryFilter);
+
+	String startOrStop(String id);
+
+    boolean isInForce(String supplierId);
+
+    Set<String> getAccreditProCodes(String supplierId);
+
+
 }
+

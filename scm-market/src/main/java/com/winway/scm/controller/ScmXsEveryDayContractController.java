@@ -1,7 +1,23 @@
 package com.winway.scm.controller;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.gson.Gson;
 import com.hotent.base.annotation.Workflow;
 import com.hotent.base.controller.BaseController;
 import com.hotent.base.feign.UCFeignService;
@@ -10,19 +26,15 @@ import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.query.QueryOP;
 import com.hotent.base.util.JsonUtil;
-import com.winway.purchase.feign.ScmMasterDateFeignService;
+import com.winway.purchase.persistence.manager.impl.WorkflowTemplate;
 import com.winway.purchase.util.QuarterUtil;
 import com.winway.scm.model.ScmXsEveryDayContract;
 import com.winway.scm.persistence.manager.ScmXsEveryDayContractManager;
 import com.winway.scm.vo.ScmXsBigContractProductByUpdateVo;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * <pre>
@@ -41,7 +53,6 @@ public class ScmXsEveryDayContractController extends BaseController {
 
     @Resource
     ScmXsEveryDayContractManager scmXsEveryDayContractManager;
-
     @Resource
     UCFeignService ucFeignService;
 
@@ -113,11 +124,10 @@ public class ScmXsEveryDayContractController extends BaseController {
         JsonNode user = ucFeignService.getUser(current(), "");
         String fullname = user.get("fullname").asText();
         scmXsEveryDayContract.setEntryPeople(fullname);
+        scmXsEveryDayContract.setEntryDate(new Date());
         scmXsEveryDayContract.setApprovalState("0");
         String msg = scmXsEveryDayContractManager.save(scmXsEveryDayContract);
         return new CommonResult<String>(true,msg,scmXsEveryDayContract.getId());
-
-
     }
     /**
      * 删除日常合同记录
@@ -158,16 +168,22 @@ public class ScmXsEveryDayContractController extends BaseController {
      */
     @PostMapping(value = "sendApply")
     @ApiOperation(value = "日常合同流程申请", httpMethod = "POST", notes = "选择经销商后自动展示合同下拉框,需要选择,用于减免合同"
-            + "理由,展示协议商品列表,需要签订的输入签订数量,保存时需要把商品列表封装至日常合同对象一起提交")
-    @Workflow(flowKey = "rchtsp", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+            + "理由,展示协议商品列表,需要签订的输入签订数量,保存时需要把商品列表封装至日常合同对象一起提交")                
+//    @Workflow(flowKey = "rchtsp", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {"totalPrice","creditPrice","businessDivisionId"})
     public CommonResult<String> sendApply(
             @ApiParam(name = "scmXsEveryDayContract", value = "经销商协议合作名单总表对象", required = true) @RequestBody ScmXsEveryDayContract scmXsEveryDayContract) throws Exception {
-        JsonNode user = ucFeignService.getUser(current(), "");
-        String fullname = user.get("fullname").asText();
-        scmXsEveryDayContract.setEntryPeople(fullname);
-        scmXsEveryDayContract.setApprovalState("1");
-        scmXsEveryDayContractManager.sendApply(scmXsEveryDayContract);
+        try{
+	    	JsonNode user = ucFeignService.getUser(current(), "");
+	        String fullname = user.get("fullname").asText();
+	        scmXsEveryDayContract.setEntryPeople(fullname);
+	        scmXsEveryDayContract.setEntryDate(new Date());
+	        scmXsEveryDayContract.setApprovalState("1");
+	        scmXsEveryDayContractManager.sendApply(scmXsEveryDayContract);
+        }catch(Exception e) {
+        	throw new RuntimeException(e.getMessage());
+        }
         return new CommonResult<String>(true, "审批发起成功",scmXsEveryDayContract.getId());
+        
     }
 
     /**

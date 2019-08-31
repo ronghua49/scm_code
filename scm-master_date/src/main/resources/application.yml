@@ -11,9 +11,9 @@ spring:
     name: scm-master_date
   datasource:
     name: dev
-    url: jdbc:mysql://114.116.86.0:3306/ww_scm_dev?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/ww_scm_dev_copy?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
-    password: 123456
+    password: root
     #url: jdbc:oracle:thin:@127.0.0.1:1521:ORCL 
     #username: X7_PORTAL_INIT
     #password: X7_PORTAL_INIT
@@ -64,15 +64,26 @@ system:
   id: 
     machineName: portal
 
-eureka:
-  client:
-    healthcheck:
-      enabled:  true
-    service-url:
-      defaultZone: http://114.116.86.0:8761/eureka/
-  instance:
-    lease-expiration-duration-in-seconds: 30
-    lease-renewal-interval-in-seconds: 10
+#eureka:
+#  client:
+#    healthcheck:
+#      enabled:  true
+#    service-url:
+#      defaultZone: http://192.168.0.240:8761/eureka/
+#  instance:
+#    lease-expiration-duration-in-seconds: 30
+#    lease-renewal-interval-in-seconds: 10
+
+#eureka:
+#  client:
+#    healthcheck:
+#      enabled:  true
+#    service-url:
+#      defaultZone: http://114.116.86.0:8761/eureka/
+#  instance:
+#    lease-expiration-duration-in-seconds: 30
+#    lease-renewal-interval-in-seconds: 10
+
 
 #feign 配置
 feign:

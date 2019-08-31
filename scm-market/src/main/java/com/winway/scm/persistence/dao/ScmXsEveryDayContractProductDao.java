@@ -7,6 +7,7 @@ import com.winway.scm.vo.ScmXsBigContractProductByUpdateVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -32,10 +33,14 @@ public interface ScmXsEveryDayContractProductDao extends MyBatisDao<String, ScmX
 	 * @param EveryDayContractId
 	 * @return
 	 */
-	public void delByMainId(String EveryDayContractId);
+    void delByMainId(String EveryDayContractId);
 
 
 	List<ScmXsDailyContractTask> getTaskInfoByContrctId(String id);
 
     List<ScmXsBigContractProductByUpdateVo> getAllProList(@Param(value = "id") String id, @Param(value = "agreementSummaryId") String agreementSummaryId);
+
+	Map getScmXsEverydaycontractPrintDetail(String id);
+
+	List<Map> getDetail(String id);
 }

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwDistributorRBDao">
+	<resultMap id="ScmCwDistributorRB" type="com.winway.scm.model.ScmCwDistributorRB">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="year" column="year" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="createPsersion" column="createPsersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="ScmCwDistributorAgreementVo" type="com.winway.scm.vo.ScmCwDistributorAgreementVo"/>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwDistributorRB">
+		INSERT INTO Scm_Cw_DistributorRB
+		(id,businessDivision,province,businessDivisionId,provinceId,year,ownerId,createPsersion,createDate,approvalState,approvalId)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{createPsersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{approvalState,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwDistributorRB">
+		SELECT * FROM Scm_Cw_DistributorRB 
+		WHERE 
+		id=#{id}
+	</select>
+	<select id="listByYear"   parameterType="java.lang.String" resultMap="ScmCwDistributorRB">
+		SELECT * FROM Scm_Cw_DistributorRB 
+		WHERE 
+		businessDivisionId=#{arg0} and provinceId=#{arg1} and year=#{arg2}
+	</select>
+	
+	<select id="getByApprovalId"   parameterType="java.lang.String" resultMap="ScmCwDistributorRB">
+		SELECT * FROM Scm_Cw_DistributorRB 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="ListDistributorAgreement"   parameterType="java.lang.String" resultMap="ScmCwDistributorAgreementVo">
+		SELECT 
+			a.id,a.commerceId,a.clauseCode,a.commerceName,a.messageCost,a.isPromotional,a.integral,
+			a.provincePlatformId,a.upCommerceId,a.memo,b.approvalState,b.ownerId,
+			c.acceptState,(CASE c.acceptState WHEN '0' THEN '认可' WHEN '1' THEN '考察中' WHEN '2' THEN '终止' ELSE '未处理' END) AS acceptStateStr,
+			a.startYear,a.endYear,d.commerceCode,
+			e.commerceName AS provincePlatform,
+			e.commerceLevel AS provincePlatformCode,
+			f.commerceName AS upCommerce,
+			f.commerceCode AS upCommerceCode 
+		FROM scm_xs_distributorclause a
+		INNER JOIN scm_xs_distributoragreementsummary b ON a.DistributorAgreementId = b.id 
+		INNER JOIN scm_zsj_commerceacceptstate c ON a.commerceId = c.commerceId 
+		INNER JOIN scm_zsj_commerce d ON a.commerceId = d.id
+		INNER JOIN scm_zsj_commerce e ON a.provincePlatformId = e.id
+		INNER JOIN scm_zsj_commerce f ON a.upCommerceId = f.id
+		WHERE 
+			b.ownerid = #{arg0} AND 
+			b.businessDivisionId = #{arg2} AND 
+			b.provinceId = #{arg3} AND 
+			b.approvalState = 2 AND 
+			a.startYear &lt;= #{arg1} AND 
+			a.endYear &gt;= #{arg1}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwDistributorRB">
+		SELECT * FROM Scm_Cw_DistributorRB
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmCwDistributorRB">
+		UPDATE Scm_Cw_DistributorRB SET
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		year=#{year,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		createPsersion=#{createPsersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Cw_DistributorRB 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

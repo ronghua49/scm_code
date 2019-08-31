@@ -74,14 +74,18 @@ public class ScmCwPaymentManagerImpl extends AbstractManagerImpl<String, ScmCwPa
 		if(scmCwPayment == null){
 			throw new RuntimeException("未查询到业务数据,处理异常");
 		}
-		if("agree".equals(actionName)){
+		String endEvent = jsonNode.get("eventType").asText();
+		if ("agree".equals(actionName) && "endEvent".equals(endEvent)) {
 			scmCwPayment.setApprovalState("2");//通过
 			scmCwPaymentDao.update(scmCwPayment);
-		}else{
+		} else if ("agree".equals(actionName)) {
+		} else if ("reject".equals(actionName)) {
+		} else if ("backToStart".equals(actionName)) {
+		} else if ("opposeTrans".equals(actionName)) {
+		} else if ("endProcess".equals(actionName)) {
 			scmCwPayment.setApprovalState("3");//驳回
 			scmCwPaymentDao.update(scmCwPayment);
 		}
-		
 	}
 	@Override
 	public void creates(ScmCwPayment scmCwPayment) {

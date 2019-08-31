@@ -1,5 +1,6 @@
 package com.winway.scm.controller;
 
+import com.hotent.base.feign.UCFeignService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,6 +30,8 @@ import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.JsonUtil;
 import com.hotent.base.util.StringUtil;
 
+import java.util.Date;
+
 /**
  * 
  * <pre> 
@@ -46,7 +49,10 @@ import com.hotent.base.util.StringUtil;
 public class ScmXsCreditCollectController extends BaseController{
 	@Resource
 	ScmXsCreditCollectManager scmXsCreditCollectManager;
-	
+	@Resource
+	UCFeignService ucFeignService;
+
+
 	/**
 	 * 商业资信申请总表列表(分页条件查询)数据
 	 * @param request
@@ -85,6 +91,10 @@ public class ScmXsCreditCollectController extends BaseController{
 	@ApiOperation(value = "新增,更新商业资信申请总表数据", httpMethod = "POST", notes = "新增,更新商业资信申请总表数据")
 	public CommonResult<ScmXsCreditCollect> save(@ApiParam(name="scmXsCreditCollect",value="商业资信申请总表业务对象", required = true)@RequestBody ScmXsCreditCollect scmXsCreditCollect) throws Exception{
 		String msg = "添加商业资信申请总表成功";
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsCreditCollect.setCreateDate(new Date());
+		scmXsCreditCollect.setCreatePerson(fullname);
 		if(StringUtil.isEmpty(scmXsCreditCollect.getId())){
 			scmXsCreditCollect.setApprovalState("0");
 			scmXsCreditCollectManager.create(scmXsCreditCollect);
@@ -135,10 +145,14 @@ public class ScmXsCreditCollectController extends BaseController{
 	 */
 	@PostMapping(value = "sendApply")
     @ApiOperation(value = "商业资信申请", httpMethod = "POST", notes = "提交时需要将商业资信详情封装至总表一起提交")
-    @Workflow(flowKey = "syzxlc", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "syzxlc", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public CommonResult<ScmXsCreditCollect> sendApply(
             @ApiParam(name = "ScmXsCreditCollect", value = "经销商协议合作名单总表对象", required = true) @RequestBody ScmXsCreditCollect scmXsCreditCollect,
             HttpServletRequest request) throws Exception {
+		JsonNode user = ucFeignService.getUser(current(), "");
+		String fullname = user.get("fullname").asText();
+		scmXsCreditCollect.setCreateDate(new Date());
+		scmXsCreditCollect.setCreatePerson(fullname);
 		scmXsCreditCollectManager.sendApply(scmXsCreditCollect);
 		return new CommonResult<ScmXsCreditCollect>(true, "审批发起成功",scmXsCreditCollect);
 	}

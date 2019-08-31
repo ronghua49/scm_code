@@ -69,6 +69,25 @@ public class ScmZsjAchageController {
 	public ScmZsjAchage get(@ApiParam(name="id",value="业务对象主键", required = true)@PathVariable String id) throws Exception{
 		return scmZsjAchageManager.get(id);
 	}
+	
+	@GetMapping(value="/getProductNumByCode/{code}")
+	@ApiOperation(value="件装量数据详情",httpMethod = "GET",notes = "件装量数据详情")
+	public CommonResult<String> getProductNumByCode(@ApiParam(name="code",value="业务对象主键", required = true)@PathVariable String code) throws Exception{
+		String productNumByCode = scmZsjAchageManager.getProductNumByCode(code);
+		if(productNumByCode == null || productNumByCode.length() == 0) {
+			return new CommonResult<String>("-1");
+		}
+		return new CommonResult<String>(productNumByCode);
+	}
+	@GetMapping(value="/getProductMessageByCode/{code}")
+	@ApiOperation(value="根据字码获取商品详情",httpMethod = "GET",notes = "件装量数据详情")
+	public CommonResult<String> getProductMessageByCode(@ApiParam(name="code",value="业务对象主键", required = true)@PathVariable String code) throws Exception{
+		String productNumByCode = scmZsjAchageManager.getProductMessageByCode(code);
+		if(productNumByCode == null || productNumByCode.length() == 0) {
+			return new CommonResult<String>("-1");
+		}
+		return new CommonResult<String>(productNumByCode);
+	}
 
 	
     /**
@@ -81,7 +100,8 @@ public class ScmZsjAchageController {
 	@PostMapping(value="save")
 	@ApiOperation(value = "新增,更新商业认可状态总表数据", httpMethod = "POST", notes = "新增,更新商业认可状态总表数据")
 	public CommonResult<ScmZsjAchage> save(@ApiParam(name="ScmZsjAchage",value="商业认可状态总表业务对象", required = true)@RequestBody ScmZsjAchage scmZsjAchage) throws Exception{
-		String msg = "暂存成功";
+		String msg = "保存成功";
+		scmZsjAchage.setIsDelete("1");
 		if(StringUtil.isEmpty(scmZsjAchage.getId())){
 			scmZsjAchageManager.create(scmZsjAchage);
 		}else{
@@ -117,7 +137,5 @@ public class ScmZsjAchageController {
 		scmZsjAchageManager.removeByIds(ids);
 		return new CommonResult<String>(true, "批量删除成功");
 	}
-	
-	
 
 }

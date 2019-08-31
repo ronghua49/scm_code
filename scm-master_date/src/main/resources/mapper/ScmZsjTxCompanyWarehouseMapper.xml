@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmZsjTxCompanyWarehouseDao">
+	<resultMap id="ScmZsjTxCompanyWarehouse" type="com.winway.scm.model.ScmZsjTxCompanyWarehouse">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="address" column="address" jdbcType="VARCHAR"/>
+		<result property="warehouseName" column="warehouseName" jdbcType="VARCHAR"/>
+		<result property="contactPersion" column="contactPersion" jdbcType="VARCHAR"/>
+		<result property="contactPhone" column="contactPhone" jdbcType="VARCHAR"/>
+		<result property="warehouseCode" column="warehouseCode" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmZsjTxCompanyWarehouse">
+		INSERT INTO scm_zsj_txcompanywarehouse
+		(id,ownerId,address,warehouseName,contactPersion,contactPhone,warehouseCode)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+		#{warehouseName,jdbcType=VARCHAR},#{contactPersion,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},#{warehouseCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmZsjTxCompanyWarehouse">
+		SELECT * FROM scm_zsj_txcompanywarehouse 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByOwnerId"   parameterType="java.lang.String" resultMap="ScmZsjTxCompanyWarehouse">
+		SELECT * FROM scm_zsj_txcompanywarehouse 
+		WHERE 
+		ownerId=#{arg0}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmZsjTxCompanyWarehouse">
+		SELECT * FROM scm_zsj_txcompanywarehouse
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmZsjTxCompanyWarehouse">
+		UPDATE scm_zsj_txcompanywarehouse SET
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		address=#{address,jdbcType=VARCHAR},
+		warehouseName=#{warehouseName,jdbcType=VARCHAR},
+		contactPersion=#{contactPersion,jdbcType=VARCHAR},
+		contactPhone=#{contactPhone,jdbcType=VARCHAR},
+		warehouseCode = #{warehouseCode,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM scm_zsj_txcompanywarehouse 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

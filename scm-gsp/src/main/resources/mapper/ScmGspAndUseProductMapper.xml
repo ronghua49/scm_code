@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmGspAndUseProductDao">
+	<resultMap id="ScmGspAndUseProduct" type="com.winway.scm.model.ScmGspAndUseProduct">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="masterId" column="masterId" jdbcType="VARCHAR"/>
+		<result property="approvalCode" column="approvalCode" jdbcType="VARCHAR"/>
+		<result property="commonName" column="commonName" jdbcType="VARCHAR"/>
+		<result property="productName" column="productName" jdbcType="VARCHAR"/>
+		<result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+		<result property="batchNumber" column="batchNumber" jdbcType="VARCHAR"/>
+		<result property="usageAndDoasge" column="usageAndDoasge" jdbcType="VARCHAR"/>
+		<result property="startStopOfMedication" column="startStopOfMedication" jdbcType="VARCHAR"/>
+		<result property="medicationReason" column="medicationReason" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmGspAndUseProduct">
+		INSERT INTO Scm_Gsp_AndUseProduct
+		(id,masterId,approvalCode,commonName,productName,manufacturer,batchNumber,usageAndDoasge,startStopOfMedication,medicationReason)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{approvalCode,jdbcType=VARCHAR}, #{commonName,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{batchNumber,jdbcType=VARCHAR}, #{usageAndDoasge,jdbcType=VARCHAR}, #{startStopOfMedication,jdbcType=VARCHAR}, #{medicationReason,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmGspAndUseProduct">
+		SELECT * FROM Scm_Gsp_AndUseProduct 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmGspAndUseProduct">
+		SELECT * FROM Scm_Gsp_AndUseProduct
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.winway.scm.model.ScmGspAndUseProduct">
+		UPDATE Scm_Gsp_AndUseProduct SET
+		masterId=#{masterId,jdbcType=VARCHAR},
+		approvalCode=#{approvalCode,jdbcType=VARCHAR},
+		commonName=#{commonName,jdbcType=VARCHAR},
+		productName=#{productName,jdbcType=VARCHAR},
+		manufacturer=#{manufacturer,jdbcType=VARCHAR},
+		batchNumber=#{batchNumber,jdbcType=VARCHAR},
+		usageAndDoasge=#{usageAndDoasge,jdbcType=VARCHAR},
+		startStopOfMedication=#{startStopOfMedication,jdbcType=VARCHAR},
+		medicationReason=#{medicationReason,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Gsp_AndUseProduct 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM Scm_Gsp_AndUseProduct
+	    WHERE
+	    masterId=#{masterId}
+	</delete>    
+	
+	<select id="getByMainId" resultMap="ScmGspAndUseProduct">
+	    SELECT *
+	    FROM Scm_Gsp_AndUseProduct 
+	    WHERE masterId=#{masterId}
+	</select>
+	
+</mapper>

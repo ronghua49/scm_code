@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CommonDrugTransport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="21e74238-5c08-4730-a920-184621801fa4">
+	<parameter name="itemtype" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="billno" class="java.lang.String"/>
+	<field name="billdate" class="java.util.Date"/>
+	<field name="orderpcs" class="java.lang.String"/>
+	<field name="shipvendorcode" class="java.lang.String"/>
+	<field name="goodsno" class="java.lang.String"/>
+	<field name="agent" class="java.lang.String"/>
+	<field name="driver" class="java.lang.String"/>
+	<field name="platenumber" class="java.lang.String"/>
+	<field name="arrivaldate" class="java.lang.String"/>
+	<field name="delivertype" class="java.lang.String"/>
+	<field name="remark" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="269" y="4" width="100" height="30" uuid="7b4b17ce-f665-45e0-a120-48f601d82b70"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="黑体"/>
+				</textElement>
+				<text><![CDATA[药品运输记录]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="239" y="4" width="30" height="30" uuid="a8be997d-c8f9-48cf-93f8-cebdbb968051"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="黑体"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($P{itemtype}.equals("1")) ?  "普通":"特殊")]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="20" uuid="84eec007-a413-4e3b-a955-4284d292ad65"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[发货单号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="0" width="40" height="20" uuid="15279ee9-d2a4-4cab-8cdb-8edf7beefbf1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[发货日期]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="40" height="20" uuid="b6b9bc74-74e1-4666-b3b0-626b3908a82d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[发货地址]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="40" height="20" uuid="608907eb-e123-453c-bf9a-c1495231fae0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[药品件数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="50" height="20" uuid="012bdbff-b7b0-4b4b-9978-2f23c9982120"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[运输方式]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="50" height="20" uuid="f6b29238-9de0-40dd-b4f9-f7ec0a302a4a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[到货日期]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="0" width="40" height="20" uuid="7356e369-6aa1-4fff-9e7b-1b6acb85c2ae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[车牌号	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="40" height="20" uuid="cfcd7d7d-8297-4a68-9045-b173206848b4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[驾驶员]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="40" height="20" uuid="aa4386f6-5396-45f4-9ec7-bc4c2cb0c775"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[委托经办人]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="50" height="20" uuid="70928dfd-c3bb-4c1f-837e-7c871d2c6c04"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[货单号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="40" height="20" uuid="e88e7c06-4971-4d00-8ce6-585dbadcfbed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[承运单位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="75" height="20" uuid="612a3829-6794-428a-8d14-a6df13911bd5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[备注]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="50" height="20" uuid="cf1335ed-77c7-480e-9a89-3a1436e4b83c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{billno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="40" height="20" uuid="742b745f-8cd3-405b-9193-51744ef3fd5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{billdate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="40" height="20" uuid="6068e963-6604-41fd-9174-66645b43f740"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="0" width="40" height="20" uuid="5b4237c9-be49-49db-8c69-fd8ec4816eeb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{platenumber}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="40" height="20" uuid="8b45cde7-7a45-44fb-9b6e-7a7d5dc5298c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{driver}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="210" y="0" width="50" height="20" uuid="c21d8b51-3c06-400c-8d40-cd38d4094ab6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{goodsno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="260" y="0" width="40" height="20" uuid="d83af130-a5f2-4195-b5d1-140a09367959"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{agent}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="170" y="0" width="40" height="20" uuid="5d005ad0-e2ee-4a41-abeb-7818e755631e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shipvendorcode}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="40" height="20" uuid="93765642-d0df-4a91-abea-3a3550a15e41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orderpcs}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="0" width="75" height="20" uuid="7e166ad7-cb12-45f8-b45f-c9468e4375b7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remark}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="0" width="50" height="20" uuid="72d01991-d88d-48a8-a949-86cbe0817121"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{arrivaldate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="430" y="0" width="50" height="20" uuid="75d868b1-a093-442c-9d65-45529a5603a2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivertype}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

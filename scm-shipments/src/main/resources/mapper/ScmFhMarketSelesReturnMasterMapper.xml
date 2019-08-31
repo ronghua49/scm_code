@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmFhMarketSelesReturnMasterDao">
+    <resultMap id="ScmFhMarketSelesReturnMaster" type="com.winway.scm.model.ScmFhMarketSelesReturnMaster">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="supplierName" column="supplierName" jdbcType="VARCHAR"/>
+        <result property="supplierId" column="supplierId" jdbcType="VARCHAR"/>
+        <result property="supplierCode" column="supplierCode" jdbcType="VARCHAR"/>
+        <result property="commerceName" column="commerceName" jdbcType="VARCHAR"/>
+        <result property="commerceId" column="commerceId" jdbcType="VARCHAR"/>
+        <result property="commerceFirstId" column="commerceFirstId" jdbcType="VARCHAR"/>
+        <result property="commerceCode" column="commerceCode" jdbcType="VARCHAR"/>
+        <result property="getMoneyWarehouseId" column="getMoneyWarehouseId" jdbcType="VARCHAR"/>
+        <result property="getMoneyWarehouse" column="getMoneyWarehouse" jdbcType="VARCHAR"/>
+        <result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+        <result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+        <result property="createPersion" column="createPersion" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="markertCode" column="markertCode" jdbcType="VARCHAR"/>
+        <result property="isSMS" column="isSMS" jdbcType="VARCHAR"/>
+        <result property="isManageSap" column="isManageSap" jdbcType="VARCHAR"/>
+        <result property="isAffirmWms" column="isAffirmWms" jdbcType="VARCHAR"/>
+        <result property="wmsAffirmDate" column="wmsAffirmDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="SalesReturnRecord" type="com.winway.scm.vo.SalesReturnRecord"/>
+    <insert id="create" parameterType="com.winway.scm.model.ScmFhMarketSelesReturnMaster">
+		INSERT INTO Scm_Fh_MarketSelesReturnMaster
+		(id,supplierName,supplierId,
+		supplierCode,commerceName,commerceId,
+		commerceFirstId,commerceCode,getMoneyWarehouseId,
+		getMoneyWarehouse,approvalId,approvalState,
+		ownerId,createPersion,createDate,
+		markertCode,isSMS,isManageSap,isAffirmWms,wmsAffirmDate)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, 
+		#{supplierCode,jdbcType=VARCHAR}, #{commerceName,jdbcType=VARCHAR}, #{commerceId,jdbcType=VARCHAR}, 
+		#{commerceFirstId,jdbcType=VARCHAR}, #{commerceCode,jdbcType=VARCHAR}, #{getMoneyWarehouseId,jdbcType=VARCHAR}, 
+		#{getMoneyWarehouse,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{approvalState,jdbcType=VARCHAR}, 
+		#{ownerId,jdbcType=VARCHAR}, #{createPersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+		#{markertCode,jdbcType=VARCHAR},#{isSMS,jdbcType=VARCHAR},#{isManageSap,jdbcType=VARCHAR},
+		#{isAffirmWms,jdbcType=VARCHAR},#{wmsAffirmDate,jdbcType=TIMESTAMP})
+	</insert>
+
+    <select id="get" parameterType="java.lang.String" resultMap="ScmFhMarketSelesReturnMaster">
+		SELECT * FROM v_marketselectreturnmaster
+		WHERE 
+		id=#{id}
+	</select>
+
+    <select id="getByOrderCode" parameterType="java.lang.String" resultMap="ScmFhMarketSelesReturnMaster">
+		SELECT * FROM Scm_Fh_MarketSelesReturnMaster
+		WHERE 
+		markertCode=#{arg0}
+	</select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="ScmFhMarketSelesReturnMaster">
+        SELECT * FROM v_marketselectreturnmaster
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="salesReturnRecord" parameterType="java.util.Map" resultMap="SalesReturnRecord">
+        SELECT a.* FROM (
+        SELECT
+        a.id,b.markertCode,b.commerceName,a.productName,a.productCode,c.ProductLineName,c.ProductLineId,c.commonName,
+        c.productState,c.AgentType,c.manufacturer,
+        a.productSum,c.unit,a.batchNumber,a.expiryDate,d.approvalCode,a.memo
+        FROM scm_fh_marketselesreturn a
+        LEFT JOIN scm_fh_marketselesreturnmaster b ON a.masterId = b.id
+        INNER JOIN scm_zsj_product c ON a.productCode = c.productCode
+        INNER JOIN scm_zsj_productfirst d ON c.id = d.productId
+        WHERE b.approvalState = 2
+        ) a
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY id DESC
+        </if>
+    </select>
+
+    <select id="getByApprovalState" parameterType="java.lang.String" resultMap="ScmFhMarketSelesReturnMaster">
+		SELECT * FROM v_marketselectreturnmaster
+		WHERE
+		approvalId=#{approvalId}
+	</select>
+
+    <select id="printPart1" resultType="java.util.Map">
+		SELECT
+		  a.markertCode,
+		  b.province,
+		  (
+			CASE
+			 #{ownerId}
+			  WHEN '0102'
+			  THEN '海南天翔'
+			  ELSE '其他'
+			END
+		  ) AS nowFirstCommerce,
+		 cast(DATE(NOW()) as char)  AS applyDate,
+		  a.commerceName,
+		  SUM(c.priceSum) AS priceSumTotal,
+		  cast(SUM(c.productSum) as char) AS productSumTotal,
+			(SELECT
+			  SUM(b.priceSum)
+			FROM
+			  scm_fh_marketselesreturnmaster a,
+			  scm_fh_marketselesreturn b
+			WHERE a.id = b.masterId
+			  AND YEAR(createDate) = YEAR(NOW())
+			  AND a.ownerId = #{ownerId})  AS owner_returnPriceSum,
+				(SELECT
+				  SUM(b.priceSum)
+				FROM
+				  scm_fh_marketselesreturnmaster a,
+				  scm_fh_marketselesreturn b
+				WHERE a.id = b.masterId
+				  AND YEAR(createDate) = YEAR(NOW())
+				  AND a.ownerId = #{ownerId}
+				  AND a.commerceCode IN
+				  (SELECT
+					commerceCode
+				  FROM
+					scm_zsj_commerce
+				  WHERE provinceId =
+					(SELECT
+					  provinceId
+					FROM
+					  scm_zsj_commerce a,
+					  scm_fh_marketselesreturnmaster b
+					WHERE a.commerceCode = b.commerceCode
+					  AND b.id = #{id})
+					)) AS owner_province_returnPriceSum
+		FROM
+		  `scm_fh_marketselesreturnmaster` a left join
+		  scm_zsj_commerce b on a.`commerceCode` = b.`commerceCode` left join
+		  `scm_fh_marketselesreturn` c on a.id = c.masterId
+		WHERE  a.id = #{id}
+		GROUP BY a.markertCode,
+		  b.province,
+		  nowFirstCommerce,
+		  applyDate,
+		  a.commerceName,
+		  owner_returnPriceSum,
+		  owner_province_returnPriceSum
+	</select>
+    <select id="printPart2" resultType="java.util.Map">
+		SELECT
+		  c.productName,
+		  c.productSum,
+		  c.price,
+		  c.priceSum,
+		  c.batchNumber,
+		 cast(date(c.expiryDate) as char) as expiryDate,
+		  (
+			CASE
+			  a.`ownerId`
+			  WHEN '0102'
+			  THEN '海南天翔'
+			  ELSE '其他'
+			END
+		  ) AS firstCommerce,
+		  c.returnMessage,
+		  cast(date(c.actualDeliveryDate) as char) as  actualDeliveryDate,
+		  c.entityDisposeMethod,
+		  c.dutyAffirm,
+		  c.dutyOffice,
+		  c.financeDisposeMethod,
+		  c.memo,
+		  c.unit
+		FROM
+		  `scm_fh_marketselesreturnmaster` a,
+		  `scm_fh_marketselesreturn` c
+		WHERE a.id = c.masterId
+		  AND a.id = #{id}
+	</select>
+    <select id="getSalesBackRecode" parameterType="java.util.Map" resultMap="SalesReturnRecord">
+        SELECT
+        *
+        FROM
+        (SELECT
+        CAST((@i:=@i+1) AS signed) as j,
+        a.createDate,
+        a.ownerId,
+        a.`markertCode` AS returnCode,
+        a.`commerceName`,
+        a.commerceCode,
+        p.`ProductLineName` as productLineName,
+        b.`medicineType`,
+        b.`productName`,
+        b.`commonName`,
+        b.`productCode`,
+        b.`AgentType` AS agentType,
+        b.`approvalCode`,
+        b.`medicineClassify`,
+        b.`businessScope`,
+        b.`productState`,
+        b.`unit`,
+        b.`manufacturer`,
+        b.`productSum`,
+        b.`batchNumber`,
+        p.`validityMonth`,
+        a.`getMoneyWarehouse`,
+        b.`memo`,
+        b.code,
+        (CASE a.isSMS WHEN '0' THEN '未推送' WHEN '1' THEN '已推送' ELSE '未推送' END ) AS isToWms
+        FROM
+        `scm_fh_marketselesreturnmaster` a
+        LEFT JOIN `scm_fh_marketselesreturn` b
+        ON a.id = b.masterId
+        LEFT JOIN scm_zsj_product p
+        ON p.productCode = b.`productCode`,(SELECT @i:=0) AS j
+        UNION
+        ALL
+        SELECT
+        CAST((@i:=@i+1) AS signed) as j,
+        c.createDate,
+        c.ownerId,
+        c.`gradeSelesCode` AS returnCode,
+        c.`commerceName`,
+        c.commerceCode,
+        o.`ProductLineName` AS productLineName,
+        d.`medicineType`,
+        d.`productName`,
+        d.`commonName`,
+        d.`productCode`,
+        d.`AgentType` as agentType,
+        d.`approvalCode`,
+        d.`medicineClassify`,
+        d.`businessScope`,
+        d.`productState`,
+        d.`unit`,
+        d.`manufacturer`,
+        d.`productSum`,
+        d.`batchNumber`,
+        o.`validityMonth`,
+        "" AS getMoneyWarehouse,
+        d.`memo`,
+        d.code,
+        (CASE c.isSMS WHEN '0' THEN '未推送' WHEN '1' THEN '已推送' ELSE '未推送' END ) AS isToWms
+        FROM
+        `scm_fh_gradeselesreturnmaster` c
+        LEFT JOIN `scm_fh_gradeselesreturn` d
+        ON c.id = d.`masterId`
+        LEFT JOIN scm_zsj_product o
+        ON o.productCode = d.`productCode`,(SELECT @i:=0) AS j) a
+        <where>
+            <if test="whereSql!=null">
+                ${whereSql}
+            </if>
+        </where>
+        <if test="orderBySql!=null">
+            ORDER BY ${orderBySql}
+        </if>
+        <if test="orderBySql==null">
+            ORDER BY a.createDate DESC
+        </if>
+    </select>
+    <select id="getSalesBackRecodeAsMap" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        *
+        FROM
+        (SELECT
+        CAST((@i:=@i+1) AS signed) as j,
+        a.createDate,
+        a.ownerId,
+        a.`markertCode` AS returnCode,
+        a.`commerceName`,
+        a.commerceCode,
+        p.`ProductLineName` as productLineName,
+        b.`medicineType`,
+        b.`productName`,
+        b.`commonName`,
+        b.`productCode`,
+        b.`AgentType` AS agentType,
+        b.`approvalCode`,
+        b.`medicineClassify`,
+        b.`businessScope`,
+        b.`productState`,
+        b.`unit`,
+        b.`manufacturer`,
+        b.`productSum`,
+        b.`batchNumber`,
+        p.`validityMonth`,
+        a.`getMoneyWarehouse`,
+        b.`memo`,
+        b.code
+        FROM
+        `scm_fh_marketselesreturnmaster` a
+        LEFT JOIN `scm_fh_marketselesreturn` b
+        ON a.id = b.masterId
+        LEFT JOIN scm_zsj_product p
+        ON p.productCode = b.`productCode`,(SELECT @i:=0) AS j
+        UNION
+        ALL
+        SELECT
+        CAST((@i:=@i+1) AS signed) as j,
+        c.createDate,
+        c.ownerId,
+        c.`gradeSelesCode` AS returnCode,
+        c.`commerceName`,
+        c.commerceCode,
+        o.`ProductLineName` AS productLineName,
+        d.`medicineType`,
+        d.`productName`,
+        d.`commonName`,
+        d.`productCode`,
+        d.`AgentType` as agentType,
+        d.`approvalCode`,
+        d.`medicineClassify`,
+        d.`businessScope`,
+        d.`productState`,
+        d.`unit`,
+        d.`manufacturer`,
+        d.`productSum`,
+        d.`batchNumber`,
+        o.`validityMonth`,
+        "" AS getMoneyWarehouse,
+        d.`memo`,
+        d.code
+        FROM
+        `scm_fh_gradeselesreturnmaster` c
+        LEFT JOIN `scm_fh_gradeselesreturn` d
+        ON c.id = d.`masterId`
+        LEFT JOIN scm_zsj_product o
+        ON o.productCode = d.`productCode`,(SELECT @i:=0) AS j) a
+        where 1= 1
+       <if test='params!=null'>
+            <if test="params.medicineType!=null and params.medicineType !=''and params.medicineType == 0">
+                and  a.medicineType != "特殊管理药品"
+            </if>
+            <if test="params.medicineType!=null and params.medicineType !='' and params.medicineType !=0">
+                and a.medicineType = "特殊管理药品"
+            </if>
+            <if test="params.returnCode!=null and params.returnCode !=''">
+                and a.returnCode = #{params.returnCode,jdbcType=VARCHAR}
+            </if>
+            <if test="params.startDate!=null and params.startDate !=''">
+                and a.createDate between #{params.startDate,jdbcType=TIMESTAMP} and #{params.endDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="params.productCode!=null and params.productCode !=''">
+                a.productCode = #{params.productCode,jdbcType=VARCHAR}
+            </if>
+            <if test="params.commonName!=null and params.commonName !=''">
+                a.commonName = #{params.commonName,jdbcType=VARCHAR}
+            </if>
+            <if test="params.commerceName!=null and params.commerceName !=''">
+                a.commerceName = #{params.commerceName,jdbcType=VARCHAR}
+            </if>
+            <if test="params.productLineName!=null and params.productLineName !=''">
+                a.productLineName = #{params.productLineName,jdbcType=VARCHAR}
+            </if>
+            <if test="params.batchNumber!=null and params.batchNumber !=''">
+                a.batchNumber = #{params.batchNumber,jdbcType=VARCHAR}
+            </if>
+        </if>
+       
+    </select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmFhMarketSelesReturnMaster">
+		UPDATE Scm_Fh_MarketSelesReturnMaster SET
+		supplierName=#{supplierName,jdbcType=VARCHAR},
+		supplierId=#{supplierId,jdbcType=VARCHAR},
+		supplierCode=#{supplierCode,jdbcType=VARCHAR},
+		commerceName=#{commerceName,jdbcType=VARCHAR},
+		commerceId=#{commerceId,jdbcType=VARCHAR},
+		commerceFirstId=#{commerceFirstId,jdbcType=VARCHAR},
+		commerceCode=#{commerceCode,jdbcType=VARCHAR},
+		getMoneyWarehouseId=#{getMoneyWarehouseId,jdbcType=VARCHAR},
+		getMoneyWarehouse=#{getMoneyWarehouse,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		createPersion=#{createPersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		wmsAffirmDate=#{wmsAffirmDate,jdbcType=TIMESTAMP},
+		markertCode=#{markertCode,jdbcType=VARCHAR},
+		isSMS = #{isSMS,jdbcType=VARCHAR},
+		isManageSap = #{isManageSap,jdbcType=VARCHAR},
+		isAffirmWms = #{isAffirmWms,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+
+    <delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Fh_MarketSelesReturnMaster 
+		WHERE
+		id=#{id}
+	</delete>
+
+
+</mapper>

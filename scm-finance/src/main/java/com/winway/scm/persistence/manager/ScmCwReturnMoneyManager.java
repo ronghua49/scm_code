@@ -1,9 +1,14 @@
 package com.winway.scm.persistence.manager;
 
+import com.hotent.base.query.PageList;
+import com.hotent.base.query.QueryFilter;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hotent.base.manager.Manager;
 import com.winway.scm.model.ScmCwReturnMoney;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * 
@@ -19,5 +24,12 @@ import com.winway.scm.model.ScmCwReturnMoney;
 public interface ScmCwReturnMoneyManager extends Manager<String, ScmCwReturnMoney>{
 
 	String readExcelFile(MultipartFile file, ScmCwReturnMoney product);
-	
+
+    void downloadExcel(HttpServletResponse response);
+
+	void affirmData(String[] ids, String fullname);
+
+	void updatePrice(String fullname, String id, String updatePrice, String memo);
+
+	PageList<Map<String,Object>> sumList(QueryFilter queryFilter);
 }

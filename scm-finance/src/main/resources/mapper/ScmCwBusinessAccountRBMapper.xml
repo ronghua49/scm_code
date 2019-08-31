@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winway.scm.persistence.dao.ScmCwBusinessAccountRBDao">
+	<resultMap id="ScmCwBusinessAccountRB" type="com.winway.scm.model.ScmCwBusinessAccountRB">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="businessDivision" column="businessDivision" jdbcType="VARCHAR"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="businessDivisionId" column="businessDivisionId" jdbcType="VARCHAR"/>
+		<result property="provinceId" column="provinceId" jdbcType="VARCHAR"/>
+		<result property="year" column="year" jdbcType="VARCHAR"/>
+		<result property="quarter" column="quarter" jdbcType="VARCHAR"/>
+		<result property="taxPoint" column="taxPoint" jdbcType="NUMERIC"/>
+		<result property="ownerId" column="ownerId" jdbcType="VARCHAR"/>
+		<result property="createPsersion" column="createPsersion" jdbcType="VARCHAR"/>
+		<result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+		<result property="approvalState" column="approvalState" jdbcType="VARCHAR"/>
+		<result property="approvalId" column="approvalId" jdbcType="VARCHAR"/>
+		<result property="financeAffirm" column="financeAffirm" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="ScmCwBlendDetailVo" type="com.winway.scm.vo.ScmCwBlendDetailVo"/>
+	<resultMap id="ScmCwSendProductVo" type="com.winway.scm.vo.ScmCwSendProductVo"/>
+	
+	<insert id="create" parameterType="com.winway.scm.model.ScmCwBusinessAccountRB">
+		INSERT INTO Scm_Cw_BusinessAccountRB
+		(id,businessDivision,province,businessDivisionId,provinceId,`year`,quarter,taxPoint,ownerId,createPsersion,createDate,approvalState,approvalId,financeAffirm)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{businessDivision,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{businessDivisionId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{taxPoint,jdbcType=NUMERIC}, #{ownerId,jdbcType=VARCHAR}, #{createPsersion,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{approvalState,jdbcType=VARCHAR}, #{approvalId,jdbcType=VARCHAR}, #{financeAffirm,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="ScmCwBusinessAccountRB">
+		SELECT * FROM Scm_Cw_BusinessAccountRB 
+		WHERE 
+		id=#{id}
+	</select>
+	
+	<select id="getByApprovalId"   parameterType="java.lang.String" resultMap="ScmCwBusinessAccountRB">
+		SELECT * FROM Scm_Cw_BusinessAccountRB 
+		WHERE 
+		approvalId=#{arg0}
+	</select>
+	
+	<select id="getByOwnerIdAndYearAndQuarter"   parameterType="java.lang.String" resultMap="ScmCwBusinessAccountRB">
+		SELECT * FROM Scm_Cw_BusinessAccountRB 
+		WHERE 
+		ownerId=#{arg0} and year = #{arg1} and quarter = #{arg2} and businessDivisionId = #{arg3} and provinceId = #{arg4}
+	</select>
+	
+	<select id="ListSendProduct"   parameterType="java.lang.String" resultMap="ScmCwSendProductVo">
+		SELECT a.id,c.commerceCode,c.commerceName,c.commerceId,b.shipmentDate,b.shipmentCode,
+		b.batchNumber,b.commonName,b.productSum,b.unitPrice,(b.productSum * b.unitPrice) AS priceSum,
+		d.type,e.taskType,e.warehouseType,b.loseDate
+		FROM scm_cw_blend a 
+		LEFT JOIN scm_cw_invoice b ON a.invoiceId = b.id
+		LEFT JOIN scm_cw_returnmoney c ON a.returnMoneyId = c.id
+		INNER JOIN
+		(SELECT b.* FROM scm_xs_agreementlistmaster a 
+		INNER JOIN scm_xs_agreementlist b
+		ON a.id = b.masterId  AND a.isEffect = 1
+		) d ON c.commerceCode = d.commerceCode 
+		INNER JOIN scm_fh_shipmentsdatail e ON b.directiveCode = e.directiveCode
+		WHERE a.blendType = 1 AND c.ownerId = #{arg0} AND b.verifyType = 2 AND b.businessDivisionId = #{arg3} AND b.provinceId = #{arg4}
+		AND a.blendDate BETWEEN #{arg1} AND #{arg2}
+	</select>
+	
+	<select id="ListBlendDetail"   parameterType="java.lang.String" resultMap="ScmCwBlendDetailVo">
+		SELECT a.id,c.commerceCode,c.commerceName,c.commerceId,
+		(CASE d.type WHEN '0' THEN '经销商' WHEN '1' THEN '两票制经销商' WHEN '2' THEN '终止认可' WHEN '3' THEN '转分销商' ELSE '未处理' END) AS typeStr,
+		d.type,c.remittanceType,b.commonName,b.contractCode,b.invoiceCode,b.memo,c.paymentType,a.blendprice,a.blendDate,b.invoiceDate
+		FROM scm_cw_blend a 
+		LEFT JOIN scm_cw_invoice b ON a.invoiceId = b.id
+		LEFT JOIN scm_cw_returnmoney c ON a.returnMoneyId = c.id
+		INNER JOIN
+		(SELECT b.* FROM scm_xs_agreementlistmaster a INNER JOIN scm_xs_agreementlist b	ON a.id = b.masterId AND a.ownerId = #{arg0} AND a.isEffect = 1) d 
+		ON c.commerceCode = d.commerceCode 
+		WHERE a.blendType = 1 AND c.ownerId = #{arg0} AND b.businessDivisionId = #{arg3} AND b.provinceId = #{arg4}
+		AND a.blendDate BETWEEN #{arg1} AND #{arg2}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="ScmCwBusinessAccountRB">
+		SELECT * FROM Scm_Cw_BusinessAccountRB
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id DESC
+		</if>
+	</select>
+    <select id="queryByParamMap" resultType="com.winway.scm.model.ScmCwBusinessAccountRB" parameterType="java.util.Map">
+	SELECT * FROM Scm_Cw_BusinessAccountRB
+		<where>
+			approvalState=2
+			<if test="ownerId!=null  and  ownerId!=''">
+				and ownerId = #{ownerId}
+			</if>
+			<if test="businessDivisionId!=null  and  businessDivisionId!=''">
+				and businessDivisionId = #{businessDivisionId}
+			</if>
+			<if test="provinceId!=null and   provinceId!=''">
+				and provinceId = #{provinceId}
+			</if>
+			<if test="year!=null  and year!=''">
+				and `year` = #{year}
+			</if>
+			<if test="section==0">
+				and quarter in (1,2)
+			</if>
+			<if test="section==1">
+				and quarter in (3,4)
+			</if>
+		</where>
+	</select>
+
+    <update id="update" parameterType="com.winway.scm.model.ScmCwBusinessAccountRB">
+		UPDATE Scm_Cw_BusinessAccountRB SET
+		businessDivision=#{businessDivision,jdbcType=VARCHAR},
+		province=#{province,jdbcType=VARCHAR},
+		businessDivisionId=#{businessDivisionId,jdbcType=VARCHAR},
+		provinceId=#{provinceId,jdbcType=VARCHAR},
+		`year`=#{year,jdbcType=VARCHAR},
+		quarter=#{quarter,jdbcType=VARCHAR},
+		taxPoint=#{taxPoint,jdbcType=NUMERIC},
+		ownerId=#{ownerId,jdbcType=VARCHAR},
+		createPsersion=#{createPsersion,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=TIMESTAMP},
+		approvalState=#{approvalState,jdbcType=VARCHAR},
+		approvalId=#{approvalId,jdbcType=VARCHAR},
+		financeAffirm=#{financeAffirm,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM Scm_Cw_BusinessAccountRB 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	
+</mapper>

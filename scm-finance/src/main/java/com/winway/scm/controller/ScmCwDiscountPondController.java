@@ -3,21 +3,33 @@ package com.winway.scm.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.MediaType;
 import com.winway.scm.persistence.manager.ScmCwDiscountPondManager;
+import com.winway.scm.vo.SO_HEADER;
+import com.winway.scm.vo.ScmCwCompensationVo;
+import com.winway.scm.vo.ScmCwInvoiceVo;
 import com.winway.scm.model.ScmCwDiscountPond;
+import com.winway.scm.model.ScmCwDiscountPondPriceChange;
+import com.winway.scm.model.ScmCwToSapDiscount;
 import com.hotent.base.controller.BaseController;
 import com.hotent.base.model.CommonResult;
+import com.hotent.base.model.WinwayResult;
 import com.hotent.base.query.PageList;
 import com.hotent.base.query.QueryFilter;
 import com.hotent.base.util.StringUtil;
@@ -67,6 +79,34 @@ public class ScmCwDiscountPondController extends BaseController{
 		return scmCwDiscountPondManager.get(id);
 	}
 	
+	/**
+	 * 票折池表明细页面
+	 * @param id
+	 * @return
+	 * @throws Exception 
+	 * ModelAndView
+	 */
+	@GetMapping(value="/autoDiscount/{id}/{discountTypeCode}")
+	@ApiOperation(value="自动票折",httpMethod = "GET",notes = "票折池表数据详情")
+	public CommonResult<ScmCwToSapDiscount> autoDiscount(@ApiParam(name="id",value="发货单ID", required = true)@PathVariable String id,
+			@ApiParam(name="discountTypeCode",value="发货单ID", required = true)@PathVariable String discountTypeCode) throws Exception{
+		ScmCwToSapDiscount autoDiscount = scmCwDiscountPondManager.autoDiscount(id,discountTypeCode);
+		return new CommonResult<ScmCwToSapDiscount>(true, "开票成功",autoDiscount);
+	}
+	/**
+	 * 票折池表明细页面
+	 * @param id
+	 * @return
+	 * @throws Exception 
+	 * ModelAndView
+	 */
+	@GetMapping(value="/freezeManage/{id}")
+	@ApiOperation(value="冻结/解冻操作",httpMethod = "GET",notes = "冻结/解冻操作")
+	public CommonResult<String> freezeManage(@ApiParam(name="id",value="业务对象主键", required = true)@PathVariable String id) throws Exception{
+		String freezeManage = scmCwDiscountPondManager.freezeManage(id);
+		return new CommonResult<String>(true,"处理成功",freezeManage);
+	}
+	
     /**
 	 * 新增票折池表
 	 * @param scmCwDiscountPond
@@ -114,4 +154,26 @@ public class ScmCwDiscountPondController extends BaseController{
 		scmCwDiscountPondManager.removeByIds(ids);
 		return new CommonResult<String>(true, "批量删除成功");
 	}
+	
+  /**
+	 * 接受费控系统传递补差票折数据
+	 * @param scmCwDiscountPond
+	 * @throws Exception 
+	 * @return
+	 * @exception 
+	 */
+	@PostMapping(value="saveByCompensation")
+	@ApiOperation(value = "新增,更新票折池表数据", httpMethod = "POST", notes = "新增,更新票折池表数据")
+	public WinwayResult<List<ScmCwCompensationVo>> saveByCompensation(HttpServletRequest request,@ApiParam(name="scmCwCompensationVo",value="补差返回数组", required = true)@RequestBody ScmCwCompensationVo... scmCwCompensationVo) throws Exception{
+		List<ScmCwCompensationVo> arrayList = new ArrayList<ScmCwCompensationVo>();
+		Collections.addAll(arrayList, scmCwCompensationVo);
+		if(arrayList.size() == 0) {
+			return new WinwayResult<List<ScmCwCompensationVo>>(request.getRequestURI(), "获取成功", new ArrayList<ScmCwCompensationVo>());
+		}
+		
+		List<ScmCwCompensationVo> scmCwCompensationVos = scmCwDiscountPondManager.saveByCompensation(arrayList);
+		return new WinwayResult<List<ScmCwCompensationVo>>(request.getRequestURI(), "获取成功", scmCwCompensationVos);
+	}
+	
+	
 }

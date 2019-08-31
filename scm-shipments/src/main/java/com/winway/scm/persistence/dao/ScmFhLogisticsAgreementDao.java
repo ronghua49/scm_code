@@ -14,4 +14,5 @@ import com.winway.scm.model.ScmFhLogisticsAgreement;
  * </pre>
  */
 public interface ScmFhLogisticsAgreementDao extends MyBatisDao<String, ScmFhLogisticsAgreement> {
+    String getAgreementDays(String arg0, String arg1);
 }
