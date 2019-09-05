@@ -53,6 +53,21 @@ public class ScmCgGodownentryMaster extends BaseModel<String>{
 	@ApiModelProperty(value="入库状态")
 	protected String status; 
 	
+	@ApiModelProperty(value="scm订单号")
+	protected String billid; 
+	
+	public String getBillid() {
+		return billid;
+	}
+
+	public void setBillid(String billid) {
+		this.billid = billid;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	/**
 	*入库单商品表列表
 	*/

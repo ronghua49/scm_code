@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.feign.BpmRuntimeFeignService;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
+import com.hotent.base.model.CommonResult;
 import com.hotent.base.modelvo.CustomStartResult;
 import com.hotent.base.modelvo.StartFlowParam;
 import com.hotent.base.query.PageBean;
@@ -385,7 +386,14 @@ public class ScmFhMarketSelesReturnMasterManagerImpl extends AbstractManagerImpl
 	@Override
 	public PageList<ScmFhMarketSelesReturn> marketSelesReturnDatail(String orderCode) {
 		ScmFhMarketSelesReturnMaster byOrderCode = scmFhMarketSelesReturnMasterDao.getByOrderCode(orderCode);
+		if(byOrderCode == null) {
+			throw new RuntimeException("未查询到订单信息");
+		}
 		List<ScmFhMarketSelesReturn> byMainId = scmFhMarketSelesReturnDao.getByMainId(byOrderCode.getId());
+		for (ScmFhMarketSelesReturn scmFhMarketSelesReturn : byMainId) {
+			CommonResult<String> productNumByCode = masterDateFeignService.getProductNumByCode(scmFhMarketSelesReturn.getCode());
+			scmFhMarketSelesReturn.setSapCode(productNumByCode.getShortMessage());
+		}
 		PageList<ScmFhMarketSelesReturn> pageList = new PageList<ScmFhMarketSelesReturn>();
 		pageList.setPage(1);
 		pageList.setPageSize(10);

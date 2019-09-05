@@ -25,6 +25,7 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.dao.MyBatisDao;
 import com.hotent.base.manager.impl.AbstractManagerImpl;
+import com.hotent.base.model.CommonResult;
 import com.hotent.base.query.PageList;
 import com.winway.purchase.util.DateFormatter;
 import com.winway.purchase.util.QuarterUtil;
@@ -62,7 +63,6 @@ public class ScmFhGradeSelesReturnMasterManagerImpl extends AbstractManagerImpl<
     ScmFhGradeSelesReturnManager scmFhGradeSelesReturnManager;
     @Resource
     ScmMasterDateFeignService masterDateFeignService;
-
     @Resource
     ScmFhShipmentsTaskManager scmFhShipmentsTaskManager;
     @Resource
@@ -390,7 +390,14 @@ public class ScmFhGradeSelesReturnMasterManagerImpl extends AbstractManagerImpl<
 	@Override
 	public PageList<ScmFhGradeSelesReturn> gradeSelesReturnDatail(String orderCode) {
 		ScmFhGradeSelesReturnMaster byOrderCode = scmFhGradeSelesReturnMasterDao.getByOrderCode(orderCode);
+		if(byOrderCode == null) {
+			throw new RuntimeException("未查询到订单信息");
+		}
 		List<ScmFhGradeSelesReturn> byMainId = scmFhGradeSelesReturnDao.getByMainId(byOrderCode.getId());
+		for (ScmFhGradeSelesReturn scmFhGradeSelesReturn : byMainId) {
+			CommonResult<String> productNumByCode = masterDateFeignService.getProductNumByCode(scmFhGradeSelesReturn.getCode());
+			scmFhGradeSelesReturn.setSapCode(productNumByCode.getShortMessage());
+		}
 		PageList<ScmFhGradeSelesReturn> pageList = new PageList<ScmFhGradeSelesReturn>();
 		pageList.setPage(1);
 		pageList.setPageSize(10);

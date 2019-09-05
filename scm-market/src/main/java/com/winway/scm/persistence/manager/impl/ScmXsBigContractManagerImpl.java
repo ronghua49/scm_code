@@ -248,10 +248,10 @@ public class ScmXsBigContractManagerImpl extends AbstractManagerImpl<String, Scm
             scmXsBigContract.setEntryDate(scmXsBigContractById.getEntryDate());
         }
         
-        if((scmXsBigContract != null && "3".equals(scmXsBigContract.getApprovalState()))) {
+        if((scmXsBigContractById != null && "3".equals(scmXsBigContractById.getApprovalState()))) {
 //		      {"formType":"frame","opinion":"驳回后发起","actionName":"agree","taskId":11108798,"jumpType":"","destination":"","nodeUsers":"[]"}
 		    List<String> list = new ArrayList<String>();
-		    list.add(scmXsBigContract.getApprovalId());
+		    list.add(scmXsBigContractById.getApprovalId());
 		    List<DefaultFmsBpmCheckTaskOpinion> instanceFlowHistoryList = bpmRuntimeFeignService.instanceFlowHistoryList(list);
 		    if(instanceFlowHistoryList.size() == 0){
 		    	//发起审批流
@@ -265,6 +265,7 @@ public class ScmXsBigContractManagerImpl extends AbstractManagerImpl<String, Scm
 		    }else{
 		    	DefaultFmsBpmCheckTaskOpinion defaultFmsBpmCheckTaskOpinion = instanceFlowHistoryList.get(instanceFlowHistoryList.size() -1 );
 		    	bpmRuntimeFeignService.autoAgree(new AgreeFlowParam("驳回后发起", "agree", defaultFmsBpmCheckTaskOpinion.getTaskId(), "", "", "[]"));
+		    	scmXsBigContract.setApprovalId(scmXsBigContractById.getApprovalId());
 		    	update(scmXsBigContract);
 		    	return scmXsBigContract.getContractCode();
 		    }

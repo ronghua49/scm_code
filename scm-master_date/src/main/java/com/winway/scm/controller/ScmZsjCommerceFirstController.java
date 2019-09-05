@@ -180,9 +180,9 @@ public class ScmZsjCommerceFirstController extends BaseController {
         scmZsjCommerceFirst.setOperatorName(operatorName);
         ScmZsjCommerceFirst scmZsjCommerceFirst2 = scmZsjCommerceFirstDao.get(scmZsjCommerceFirst.getId());
         if (scmZsjCommerceFirst2 == null) {
-            scmZsjCommerceFirstManager.sendApply(scmZsjCommerceFirst);
+            scmZsjCommerceFirstManager.sendApply(scmZsjCommerceFirst, "sysy");
         } else {
-            scmZsjCommerceFirstManager.updateSendApply(scmZsjCommerceFirst);
+            scmZsjCommerceFirstManager.updateSendApply(scmZsjCommerceFirst, "sysy");
         }
         return new CommonResult<ScmZsjCommerceFirst>(true, "审批发起成功");
     }
@@ -198,7 +198,7 @@ public class ScmZsjCommerceFirstController extends BaseController {
      */
     @PostMapping(value = "sendApplyEdit")
     @ApiOperation(value = "商业首营", httpMethod = "POST", notes = "需要调整保存方法,添加委托书数据保存,在首营类中添加商业数据对象,发起审批时先判断商业数据是否存在,不存在进行保存,存在不保存")
-    @Workflow(flowKey = "sysyxgsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "sysyxgsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public CommonResult<ScmZsjCommerceFirst> sendApplyEdit(
             @ApiParam(name = "scmZsjCommerceFirst", value = "商业首营对象", required = true) @RequestBody ScmZsjCommerceFirst scmZsjCommerceFirst,
             HttpServletRequest request) throws Exception {
@@ -206,9 +206,9 @@ public class ScmZsjCommerceFirstController extends BaseController {
         scmZsjCommerceFirst.setOperatorName(operatorName);
         ScmZsjCommerceFirst scmZsjCommerceFirst2 = scmZsjCommerceFirstDao.get(scmZsjCommerceFirst.getId());
         if (scmZsjCommerceFirst2 == null) {
-            scmZsjCommerceFirstManager.sendApply(scmZsjCommerceFirst);
+            scmZsjCommerceFirstManager.sendApply(scmZsjCommerceFirst, "sysyxgsq");
         } else {
-            scmZsjCommerceFirstManager.updateSendApply(scmZsjCommerceFirst);
+            scmZsjCommerceFirstManager.updateSendApply(scmZsjCommerceFirst, "sysyxgsq");
         }
         return new CommonResult<ScmZsjCommerceFirst>(true, "审批发起成功");
     }
@@ -257,7 +257,7 @@ public class ScmZsjCommerceFirstController extends BaseController {
             @ApiParam(name = "scmZsjCommerceFirst", value = "商业首营对象", required = true) @RequestBody ScmZsjCommerceFirst scmZsjCommerceFirst,
             HttpServletRequest request) throws Exception {
         scmZsjCommerceFirst.setOperatorName(getOperatorName());
-        scmZsjCommerceFirstManager.updateSendApply(scmZsjCommerceFirst);
+        scmZsjCommerceFirstManager.updateSendApply(scmZsjCommerceFirst, "syxgsy");
         return new CommonResult<ScmZsjCommerceFirst>(true, "审批发起成功");
     }
 

@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public interface ScmZsjCommerceFirstManager extends Manager<String, ScmZsjCommerceFirst>{
 
-	void sendApply(ScmZsjCommerceFirst scmZsjCommerceFirst);
+	void sendApply(ScmZsjCommerceFirst scmZsjCommerceFirst, String flowKey);
 
 	void isSave(ScmZsjCommerceFirst scmZsjCommerceFirst);
 
@@ -30,7 +30,7 @@ public interface ScmZsjCommerceFirstManager extends Manager<String, ScmZsjCommer
 
 	void endApply(JsonNode jsonNode);
 
-	void updateSendApply(ScmZsjCommerceFirst scmZsjCommerceFirst);
+	void updateSendApply(ScmZsjCommerceFirst scmZsjCommerceFirst, String flowKey);
 
     PageList<ScmZsjCommerce> licenseWaring(QueryFilter queryFilter);
 

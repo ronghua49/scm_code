@@ -26,4 +26,5 @@ public interface ScmZsjCommerceMergeManager extends Manager<String, ScmZsjCommer
 
     void changeMergeState(String viceCommerceId,String mergeState);
 
+    ScmZsjCommerceMerge detail(String approvalId);
 }

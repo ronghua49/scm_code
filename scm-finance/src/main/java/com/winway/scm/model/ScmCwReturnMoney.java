@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,6 +34,7 @@ public class ScmCwReturnMoney extends BaseModel<String>{
 	protected String verifyType; 
 	
 	@ApiModelProperty(value="汇款时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	protected java.util.Date remittanceDate; 
 	
 	@ApiModelProperty(value="商业ID")
@@ -63,6 +65,7 @@ public class ScmCwReturnMoney extends BaseModel<String>{
 	protected String acceptIsTrue; 
 	
 	@ApiModelProperty(value="承兑汇票到期日")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	protected java.util.Date acceptExpire; 
 	
 	@ApiModelProperty(value="是否预付款(0:预付款,1赊销)")
@@ -81,12 +84,14 @@ public class ScmCwReturnMoney extends BaseModel<String>{
 	protected String toLeadPersion; 
 	
 	@ApiModelProperty(value="导入时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	protected java.util.Date toLeadDate; 
 	
 	@ApiModelProperty(value="调整人")
 	protected String affirmPersion; 
 	
 	@ApiModelProperty(value="调整时间")
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	protected java.util.Date affirmDate; 
 	
 	@ApiModelProperty(value="货主ID")

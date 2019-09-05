@@ -15,6 +15,7 @@ import com.winway.scm.model.ScmFhMarketSelesReturn;
 import com.winway.scm.model.ScmFhMarketSelesReturnMaster;
 import com.winway.scm.persistence.manager.ScmFhMarketSelesReturnMasterManager;
 import com.winway.scm.vo.SalesReturnRecord;
+import com.winway.scm.vo.WmsfindcgrkInVo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -228,10 +229,10 @@ public class ScmFhMarketSelesReturnMasterController extends BaseController {
 	 * PageJson
 	 * @exception 
 	 */
-	@PostMapping("/marketSelesReturnDatail/{orderCode}")
+	@PostMapping("/marketSelesReturnDatail")
 	@ApiOperation(value="sap根据商业退货单号获取商业退货明细", httpMethod = "POST", notes = "sap根据商业退货单号获取商业退货明细")
-	public PageList<ScmFhMarketSelesReturn> marketSelesReturnDatail(@ApiParam(name="orderCode",value="商业退货单号")@PathVariable String orderCode) throws Exception{
-		return scmFhMarketSelesReturnMasterManager.marketSelesReturnDatail(orderCode);
+	public PageList<ScmFhMarketSelesReturn> marketSelesReturnDatail(@ApiParam(name="wmsfindcgrkInVo",value="订单号")@RequestBody WmsfindcgrkInVo wmsfindcgrkInVo) throws Exception{
+		return scmFhMarketSelesReturnMasterManager.marketSelesReturnDatail(wmsfindcgrkInVo.getOrderCode());
 	}
 
 }

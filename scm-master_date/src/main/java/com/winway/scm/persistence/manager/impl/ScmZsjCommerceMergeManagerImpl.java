@@ -106,6 +106,16 @@ public class ScmZsjCommerceMergeManagerImpl extends AbstractManagerImpl<String, 
         first.setMergeState(mergeState);
         zsjCommerceFirstDao.update(first);
     }
+
+    @Override
+    public ScmZsjCommerceMerge detail(String approvalId) {
+        List<ScmZsjCommerceMerge> commerceFirstByApprovalId = scmZsjCommerceMergeDao.getCommerceFirstByApprovalId(approvalId);
+        if (commerceFirstByApprovalId == null || commerceFirstByApprovalId.isEmpty()) {
+            throw new RuntimeException("未查询到业务数据,处理异常");
+        }
+        return commerceFirstByApprovalId.get(0);
+    }
+
     @Override
     public PageList<ScmZsjCommerceMerge> query(QueryFilter queryFilter) throws SystemException {
         PageBean pageBean = queryFilter.getPageBean();
@@ -118,11 +128,15 @@ public class ScmZsjCommerceMergeManagerImpl extends AbstractManagerImpl<String, 
         //添加商业级别和认可状态
         for(ScmZsjCommerceMerge merge: query1){
             ScmZsjCommerce scmZsjCommerce = zsjCommerceDao.get(merge.getHostCommerceId());
-            merge.setHcommerceLevcel(scmZsjCommerce.getCommerceLevel());
+            if(scmZsjCommerce!=null){
+                merge.setHcommerceLevcel(scmZsjCommerce.getCommerceLevel());
+            }
             ScmZsjCommerceAcceptState lastByCommerceId = scmZsjCommerceAcceptStateDao.getLastByCommerceId(merge.getHostCommerceId());
             merge.setHacceptState(lastByCommerceId==null ? "2" :lastByCommerceId.getAcceptState());
             ScmZsjCommerce scmZsjCommerce1 = zsjCommerceDao.get(merge.getViceCommerceId());
-            merge.setVcommerceLevel(scmZsjCommerce1.getCommerceLevel());
+            if(scmZsjCommerce1!=null){
+                merge.setVcommerceLevel(scmZsjCommerce1.getCommerceLevel());
+            }
             ScmZsjCommerceAcceptState lastByCommerceId1 = scmZsjCommerceAcceptStateDao.getLastByCommerceId(merge.getViceCommerceId());
             merge.setVacceptState(lastByCommerceId1==null? "2" :lastByCommerceId1.getAcceptState());
         }

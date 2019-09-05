@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="product_approval" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="75e29e2a-a099-42ad-842c-41284b72b9bd">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="approvalNum" class="java.lang.String"/>
+	<field name="approvalName" class="java.lang.String"/>
+	<field name="auditorName" class="java.lang.String"/>
+	<field name="completeTime" class="java.lang.String"/>
+	<field name="opinion" class="java.lang.String"/>
+	<detail>
+		<band height="59" splitType="Stretch">
+			<staticText>
+				<reportElement x="199" y="44" width="84" height="15" uuid="1d533117-246d-4aaf-a9bc-54820ebd3ea7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[审批人：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="44" width="60" height="15" uuid="f61d912d-4507-4874-812d-ec410a70e37e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<text><![CDATA[时间：]]></text>
+			</staticText>
+			<line>
+				<reportElement x="30" y="0" width="1" height="59" uuid="4932c954-949a-41cb-b4db-e6e1c7a71036"/>
+			</line>
+			<line>
+				<reportElement x="79" y="0" width="1" height="59" uuid="0a7784f6-bf9f-40e7-b153-ae5407813042"/>
+			</line>
+			<line>
+				<reportElement x="555" y="0" width="1" height="59" uuid="b68c0c30-2b5a-4654-8505-36e51204d206"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="59" uuid="bd6abdee-576b-44dc-bbed-d276cebb99f9">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="0" y="58" width="555" height="1" uuid="adff7c96-2b90-4973-b7f8-8513558fd2bd"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="31" height="58" uuid="7d2edb53-e079-4f5f-8d01-ee393a682ae1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approvalNum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="31" y="0" width="48" height="58" uuid="f4f15e4f-772e-406f-8fcd-b078c964da5b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approvalName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="476" height="44" uuid="c2114bcc-cd22-426b-b714-fb70884c4de3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{opinion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="44" width="96" height="15" uuid="0c497d15-150a-4561-a0eb-e64be93c780f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{auditorName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="439" y="44" width="117" height="15" uuid="5b1f520e-6580-478d-b24d-003bab6a3417"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{completeTime}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -48,6 +48,7 @@ public class ScmCgGodownentryMasterManagerImpl extends AbstractManagerImpl<Strin
     	
     	for(ScmCgGodownentry scmCgGodownentry:scmCgGodownentryList){
     		scmCgGodownentry.setMasterId(pk);
+    		scmCgGodownentry.setBillid(scmCgGodownentry.getBillid());
     		scmCgGodownentryManager.create(scmCgGodownentry);
     	}
     }

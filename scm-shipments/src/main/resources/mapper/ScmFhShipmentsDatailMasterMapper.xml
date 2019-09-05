@@ -307,14 +307,14 @@
     </select>
     <select id="salesRecordMap" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT a.* FROM (
-        SELECT CAST((@i:=@i+1) AS signed) as j,a.code,a.id,b.ownerId,b.shipmentsCode,a.dateCode,cast(date(a.shipmentsAffirmDate) as char) as shipmentsAffirmDate,a.MedicineType as medicineType ,c.ProductLineName,c.ProductLineId,a.productNum,c.commonName,a.productState,c.validityMonth,
+        SELECT CAST((@j:=@j+1) AS signed) as j,a.code,a.id,b.ownerId,b.shipmentsCode,a.dateCode,cast(date(a.shipmentsAffirmDate) as char) as shipmentsAffirmDate,a.MedicineType as medicineType ,c.ProductLineName,c.ProductLineId,a.productNum,c.commonName,a.productState,c.validityMonth,
         c.AgentType as agentType ,c.manufacturer,a.approvalCode,a.medicineClassify,a.businessScope,f.commerceCode,a.commerceName,cast(a.deliveringAmount as char) as deliveringAmount,c.productName,c.unit,a.batchNumber,cast(date(a.dateOfManufacture) as char) as dateOfManufacture,cast(a.price as char) as price,cast(a.priceSum as char) as priceSum,b.createPersion,a.memo
         FROM scm_fh_shipmentsdatail a
         LEFT JOIN scm_fh_shipmentsdatailmaster b ON a.masterId = b.id
         INNER JOIN scm_zsj_product c ON a.productNum = c.productCode
         INNER JOIN scm_zsj_productfirst d ON c.id = d.productId
         INNER JOIN scm_zsj_commercefirst e ON a.commerceId = e.id
-        INNER JOIN scm_zsj_commerce f ON e.commerceId = f.id,(SELECT @i:=0) AS j
+        INNER JOIN scm_zsj_commerce f ON e.commerceId = f.id,(SELECT @j:=0) AS j
         WHERE b.approvalState = 2
         ) a where 1=1
         <if test='params!=null'>

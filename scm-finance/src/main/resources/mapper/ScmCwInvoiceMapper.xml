@@ -216,4 +216,43 @@
             ORDER BY invoiceDate DESC
         </if>
     </select>
+    <select id="getClauseInfoByContractCode" resultType="java.util.Map">
+        SELECT
+          (
+            CASE
+              paymentType
+              WHEN '0'
+              THEN '预付款'
+              WHEN '1'
+              THEN '赊销'
+              ELSE ""
+            END
+          ) AS paymentType,
+          returnMoneyDay
+        FROM
+          `scm_xs_dealerclause`
+        WHERE id =
+          (SELECT
+            dealerClauseId
+          FROM
+            (SELECT
+              a.BigContractId AS dealerClauseId
+            FROM
+              `scm_xs_bigcontractallot` a
+            WHERE a.`allocationCode` = #{contractCode}
+            UNION
+            ALL
+            SELECT
+              b.dealerClauseId
+            FROM
+              `scm_xs_focussend` b
+            WHERE b.FocusSendCode = #{contractCode}
+            UNION
+            ALL
+            SELECT
+              c.DealerClauseId
+            FROM
+              `scm_xs_everydaycontract` c
+            WHERE c.contractCode = #{contractCode}) a)
+    </select>
 </mapper>

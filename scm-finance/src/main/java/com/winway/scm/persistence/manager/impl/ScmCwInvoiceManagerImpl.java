@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.hotent.base.feign.UCFeignService;
 import com.hotent.base.query.*;
 import com.winway.purchase.feign.ScmMasterDateFeignService;
+import com.winway.purchase.util.DateFormatter;
 import com.winway.purchase.util.ExcelExportUtil;
 import com.winway.scm.model.ScmCwReturnMoney;
 import com.winway.scm.util.POIUtil;
@@ -166,7 +167,7 @@ public class ScmCwInvoiceManagerImpl extends AbstractManagerImpl<String, ScmCwIn
         } else {
             PageHelper.startPage(pageBean.getPage(), pageBean.getPageSize(), pageBean.showTotal());
         }
-        queryFilter.addFilter("isAffirm","0",QueryOP.EQUAL,FieldRelation.AND);
+        queryFilter.addFilter("isAffirm", "0", QueryOP.EQUAL, FieldRelation.AND);
         List<Map<String, Object>> query = scmCwInvoiceDao.sumList(queryFilter.getParams());
         return new PageList(query);
     }
@@ -207,9 +208,9 @@ public class ScmCwInvoiceManagerImpl extends AbstractManagerImpl<String, ScmCwIn
             br.add("");
             br.add(vInvoice.getCommonName());
             br.add(vInvoice.getProductState());
-            br.add(vInvoice.getUnitPrice()==null? "":vInvoice.getUnitPrice().toString());
-            br.add(vInvoice.getProductSum()==null?"":vInvoice.getProductSum().toString());
-            br.add(vInvoice.getPriceTaxSum()==null?"":vInvoice.getPriceTaxSum().toString());
+            br.add(vInvoice.getUnitPrice() == null ? "" : vInvoice.getUnitPrice().toString());
+            br.add(vInvoice.getProductSum() == null ? "" : vInvoice.getProductSum().toString());
+            br.add(vInvoice.getPriceTaxSum() == null ? "" : vInvoice.getPriceTaxSum().toString());
             br.add(vInvoice.getShipmentDate() == null ? "" : format.format(vInvoice.getShipmentDate()));
             br.add(vInvoice.getContractCode());
             br.add(vInvoice.getBlendprice());
@@ -242,17 +243,17 @@ public class ScmCwInvoiceManagerImpl extends AbstractManagerImpl<String, ScmCwIn
         List<List<String>> data = new ArrayList<List<String>>();
         String[] tableName = {"核销状态", "开票日期", "到款日期", "商务分区", "省区", "供应商", "商业名称", "产品系列", "产品",
                 "合同编号", "发票号", "回款方式", "开票数量", "单价", "开票金额", "核销金额", "剩余金额"};
-            PageHelper.startPage(1, Integer.MAX_VALUE, true);
+        PageHelper.startPage(1, Integer.MAX_VALUE, true);
 
         List<ScmCwInvoice> rows = scmCwInvoiceDao.checklist(queryFilter.getParams());
         for (int i = 0; i < rows.size(); i++) {
             List<String> br = new ArrayList<>();
             ScmCwInvoice invoice = rows.get(i);
-            if("0".equals(invoice.getVerifyType())){
+            if ("0".equals(invoice.getVerifyType())) {
                 br.add("未核销");
-            }else if("1".equals(invoice.getVerifyType())){
+            } else if ("1".equals(invoice.getVerifyType())) {
                 br.add("核销中");
-            }else if("2".equals(invoice.getVerifyType())){
+            } else if ("2".equals(invoice.getVerifyType())) {
                 br.add("已核销");
             }
             br.add(invoice.getInvoiceDate() == null ? "" : format.format(invoice.getInvoiceDate()));
@@ -288,13 +289,13 @@ public class ScmCwInvoiceManagerImpl extends AbstractManagerImpl<String, ScmCwIn
             String commerceCode = null;
             //查询商业表信息数据
             String res = scmMasterDateFeignService.findByOwnerId(invoice.getOwnerId());
+
             JSONObject data = JSON.parseObject(res);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             List<String[]> list = POIUtil.readExcel(file);
             for (String[] s : list) {
                 ScmCwInvoice product1 = new ScmCwInvoice();
-
-                String totle = s[4];
+                String totle = s[3];
                 if (data.getString(totle) != null) {
                     JSONObject object = JSON.parseObject(data.getString(totle));
                     businessDivisionId = object.getString("businessDivisionId");
@@ -317,7 +318,7 @@ public class ScmCwInvoiceManagerImpl extends AbstractManagerImpl<String, ScmCwIn
                     //商业名称
                     commerceName = null;
                     commerceId = null;
-                    commerceCode = null;
+
                     product1.setMatchResult("商业名称匹配错误！");
                 }
 
@@ -327,35 +328,49 @@ public class ScmCwInvoiceManagerImpl extends AbstractManagerImpl<String, ScmCwIn
                 product1.setIsAffirm("0");
                 product1.setCommerceName(totle);
                 product1.setCommerceId(commerceId);
-                product1.setCommerceCode(commerceCode);
                 product1.setProvince(province);//省区
                 product1.setProvinceId(provinceId);
                 product1.setBusinessDivision(businessDivision);
                 product1.setBusinessDivisionId(businessDivisionId);
-                product1.setFirstClassCommerce(s[2]);
+                product1.setFirstClassCommerce(s[1]);
                 product1.setVerifyType("0");
-                switch (s[0]){
-                    case "剩余发票": product1.setInvoiceType("1"); break;
-                    case "原始发票": product1.setInvoiceType("0"); break;
-                    default:product1.setInvoiceType("0");
+                product1.setInvoiceType("0");
+                product1.setInvoiceDate("".equals(s[4].trim()) ? null : sdf.parse(s[4]));
+                product1.setUpdateInvoiceDate("".equals(s[5].trim()) ? null : sdf.parse(s[5]));
+                product1.setInvoiceCode(s[6]);
+                product1.setCommonName(s[7]);
+                product1.setProductState(s[8]);
+                product1.setProductSum(Integer.valueOf(s[9]));
+                product1.setCommerceCode(s[10]);
+                String product = scmMasterDateFeignService.getProductByCode(s[10]);
+                if (product != null) {
+                    JSONObject pro = JSON.parseObject(product);
+                    product1.setProductName(pro.getString("productName"));
+                } else {
+                    product1.setProductName("商品名称未匹配到");
                 }
-
-                product1.setInvoiceDate("".equals(s[5].trim())? null:sdf.parse(s[5]));
-                product1.setUpdateInvoiceDate("".equals(s[6].trim())? null:sdf.parse(s[6]));
-                product1.setInvoiceCode(s[7]);
-                product1.setCommonName(s[8]);
-                product1.setProductState(s[9]);
-                product1.setProductSum(Integer.valueOf(s[10]));
-                product1.setProductName(s[11]);
-                product1.setUnitPrice("".equals(s[12].trim())? null:Double.valueOf(s[12]));
-                product1.setPriceTaxSum("".equals(s[13].trim())? null:Double.valueOf(s[13]));
+                product1.setUnitPrice("".equals(s[11].trim()) ? null : Double.valueOf(s[11]));
+                product1.setPriceTaxSum("".equals(s[12].trim()) ? null : Double.valueOf(s[12]));
                 product1.setBalancePrice(product1.getPriceTaxSum());
-                product1.setShipmentDate("".equals(s[14].trim())? null:sdf.parse(s[14]));
+                product1.setShipmentDate("".equals(s[13].trim()) ? null : sdf.parse(s[13]));
+                product1.setBatchNumber(s[14]);
                 product1.setShipmentCode(s[15]);
                 product1.setContractCode(s[16]);
-                product1.setRemittanceType(s[17]);
-                product1.setMemo(s[18]);
-                product1.setRemittanceDate("".equals(s[19].trim())? null:sdf.parse(s[19]));
+                //获取协议付款方式
+                Map<String,Object> map  = scmCwInvoiceDao.getClauseInfoByContractCode(product1.getContractCode());
+                if (map != null) {
+                    product1.setRemittanceType((String) map.get("paymentType"));
+                    Integer returnMoneyDay = (Integer) map.get("returnMoneyDay");
+                    Date updateInvoiceDate = product1.getUpdateInvoiceDate();
+                    if (updateInvoiceDate != null && returnMoneyDay!=null) {
+                        Date date = DateFormatter.nextDay(updateInvoiceDate, returnMoneyDay);
+                        product1.setRemittanceDate(date);
+                    }
+                } else {
+                    product1.setRemittanceType("未匹配到协议信息");
+                    product1.setRemittanceDate(null);
+                }
+                product1.setMemo(s[17]);
                 super.create(product1);
             }
             return "导入成功";
@@ -371,24 +386,24 @@ public class ScmCwInvoiceManagerImpl extends AbstractManagerImpl<String, ScmCwIn
     }
 
     @Override
-	public boolean verifExceedTime(String commerceCode) {
-		List<ScmCwInvoice> scmCwInvoices = scmCwInvoiceDao.listByCommerceCode(commerceCode);
-		if(scmCwInvoices .size() == 0) {
-			return true;
-		}
-		ScmCwInvoice scmCwInvoice = scmCwInvoices.get(0);
-		long time = new Date().getTime();
-		long invoiceTime = 0;
-		if(scmCwInvoice.getUpdateInvoiceDate() == null) {
-			invoiceTime = scmCwInvoice.getInvoiceDate().getTime();
-		}else{
-			if(scmCwInvoice.getUpdateInvoiceDate() == null) {
-				invoiceTime = new Date().getTime();
-			}else{
-				invoiceTime = scmCwInvoice.getUpdateInvoiceDate().getTime();
-			}
-		}
-		long day = (time - invoiceTime) /1000/60/60/24 ;
+    public boolean verifExceedTime(String commerceCode) {
+        List<ScmCwInvoice> scmCwInvoices = scmCwInvoiceDao.listByCommerceCode(commerceCode);
+        if (scmCwInvoices.size() == 0) {
+            return true;
+        }
+        ScmCwInvoice scmCwInvoice = scmCwInvoices.get(0);
+        long time = new Date().getTime();
+        long invoiceTime = 0;
+        if (scmCwInvoice.getUpdateInvoiceDate() == null) {
+            invoiceTime = scmCwInvoice.getInvoiceDate().getTime();
+        } else {
+            if (scmCwInvoice.getUpdateInvoiceDate() == null) {
+                invoiceTime = new Date().getTime();
+            } else {
+                invoiceTime = scmCwInvoice.getUpdateInvoiceDate().getTime();
+            }
+        }
+        long day = (time - invoiceTime) / 1000 / 60 / 60 / 24;
         return day <= 30;
     }
 }

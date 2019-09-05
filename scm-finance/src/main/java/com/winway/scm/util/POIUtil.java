@@ -51,8 +51,24 @@ public class POIUtil {
                 int firstRowNum = sheet.getFirstRowNum();
                 //获得当前sheet的结束行  
                 int lastRowNum = sheet.getLastRowNum();
-                //循环除了第一行的所有行  
+                int justRowNum=lastRowNum;
+                //根据首行数据获得列数
+                int lastCellNum = sheet.getRow(0).getLastCellNum();
                 for (int rowNum = firstRowNum + 1; rowNum <= lastRowNum; rowNum++) {
+                    //获得当前行  除去行值为空的行
+                    Row row = sheet.getRow(rowNum);
+                    int count =0;
+                    for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++) {
+                        String cellValue = getCellValue(row.getCell(i));
+                        if("".equals(cellValue)){
+                          count++;
+                        }
+                    }
+                    if(count==row.getLastCellNum()){
+                        justRowNum--;
+                    }
+                }
+                for (int rowNum = firstRowNum + 1; rowNum <= justRowNum; rowNum++) {
                     //获得当前行  
                     Row row = sheet.getRow(rowNum);
                     if (row == null) {
@@ -61,12 +77,13 @@ public class POIUtil {
                     //获得当前行的开始列  
                     int firstCellNum = row.getFirstCellNum();
                     //获得当前行的列数  
-                    int lastCellNum = row.getPhysicalNumberOfCells();
-                    String[] cells = new String[row.getPhysicalNumberOfCells()];
+
+                    String[] cells = new String[lastCellNum];
                     //循环当前行  
                     for (int cellNum = firstCellNum; cellNum < lastCellNum; cellNum++) {
                         Cell cell = row.getCell(cellNum);
-                        cells[cellNum] = getCellValue(cell);
+                        String cellValue = getCellValue(cell);
+                        cells[cellNum] = cellValue;
                     }
                     list.add(cells);
                 }

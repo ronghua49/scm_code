@@ -27,6 +27,7 @@ import com.winway.scm.vo.ScmKcMonthInventory;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -67,6 +68,9 @@ public class ScmKcWeekInventoryManagerImpl extends AbstractManagerImpl<String, S
 
     @Resource
     WWSearchFeignService wwSearchFeignService;
+
+    @Value("${system.week.num}")
+    private int weekNum;
 
     @Override
     protected MyBatisDao<String, ScmKcWeekInventory> getDao() {
@@ -113,7 +117,7 @@ public class ScmKcWeekInventoryManagerImpl extends AbstractManagerImpl<String, S
     public List<Map<String, Object>> base() throws ParseException {
         List<Map<String, Object>> list = new ArrayList<>();
         Calendar instance = Calendar.getInstance();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < weekNum; i++) {
             Map<String, Object> map = new HashMap<>();
             instance.setTime(DateFormatter.startOfDay(new Date()));
             instance.setMinimalDaysInFirstWeek(4);
@@ -130,7 +134,7 @@ public class ScmKcWeekInventoryManagerImpl extends AbstractManagerImpl<String, S
             Date firstDayOfWeek = instance.getTime();
             instance.set(Calendar.DAY_OF_WEEK, instance.getFirstDayOfWeek() + 6);
             Date lastDayOfWeek = instance.getTime();
-            lastDayOfWeek = DateFormatter.nextDay(lastDayOfWeek);
+            lastDayOfWeek = DateFormatter.endOfDay(lastDayOfWeek);
             String firstDayOfWeek1 = DateFormatter.format(DateFormatter.PATTERN_yyyy_MM_dd, firstDayOfWeek);
             String firstDayOfWeek2 = DateFormatter.format(DateFormatter.PATTERN_yyyy_MM_dd, lastDayOfWeek);
             map.put("year", year);
@@ -156,13 +160,13 @@ public class ScmKcWeekInventoryManagerImpl extends AbstractManagerImpl<String, S
             Set<String> productSet = new HashSet<>(20);
             Set<String> batchNumSet = new HashSet<>(20);
             data.forEach(s -> {
-                commerceSet.add(s[1]);
-                productSet.add(s[2]);
-                batchNumSet.add(s[4]);
+                commerceSet.add(s[1].trim());
+                productSet.add(s[2].trim());
+                batchNumSet.add(s[4].trim());
             });
 
             //获取直连商业数据
-            CommonResult result = wwSearchFeignService.getDirect(new ArrayList<>(commerceSet));
+            /*CommonResult result = wwSearchFeignService.getDirect(new ArrayList<>(commerceSet));
             List<String> directCommerces = (List<String>)result.getValue();
             //直连商业判断
             if (directCommerces.size() > 0) {
@@ -172,7 +176,7 @@ public class ScmKcWeekInventoryManagerImpl extends AbstractManagerImpl<String, S
                 }
                 String names = sb.toString().substring(0, sb.length() - 1);
                 throw new RuntimeException(names + " 是直连商业，不允许导入库存！");
-            }
+            }*/
 
             PageBean pageBean = new PageBean(1, Integer.MAX_VALUE);
             //获取商业列表
@@ -212,22 +216,22 @@ public class ScmKcWeekInventoryManagerImpl extends AbstractManagerImpl<String, S
                         throw new RuntimeException(prefix + "导入库存日期不得为空");
                     }
                     if (s.length > 1 && !"".equals(s[1])) {
-                        weekInventory1.setCommerceName(s[1]);
+                        weekInventory1.setCommerceName(s[1].trim());
                     } else {
                         throw new RuntimeException(prefix + "导入商业名称不得为空");
                     }
                     if (s.length > 2 && !"".equals(s[2])) {
-                        weekInventory1.setCommonName(s[2]);
+                        weekInventory1.setCommonName(s[2].trim());
                     } else {
                         throw new RuntimeException(prefix + "导入商品通用名不得为空");
                     }
                     if (s.length > 3 && !"".equals(s[3])) {
-                        weekInventory1.setProductState(s[3]);
+                        weekInventory1.setProductState(s[3].trim());
                     } else {
                         throw new RuntimeException(prefix + "导入商品规格不得为空");
                     }
                     if (s.length > 4 && !"".equals(s[4])) {
-                        Double parseDouble = Double.parseDouble(s[4]);
+                        Double parseDouble = Double.parseDouble(s[4].trim());
                         weekInventory1.setBatchNum(String.valueOf(parseDouble.intValue()));
                     } else {
                         throw new RuntimeException(prefix + "导入商品批号不得为空");
@@ -235,7 +239,7 @@ public class ScmKcWeekInventoryManagerImpl extends AbstractManagerImpl<String, S
 
                     //匹配商品
                     List<ScmZsjProduct> products = productMap.get(weekInventory1.getCommonName());
-                    if (products.size() == 0) {
+                    if (products == null || products.size() == 0) {
                         throw new RuntimeException(prefix + "商品通用名未匹配上");
                     }
                     List<ScmZsjProduct> products1 = products.stream()

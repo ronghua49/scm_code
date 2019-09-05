@@ -28,4 +28,6 @@ public interface ScmZsjCommerceMergeDao extends MyBatisDao<String, ScmZsjCommerc
     List<ScmZsjCommerce> listCommerceMerge(Map<String, Object> params);
 
 	ScmZsjCommerceMerge getApprovalDublicate(@Param(value = "hostCommerceId") String hostCommerceId, @Param(value = "viceCommerceId") String viceCommerceId);
+
+
 }

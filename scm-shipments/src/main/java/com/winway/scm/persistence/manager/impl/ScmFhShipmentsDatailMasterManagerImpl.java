@@ -218,7 +218,9 @@ public class ScmFhShipmentsDatailMasterManagerImpl extends AbstractManagerImpl<S
             scmFhShipmentsDatailMaster = sfdm;
             scmFhShipmentsDatailMaster.setIsToSap("0");
             scmFhShipmentsDatailMaster.setIsAffirmWms("0");
+            update(scmFhShipmentsDatailMaster);
         }
+        
         List<ScmFhShipmentsDatail> byMainId = scmFhShipmentsDatailDao.getByMainId(scmFhShipmentsDatailMaster.getId());
         for (ScmFhShipmentsDatail scmFhShipmentsDatail : byMainId) {
             ScmFhInventoryPreempted scmFhInventoryPreempted = new ScmFhInventoryPreempted();
@@ -234,7 +236,7 @@ public class ScmFhShipmentsDatailMasterManagerImpl extends AbstractManagerImpl<S
                 throw new RuntimeException("连接WMS异常,请稍后重试!");
             }
         }
-        if((scmFhShipmentsDatailMaster != null && "3".equals(scmFhShipmentsDatailMaster.getApprovalState()))) {
+        if((sfdm != null && "3".equals(sfdm.getApprovalState()))) {
 //		      {"formType":"frame","opinion":"驳回后发起","actionName":"agree","taskId":11108798,"jumpType":"","destination":"","nodeUsers":"[]"}
 		    List<String> list = new ArrayList<String>();
 		    list.add(scmFhShipmentsDatailMaster.getApprovalId());
@@ -249,6 +251,7 @@ public class ScmFhShipmentsDatailMasterManagerImpl extends AbstractManagerImpl<S
 		    }else{
 		    	DefaultFmsBpmCheckTaskOpinion defaultFmsBpmCheckTaskOpinion = instanceFlowHistoryList.get(instanceFlowHistoryList.size() -1 );
 		    	bpmRuntimeFeignService.autoAgree(new AgreeFlowParam("驳回后发起", "agree", defaultFmsBpmCheckTaskOpinion.getTaskId(), "", "", "[]"));
+		    	scmFhShipmentsDatailMaster.setApprovalId(sfdm.getApprovalId());
 		    	update(scmFhShipmentsDatailMaster);
 		    }
 	    }else{

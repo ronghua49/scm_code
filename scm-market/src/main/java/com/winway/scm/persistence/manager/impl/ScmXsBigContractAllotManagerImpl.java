@@ -252,7 +252,7 @@ public class ScmXsBigContractAllotManagerImpl extends AbstractManagerImpl<String
 	    	throw new RuntimeException("商业回款超期,禁止发起合同分配");
 	    }
 	    //验证是否超过近三个月平均值
-	    boolean verifyDeliveryAmount = scmMasterDateFeignService.verifyDeliveryAmount(scmXsBigContractAllot.getCommerceFirstId(),Double.parseDouble(scmXsBigContractAllot.getTotalPrice()));
+	    boolean verifyDeliveryAmount = scmMasterDateFeignService.verifyDeliveryAmount(scmXsBigContractAllot.getCommerceFirstId(),scmXsBigContractAllot.getTotalPrice());
 	    if(verifyDeliveryAmount) {
 	    	scmXsBigContractAllot.setIsoverfuifil("0");
 	    }else{
@@ -260,15 +260,15 @@ public class ScmXsBigContractAllotManagerImpl extends AbstractManagerImpl<String
 	    }
 	    
 	    
-	    if((scmXsBigContractAllot != null && "3".equals(scmXsBigContractAllot.getApprovalState()))) {
+	    if((scmXsBigContractAllotById != null && "3".equals(scmXsBigContractAllotById.getApprovalState()))) {
 //		      {"formType":"frame","opinion":"驳回后发起","actionName":"agree","taskId":11108798,"jumpType":"","destination":"","nodeUsers":"[]"}
 				    List<String> list = new ArrayList<String>();
-				    list.add(scmXsBigContractAllot.getApprovalId());
+				    list.add(scmXsBigContractAllotById.getApprovalId());
 				    List<DefaultFmsBpmCheckTaskOpinion> instanceFlowHistoryList = bpmRuntimeFeignService.instanceFlowHistoryList(list);
 				    if(instanceFlowHistoryList.size() == 0){
 				    	//发起审批流
 					    //发起审批流 @Workflow(flowKey = "dhtfpsp", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {"totalPrice","creditPrice"})
-				        String[] strs = {scmXsBigContractAllot.getTotalPrice(), scmXsBigContractAllot.getCreditPrice()};
+				        String[] strs = {"totalPrice","creditPrice","isoverfuifil"};
 				        workflowTemplate.startWorkflow("dhtfpsp", "SCM", "approvalId",scmXsBigContractAllot, strs);
 				        String replace = scmXsBigContractAllot.getApprovalId().replace("\"", "");
 				        scmXsBigContractAllot.setApprovalId(replace);
@@ -277,6 +277,7 @@ public class ScmXsBigContractAllotManagerImpl extends AbstractManagerImpl<String
 				    }else{
 				    	DefaultFmsBpmCheckTaskOpinion defaultFmsBpmCheckTaskOpinion = instanceFlowHistoryList.get(instanceFlowHistoryList.size() -1 );
 				    	bpmRuntimeFeignService.autoAgree(new AgreeFlowParam("驳回后发起", "agree", defaultFmsBpmCheckTaskOpinion.getTaskId(), "", "", "[]"));
+				    	scmXsBigContractAllot.setApprovalId(scmXsBigContractAllotById.getApprovalId());
 				    	update(scmXsBigContractAllot);
 				    	return scmXsBigContractAllot.getId();
 				    }

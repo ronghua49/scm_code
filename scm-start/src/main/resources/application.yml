@@ -1,5 +1,5 @@
 spring:
-  mvc: 
+  mvc:
     async: request-timeout=300000
   profiles:
     active: dev
@@ -16,7 +16,7 @@ spring:
     url: jdbc:mysql://172.18.1.213:3206/scm?serverTimezone=UTC&useSSL=false&&characterEncoding=UTF-8&allowMultiQueries=true
     username: scm_vip
     password: 'ScM_2019#'
-    #url: jdbc:oracle:thin:@127.0.0.1:1521:ORCL 
+    #url: jdbc:oracle:thin:@127.0.0.1:1521:ORCL
     #username: X7_PORTAL_INIT
     #password: X7_PORTAL_INIT
     # 使用druid数据源
@@ -44,7 +44,7 @@ spring:
     maxOpenPreparedStatements: 20
     maxPoolPreparedStatementPerConnectionSize: 20
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-  http:
+  servlet:
     multipart:
       maxFileSize: 100MB
       maxRequestSize: 1024MB
@@ -67,6 +67,8 @@ system:
     address: PortalDevTest@Winwayworld.com
   id: 
     machineName: portal
+  week:
+    num: 5
 
 eureka:
   client:

@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public interface ScmZsjSupplierFirstManager extends Manager<String, ScmZsjSupplierFirst>{
 
-	void sendApply(ScmZsjSupplierFirst scmZsjSupplierFirst);
+	void sendApply(ScmZsjSupplierFirst scmZsjSupplierFirst, String flowKey);
 
 	void isSave(ScmZsjSupplierFirst scmZsjSupplierFirst);
 
@@ -34,7 +34,7 @@ public interface ScmZsjSupplierFirstManager extends Manager<String, ScmZsjSuppli
 
 	ScmZsjSupplierFirst getSupplierFirstByApprovalId(String approvalId);
 
-	void updateSendApply(ScmZsjSupplierFirst scmZsjSupplierFirst);
+	void updateSendApply(ScmZsjSupplierFirst scmZsjSupplierFirst, String flowKey);
 
     PageList<ScmZsjCommerce> licenseWaring(QueryFilter queryFilter);
 

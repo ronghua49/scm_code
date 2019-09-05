@@ -375,7 +375,7 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 
 	@Transactional
 	@Override
-	public void sendApply(ScmZsjSupplierFirst scmZsjSupplierFirst) {
+	public void sendApply(ScmZsjSupplierFirst scmZsjSupplierFirst, String flowKey) {
 		// 验证供应商是否存在
 		scmZsjSupplierManager.isExist(scmZsjSupplierFirst.getScmZsjSupplier());
 		scmZsjSupplierFirst.setSupplierId(scmZsjSupplierFirst.getScmZsjSupplier().getId());
@@ -386,7 +386,7 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 			throw new RuntimeException("当前供应商已经发起审批或审批已经通过,请勿重复提交");
 		}
 		// 调整审批状态,保存审批申请
-		StartFlowParam startFlowParam = new StartFlowParam("gyssy", "SCM", "approvalId");
+		StartFlowParam startFlowParam = new StartFlowParam(flowKey, "SCM", "approvalId");
 		startFlowParam.setFormType("frame");
 		CustomStartResult customStartResult = null;
 		create(scmZsjSupplierFirst);
@@ -448,14 +448,14 @@ public class ScmZsjSupplierFirstManagerImpl extends AbstractManagerImpl<String, 
 
 	@Transactional
 	@Override
-	public void updateSendApply(ScmZsjSupplierFirst scmZsjSupplierFirst) {
+	public void updateSendApply(ScmZsjSupplierFirst scmZsjSupplierFirst, String flowKey) {
 		ScmZsjSupplierFirst scmZsjSupplierFirst2 = scmZsjSupplierFirstDao.get(scmZsjSupplierFirst.getId());
 		if ("1".equals(scmZsjSupplierFirst2.getApprovalState())) {
 			// 数据在审批中,不可修改编辑
 			throw new RuntimeException("当前数据已经在审批中,不可重复提交");
 		} else {
 			// 修改其他关联性数据
-			StartFlowParam startFlowParam = new StartFlowParam("gyssy", "SCM", "approvalId");
+			StartFlowParam startFlowParam = new StartFlowParam(flowKey, "SCM", "approvalId");
 			startFlowParam.setFormType("frame");
 			CustomStartResult customStartResult = null;
 			update(scmZsjSupplierFirst);

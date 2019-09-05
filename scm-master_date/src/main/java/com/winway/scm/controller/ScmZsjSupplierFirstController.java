@@ -156,9 +156,9 @@ public class ScmZsjSupplierFirstController extends BaseController {
         scmZsjSupplierFirst.setOperatorName(fullname);
         ScmZsjSupplierFirst scmZsjSupplierFirst2 = scmZsjSupplierFirstDao.get(scmZsjSupplierFirst.getId());
         if (scmZsjSupplierFirst2 == null) {
-            scmZsjSupplierFirstManager.sendApply(scmZsjSupplierFirst);
+            scmZsjSupplierFirstManager.sendApply(scmZsjSupplierFirst, "gyssy");
         } else {
-            scmZsjSupplierFirstManager.updateSendApply(scmZsjSupplierFirst);
+            scmZsjSupplierFirstManager.updateSendApply(scmZsjSupplierFirst, "gyssy");
         }
         return new CommonResult<String>(true, "供应商首营通过");
     }
@@ -184,9 +184,9 @@ public class ScmZsjSupplierFirstController extends BaseController {
         scmZsjSupplierFirst.setOperatorName(fullname);
         ScmZsjSupplierFirst scmZsjSupplierFirst2 = scmZsjSupplierFirstDao.get(scmZsjSupplierFirst.getId());
         if (scmZsjSupplierFirst2 == null) {
-            scmZsjSupplierFirstManager.sendApply(scmZsjSupplierFirst);
+            scmZsjSupplierFirstManager.sendApply(scmZsjSupplierFirst, "gyssyxgsq");
         } else {
-            scmZsjSupplierFirstManager.updateSendApply(scmZsjSupplierFirst);
+            scmZsjSupplierFirstManager.updateSendApply(scmZsjSupplierFirst, "gyssyxgsq");
         }
         return new CommonResult<String>(true, "供应商首营通过");
     }
@@ -232,14 +232,14 @@ public class ScmZsjSupplierFirstController extends BaseController {
      */
     @PostMapping(value = "updateSendApply")
     @ApiOperation(value = "商业修改首营", httpMethod = "POST", notes = "商业修改首营")
-    @Workflow(flowKey = "syxgsy", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "syxgsy", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public CommonResult<ScmZsjSupplierFirst> updateSendApply(
             @ApiParam(name = "scmZsjCommerceFirst", value = "商业首营对象", required = true) @RequestBody ScmZsjSupplierFirst scmZsjSupplierFirst,
             HttpServletRequest request) throws Exception {
         JsonNode user = ucFeignService.getUser(current(), "");
         String fullname = user.get("fullname").asText();
         scmZsjSupplierFirst.setOperatorName(fullname);
-        scmZsjSupplierFirstManager.updateSendApply(scmZsjSupplierFirst);
+        scmZsjSupplierFirstManager.updateSendApply(scmZsjSupplierFirst, "syxgsy");
         return new CommonResult<ScmZsjSupplierFirst>(true, "审批发起成功");
     }
 

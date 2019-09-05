@@ -94,4 +94,5 @@
 		WHERE
 		hostCommerceId=#{hostCommerceId} and viceCommerceId=#{viceCommerceId} and approvalState='1'
     </select>
+
 </mapper>

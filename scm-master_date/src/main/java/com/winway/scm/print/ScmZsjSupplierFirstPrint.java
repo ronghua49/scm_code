@@ -4,6 +4,7 @@ import com.hotent.base.feign.BpmRuntimeFeignService;
 import com.hotent.base.modelBpmVo.DefaultFmsBpmCheckTaskOpinion;
 import com.winway.purchase.print.jasperreport.PrintBase;
 import com.winway.purchase.print.jasperreport.PrintObject;
+import com.winway.purchase.util.QuarterUtil;
 import com.winway.scm.model.ScmZsjSupplierFirst;
 import com.winway.scm.persistence.dao.ScmZsjSupplierFirstDao;
 import org.springframework.core.io.ClassPathResource;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component("ScmZsjSupplierFirstPrint")
@@ -56,50 +58,37 @@ public class ScmZsjSupplierFirstPrint extends PrintBase {
         parameters1.putAll(mapMain);
         List<Map> entrustBookList = supplierFirstDao.printEntrustBookByMainId(id);
         printObject1.setDatasource(entrustBookList);
+        List<Map> mapList = new ArrayList<>();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
             List<DefaultFmsBpmCheckTaskOpinion> instanceFlowHistoryList = bpmRuntimeFeignService.instanceFlowHistoryList(Arrays.asList(instId));
-            for (DefaultFmsBpmCheckTaskOpinion o : instanceFlowHistoryList) {
-                String auditorName = o.getAuditorName();
-                LocalDateTime completeTime = o.getCompleteTime();
+            for (int i =0;i<instanceFlowHistoryList.size();i++) {
+                Map map1 = new HashMap();
+                DefaultFmsBpmCheckTaskOpinion taskOpinion = instanceFlowHistoryList.get(i);
+                String auditorName = taskOpinion.getAuditorName();
+                LocalDateTime completeTime = taskOpinion.getCompleteTime();
                 String string = "";
                 if (completeTime != null) {
-                    string = completeTime.toString().replaceAll("T", " ");
+                    string =dateTimeFormatter.format(completeTime);
                 }
-                String taskName = o.getTaskName();
-                String opinion = o.getOpinion();
-                switch (taskName) {
-                    case "发起节点":
-                        parameters1.put("auditorName", auditorName == null ? "" : auditorName);
-                        parameters1.put("completeTime", completeTime == null ? "" : string);
-                        parameters1.put("opinion", opinion == null ? "" : opinion);
-                        break;
-
-                    case "供应管理部":
-                        parameters1.put("auditorName1", auditorName == null ? "" : auditorName);
-                        parameters1.put("completeTime1", completeTime == null ? "" : string);
-                        parameters1.put("opinion1", opinion == null ? "" : opinion);
-                        break;
-                    case "质量管理部":
-                        parameters1.put("auditorName2", auditorName == null ? "" : auditorName);
-                        parameters1.put("completeTime2", completeTime == null ? "" : string);
-                        parameters1.put("opinion2", opinion == null ? "" : opinion);
-                        break;
-                    case "财务部":
-                        parameters1.put("auditorName3", auditorName == null ? "" : auditorName);
-                        parameters1.put("completeTime3", completeTime == null ? "" : string);
-                        parameters1.put("opinion3", opinion == null ? "" : opinion);
-                        break;
-                    case "质量负责人":
-                        parameters1.put("auditorName4", auditorName == null ? "" : auditorName);
-                        parameters1.put("completeTime4", completeTime == null ? "" : string);
-                        parameters1.put("opinion4", opinion == null ? "" : opinion);
-                        break;
+                String taskName = taskOpinion.getTaskName();
+                String opinion = taskOpinion.getOpinion();
+                String approvalNum = "第"+ QuarterUtil.numToChinese(String.valueOf(i))+"审";
+                if(i==0){
+                    approvalNum = "申请信息";
                 }
+                map1.put("approvalNum",approvalNum);
+                map1.put("approvalName",taskName);
+                map1.put("auditorName",auditorName == null ? "" : auditorName);
+                map1.put("completeTime",completeTime == null ? "" : string);
+                map1.put("opinion",opinion == null ? "" : opinion);
+                mapList.add(map1);
             }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("获取审批意见异常");
         }
+        parameters1.put("supplier_approval",mapList);
         printObject1.setParameters(parameters1);
         exports.add(printObject1);
         return exports;

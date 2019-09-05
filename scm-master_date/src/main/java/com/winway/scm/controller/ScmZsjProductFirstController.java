@@ -181,9 +181,9 @@ public class ScmZsjProductFirstController extends BaseController{
 		scmZsjProductFirst.setOperatorPerson(fullname);
 		scmZsjProductFirst.setOperatorDate(new Date());
 		if(scmZsjProductFirst2 == null) {
-			scmZsjProductFirstManager.sendApply(scmZsjProductFirst);
+			scmZsjProductFirstManager.sendApply(scmZsjProductFirst, "spsy");
 		}else{
-			scmZsjProductFirstManager.updateSendApply(scmZsjProductFirst);
+			scmZsjProductFirstManager.updateSendApply(scmZsjProductFirst, "spsy");
 		}
 		return new CommonResult<String>(true, "商品首营申请提交成功");
 	}
@@ -198,7 +198,7 @@ public class ScmZsjProductFirstController extends BaseController{
 	 */
 	@PostMapping(value = "/sendApplyEdit")
 	@ApiOperation(value = "商品首营申请", httpMethod = "POST", notes = "在商品首营类中加入商品对象,商品数据在发起审批时判断是否存在该商品,如果存在则不保存,不存在则保存商品数据")
-	@Workflow(flowKey = "spsyxgsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//	@Workflow(flowKey = "spsyxgsq", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
 	public CommonResult<String> sendApplyEdit(
 			@ApiParam(name = "scmZsjCommerceFirst", value = "采购合同对象", required = true) @RequestBody ScmZsjProductFirst scmZsjProductFirst,
 			HttpServletRequest request) throws Exception {
@@ -208,9 +208,9 @@ public class ScmZsjProductFirstController extends BaseController{
 		scmZsjProductFirst.setOperatorPerson(fullname);
 		scmZsjProductFirst.setOperatorDate(new Date());
 		if(scmZsjProductFirst2 == null) {
-			scmZsjProductFirstManager.sendApply(scmZsjProductFirst);
+			scmZsjProductFirstManager.sendApply(scmZsjProductFirst, "spsyxgsq");
 		}else{
-			scmZsjProductFirstManager.updateSendApply(scmZsjProductFirst);
+			scmZsjProductFirstManager.updateSendApply(scmZsjProductFirst, "spsyxgsq");
 		}
 		return new CommonResult<String>(true, "商品首营申请提交成功");
 	}
@@ -251,11 +251,11 @@ public class ScmZsjProductFirstController extends BaseController{
 	 */
 	@PostMapping(value = "updateSendApply")
     @ApiOperation(value = "商品修改首营", httpMethod = "POST", notes = "商品修改首营")
-    @Workflow(flowKey = "spsy", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
+//    @Workflow(flowKey = "spsy", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {})
     public CommonResult<String> updateSendApply(
             @ApiParam(name = "scmZsjProductFirst", value = "商品对象", required = true) @RequestBody ScmZsjProductFirst scmZsjProductFirst,
             HttpServletRequest request) throws Exception {
-		scmZsjProductFirstManager.updateSendApply(scmZsjProductFirst);
+		scmZsjProductFirstManager.updateSendApply(scmZsjProductFirst, "spsy");
 		return new CommonResult<String>(true, "审批发起成功");
 	}
 	

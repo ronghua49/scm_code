@@ -22,7 +22,7 @@ import com.winway.scm.model.ScmZsjSupplierFirst;
  */
 public interface ScmZsjProductFirstManager extends Manager<String, ScmZsjProductFirst>{
 
-	void sendApply(ScmZsjProductFirst scmZsjProductFirst);
+	void sendApply(ScmZsjProductFirst scmZsjProductFirst, String flowKey);
 
 	void isSave(ScmZsjProductFirst scmZsjProductFirst);
 
@@ -30,7 +30,7 @@ public interface ScmZsjProductFirstManager extends Manager<String, ScmZsjProduct
 
 	ScmZsjProductFirst getProductFirstByApprovalId(String approvalId);
 
-	void updateSendApply(ScmZsjProductFirst scmZsjProductFirst);
+	void updateSendApply(ScmZsjProductFirst scmZsjProductFirst, String flowKey);
 
 	String startOrStop(String id);
 

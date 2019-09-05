@@ -81,6 +81,20 @@ public class ScmZsjCommerceMergeController extends BaseController {
     }
 
     /**
+     * 商业合并审批详情列表
+     *
+     * @param
+     * @return
+     * @throws Exception PageJson
+     * @throws
+     */
+    @PostMapping("/detail/{approvalId}")
+    @ApiOperation(value = "商业合并详情", httpMethod = "POST", notes = "获取商业合并详情")
+    public ScmZsjCommerceMerge detail(@ApiParam(name = "id", value = "业务对象主键", required = true) @PathVariable String approvalId) throws Exception {
+        return scmZsjCommerceMergeManager.detail(approvalId);
+    }
+
+    /**
      * 历史商业合并表明细页面
      *
      * @param id

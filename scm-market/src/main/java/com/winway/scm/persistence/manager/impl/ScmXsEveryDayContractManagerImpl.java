@@ -227,7 +227,7 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
 	    	throw new RuntimeException("商业信息异常,请验证商业首营与基础信息");
 	    }
 	    //验证是否超过近三个月平均值
-	    boolean verifyDeliveryAmount = scmMasterDateFeignService.verifyDeliveryAmount(scmXsEveryDayContract.getCommerceFirstId(),Double.parseDouble(scmXsEveryDayContract.getTotalPrice()));
+	    boolean verifyDeliveryAmount = scmMasterDateFeignService.verifyDeliveryAmount(scmXsEveryDayContract.getCommerceFirstId(),scmXsEveryDayContract.getTotalPrice());
 	    if(verifyDeliveryAmount) {
 	    	scmXsEveryDayContract.setIsoverfuifil("0");
 	    }else{
@@ -237,7 +237,7 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
 	    if((scmXsEveryDayContract2 != null && "3".equals(scmXsEveryDayContract2.getApprovalState()))){
 //      {"formType":"frame","opinion":"驳回后发起","actionName":"agree","taskId":11108798,"jumpType":"","destination":"","nodeUsers":"[]"}
             List<String> list = new ArrayList<String>();
-            list.add(scmXsEveryDayContract.getApprovalId());
+            list.add(scmXsEveryDayContract2.getApprovalId());
             List<DefaultFmsBpmCheckTaskOpinion> instanceFlowHistoryList = bpmRuntimeFeignService.instanceFlowHistoryList(list);
             if(instanceFlowHistoryList.size() == 0){
                 //发起审批流isoverfuifil
@@ -249,6 +249,7 @@ public class ScmXsEveryDayContractManagerImpl extends AbstractManagerImpl<String
             }else{
                 DefaultFmsBpmCheckTaskOpinion defaultFmsBpmCheckTaskOpinion = instanceFlowHistoryList.get(instanceFlowHistoryList.size() -1 );
                 bpmRuntimeFeignService.autoAgree(new AgreeFlowParam("驳回后发起", "agree", defaultFmsBpmCheckTaskOpinion.getTaskId(), "", "", "[]"));
+                scmXsEveryDayContract.setApprovalId(scmXsEveryDayContract2.getApprovalId());
                 update(scmXsEveryDayContract);
             }
         }else{

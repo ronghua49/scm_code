@@ -105,24 +105,24 @@ public class ScmXsBigContractAllot extends BaseModel<String> {
 	}
 
 	@ApiModelProperty(value = "总价")
-	protected String totalPrice;
+	protected double totalPrice;
 
 	@ApiModelProperty(value = "资信扣减价")
-	protected String creditPrice;
+	protected double creditPrice;
 
-	public String getTotalPrice() {
+	public double getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(String totalPrice) {
+	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
-	public String getCreditPrice() {
+	public double getCreditPrice() {
 		return creditPrice;
 	}
 
-	public void setCreditPrice(String creditPrice) {
+	public void setCreditPrice(double creditPrice) {
 		this.creditPrice = creditPrice;
 	}
 

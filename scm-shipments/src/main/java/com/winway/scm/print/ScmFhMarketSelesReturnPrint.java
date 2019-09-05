@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component("ScmFhMarketSelesReturnPrint")
@@ -61,13 +62,14 @@ public class ScmFhMarketSelesReturnPrint extends PrintBase {
         }
         printObject1.setDatasource(detail);
         try {
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             List<DefaultFmsBpmCheckTaskOpinion> instanceFlowHistoryList = bpmRuntimeFeignService.instanceFlowHistoryList(Arrays.asList(instId));
             for (DefaultFmsBpmCheckTaskOpinion o : instanceFlowHistoryList) {
                 String auditorName = o.getAuditorName();
                 LocalDateTime completeTime = o.getCompleteTime();
                 String string = "";
                 if(completeTime!=null){
-                	string= completeTime.toString().replaceAll("T", " ");
+                	string= df.format(completeTime);
                 }
                 String opinion = o.getOpinion();
                 String taskName = o.getTaskName();
@@ -87,7 +89,7 @@ public class ScmFhMarketSelesReturnPrint extends PrintBase {
                         parameters1.put("auditorName2", auditorName == null ? "" : auditorName);
                         parameters1.put("completeTime2", completeTime == null ? "" : string);
                         break;
-                    case "质量经理":
+                    case "质量管理部负责人":
                         parameters1.put("opinion3", opinion == null ? "" : opinion);
                         parameters1.put("auditorName3", auditorName == null ? "" : auditorName);
                         parameters1.put("completeTime3", completeTime == null ? "" : string);
@@ -102,7 +104,7 @@ public class ScmFhMarketSelesReturnPrint extends PrintBase {
                         parameters1.put("auditorName5", auditorName == null ? "" : auditorName);
                         parameters1.put("completeTime5", completeTime == null ? "" : string);
                         break;
-                    case "一级商财务经理":
+                    case "财务经理":
                         parameters1.put("opinion6", opinion == null ? "" : opinion);
                         parameters1.put("auditorName6", auditorName == null ? "" : auditorName);
                         parameters1.put("completeTime6", completeTime == null ? "" : string);

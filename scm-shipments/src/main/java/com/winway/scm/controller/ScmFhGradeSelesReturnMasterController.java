@@ -6,6 +6,8 @@ import com.hotent.base.feign.UCFeignService;
 import com.hotent.base.util.JsonUtil;
 import com.winway.scm.model.ScmFhMarketSelesReturnMaster;
 import com.winway.scm.vo.GradeSelesReturnUpdateVo;
+import com.winway.scm.vo.WmsfindcgrkInVo;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -239,10 +241,10 @@ public class ScmFhGradeSelesReturnMasterController extends BaseController{
 	 * PageJson
 	 * @exception 
 	 */
-	@PostMapping("/gradeSelesReturnDatail/{orderCode}")
+	@PostMapping("/gradeSelesReturnDatail")
 	@ApiOperation(value="sap根据当次退货单号获取当次退货明细", httpMethod = "POST", notes = "sap根据当次退货单号获取当次退货明细")
-	public PageList<ScmFhGradeSelesReturn> gradeSelesReturnDatail(@ApiParam(name="queryFilter",value="查询对象")@PathVariable String orderCode) throws Exception{
-		return scmFhGradeSelesReturnMasterManager.gradeSelesReturnDatail(orderCode);
+	public PageList<ScmFhGradeSelesReturn> gradeSelesReturnDatail(@ApiParam(name="wmsfindcgrkInVo",value="订单号")@RequestBody WmsfindcgrkInVo wmsfindcgrkInVo) throws Exception{
+		return scmFhGradeSelesReturnMasterManager.gradeSelesReturnDatail(wmsfindcgrkInVo.getOrderCode());
 	}
 	
 }

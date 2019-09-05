@@ -379,12 +379,11 @@ public class ScmCwInvoiceController extends BaseController {
     @GetMapping("/downloadExcel")
 //	@ApiOperation(value="下载模板", httpMethod = "GET", notes = "下载销售发票模板")
     public void downloadExcel(HttpServletResponse response) throws Exception {
-        String[] tableName = { "发票类型", "商务部分区", "一级商", "省区", "开票单位", "原开票日期", "调整开票日期", "发票号码",
-                "产品名称", "规格", "数量（瓶/只/盒）", "产品", "含税单价", "价税合计（元）", "发货日期", "发货单号", "合同号",
-                "回款方式", "备注", "回款到日期"};
+        String[] tableName = { "商务部分区", "一级商", "省区", "开票单位", "原开票日期", "调整开票日期", "发票号码",
+                "商品名称（开票）", "规格", "数量（瓶/只/盒）","商品编码","含税单价", "价税合计（元）", "发货日期",  "批号","发货单号", "合同号",
+                 "备注"};
         List<List<String>> data = new ArrayList<List<String>>();
         List<String> br = new ArrayList<>();
-        br.add("剩余发票");
         br.add("华北区");
         br.add("天祥");
         br.add("河北省");
@@ -393,19 +392,18 @@ public class ScmCwInvoiceController extends BaseController {
         br.add("2019-06-12");
 
         br.add("02088569");
-        br.add("奥泰灵（盐酸氨基葡萄糖胶囊）");
+        br.add("奥泰灵盐酸氨基葡萄糖胶囊");
         br.add("0.75g*20粒");
         br.add("8000");
-        br.add("奥泰灵0.75g(20粒/盒香港版)");
+        br.add("100");
+
         br.add("34.23");
         br.add("273840");
         br.add("2019-04-09");
-
+        br.add("2634");
         br.add("110038074");
         br.add("D-T1949903-3");
-        br.add("赊销");
         br.add("6月汇款");
-        br.add("2019-07-12");
         data.add(br);
         ExcelExportUtil.download(response, "销售发票模板", "销售发票模板", tableName, data);
     }

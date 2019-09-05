@@ -73,7 +73,7 @@ public class ScmZsjProductFirstManagerImpl extends AbstractManagerImpl<String, S
     }
 
     @Override
-    public void sendApply(ScmZsjProductFirst scmZsjProductFirst) {
+    public void sendApply(ScmZsjProductFirst scmZsjProductFirst, String flowKey) {
         //判断商品是否存在
     	//scmZsjProductManager.isExist(scmZsjProductFirst.getScmZsjProduct());
         //保存首营审批信息
@@ -90,7 +90,7 @@ public class ScmZsjProductFirstManagerImpl extends AbstractManagerImpl<String, S
         if(scmZsjProductFirst.getGmpValidity()!=null && scmZsjProductFirst.getGmpValidity().getTime()<=new Date().getTime()) {
             throw new RuntimeException("GMP证书有效期不可小于今天日期");
         }
-        StartFlowParam startFlowParam = new StartFlowParam("spsy", "SCM", "approvalId");
+        StartFlowParam startFlowParam = new StartFlowParam(flowKey, "SCM", "approvalId");
         startFlowParam.setFormType("frame");
         CustomStartResult customStartResult = null;
         try {
@@ -187,7 +187,7 @@ public class ScmZsjProductFirstManagerImpl extends AbstractManagerImpl<String, S
 
     @Transactional
     @Override
-    public void updateSendApply(ScmZsjProductFirst scmZsjProductFirst) {
+    public void updateSendApply(ScmZsjProductFirst scmZsjProductFirst, String flowKey) {
         ScmZsjProductFirst scmZsjProductFirst2 = scmZsjProductFirstDao.get(scmZsjProductFirst.getId());
         if ("1".equals(scmZsjProductFirst2.getApprovalState())) {
             //数据在审批中,不可修改编辑
@@ -204,7 +204,7 @@ public class ScmZsjProductFirstManagerImpl extends AbstractManagerImpl<String, S
          		throw new RuntimeException("GMP证书有效期不可小于今天日期");
          	}
             update(scmZsjProductFirst);
-            StartFlowParam startFlowParam = new StartFlowParam("spsy", "SCM", "approvalId");
+            StartFlowParam startFlowParam = new StartFlowParam(flowKey, "SCM", "approvalId");
             startFlowParam.setFormType("frame");
             CustomStartResult customStartResult = null;
             try {

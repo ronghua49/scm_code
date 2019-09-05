@@ -161,6 +161,6 @@ public interface ScmMasterDateFeignService {
     //根据商品子码获取商品信息
     @RequestMapping(value = {"/scm/scmFhShipmentsDatail/v1/verifyDeliveryAmount/{commerceFirstId}/{priceSum}"},method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     boolean verifyDeliveryAmount(@PathVariable(value = "commerceFirstId") String commerceFirstId,@PathVariable(value = "priceSum") double priceSum);
-    
-    
+
+
 }

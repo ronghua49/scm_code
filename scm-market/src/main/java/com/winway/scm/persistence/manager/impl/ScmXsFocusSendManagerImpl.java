@@ -201,13 +201,13 @@ public class ScmXsFocusSendManagerImpl extends AbstractManagerImpl<String, ScmXs
 			}
 		}
 	    //验证是否超过近三个月平均值
-	    boolean verifyDeliveryAmount = scmMasterDateFeignService.verifyDeliveryAmount(scmXsFocusSend.getCommerceFirstId(),Double.parseDouble(scmXsFocusSend.getTotalPrice()));
+	    boolean verifyDeliveryAmount = scmMasterDateFeignService.verifyDeliveryAmount(scmXsFocusSend.getCommerceFirstId(),scmXsFocusSend.getTotalPrice());
 	    if(verifyDeliveryAmount) {
 	    	scmXsFocusSend.setIsoverfuifil("0");
 	    }else{
 	    	scmXsFocusSend.setIsoverfuifil("1");
 	    }
-		if((scmXsFocusSend != null && "3".equals(scmXsFocusSend.getApprovalState()))) {
+		if((scmXsFocusSend2 != null && "3".equals(scmXsFocusSend2.getApprovalState()))) {
 //	      {"formType":"frame","opinion":"驳回后发起","actionName":"agree","taskId":11108798,"jumpType":"","destination":"","nodeUsers":"[]"}
 			    List<String> list = new ArrayList<String>();
 			    list.add(scmXsFocusSend.getApprovalId());
@@ -223,12 +223,13 @@ public class ScmXsFocusSendManagerImpl extends AbstractManagerImpl<String, ScmXs
 			    }else{
 			    	DefaultFmsBpmCheckTaskOpinion defaultFmsBpmCheckTaskOpinion = instanceFlowHistoryList.get(instanceFlowHistoryList.size() -1 );
 			    	bpmRuntimeFeignService.autoAgree(new AgreeFlowParam("驳回后发起", "agree", defaultFmsBpmCheckTaskOpinion.getTaskId(), "", "", "[]"));
+			    	scmXsFocusSend.setApprovalId(scmXsFocusSend2.getApprovalId());
 			    	update(scmXsFocusSend);
 			    }
 		    }else{
 			    //发起审批流
 			    //发起审批流 @Workflow(flowKey = "jzfhlc", sysCode = "SCM", instanceIdField = "approvalId", varKeys = {"totalPrice","creditPrice"})
-            String[] strs = {"totalPrice", "creditPrice", "isoverfuifil"};
+		    	String[] strs = {"totalPrice", "creditPrice", "isoverfuifil"};
 		        workflowTemplate.startWorkflow("jzfhlc", "SCM", "approvalId",scmXsFocusSend, strs);
 		        String replace = scmXsFocusSend.getApprovalId().replace("\"", "");
 		        scmXsFocusSend.setApprovalId(replace);

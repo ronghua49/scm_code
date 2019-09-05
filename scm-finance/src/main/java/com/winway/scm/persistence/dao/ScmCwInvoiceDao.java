@@ -5,6 +5,7 @@ import java.util.Map;
 import com.hotent.base.dao.MyBatisDao;
 import com.winway.scm.model.ScmCwInvoice;
 import com.winway.scm.vo.VInvoice;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -28,4 +29,6 @@ public interface ScmCwInvoiceDao extends MyBatisDao<String, ScmCwInvoice> {
     List<ScmCwInvoice> checklist(Map<String, Object> params);
 
 	List<ScmCwInvoice> listByCommerceCode(String commerceCode);
+
+    Map<String, Object> getClauseInfoByContractCode(@Param(value = "contractCode") String contractCode);
 }

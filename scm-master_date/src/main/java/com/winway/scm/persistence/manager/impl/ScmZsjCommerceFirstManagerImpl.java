@@ -416,7 +416,7 @@ public class ScmZsjCommerceFirstManagerImpl extends AbstractManagerImpl<String, 
     }
 
     @Override
-    public void sendApply(ScmZsjCommerceFirst scmZsjCommerceFirst) {
+    public void sendApply(ScmZsjCommerceFirst scmZsjCommerceFirst, String flowKey) {
         //审批状态    0:待提交,1:待审批,2:已通过
         //判断提交的商业信息是否存在,如果不存在,在基础数据保存一份
         scmZsjCommerceManager.isExist(scmZsjCommerceFirst.getScmZsjCommerce());
@@ -430,7 +430,7 @@ public class ScmZsjCommerceFirstManagerImpl extends AbstractManagerImpl<String, 
         //调整审批状态
         scmZsjCommerceFirst.setApprovalState("0");
         create(scmZsjCommerceFirst);
-        StartFlowParam startFlowParam = new StartFlowParam("sysy", "SCM", "approvalId");
+        StartFlowParam startFlowParam = new StartFlowParam(flowKey, "SCM", "approvalId");
         startFlowParam.setFormType("frame");
         CustomStartResult customStartResult = null;
         try {
@@ -489,7 +489,7 @@ public class ScmZsjCommerceFirstManagerImpl extends AbstractManagerImpl<String, 
     }
 
     @Override
-    public void updateSendApply(ScmZsjCommerceFirst scmZsjCommerceFirst) {
+    public void updateSendApply(ScmZsjCommerceFirst scmZsjCommerceFirst, String flowKey) {
         ScmZsjCommerceFirst scmZsjCommerceFirst2 = scmZsjCommerceFirstDao.get(scmZsjCommerceFirst.getId());
         if ("1".equals(scmZsjCommerceFirst2.getApprovalState())) {
             //数据在审批中,不可修改编辑
@@ -498,7 +498,7 @@ public class ScmZsjCommerceFirstManagerImpl extends AbstractManagerImpl<String, 
             //修改其他关联性数据
             scmZsjCommerceFirst.setApprovalState("0");
             update(scmZsjCommerceFirst);
-            StartFlowParam startFlowParam = new StartFlowParam("sysy", "SCM", "approvalId");
+            StartFlowParam startFlowParam = new StartFlowParam(flowKey, "SCM", "approvalId");
             startFlowParam.setFormType("frame");
             CustomStartResult customStartResult = null;
             try {

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan(basePackages={"com.hotent.**.dao","com.winway.**.dao"})
 @ComponentScan({"com.hotent.*","com.winway.*"})
-@EnableFeignClients(basePackages = {"com.hotent.*", "com.winway.*"})
+//@EnableFeignClients(basePackages = {"com.hotent.*", "com.winway.*"})
 public class Application 
 {
 	public static void main( String[] args )
